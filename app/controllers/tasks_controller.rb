@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, except: [:index, :new, :create]
+  before_action :set_project, except: [ :index, :new, :create ]
   before_action :set_task, only: %i[ show edit update destroy in_progress complete ]
 
   # GET /tasks (global index)
