@@ -10,7 +10,7 @@
   <p><span class="font-semibold">Amount:</span> <%= number_to_currency(@transaction.amount, unit: "₦") %></p>
   <p><span class="font-semibold">Status:</span>
     <span class="px-2 py-1 rounded
-      <%= @transaction.paid? ? 'bg-green-600 text-white' : 'bg-hamzis-copper text-hamzis-white' %>">
+      <%= @transaction.status_paid? ? 'bg-green-600 text-white' : 'bg-hamzis-copper text-hamzis-white' %>">
       <%= @transaction.status.humanize %>
     </span>
   </p>
