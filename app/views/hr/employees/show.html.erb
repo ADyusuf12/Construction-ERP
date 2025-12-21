@@ -1,0 +1,47 @@
+<% content_for :title, "Employee Profile" %>
+<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-6">Employee Profile</h1>
+<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6 space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-xl font-semibold"><%= @employee.position_title %></h2>
+      <p class="text-sm text-gray-600 dark:text-gray-400"><%= @employee.department %></p>
+    </div>
+    <span class="px-3 py-1 rounded bg-hamzis-copper text-hamzis-white">
+      <%= @employee.status.humanize %>
+    </span>
+  </div>
+  <!-- Details Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <span class="font-medium">Hamzis ID:</span>
+      <span><%= @employee.hamzis_id %></span>
+    </div>
+    <div>
+      <span class="font-medium">Hire Date:</span>
+      <span><%= @employee.hire_date %></span>
+    </div>
+    <div>
+      <span class="font-medium">Leave Balance:</span>
+      <span><%= @employee.leave_balance %></span>
+    </div>
+    <div>
+      <span class="font-medium">Performance Score:</span>
+      <span><%= @employee.performance_score || "N/A" %></span>
+    </div>
+    <% if @employee.user.present? %>
+      <div class="md:col-span-2">
+        <span class="font-medium">Linked User:</span>
+        <span><%= @employee.user.email %></span>
+      </div>
+    <% end %>
+  </div>
+</div>
+<!-- Actions -->
+<div class="mt-6 flex gap-2">
+  <%= link_to "Edit Employee", edit_hr_employee_path(@employee),
+      class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+  <%= link_to "← Back to Employees", hr_employees_path,
+      class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+</div>

@@ -1,0 +1,62 @@
+<h2 class="text-2xl font-bold mb-6">All Tasks</h2>
+<!-- Dashboard Summary -->
+<div class="grid md:grid-cols-4 gap-6 mb-8">
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Total Tasks</p>
+    <p class="text-2xl font-bold"><%= @tasks.count %></p>
+  </div>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Pending</p>
+    <p class="text-2xl font-bold"><%= @tasks.status_pending.count %></p>
+  </div>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">In Progress</p>
+    <p class="text-2xl font-bold"><%= @tasks.status_in_progress.count %></p>
+  </div>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Done</p>
+    <p class="text-2xl font-bold"><%= @tasks.status_done.count %></p>
+  </div>
+</div>
+<!-- New Task Button -->
+<div class="mb-6 flex justify-end">
+  <%= link_to "➕ New Task", new_task_path,
+      class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+</div>
+<!-- Task Table -->
+<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+  <% if @tasks.any? %>
+    <table class="min-w-full text-sm text-left">
+      <thead>
+        <tr class="text-hamzis-brown dark:text-hamzis-copper border-b border-hamzis-brown/20">
+          <th class="px-4 py-2">Title</th>
+          <th class="px-4 py-2">Project</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Due Date</th>
+          <th class="px-4 py-2">Weight</th>
+          <th class="px-4 py-2">Assigned To</th>
+          <th class="px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @tasks.each do |task| %>
+          <%= render "tasks/task_row", task: task %>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="text-center py-6">
+      <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No tasks yet</p>
+      <p class="text-sm mt-2">Start by creating your first task.</p>
+      <div class="mt-4">
+        <%= link_to "➕ New Task", new_task_path,
+            class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+      </div>
+    </div>
+  <% end %>
+</div>

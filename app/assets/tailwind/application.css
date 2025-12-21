@@ -1,0 +1,14 @@
+/* app/assets/tailwind/application.css */
+@import "tailwindcss";
+
+/* Enable class-based dark mode by mapping the `dark:` variant to a `.dark` ancestor */
+@custom-variant dark (&:where(.dark *));
+
+/* Define Hamzis brand colors as theme tokens */
+@theme {
+  --color-hamzis-brown: #4e342e;
+  --color-hamzis-black: #212121;
+  --color-hamzis-white: #ffffff;
+  --color-hamzis-copper: #b87333;
+}
+

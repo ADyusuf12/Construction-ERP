@@ -1,0 +1,77 @@
+<h2 class="text-2xl font-bold mb-6">Projects</h2>
+<!-- Dashboard Summary -->
+<div class="grid md:grid-cols-3 gap-6 mb-8">
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Total Projects</p>
+    <p class="text-2xl font-bold"><%= @projects.count %></p>
+  </div>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Due Soon</p>
+    <p class="text-2xl font-bold"><%= Project.due_soon.count %></p>
+  </div>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Overdue</p>
+    <p class="text-2xl font-bold"><%= Project.overdue.count %></p>
+  </div>
+</div>
+<!-- New Project Button -->
+<div class="mb-6 flex justify-end">
+  <%= link_to "➕ New Project", new_project_path,
+      class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+</div>
+<!-- Projects Table -->
+<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+  <% if @projects.any? %>
+    <table class="min-w-full text-sm text-left">
+      <thead>
+        <tr class="text-hamzis-brown dark:text-hamzis-copper border-b border-hamzis-brown/20">
+          <th class="px-4 py-2">Name</th>
+          <th class="px-4 py-2">Description</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Deadline</th>
+          <th class="px-4 py-2">Progress</th>
+          <th class="px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @projects.each do |project| %>
+          <tr id="<%= dom_id(project) %>" class="border-b border-hamzis-brown/20 hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+            <td class="px-4 py-2 font-semibold"><%= project.name %></td>
+            <td class="px-4 py-2"><%= truncate(project.description, length: 50) %></td>
+            <td class="px-4 py-2">
+              <span class="px-2 py-1 rounded
+                <%= project.status_ongoing? ? 'bg-hamzis-copper text-hamzis-white' : 'bg-green-600 text-white' %>">
+                <%= project.status.humanize %>
+              </span>
+            </td>
+            <td class="px-4 py-2"><%= project.deadline&.strftime("%b %d, %Y") %></td>
+            <td class="px-4 py-2">
+              <div class="w-full bg-hamzis-brown/20 rounded-full h-2">
+                <div class="bg-hamzis-copper h-2 rounded-full" style="width: <%= project.progress %>%"></div>
+              </div>
+            </td>
+            <td class="px-4 py-2 flex gap-2">
+              <%= link_to "View", project_path(project),
+                  class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+              <%= link_to "Edit", edit_project_path(project),
+                  class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="text-center py-6">
+      <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No projects yet</p>
+      <p class="text-sm mt-2">Start by creating your first project.</p>
+      <div class="mt-4">
+        <%= link_to "➕ New Project", new_project_path,
+            class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+      </div>
+    </div>
+  <% end %>
+</div>

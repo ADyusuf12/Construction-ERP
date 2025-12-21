@@ -1,0 +1,24 @@
+<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 rounded-xl p-6">
+  <% if project.tasks.any? %>
+    <table class="min-w-full text-sm text-left">
+      <thead>
+        <tr>
+          <th class="px-4 py-2">Title</th>
+          <th class="px-4 py-2">Details</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Due Date</th>
+          <th class="px-4 py-2">Weight</th>
+          <th class="px-4 py-2">Assigned To</th>
+          <th class="px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% project.tasks.each do |task| %>
+          <%= render "tasks/task_row", task: task %>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="text-center text-sm">No tasks yet.</p>
+  <% end %>
+</div>

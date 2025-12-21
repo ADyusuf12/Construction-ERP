@@ -1,0 +1,6 @@
+<%= turbo_stream.replace dom_id(@transaction) do %>
+  <%= render partial: "transactions/transaction_row", locals: { t: @transaction } %>
+<% end %>
+<%= turbo_stream.replace "project_transactions_summary" do %>
+  <%= render "projects/transactions_summary", project: @transaction.project %>
+<% end %>

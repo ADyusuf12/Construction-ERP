@@ -1,0 +1,60 @@
+<%= form_with(model: @task, url: (@project ? project_tasks_path(@project) : tasks_path), local: true, class: "space-y-4") do |form| %>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 space-y-4">
+    <% unless @project %>
+      <!-- Project dropdown (global form only) -->
+      <div>
+        <%= form.label :project_id, "Project", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= form.collection_select :project_id, Project.all, :id, :name,
+              { prompt: "Select a project" },
+              { class: "w-full rounded border-gray-300 shadow-sm" } %>
+      </div>
+    <% end %>
+    <!-- Title -->
+    <div>
+      <%= form.label :title, class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= form.text_field :title, class: "w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+    <!-- Details -->
+    <div>
+      <%= form.label :details, class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= form.text_area :details, rows: 4, class: "w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+    <!-- Status -->
+    <div>
+      <%= form.label :status, class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= form.select :status, Task.statuses.keys.map { |s| [s.titleize, s] },
+                      {}, class: "w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+    <!-- Due Date -->
+    <div>
+      <%= form.label :due_date, class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= form.date_select :due_date, class: "w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+    <!-- Weight -->
+    <div>
+      <%= form.label :weight, "Task Weight (effort/importance)", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= form.number_field :weight, value: @task.weight || 1, min: 1,
+          class: "w-full rounded border-gray-300 shadow-sm" %>
+      <p class="text-xs text-gray-500 mt-1">
+        Assign a relative value (default = 1). Higher weights mean more impact on project progress.
+      </p>
+    </div>
+    <!-- Assigned Users -->
+    <div>
+      <%= form.label :user_ids, "Assign To", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= form.collection_select :user_ids, User.all, :id, :email,
+            { include_hidden: false },
+            { multiple: true, class: "w-full rounded border-gray-300 shadow-sm" } %>
+      <p class="text-xs text-gray-500 mt-1">
+        Select one or more users responsible for this task.
+      </p>
+    </div>
+    <!-- Actions -->
+    <div class="flex gap-2">
+      <%= form.submit "Save Task", class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+      <%= link_to "Cancel", (@project ? project_tasks_path(@project) : tasks_path),
+          class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+    </div>
+  </div>
+<% end %>

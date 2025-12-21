@@ -1,0 +1,52 @@
+<%= form_with(model: @employee, local: true, class: "space-y-6") do |form| %>
+  <% if @employee.errors.any? %>
+    <div class="p-4 rounded bg-hamzis-copper text-hamzis-white">
+      <h2 class="font-bold"><%= pluralize(@employee.errors.count, "error") %> prevented saving:</h2>
+      <ul class="list-disc ml-6">
+        <% @employee.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <!-- Department -->
+  <div>
+    <%= form.label :department, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+    <%= form.text_field :department, class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+  </div>
+  <!-- Position Title -->
+  <div>
+    <%= form.label :position_title, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+    <%= form.text_field :position_title, class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+  </div>
+  <!-- Hire Date -->
+  <div>
+    <%= form.label :hire_date, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+    <%= form.date_select :hire_date, class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+  </div>
+  <!-- Status -->
+  <div>
+    <%= form.label :status, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+    <%= form.select :status, Hr::Employee.statuses.keys.map { |s| [s.humanize, s] },
+        {}, class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+  </div>
+  <!-- Leave Balance -->
+  <div>
+    <%= form.label :leave_balance, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+    <%= form.number_field :leave_balance, value: @employee.leave_balance || 0,
+        class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+  </div>
+  <!-- Performance Score -->
+  <div>
+    <%= form.label :performance_score, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+    <%= form.number_field :performance_score, step: 0.01,
+        class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    <p class="text-xs text-gray-500 mt-1">Leave blank for new hires; use only for existing employees being imported.</p>
+  </div>
+  <!-- Actions -->
+  <div class="flex gap-2">
+    <%= form.submit "Save Employee", class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition-colors" %>
+    <%= link_to "Cancel", hr_employees_path,
+        class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+  </div>
+<% end %>

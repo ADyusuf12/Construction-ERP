@@ -1,0 +1,54 @@
+<tr id="<%= dom_id(task) %>" class="border-b border-hamzis-brown/20 hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+  <!-- Title -->
+  <td class="px-4 py-2 font-semibold"><%= task.title %></td>
+  <!-- Details -->
+  <td class="px-4 py-2"><%= truncate(task.details, length: 50) if task.details.present? %></td>
+  <!-- Status -->
+  <td class="px-4 py-2">
+    <span class="px-2 py-1 rounded
+      <%= task.status_pending? ? 'bg-yellow-500 text-white' :
+          task.status_in_progress? ? 'bg-hamzis-copper text-hamzis-white' :
+          'bg-green-600 text-white' %>">
+      <%= task.status.humanize %>
+    </span>
+  </td>
+  <!-- Due Date -->
+  <td class="px-4 py-2"><%= task.due_date.strftime("%b %d, %Y") if task.due_date.present? %></td>
+  <!-- Weight -->
+  <td class="px-4 py-2"><%= task.weight %></td>
+  <!-- Assigned Users -->
+  <td class="px-4 py-2">
+    <% if task.users.any? %>
+      <%= task.users.map(&:email).join(", ") %>
+    <% else %>
+      <span class="text-gray-500">Unassigned</span>
+    <% end %>
+  </td>
+  <!-- Actions -->
+  <td class="px-4 py-2 flex gap-2">
+    <%= link_to "View", project_task_path(task.project, task),
+      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+    <%= link_to "Edit", edit_project_task_path(task.project, task),
+      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+    <% if task.status_pending? %>
+      <%= button_to "Mark In Progress",
+        in_progress_project_task_path(task.project, task),
+        method: :patch,
+        data: { turbo_stream: true, disable_with: "Marking..." },
+        class: "px-3 py-1 rounded bg-yellow-600 text-white hover:bg-yellow-800 transition" %>
+    <% elsif task.status_in_progress? %>
+      <%= button_to "Mark as Done",
+        complete_project_task_path(task.project, task),
+        method: :patch,
+        data: { turbo_stream: true, disable_with: "Marking..." },
+        class: "px-3 py-1 rounded bg-green-600 text-white hover:bg-green-800 transition" %>
+    <% end %>
+    <% if policy(task).destroy? %>
+      <%= button_to "Delete",
+      project_task_path(task.project, task),
+      method: :delete,
+      data: { turbo_confirm: "Are you sure you want to delete this task?" },
+      class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition" %>
+    <% end %>
+  </td>
+</tr>

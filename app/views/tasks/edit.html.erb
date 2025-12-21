@@ -1,0 +1,11 @@
+<% content_for :title, "Edit Task" %>
+<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
+  Editing Task: <%= @task.title %>
+</h1>
+<%= render "form", project: @project, task: @task %>
+<div class="mt-4 flex gap-2">
+  <%= link_to "Show Task", project_task_path(@project, @task),
+      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+  <%= link_to "← Back to Tasks", project_tasks_path(@project),
+      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+</div>

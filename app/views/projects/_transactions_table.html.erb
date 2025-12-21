@@ -1,0 +1,23 @@
+<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 rounded-xl p-6">
+  <% if project.transactions.any? %>
+    <table class="min-w-full text-sm text-left">
+      <thead>
+        <tr>
+          <th class="px-4 py-2">Date</th>
+          <th class="px-4 py-2">Description</th>
+          <th class="px-4 py-2">Type</th>
+          <th class="px-4 py-2">Amount</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render partial: "transactions/transaction_row",
+                   collection: project.transactions,
+                   as: :t %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="text-center text-sm">No transactions yet.</p>
+  <% end %>
+</div>

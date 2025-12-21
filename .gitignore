@@ -1,0 +1,40 @@
+# See https://help.github.com/articles/ignoring-files for more about ignoring files.
+
+#-- Bundler --#
+/.bundle
+/vendor/bundle
+
+#-- Rails --#
+/log/*
+/tmp/*
+/storage/*
+/public/assets
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+/app/assets/builds/*
+
+# Keep directories that would otherwise be empty
+!/log/.keep
+!/tmp/.keep
+!/storage/.keep
+!/app/assets/builds/.keep
+
+#-- Environment --#
+/.env*
+/config/master.key
+/config/credentials.yml.enc
+
+#-- OS-specific --#
+.DS_Store
+Thumbs.db
+
+#-- Editor --#
+*.swp
+*~
+.byebug_history
+
+#-- Kamal --#
+.kamal/secrets.yml
+*.lock
