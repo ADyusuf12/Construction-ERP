@@ -21,7 +21,8 @@
       class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
     <%= link_to "Back", projects_path,
       class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
-    <%= button_to "Delete", "#",
+    <% if policy(@project).destroy? %>
+      <%= button_to "Delete", "#",
         class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition",
         form: {
           "data-action" => "click->confirm-delete#open",
@@ -29,6 +30,7 @@
           "data-confirm-delete-message-param" => "Are you sure you want to delete '#{@project.name}'? This action cannot be undone.",
           "data-confirm-delete-confirm-path-param" => project_path(@project)
         } %>
+    <% end %>
   </div>
 </div>
 <!-- Tabs -->
