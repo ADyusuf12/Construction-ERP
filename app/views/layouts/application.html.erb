@@ -8,7 +8,7 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-  <body class="bg-hamzis-white text-hamzis-black dark:bg-hamzis-black dark:text-hamzis-white flex">
+  <body class="bg-hamzis-white text-hamzis-black dark:bg-hamzis-black dark:text-hamzis-white flex" data-controller="confirm-delete">
     <!-- SIDEBAR -->
     <aside class="w-64 bg-hamzis-brown text-hamzis-white dark:bg-hamzis-black dark:text-hamzis-copper min-h-screen flex flex-col">
       <!-- Logo -->
@@ -216,5 +216,6 @@
         }
       })();
     </script>
+    <%= render 'shared/confirm_delete_modal', title: "Confirm Deletion", message: "Are you sure you want to delete this item? This action cannot be undone.", confirm_path: "#" %>
   </body>
 </html>
