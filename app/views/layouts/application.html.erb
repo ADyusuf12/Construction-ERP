@@ -9,146 +9,11 @@
     <%= javascript_importmap_tags %>
   </head>
   <body class="bg-hamzis-white text-hamzis-black dark:bg-hamzis-black dark:text-hamzis-white flex" data-controller="confirm-delete">
-    <!-- SIDEBAR -->
-    <aside class="w-64 bg-hamzis-brown text-hamzis-white dark:bg-hamzis-black dark:text-hamzis-copper min-h-screen flex flex-col">
-      <!-- Logo -->
-      <div class="px-4 py-6 border-b border-hamzis-brown/20 flex justify-between items-center">
-        <h1 class="text-xl font-bold">Hamzis Systems</h1>
-        <!-- Mobile toggle -->
-        <button id="nav-toggle"
-                class="md:hidden px-2 py-1 rounded bg-hamzis-copper text-hamzis-white
-                       hover:bg-hamzis-black hover:text-hamzis-white transition-colors"
-                aria-label="Toggle navigation">
-          ☰
-        </button>
-      </div>
-      <!-- Nav links -->
-      <nav id="nav-menu" class="flex-1 px-4 py-6 space-y-2 hidden md:block">
-        <!-- Home -->
-        <%= link_to "Home", root_path,
-            class: "block px-3 py-2 rounded transition-colors
-                    #{current_page?(root_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-        <!-- Projects dropdown -->
-        <div class="space-y-1">
-          <button type="button"
-          class="w-full flex justify-between items-center px-3 py-2 rounded transition-colors
-                 hover:bg-hamzis-copper hover:text-hamzis-white"
-          onclick="document.getElementById('projects-dropdown').classList.toggle('hidden')">
-            <span>Projects</span>
-            <svg class="w-4 h-4 transform transition-transform" id="projects-chevron"
-         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-         stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <!-- Dropdown -->
-          <div id="projects-dropdown" class="ml-4 space-y-1 hidden">
-            <%= link_to "All Projects", projects_path,
-        class: "block px-3 py-2 rounded transition-colors
-                #{current_page?(projects_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <%= link_to "New Project", new_project_path,
-        class: "block px-3 py-2 rounded transition-colors
-                #{current_page?(new_project_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-          </div>
-        </div>
-        <!-- Tasks dropdown -->
-        <div class="space-y-1">
-          <button type="button"
-                  class="w-full flex justify-between items-center px-3 py-2 rounded transition-colors
-                         hover:bg-hamzis-copper hover:text-hamzis-white"
-                  onclick="document.getElementById('tasks-dropdown').classList.toggle('hidden')">
-            <span>Tasks</span>
-            <svg class="w-4 h-4 transform transition-transform" id="tasks-chevron"
-                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                 stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <!-- Dropdown -->
-          <div id="tasks-dropdown" class="ml-4 space-y-1 hidden">
-            <%= link_to "All Tasks", tasks_path,
-                class: "block px-3 py-2 rounded transition-colors
-                        #{current_page?(tasks_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <%= link_to "New Task", new_task_path,
-                class: "block px-3 py-2 rounded transition-colors
-                        #{current_page?(new_task_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-          </div>
-        </div>
-        <!-- Other modules (placeholders for now) -->
-        <%= link_to "Inventory", "#", class: "block px-3 py-2 rounded transition-colors hover:bg-hamzis-copper hover:text-hamzis-white" %>
-        <!-- HR dropdown -->
-        <div class="space-y-1">
-          <button type="button"
-          class="w-full flex justify-between items-center px-3 py-2 rounded transition-colors
-                 hover:bg-hamzis-copper hover:text-hamzis-white"
-          onclick="document.getElementById('hr-dropdown').classList.toggle('hidden')">
-            <span>HR</span>
-            <svg class="w-4 h-4 transform transition-transform" id="hr-chevron"
-         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-         stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <!-- Dropdown -->
-          <div id="hr-dropdown" class="ml-4 space-y-1 hidden">
-            <%= link_to "All Employees", hr_employees_path,
-        class: "block px-3 py-2 rounded transition-colors
-                #{current_page?(hr_employees_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <%= link_to "New Employee", new_hr_employee_path,
-        class: "block px-3 py-2 rounded transition-colors
-                #{current_page?(new_hr_employee_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-          </div>
-        </div>
-        <!-- Accounting dropdown -->
-        <div class="space-y-1">
-          <button type="button"
-          class="w-full flex justify-between items-center px-3 py-2 rounded transition-colors
-                 hover:bg-hamzis-copper hover:text-hamzis-white"
-          onclick="document.getElementById('transactions-dropdown').classList.toggle('hidden')">
-            <span>Accounting</span>
-            <svg class="w-4 h-4 transform transition-transform" id="transactions-chevron"
-         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-         stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <!-- Dropdown -->
-          <div id="transactions-dropdown" class="ml-4 space-y-1 hidden">
-            <%= link_to "All Transactions", transactions_path,
-        class: "block px-3 py-2 rounded transition-colors
-                #{current_page?(transactions_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <%= link_to "New Transaction", new_transaction_path,
-        class: "block px-3 py-2 rounded transition-colors
-                #{current_page?(new_transaction_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-          </div>
-        </div>
-        <%= link_to "Management", "#", class: "block px-3 py-2 rounded transition-colors hover:bg-hamzis-copper hover:text-hamzis-white" %>
-      </nav>
-      <!-- Auth -->
-      <div class="px-4 py-6 border-t border-hamzis-brown/20">
-        <% if user_signed_in? %>
-          <%= button_to "Logout", destroy_user_session_path, method: :delete,
-              form: { class: "inline" },
-              class: "w-full px-3 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition-colors" %>
-        <% else %>
-          <%= link_to "Login", new_user_session_path,
-              class: "w-full block px-3 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition-colors" %>
-        <% end %>
-      </div>
-    </aside>
+    <%= render 'shared/sidebar' %>
     <!-- MAIN CONTENT -->
     <div class="flex-1 flex flex-col">
       <main class="px-6 py-6 flex-1">
-        <% flash.each do |key, value| %>
-          <div class="p-4 mb-4 rounded-lg text-sm
-                <%= key == 'notice' ? 'bg-hamzis-brown text-hamzis-white' : 'bg-hamzis-copper text-hamzis-white' %>">
-            <%= value %>
-          </div>
-        <% end %>
+        <%= render "shared/flash" %>
         <%= yield %>
       </main>
       <!-- FOOTER -->
@@ -216,6 +81,9 @@
         }
       })();
     </script>
-    <%= render 'shared/confirm_delete_modal', title: "Confirm Deletion", message: "Are you sure you want to delete this item? This action cannot be undone.", confirm_path: "#" %>
+    <%= render 'shared/confirm_delete_modal',
+        title: "Confirm Deletion",
+        message: "Are you sure you want to delete this item? This action cannot be undone.",
+        confirm_path: "#" %>
   </body>
 </html>
