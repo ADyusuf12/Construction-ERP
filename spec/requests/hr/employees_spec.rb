@@ -9,7 +9,7 @@ RSpec.describe "Hr::Employees", type: :request do
   let(:manager)    { create(:user, :manager) }
   let(:qs)         { create(:user, :qs) }
   let(:engineer)   { create(:user, :engineer) }
-  let(:storekeeper){ create(:user, :storekeeper) }
+  let(:storekeeper) { create(:user, :storekeeper) }
   let(:accountant) { create(:user, :accountant) }
 
   let!(:employee) { create(:hr_employee, user: hr_user) }
