@@ -1,28 +1,34 @@
 module Hr
   class EmployeesController < ApplicationController
+    before_action :authenticate_user!
     before_action :set_employee, only: %i[ show edit update destroy ]
 
     # GET /hr/employees
     def index
-      @employees = Hr::Employee.all
+      authorize Hr::Employee
+      @employees = policy_scope(Hr::Employee)
     end
 
     # GET /hr/employees/:id
     def show
+      authorize @employee
     end
 
     # GET /hr/employees/new
     def new
       @employee = Hr::Employee.new
+      authorize @employee
     end
 
     # GET /hr/employees/:id/edit
     def edit
+      authorize @employee
     end
 
     # POST /hr/employees
     def create
       @employee = Hr::Employee.new(employee_params)
+      authorize @employee
 
       if @employee.save
         redirect_to hr_employees_path, notice: "Employee was successfully created."
@@ -33,6 +39,7 @@ module Hr
 
     # PATCH/PUT /hr/employees/:id
     def update
+      authorize @employee
       if @employee.update(employee_params)
         redirect_to hr_employees_path, notice: "Employee was successfully updated."
       else
@@ -42,6 +49,7 @@ module Hr
 
     # DELETE /hr/employees/:id
     def destroy
+      authorize @employee
       @employee.destroy
       redirect_to hr_employees_path, notice: "Employee was successfully deleted."
     end
