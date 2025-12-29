@@ -26,8 +26,8 @@
       <% if user_signed_in? && policy(Project).index? %>
         <div class="ml-4 space-y-1">
           <button type="button"
-                  class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
-                  onclick="document.getElementById('projects-dropdown').classList.toggle('hidden')">
+              class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
+              onclick="document.getElementById('projects-dropdown').classList.toggle('hidden')">
             <span class="flex items-center">
               <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6h5v2H4v-2h5z" />
@@ -40,10 +40,10 @@
           </button>
           <div id="projects-dropdown" class="ml-4 space-y-1 hidden">
             <%= link_to "All Projects", projects_path,
-                class: "block px-3 py-2 rounded transition-colors #{current_page?(projects_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <% if user_signed_in? && policy(Project).create? %>
+            class: "block px-3 py-2 rounded transition-colors #{current_page?(projects_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+            <% if policy(Project).create? %>
               <%= link_to "New Project", new_project_path,
-                  class: "block px-3 py-2 rounded transition-colors #{current_page?(new_project_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+              class: "block px-3 py-2 rounded transition-colors #{current_page?(new_project_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
             <% end %>
           </div>
         </div>
@@ -51,8 +51,8 @@
       <% if user_signed_in? && policy(Task).index? %>
         <div class="ml-4 space-y-1">
           <button type="button"
-                  class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
-                  onclick="document.getElementById('tasks-dropdown').classList.toggle('hidden')">
+              class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
+              onclick="document.getElementById('tasks-dropdown').classList.toggle('hidden')">
             <span class="flex items-center">
               <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m-6-8h6" />
@@ -65,10 +65,35 @@
           </button>
           <div id="tasks-dropdown" class="ml-4 space-y-1 hidden">
             <%= link_to "All Tasks", tasks_path,
-                class: "block px-3 py-2 rounded transition-colors #{current_page?(tasks_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <% if user_signed_in? && policy(Task).create? %>
+            class: "block px-3 py-2 rounded transition-colors #{current_page?(tasks_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+            <% if policy(Task).create? %>
               <%= link_to "New Task", new_task_path,
-                  class: "block px-3 py-2 rounded transition-colors #{current_page?(new_task_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+              class: "block px-3 py-2 rounded transition-colors #{current_page?(new_task_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <% if user_signed_in? && policy_scope(Report).exists? %>
+        <div class="ml-4 space-y-1">
+          <button type="button"
+              class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
+              onclick="document.getElementById('reports-dropdown').classList.toggle('hidden')">
+            <span class="flex items-center">
+              <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+              Reports
+            </span>
+            <svg class="w-4 h-4 transform transition-transform" id="reports-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div id="reports-dropdown" class="ml-4 space-y-1 hidden">
+            <%= link_to "All Reports", reports_path,
+            class: "block px-3 py-2 rounded transition-colors #{current_page?(reports_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+            <% if policy(Report.new).create? %>
+              <%= link_to "New Report", new_report_path,
+              class: "block px-3 py-2 rounded transition-colors #{current_page?(new_report_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
             <% end %>
           </div>
         </div>
