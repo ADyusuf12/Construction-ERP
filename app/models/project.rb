@@ -2,6 +2,7 @@ class Project < ApplicationRecord
   belongs_to :user, optional: true
   has_many :tasks, dependent: :destroy
   has_many :transactions, dependent: :destroy
+  has_many :reports, dependent: :destroy
 
   enum :status, { ongoing: 0, completed: 1 }, prefix: true
 
