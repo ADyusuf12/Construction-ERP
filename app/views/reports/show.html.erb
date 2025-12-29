@@ -1,0 +1,76 @@
+<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+  <!-- Title -->
+  <h2 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper">
+    Report — <%= @report.report_type.titleize %> (<%= @report.report_date.strftime("%b %d, %Y") %>)
+  </h2>
+  <!-- Summary -->
+  <% if @report.progress_summary.present? %>
+    <p class="mt-2"><%= @report.progress_summary %></p>
+  <% end %>
+  <!-- Details -->
+  <div class="mt-4 space-y-2 text-sm">
+    <div id="report_status">
+      <p>
+        <span class="font-medium">Status:</span>
+        <%= @report.status.humanize %>
+      </p>
+    </div>
+    <p>
+      <span class="font-medium">Author:</span>
+      <%= @report.user&.email %>
+    </p>
+    <% if @report.issues.present? %>
+      <p>
+        <span class="font-medium">Issues:</span>
+        <%= @report.issues %>
+      </p>
+    <% end %>
+    <% if @report.next_steps.present? %>
+      <p>
+        <span class="font-medium">Next Steps:</span>
+        <%= @report.next_steps %>
+      </p>
+    <% end %>
+    <!-- Project Link -->
+    <p>
+      <span class="font-medium">Project:</span>
+      <%= link_to @report.project.name, project_path(@report.project),
+          class: "text-hamzis-copper hover:underline" %>
+    </p>
+  </div>
+  <!-- Actions -->
+  <div class="mt-6 flex gap-2">
+    <%= link_to "Edit", edit_project_report_path(@report.project, @report),
+        class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+    <% if @project %>
+      <%= link_to "Back to Reports", project_reports_path(@project),
+          class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+    <% else %>
+      <%= link_to "Back to Reports", reports_path,
+          class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+    <% end %>
+    <% if policy(@report).submit? %>
+      <%= button_to "Submit", submit_project_report_path(@report.project, @report),
+          method: :patch,
+          data: { turbo_stream: true, disable_with: "Submitting..." },
+          class: "px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-800 transition" %>
+    <% end %>
+    <% if policy(@report).review? %>
+      <%= button_to "Review", review_project_report_path(@report.project, @report),
+          method: :patch,
+          data: { turbo_stream: true, disable_with: "Reviewing..." },
+          class: "px-3 py-1 rounded bg-green-600 text-white hover:bg-green-800 transition" %>
+    <% end %>
+    <% if policy(@report).destroy? %>
+      <%= button_to "Delete", "#",
+          class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition",
+          form: {
+            "data-action" => "click->confirm-delete#open",
+            "data-confirm-delete-title-param" => "Delete Report?",
+            "data-confirm-delete-message-param" => "Are you sure you want to delete this report dated #{@report.report_date.strftime("%b %d, %Y")}? This action cannot be undone.",
+            "data-confirm-delete-confirm-path-param" => project_report_path(@report.project, @report)
+          } %>
+    <% end %>
+  </div>
+</div>

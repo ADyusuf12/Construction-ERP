@@ -1,0 +1,57 @@
+<%= form_with(model: (@project ? [@project, report] : report), local: true, class: "space-y-4") do |form| %>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 space-y-4">
+    <% unless @project %>
+      <!-- Project dropdown (global form only) -->
+      <div>
+        <%= form.label :project_id, "Project", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= form.collection_select :project_id, Project.all, :id, :name,
+              { prompt: "Select a project" },
+              { class: "w-full rounded border-gray-300 shadow-sm" } %>
+      </div>
+    <% end %>
+    <!-- Report Date -->
+    <div>
+      <%= form.label :report_date, class: "block font-medium mb-1" %>
+      <%= form.date_select :report_date, class: "w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+    <!-- Report Type -->
+    <div>
+      <%= form.label :report_type, "Report Type", class: "block font-medium mb-1" %>
+      <%= form.select :report_type, Report.report_types.keys.map { |t| [t.titleize, t] },
+                      {}, class: "w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+    <!-- Status -->
+    <div>
+      <%= form.label :status, class: "block font-medium mb-1" %>
+      <%= form.select :status, Report.statuses.keys.map { |s| [s.titleize, s] },
+                      {}, class: "w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+    <!-- Progress Summary -->
+    <div>
+      <%= form.label :progress_summary, class: "block font-medium mb-1" %>
+      <%= form.text_area :progress_summary, rows: 4, class: "w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+    <!-- Issues -->
+    <div>
+      <%= form.label :issues, class: "block font-medium mb-1" %>
+      <%= form.text_area :issues, rows: 3, class: "w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+    <!-- Next Steps -->
+    <div>
+      <%= form.label :next_steps, class: "block font-medium mb-1" %>
+      <%= form.text_area :next_steps, rows: 3, class: "w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+    <!-- Actions -->
+    <div class="flex gap-2">
+      <%= form.submit "Save Report", class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+      <% if @project %>
+        <%= link_to "Cancel", project_reports_path(@project),
+            class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+      <% else %>
+        <%= link_to "Cancel", reports_path,
+            class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

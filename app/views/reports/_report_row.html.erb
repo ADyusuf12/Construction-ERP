@@ -1,0 +1,47 @@
+<tr id="<%= dom_id(report) %>" class="border-b border-hamzis-brown/20 hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+  <!-- Date -->
+  <td class="px-4 py-2 font-semibold"><%= report.report_date&.strftime("%b %d, %Y") %></td>
+  <!-- Type -->
+  <td class="px-4 py-2"><%= report.report_type.titleize %></td>
+  <!-- Status -->
+  <td class="px-4 py-2">
+    <span class="px-2 py-1 rounded
+      <%= report.status_draft? ? 'bg-yellow-500 text-white' :
+          report.status_submitted? ? 'bg-hamzis-copper text-hamzis-white' :
+          'bg-green-600 text-white' %>">
+      <%= report.status.humanize %>
+    </span>
+  </td>
+  <!-- Author -->
+  <td class="px-4 py-2"><%= report.user&.email || "—" %></td>
+  <!-- Project (only in global index) -->
+  <% if local_assigns[:show_project] %>
+    <td class="px-4 py-2">
+      <%= link_to report.project.name, project_path(report.project),
+          class: "text-hamzis-copper hover:underline" %>
+    </td>
+  <% end %>
+  <!-- Summary -->
+  <td class="px-4 py-2"><%= truncate(report.progress_summary, length: 50) if report.progress_summary.present? %></td>
+  <!-- Actions -->
+  <td class="px-4 py-2 flex gap-2">
+    <%= link_to "View", project_report_path(report.project, report),
+      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+    <%= link_to "Edit", edit_project_report_path(report.project, report),
+      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+    <% if policy(report).submit? %>
+      <%= button_to "Submit",
+        submit_project_report_path(report.project, report),
+        method: :patch,
+        data: { turbo_stream: true, disable_with: "Submitting..." },
+        class: "px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-800 transition" %>
+    <% end %>
+    <% if policy(report).review? %>
+      <%= button_to "Mark Viewed",
+        review_project_report_path(report.project, report),
+        method: :patch,
+        data: { turbo_stream: true, disable_with: "Reviewing..." },
+        class: "px-3 py-1 rounded bg-green-600 text-white hover:bg-green-800 transition" %>
+    <% end %>
+  </td>
+</tr>

@@ -1,0 +1,16 @@
+<% content_for :title, "Edit Report" %>
+<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
+  Editing Report — <%= @report.report_type.titleize %> (<%= @report.report_date.strftime("%b %d, %Y") %>)
+</h1>
+<%= render "form", project: @project, report: @report %>
+<div class="mt-4 flex gap-2">
+  <%= link_to "Show Report", project_report_path(@report.project, @report),
+      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+  <% if @project %>
+    <%= link_to "← Back to Reports", project_reports_path(@project),
+        class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+  <% else %>
+    <%= link_to "← Back to Reports", reports_path,
+        class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+  <% end %>
+</div>
