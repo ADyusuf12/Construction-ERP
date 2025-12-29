@@ -1,6 +1,6 @@
 class ReportsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, except: [:index, :new, :create]
+  before_action :set_project, except: [ :index, :new, :create ]
   before_action :set_report, only: %i[ show edit update destroy submit review ]
   include Pundit::Authorization
 
@@ -48,7 +48,7 @@ class ReportsController < ApplicationController
     authorize @report
 
     if @report.save
-      redirect_to [@report.project, @report], notice: "Report was successfully created."
+      redirect_to [ @report.project, @report ], notice: "Report was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -58,7 +58,7 @@ class ReportsController < ApplicationController
   def update
     authorize @report
     if @report.update(report_params)
-      redirect_to [@project, @report], notice: "Report was successfully updated.", status: :see_other
+      redirect_to [ @project, @report ], notice: "Report was successfully updated.", status: :see_other
     else
       render :edit, status: :unprocessable_entity
     end
@@ -78,10 +78,10 @@ class ReportsController < ApplicationController
       @report.update(status: :submitted)
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to [@project, @report], notice: "Report was successfully submitted." }
+        format.html { redirect_to [ @project, @report ], notice: "Report was successfully submitted." }
       end
     else
-      redirect_to [@project, @report], alert: "Report cannot be submitted."
+      redirect_to [ @project, @report ], alert: "Report cannot be submitted."
     end
   end
 
@@ -92,10 +92,10 @@ class ReportsController < ApplicationController
       @report.update(status: :reviewed)
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to [@project, @report], notice: "Report was successfully reviewed." }
+        format.html { redirect_to [ @project, @report ], notice: "Report was successfully reviewed." }
       end
     else
-      redirect_to [@project, @report], alert: "Report cannot be reviewed."
+      redirect_to [ @project, @report ], alert: "Report cannot be reviewed."
     end
   end
 
