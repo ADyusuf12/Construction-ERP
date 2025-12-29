@@ -1,0 +1,18 @@
+<% content_for :title, "New Report" %>
+<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
+  <% if @project %>
+    New Report for <%= @project.name %>
+  <% else %>
+    New Report
+  <% end %>
+</h1>
+<%= render "form", project: @project, report: @report %>
+<div class="mt-4">
+  <% if @project %>
+    <%= link_to "← Back", project_reports_path(@project),
+        class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+  <% else %>
+    <%= link_to "← Back", reports_path,
+        class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+  <% end %>
+</div>

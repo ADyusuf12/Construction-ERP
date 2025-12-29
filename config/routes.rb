@@ -7,6 +7,12 @@ Rails.application.routes.draw do
   end
 
   resources :projects do
+    resources :reports do
+      member do
+        patch :submit
+        patch :review
+      end
+    end
     resources :tasks do
       member do
         patch :in_progress
@@ -16,6 +22,7 @@ Rails.application.routes.draw do
   end
 
   resources :tasks, only: [ :index, :new, :create ]
+  resources :reports, only: [ :index, :new, :create ]
 
   resources :transactions do
     member do

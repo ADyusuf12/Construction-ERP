@@ -48,6 +48,10 @@
             class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
       Budget
     </button>
+    <button data-tab="reports"
+            class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+      Reports
+    </button>
   </nav>
 </div>
 <!-- Tab Content -->
@@ -110,6 +114,32 @@
     </div>
     <p class="mt-2 text-sm"><%= @project.budget_consumed_percentage %>% of budget used</p>
   </div>
+</div>
+<div id="reports-tab" class="tab-content hidden">
+  <!-- Reports Section -->
+  <h3 class="text-xl font-bold mb-4">Reports</h3>
+  <!-- Dashboard Summary -->
+  <div class="grid md:grid-cols-3 gap-6 mb-6">
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
+      <p class="text-sm font-medium">Total Reports</p>
+      <p class="text-xl font-bold"><%= @project.reports.count %></p>
+    </div>
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
+      <p class="text-sm font-medium">Submitted</p>
+      <p class="text-xl font-bold"><%= @project.reports.status_submitted.count %></p>
+    </div>
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
+      <p class="text-sm font-medium">Reviewed</p>
+      <p class="text-xl font-bold"><%= @project.reports.status_reviewed.count %></p>
+    </div>
+  </div>
+  <!-- New Report Button -->
+  <div class="mb-6 flex justify-end">
+    <%= link_to "➕ New Report", new_project_report_path(@project),
+        class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
+  </div>
+  <!-- Reports Table -->
+  <%= render "projects/reports_table", project: @project, reports: @project.reports %>
 </div>
 <!-- Tab Toggle Script -->
 <script nonce="<%= content_security_policy_nonce %>">

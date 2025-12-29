@@ -8,4 +8,6 @@ class User < ApplicationRecord
   has_many :projects, dependent: :destroy
   has_many :assignments, dependent: :destroy
   has_many :tasks, through: :assignments
+  has_many :transactions, dependent: :destroy
+  has_many :reports, dependent: :destroy
 end
