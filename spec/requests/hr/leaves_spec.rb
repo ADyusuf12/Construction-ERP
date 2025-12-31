@@ -6,7 +6,7 @@ RSpec.describe "Hr::Leaves", type: :request do
   let(:hr_user)    { create(:user, :hr) }
   let(:engineer)   { create(:user, :engineer) }
   let(:qs)         { create(:user, :qs) }
-  let(:storekeeper){ create(:user, :storekeeper) }
+  let(:storekeeper) { create(:user, :storekeeper) }
   let(:accountant) { create(:user, :accountant) }
 
   let!(:hr_employee)       { create(:hr_employee, user: hr_user) }

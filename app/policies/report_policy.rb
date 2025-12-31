@@ -1,6 +1,6 @@
 class ReportPolicy < ApplicationPolicy
   def index?
-    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_manager? || user.role_hr? || user.role_accountant? ||
+    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr? || user.role_accountant? ||
     project_member?
   end
 
@@ -9,7 +9,7 @@ class ReportPolicy < ApplicationPolicy
   end
 
   def create?
-    project_member? || user.role_ceo? || user.role_admin? || user.role_cto? || user.role_manager?
+    project_member? || user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager?
   end
 
   def update?
@@ -25,12 +25,12 @@ class ReportPolicy < ApplicationPolicy
   end
 
   def review?
-    (user.role_manager? || user.role_cto? || user.role_ceo?) && record.status_submitted?
+    (user.role_site_manager? || user.role_cto? || user.role_ceo?) && record.status_submitted?
   end
 
   class Scope < Scope
     def resolve
-      if user.role_ceo? || user.role_admin? || user.role_cto? || user.role_manager? || user.role_hr? || user.role_accountant?
+      if user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr? || user.role_accountant?
         scope.all
       else
         scope.joins(project: { tasks: :assignments }).where(assignments: { user_id: user.id })

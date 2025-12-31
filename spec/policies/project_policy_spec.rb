@@ -17,7 +17,7 @@ RSpec.describe ProjectPolicy do
   end
 
   context "as Manager" do
-    let(:user) { create(:user, :manager) }
+    let(:user) { create(:user, :site_manager) }
     subject { described_class.new(user, project) }
 
     it "permits create/update but forbids destroy" do

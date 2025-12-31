@@ -6,7 +6,7 @@ RSpec.describe "Hr::Employees", type: :request do
   let(:admin)      { create(:user, :admin) }
   let(:hr_user)    { create(:user, :hr) }
   let(:cto)        { create(:user, :cto) }
-  let(:manager)    { create(:user, :manager) }
+  let(:site_manager) { create(:user, :site_manager) }
   let(:qs)         { create(:user, :qs) }
   let(:engineer)   { create(:user, :engineer) }
   let(:storekeeper) { create(:user, :storekeeper) }
@@ -44,8 +44,8 @@ RSpec.describe "Hr::Employees", type: :request do
       expect(response).to have_http_status(:ok)
     end
 
-    it "allows logged in Manager" do
-      sign_in manager
+    it "allows logged in Site Manager" do
+      sign_in site_manager
       get hr_employees_path
       expect(response).to have_http_status(:ok)
     end
@@ -162,7 +162,7 @@ RSpec.describe "Hr::Employees", type: :request do
 
     context "as Manager" do
       it "is not authorized" do
-        sign_in manager
+        sign_in site_manager
         post hr_employees_path, params: { hr_employee: { department: "Mgr Dept" } }
         expect(response).to redirect_to(root_path).or redirect_to(hr_employees_path)
       end
@@ -189,7 +189,7 @@ RSpec.describe "Hr::Employees", type: :request do
 
     context "as Manager" do
       it "is not authorized" do
-        sign_in manager
+        sign_in site_manager
         patch hr_employee_path(employee), params: { hr_employee: { department: "Updated Dept" } }
         expect(response).to redirect_to(root_path).or redirect_to(hr_employees_path)
       end
@@ -237,7 +237,7 @@ RSpec.describe "Hr::Employees", type: :request do
 
     context "as Manager" do
       it "is not authorized" do
-        sign_in manager
+        sign_in site_manager
         delete hr_employee_path(employee)
         expect(response).to redirect_to(root_path).or redirect_to(hr_employees_path)
       end
