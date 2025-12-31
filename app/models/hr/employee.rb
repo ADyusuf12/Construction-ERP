@@ -2,14 +2,17 @@ module Hr
   class Employee < ApplicationRecord
     belongs_to :user, optional: true
 
-    # Employment status with prefix to avoid method collisions
+    belongs_to :manager, class_name: "Hr::Employee", optional: true
+    has_many :subordinates, class_name: "Hr::Employee", foreign_key: "manager_id", dependent: :nullify
+    has_many :leaves, class_name: "Hr::Leave", foreign_key: "employee_id", dependent: :destroy
+    has_many :leave_approvals, class_name: "Hr::Leave", foreign_key: "manager_id", dependent: :nullify
+
     enum :status, { active: 0, on_leave: 1, terminated: 2 }, prefix: true
 
     validates :hamzis_id, presence: true, uniqueness: true
     validates :department, presence: true
     validates :position_title, presence: true
 
-    # Generate hamzis_id before validation so presence check passes
     before_validation :generate_hamzis_id, on: :create
 
     private

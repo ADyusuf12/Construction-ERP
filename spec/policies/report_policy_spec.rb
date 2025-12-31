@@ -26,7 +26,7 @@ RSpec.describe ReportPolicy do
   end
 
   describe "Manager" do
-    let(:user)   { create(:user, :manager) }
+    let(:user)   { create(:user, :site_manager) }
     let(:policy) { described_class.new(user, report) }
 
     it "allows index, show, create but not update/destroy/submit on non-authored draft" do

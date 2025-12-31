@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_29_151739) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_30_164827) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -34,8 +34,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_29_151739) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "manager_id"
     t.index [ "hamzis_id" ], name: "index_hr_employees_on_hamzis_id", unique: true
+    t.index [ "manager_id" ], name: "index_hr_employees_on_manager_id"
     t.index [ "user_id" ], name: "index_hr_employees_on_user_id"
+  end
+
+  create_table "hr_leaves", force: :cascade do |t|
+    t.bigint "employee_id", null: false
+    t.bigint "manager_id"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.text "reason", null: false
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index [ "employee_id" ], name: "index_hr_leaves_on_employee_id"
+    t.index [ "manager_id" ], name: "index_hr_leaves_on_manager_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -110,7 +125,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_29_151739) do
 
   add_foreign_key "assignments", "tasks"
   add_foreign_key "assignments", "users"
+  add_foreign_key "hr_employees", "hr_employees", column: "manager_id"
   add_foreign_key "hr_employees", "users"
+  add_foreign_key "hr_leaves", "hr_employees", column: "employee_id"
+  add_foreign_key "hr_leaves", "hr_employees", column: "manager_id"
   add_foreign_key "projects", "users"
   add_foreign_key "reports", "projects"
   add_foreign_key "reports", "users"

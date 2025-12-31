@@ -1,9 +1,16 @@
 Rails.application.routes.draw do
   namespace :hr do
     resources :employees
-    # later we can add more HR resources here, e.g.:
-    # resources :leaves
-    # resources :appraisals
+    resources :leaves do
+      collection do
+        get :my_leaves
+      end
+      member do
+        patch :approve
+        patch :reject
+        patch :cancel
+      end
+    end
   end
 
   resources :projects do

@@ -47,12 +47,12 @@ create_user_and_employee(
   leave_balance: 20
 )
 
-# Manager
+# Site Manager (renamed role)
 create_user_and_employee(
-  email: "manager@example.com",
-  role: :manager,
+  email: "site_manager@example.com",
+  role: :site_manager,
   department: "Operations",
-  position_title: "Manager",
+  position_title: "Site Manager",
   hire_date: Date.new(2021, 6, 1),
   leave_balance: 18
 )
@@ -106,3 +106,18 @@ create_user_and_employee(
   hire_date: Date.new(2020, 5, 1),
   leave_balance: 25
 )
+
+# Fetch employees by email
+ceo         = Hr::Employee.joins(:user).find_by(users: { email: "ceo@example.com" })
+cto         = Hr::Employee.joins(:user).find_by(users: { email: "cto@example.com" })
+qs          = Hr::Employee.joins(:user).find_by(users: { email: "qs@example.com" })
+site_manager= Hr::Employee.joins(:user).find_by(users: { email: "site_manager@example.com" })
+engineer    = Hr::Employee.joins(:user).find_by(users: { email: "engineer@example.com" })
+storekeeper = Hr::Employee.joins(:user).find_by(users: { email: "storekeeper@example.com" })
+
+# Set up hierarchy
+cto.update!(manager: ceo)
+qs.update!(manager: cto)
+site_manager.update!(manager: qs)
+engineer.update!(manager: site_manager)
+storekeeper.update!(manager: engineer)
