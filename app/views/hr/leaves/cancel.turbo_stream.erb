@@ -1,0 +1,9 @@
+<%= turbo_stream.replace dom_id(@leave) do %>
+  <%= render "hr/leaves/leave_row", leave: @leave %>
+<% end %>
+<%= turbo_stream.replace "leave_status" do %>
+  <p>
+    <span class="font-medium">Status:</span>
+    <%= @leave.status.humanize %>
+  </p>
+<% end %>
