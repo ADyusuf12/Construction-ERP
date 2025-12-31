@@ -21,9 +21,9 @@
       Home
     <% end %>
     <!-- Projects section -->
-    <div class="space-y-2">
-      <span class="block px-3 py-1 text-xs font-semibold tracking-wider text-hamzis-copper uppercase border-b border-hamzis-brown/30">Operations</span>
-      <% if user_signed_in? && policy(Project).index? %>
+    <% if user_signed_in? && policy(Project).index? %>
+      <div class="space-y-2">
+        <span class="block px-3 py-1 text-xs font-semibold tracking-wider text-hamzis-copper uppercase border-b border-hamzis-brown/30">Operations</span>
         <div class="ml-4 space-y-1">
           <button type="button"
               class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
@@ -126,6 +126,36 @@
                   class: "block px-3 py-2 rounded transition-colors #{current_page?(new_hr_employee_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
             <% end %>
           </div>
+        </div>
+      </div>
+    <% end %>
+    <% if user_signed_in? %>
+      <div class="ml-4 space-y-1">
+        <button type="button"
+      class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
+      onclick="document.getElementById('leaves-dropdown').classList.toggle('hidden')">
+          <span class="flex items-center">
+            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12h6m-6 4h6m-6-8h6" />
+            </svg>
+            Leaves
+          </span>
+          <svg class="w-4 h-4 transform transition-transform" id="leaves-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div id="leaves-dropdown" class="ml-4 space-y-1 hidden">
+          <% if policy(Hr::Leave).index? %>
+            <%= link_to "All Leaves", hr_leaves_path,
+          class: "block px-3 py-2 rounded transition-colors #{current_page?(hr_leaves_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+          <% end %>
+          <%= link_to "My Leaves", my_leaves_hr_leaves_path,
+        class: "block px-3 py-2 rounded transition-colors #{current_page?(my_leaves_hr_leaves_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+          <% if policy(Hr::Leave.new).create? %>
+            <%= link_to "New Leave", new_hr_leave_path,
+          class: "block px-3 py-2 rounded transition-colors #{current_page?(new_hr_leave_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+          <% end %>
         </div>
       </div>
     <% end %>
