@@ -19,8 +19,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_164827) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
-    t.index ["task_id"], name: "index_assignments_on_task_id"
-    t.index ["user_id"], name: "index_assignments_on_user_id"
+    t.index [ "task_id" ], name: "index_assignments_on_task_id"
+    t.index [ "user_id" ], name: "index_assignments_on_user_id"
   end
 
   create_table "hr_employees", force: :cascade do |t|
@@ -35,9 +35,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_164827) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "manager_id"
-    t.index ["hamzis_id"], name: "index_hr_employees_on_hamzis_id", unique: true
-    t.index ["manager_id"], name: "index_hr_employees_on_manager_id"
-    t.index ["user_id"], name: "index_hr_employees_on_user_id"
+    t.index [ "hamzis_id" ], name: "index_hr_employees_on_hamzis_id", unique: true
+    t.index [ "manager_id" ], name: "index_hr_employees_on_manager_id"
+    t.index [ "user_id" ], name: "index_hr_employees_on_user_id"
   end
 
   create_table "hr_leaves", force: :cascade do |t|
@@ -49,8 +49,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_164827) do
     t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["employee_id"], name: "index_hr_leaves_on_employee_id"
-    t.index ["manager_id"], name: "index_hr_leaves_on_manager_id"
+    t.index [ "employee_id" ], name: "index_hr_leaves_on_employee_id"
+    t.index [ "manager_id" ], name: "index_hr_leaves_on_manager_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -63,7 +63,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_164827) do
     t.datetime "deadline"
     t.decimal "budget", precision: 12, scale: 2
     t.integer "progress", default: 0, null: false
-    t.index ["user_id"], name: "index_projects_on_user_id"
+    t.index [ "user_id" ], name: "index_projects_on_user_id"
   end
 
   create_table "reports", force: :cascade do |t|
@@ -77,8 +77,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_164827) do
     t.text "next_steps"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["project_id"], name: "index_reports_on_project_id"
-    t.index ["user_id"], name: "index_reports_on_user_id"
+    t.index [ "project_id" ], name: "index_reports_on_project_id"
+    t.index [ "user_id" ], name: "index_reports_on_user_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -90,7 +90,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_164827) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "weight", default: 1, null: false
-    t.index ["project_id"], name: "index_tasks_on_project_id"
+    t.index [ "project_id" ], name: "index_tasks_on_project_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -104,10 +104,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_164827) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["project_id", "date"], name: "index_transactions_on_project_id_and_date"
-    t.index ["project_id"], name: "index_transactions_on_project_id"
-    t.index ["status"], name: "index_transactions_on_status"
-    t.index ["transaction_type"], name: "index_transactions_on_transaction_type"
+    t.index [ "project_id", "date" ], name: "index_transactions_on_project_id_and_date"
+    t.index [ "project_id" ], name: "index_transactions_on_project_id"
+    t.index [ "status" ], name: "index_transactions_on_status"
+    t.index [ "transaction_type" ], name: "index_transactions_on_transaction_type"
   end
 
   create_table "users", force: :cascade do |t|
@@ -119,8 +119,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_164827) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "role"
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index [ "email" ], name: "index_users_on_email", unique: true
+    t.index [ "reset_password_token" ], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "assignments", "tasks"
