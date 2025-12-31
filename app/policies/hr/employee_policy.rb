@@ -4,7 +4,7 @@ module Hr
 
     def index?
       # CEO, Admin, CTO, HR, Manager can list employees
-      user.role_ceo? || user.role_admin? || user.role_cto? || user.role_hr? || user.role_manager?
+      user.role_ceo? || user.role_admin? || user.role_cto? || user.role_hr? || user.role_site_manager?
     end
 
     def show?
@@ -34,7 +34,7 @@ module Hr
 
     class Scope < Scope
       def resolve
-        if user.role_ceo? || user.role_admin? || user.role_cto? || user.role_hr? || user.role_manager?
+        if user.role_ceo? || user.role_admin? || user.role_cto? || user.role_hr? || user.role_site_manager?
           scope.all
         else
           # non‑administrative roles only see their own employee record
