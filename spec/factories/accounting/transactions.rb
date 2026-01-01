@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :transaction do
+  factory :accounting_transaction, class: "Accounting::Transaction" do
     association :project
     date        { Date.today }
     description { "Test transaction" }

@@ -1,7 +1,9 @@
 class Project < ApplicationRecord
   belongs_to :user, optional: true
   has_many :tasks, dependent: :destroy
-  has_many :transactions, dependent: :destroy
+  has_many :accounting_transactions,
+           class_name: "Accounting::Transaction",
+           dependent: :destroy
   has_many :reports, dependent: :destroy
 
   enum :status, { ongoing: 0, completed: 1 }, prefix: true
@@ -25,25 +27,20 @@ class Project < ApplicationRecord
 
   # --- Transaction summaries ---
   def invoice_count
-    transactions.invoice.count
+    accounting_transactions.invoice.count
   end
 
   def receipt_count
-    transactions.receipt.count
+    accounting_transactions.receipt.count
   end
 
   def outstanding
-    transactions.invoice.unpaid.count
+    accounting_transactions.invoice.unpaid.count
   end
 
   # --- Budget calculations ---
   def total_expenses
-    transactions.sum(:amount)
-  end
-
-  def remaining_budget
-    return budget if budget.present?
-    0
+    accounting_transactions.sum(:amount)
   end
 
   def remaining_budget

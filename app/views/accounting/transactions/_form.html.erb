@@ -1,9 +1,9 @@
-<%= form_with(model: transaction, local: true, class: "space-y-6") do |f| %>
-  <% if transaction.errors.any? %>
+<%= form_with(model: @transaction, local: true, class: "space-y-6") do |f| %>
+  <% if @transaction.errors.any? %>
     <div class="bg-red-100 text-red-700 p-4 rounded">
-      <h2 class="font-bold mb-2"><%= pluralize(transaction.errors.count, "error") %> prevented this transaction from being saved:</h2>
+      <h2 class="font-bold mb-2"><%= pluralize(@transaction.errors.count, "error") %> prevented this transaction from being saved:</h2>
       <ul class="list-disc pl-5">
-        <% transaction.errors.full_messages.each do |msg| %>
+        <% @transaction.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
       </ul>
@@ -34,13 +34,13 @@
   <!-- Type -->
   <div>
     <%= f.label :transaction_type, "Type", class: "block text-sm font-medium mb-1" %>
-    <%= f.select :transaction_type, Transaction.transaction_types.keys.map { |t| [t.humanize, t] },
+    <%= f.select :transaction_type, Accounting::Transaction.transaction_types.keys.map { |t| [t.humanize, t] },
           {}, { class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" } %>
   </div>
   <!-- Status -->
   <div>
     <%= f.label :status, class: "block text-sm font-medium mb-1" %>
-    <%= f.select :status, Transaction.statuses.keys.map { |s| [s.humanize, s] },
+    <%= f.select :status, Accounting::Transaction.statuses.keys.map { |s| [s.humanize, s] },
           {}, { class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" } %>
   </div>
   <!-- Reference -->
