@@ -9,7 +9,9 @@
     <%= javascript_importmap_tags %>
   </head>
   <body class="bg-hamzis-white text-hamzis-black dark:bg-hamzis-black dark:text-hamzis-white flex" data-controller="confirm-delete">
-    <%= render 'shared/sidebar' %>
+    <% if user_signed_in? %>
+      <%= render 'shared/sidebar' %>
+    <% end %>
     <!-- MAIN CONTENT -->
     <div class="flex-1 flex flex-col">
       <main class="px-6 py-6 flex-1">
