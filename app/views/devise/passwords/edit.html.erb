@@ -1,0 +1,38 @@
+<div class="flex items-center justify-center min-h-screen bg-hamzis-white dark:bg-hamzis-black">
+  <div class="w-full max-w-md bg-hamzis-white/30 dark:bg-hamzis-black/30
+              backdrop-blur-md rounded-xl shadow-md p-8">
+    <h2 class="text-2xl font-bold text-center mb-6">Change your password</h2>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+      <%= f.hidden_field :reset_password_token %>
+      <div class="mb-4">
+        <%= f.label :password, "New password", class: "block text-sm font-medium mb-1" %>
+        <% if @minimum_password_length %>
+          <p class="text-xs text-hamzis-brown/70 mb-1">
+            (<%= @minimum_password_length %> characters minimum)
+          </p>
+        <% end %>
+        <%= f.password_field :password, autofocus: true, autocomplete: "new-password",
+              class: "w-full px-3 py-2 rounded border border-hamzis-brown/30
+                      bg-hamzis-white dark:bg-hamzis-black
+                      focus:ring-2 focus:ring-hamzis-copper" %>
+      </div>
+      <div class="mb-4">
+        <%= f.label :password_confirmation, "Confirm new password", class: "block text-sm font-medium mb-1" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password",
+              class: "w-full px-3 py-2 rounded border border-hamzis-brown/30
+                      bg-hamzis-white dark:bg-hamzis-black
+                      focus:ring-2 focus:ring-hamzis-copper" %>
+      </div>
+      <div class="mb-6">
+        <%= f.submit "Change my password",
+              class: "w-full px-4 py-2 rounded bg-hamzis-copper text-hamzis-white
+                      hover:bg-hamzis-black hover:text-hamzis-white
+                      dark:bg-hamzis-brown transition-colors font-semibold" %>
+      </div>
+    <% end %>
+    <div class="text-center text-sm">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>
