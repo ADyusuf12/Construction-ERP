@@ -1,5 +1,5 @@
 <div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 rounded-xl p-6">
-  <% if project.transactions.any? %>
+  <% if project.accounting_transactions.any? %>
     <table class="min-w-full text-sm text-left">
       <thead>
         <tr>
@@ -12,8 +12,8 @@
         </tr>
       </thead>
       <tbody>
-        <%= render partial: "transactions/transaction_row",
-                   collection: project.transactions,
+        <%= render partial: "accounting/transactions/transaction_row",
+                   collection: project.accounting_transactions,
                    as: :t %>
       </tbody>
     </table>

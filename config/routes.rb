@@ -31,9 +31,11 @@ Rails.application.routes.draw do
   resources :tasks, only: [ :index, :new, :create ]
   resources :reports, only: [ :index, :new, :create ]
 
-  resources :transactions do
-    member do
-      patch :mark_paid
+  namespace :accounting do
+    resources :transactions do
+      member do
+        patch :mark_paid
+      end
     end
   end
 

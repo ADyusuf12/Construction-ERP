@@ -1,14 +1,14 @@
 <div id="project_transactions_summary" class="grid md:grid-cols-3 gap-6 mb-6">
   <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
     <p class="text-sm font-medium">Invoices</p>
-    <p class="text-xl font-bold"><%= project.transactions.invoice.count %></p>
+    <p class="text-xl font-bold"><%= project.accounting_transactions.invoice.count %></p>
   </div>
   <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
     <p class="text-sm font-medium">Receipts</p>
-    <p class="text-xl font-bold"><%= project.transactions.receipt.count %></p>
+    <p class="text-xl font-bold"><%= project.accounting_transactions.receipt.count %></p>
   </div>
   <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
     <p class="text-sm font-medium">Outstanding</p>
-    <p class="text-xl font-bold"><%= project.transactions.invoice.unpaid.count %></p>
+    <p class="text-xl font-bold"><%= project.accounting_transactions.invoice.unpaid.count %></p>
   </div>
 </div>

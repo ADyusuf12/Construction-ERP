@@ -4,8 +4,8 @@
 </h1>
 <%= render "form", transaction: @transaction %>
 <div class="mt-4 flex gap-2">
-  <%= link_to "Show Transaction", transaction_path(@transaction),
+  <%= link_to "Show Transaction", accounting_transaction_path(@transaction),
       class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
-  <%= link_to "← Back to Transactions", transactions_path,
+  <%= link_to "← Back to Transactions", accounting_transactions_path,
       class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
 </div>

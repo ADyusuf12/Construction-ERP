@@ -14,12 +14,12 @@
   <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
               border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
     <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Outstanding</p>
-    <p class="text-2xl font-bold"><%= @outstanding %></p>
+    <p class="text-2xl font-bold"><%= @outsanding %></p>
   </div>
 </div>
 <!-- New Transaction Button -->
 <div class="mb-6 flex justify-end">
-  <%= link_to "➕ New Transaction", new_transaction_path,
+  <%= link_to "➕ New Transaction", new_accounting_transaction_path,
       class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
 </div>
 <!-- Transactions Table -->
@@ -39,7 +39,7 @@
         </tr>
       </thead>
       <tbody>
-        <%= render partial: "transactions/transaction_row",
+        <%= render partial: "accounting/transactions/transaction_row",
                    collection: @transactions,
                    as: :t,
                    locals: { show_project: true } %>
@@ -50,7 +50,7 @@
       <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No transactions yet</p>
       <p class="text-sm mt-2">Start by recording your first invoice or receipt.</p>
       <div class="mt-4">
-        <%= link_to "➕ New Transaction", new_transaction_path,
+        <%= link_to "➕ New Transaction", new_accounting_transaction_path,
             class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
       </div>
     </div>

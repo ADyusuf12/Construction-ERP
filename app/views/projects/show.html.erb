@@ -82,12 +82,12 @@
 <div id="accounting-tab" class="tab-content hidden">
   <!-- Transactions Section -->
   <h3 class="text-xl font-bold mb-4">Transactions</h3>
-  <%= render "projects/transactions_summary", project: @project %>
+  <%= render "accounting/transactions/transactions_summary", project: @project %>
   <div class="mb-6 flex justify-end">
-    <%= link_to "➕ New Transaction", new_transaction_path(project_id: @project.id),
+    <%= link_to "➕ New Transaction", new_accounting_transaction_path(project_id: @project.id),
         class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
   </div>
-  <%= render "projects/transactions_table", project: @project %>
+  <%= render "accounting/transactions/transactions_table", project: @project %>
 </div>
 <div id="budget-tab" class="tab-content hidden">
   <!-- Budget Section -->
