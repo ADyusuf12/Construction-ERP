@@ -9,6 +9,7 @@ _A placeholder for the main application dashboard or a key feature._
 
 - [Overview](#overview)
 - [Features](#features)
+- [Documentation](#documentation)
 - [Technology Stack](#technology-stack)
 - [Setup and Installation](#setup-and-installation)
 - [Usage](#usage)
@@ -24,12 +25,27 @@ This application provides a centralized platform for managing core business oper
 
 ## Features
 
-- **User Authentication:** Secure user registration and login using Devise.
+- **User Authentication:** Secure user login using Devise. (Note: Self-registration is disabled).
 - **Role-Based Authorization:** Granular permissions for different user roles (e.g., admin, manager, employee) using Pundit.
-- **Project Management:** Create, update, and track projects from inception to completion.
+- **Project Management:** Create, update, and track projects from inception to completion, including budget, progress, and deadlines.
 - **Task Tracking:** Assign and monitor tasks within projects, with status updates and priorities.
-- **Human Resources:** Manage employee data.
-- **Transaction Monitoring:** Log and categorize financial transactions.
+- **Project Reporting System:** A complete workflow for creating, submitting, and reviewing project reports (e.g., daily or weekly updates).
+- **Human Resources Module:**
+    - Manage employee records and hierarchical relationships (manager/subordinate).
+    - A full **Leave Management System** for employees to request leave and managers to approve or reject it.
+- **Accounting Module:** Log, categorize, and manage financial transactions associated with projects.
+
+## Documentation
+
+For a deeper understanding of the application's architecture, APIs, and features, please refer to our detailed documentation:
+
+- **[Architecture Overview](./docs/architecture.md)**
+- **[Database Schema](./docs/database_schema.md)**
+- **[API Endpoints](./docs/api_endpoints.md)**
+- **[Frontend Guide](./docs/frontend_guide.md)**
+- **Feature Guides:**
+    - **[HR Leave Management](./docs/leave_management_guide.md)**
+    - **[Project Reporting](./docs/project_reporting_guide.md)**
 
 ## Technology Stack
 
@@ -91,8 +107,7 @@ Follow these steps to get the application running locally.
 ## Usage
 
 - Access the application at `http://localhost:3000`.
-- Sign up for a new account or use existing credentials if you have seeded the database.
-- The default user roles and their capabilities will be outlined here.
+- Log in with existing credentials. User accounts must be created by an administrator.
 
 ## Running Tests
 
