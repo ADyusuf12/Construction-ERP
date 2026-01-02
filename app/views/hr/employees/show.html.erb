@@ -40,8 +40,16 @@
 </div>
 <!-- Actions -->
 <div class="mt-6 flex gap-2">
-  <%= link_to "Edit Employee", edit_hr_employee_path(@employee),
-      class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
-  <%= link_to "← Back to Employees", hr_employees_path,
-      class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+  <% if policy(@employee).update? %> <%= link_to "Edit Employee", edit_hr_employee_path(@employee),
+    class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %> <% end %>
+  <% if policy(@employee).destroy? %>
+    <%= button_to "Delete", "#",
+        class: "px-4 py-2 rounded bg-red-600 text-white hover:bg-red-800 transition",
+        form: {
+          "data-action" => "click->confirm-delete#open",
+          "data-confirm-delete-title-param" => "Delete Employee?",
+          "data-confirm-delete-message-param" => "Are you sure you want to delete '#{@employee.hamzis_id}'? This action cannot be undone.",
+          "data-confirm-delete-confirm-path-param" => hr_employee_path(@employee)
+        } %>
+  <% end %>
 </div>

@@ -1,0 +1,36 @@
+<% show_project = local_assigns.fetch(:show_project, false) %>
+<tr id="<%= dom_id(t) %>" class="border-b border-hamzis-brown/20 hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+  <!-- Date -->
+  <td class="px-4 py-2"><%= t.date.strftime("%b %d, %Y") %></td>
+  <!-- Project (optional for index) -->
+  <% if show_project %>
+    <td class="px-4 py-2"><%= t.project.name %></td>
+  <% end %>
+  <!-- Description -->
+  <td class="px-4 py-2"><%= t.description %></td>
+  <!-- Type -->
+  <td class="px-4 py-2"><%= t.transaction_type.humanize %></td>
+  <!-- Amount -->
+  <td class="px-4 py-2 font-semibold"><%= number_to_currency(t.amount, unit: "₦") %></td>
+  <!-- Status -->
+  <td class="px-4 py-2">
+    <span class="px-2 py-1 rounded
+      <%= t.status_paid? ? 'bg-green-600 text-white' : 'bg-yellow-500 text-white' %>">
+      <%= t.status.humanize %>
+    </span>
+  </td>
+  <!-- Actions -->
+  <td class="px-4 py-2 flex gap-2">
+    <%= link_to "View", accounting_transaction_path(t),
+        class: "px-3 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
+    <%= link_to "Edit", edit_accounting_transaction_path(t),
+        class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+    <% if policy(t).mark_paid? && t.status_unpaid? %>
+      <%= button_to "Mark Paid",
+          mark_paid_accounting_transaction_path(t),
+          method: :patch,
+          data: { turbo_stream: true, disable_with: "Marking..." },
+          class: "px-3 py-1 rounded bg-green-600 text-white hover:bg-green-800 transition" %>
+    <% end %>
+  </td>
+</tr>

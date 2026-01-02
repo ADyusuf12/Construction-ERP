@@ -1,0 +1,6 @@
+<%= turbo_stream.replace dom_id(@report) do %>
+  <%= render "reports/report_row", report: @report, show_project: !@project %>
+<% end %>
+<%= turbo_stream.replace "flash" do %>
+  <%= render "shared/flash" %>
+<% end %>

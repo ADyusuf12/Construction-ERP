@@ -1,12 +1,25 @@
 Rails.application.routes.draw do
   namespace :hr do
     resources :employees
-    # later we can add more HR resources here, e.g.:
-    # resources :leaves
-    # resources :appraisals
+    resources :leaves do
+      collection do
+        get :my_leaves
+      end
+      member do
+        patch :approve
+        patch :reject
+        patch :cancel
+      end
+    end
   end
 
   resources :projects do
+    resources :reports do
+      member do
+        patch :submit
+        patch :review
+      end
+    end
     resources :tasks do
       member do
         patch :in_progress
@@ -16,14 +29,20 @@ Rails.application.routes.draw do
   end
 
   resources :tasks, only: [ :index, :new, :create ]
+  resources :reports, only: [ :index, :new, :create ]
 
-  resources :transactions do
-    member do
-      patch :mark_paid
+  namespace :accounting do
+    resources :transactions do
+      member do
+        patch :mark_paid
+      end
     end
   end
 
-  devise_for :users
+  devise_scope :user do
+    root to: "devise/sessions#new"
+  end
+
+  devise_for :users, skip: [ :registrations ]
   get "home/index"
-  root "home#index"
 end

@@ -1,0 +1,41 @@
+<tr id="<%= dom_id(leave) %>" class="border-b border-hamzis-brown/20 hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+  <!-- Start -->
+  <td class="px-4 py-2 font-semibold"><%= leave.start_date.strftime("%b %d, %Y") %></td>
+  <!-- End -->
+  <td class="px-4 py-2"><%= leave.end_date.strftime("%b %d, %Y") %></td>
+  <!-- Reason -->
+  <td class="px-4 py-2"><%= truncate(leave.reason, length: 40) %></td>
+  <!-- Status -->
+  <td class="px-4 py-2">
+    <span class="px-2 py-1 rounded
+      <%= leave.status_pending? ? 'bg-yellow-500 text-white' :
+          leave.status_approved? ? 'bg-green-600 text-white' :
+          leave.status_rejected? ? 'bg-red-600 text-white' :
+          'bg-gray-500 text-white' %>">
+      <%= leave.status.humanize %>
+    </span>
+  </td>
+  <!-- Employee -->
+  <td class="px-4 py-2"><%= leave.employee.user.email %></td>
+  <!-- Actions -->
+  <td class="px-4 py-2 flex gap-2">
+    <%= link_to "View", hr_leave_path(leave),
+      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+    <% if policy(leave).approve? %>
+      <%= button_to "Approve", approve_hr_leave_path(leave),
+        method: :patch,
+        data: { turbo_stream: true, disable_with: "Approving..." },
+        class: "px-3 py-1 rounded bg-green-600 text-white hover:bg-green-800 transition" %>
+      <%= button_to "Reject", reject_hr_leave_path(leave),
+        method: :patch,
+        data: { turbo_stream: true, disable_with: "Rejecting..." },
+        class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition" %>
+    <% end %>
+    <% if policy(leave).cancel? %>
+      <%= button_to "Cancel", cancel_hr_leave_path(leave),
+        method: :patch,
+        data: { turbo_stream: true, disable_with: "Cancelling..." },
+        class: "px-3 py-1 rounded bg-gray-600 text-white hover:bg-gray-800 transition" %>
+    <% end %>
+  </td>
+</tr>

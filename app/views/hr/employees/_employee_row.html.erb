@@ -22,9 +22,5 @@
       class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
     <%= link_to "Edit", edit_hr_employee_path(employee),
       class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
-    <%= button_to "Delete", hr_employee_path(employee),
-      method: :delete,
-      data: { turbo_confirm: "Are you sure you want to delete this employee?" },
-      class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition" %>
   </td>
 </tr>

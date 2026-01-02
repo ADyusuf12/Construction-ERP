@@ -21,10 +21,16 @@
       class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
     <%= link_to "Back", projects_path,
       class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
-    <%= button_to "Delete", project_path(@project),
-    method: :delete,
-    data: { turbo_confirm: "Are you sure you want to delete this project?" },
-    class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition" %>
+    <% if policy(@project).destroy? %>
+      <%= button_to "Delete", "#",
+        class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition",
+        form: {
+          "data-action" => "click->confirm-delete#open",
+          "data-confirm-delete-title-param" => "Delete Project?",
+          "data-confirm-delete-message-param" => "Are you sure you want to delete '#{@project.name}'? This action cannot be undone.",
+          "data-confirm-delete-confirm-path-param" => project_path(@project)
+        } %>
+    <% end %>
   </div>
 </div>
 <!-- Tabs -->
@@ -41,6 +47,10 @@
     <button data-tab="budget"
             class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
       Budget
+    </button>
+    <button data-tab="reports"
+            class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+      Reports
     </button>
   </nav>
 </div>
@@ -72,12 +82,12 @@
 <div id="accounting-tab" class="tab-content hidden">
   <!-- Transactions Section -->
   <h3 class="text-xl font-bold mb-4">Transactions</h3>
-  <%= render "projects/transactions_summary", project: @project %>
+  <%= render "accounting/transactions/transactions_summary", project: @project %>
   <div class="mb-6 flex justify-end">
-    <%= link_to "➕ New Transaction", new_transaction_path(project_id: @project.id),
+    <%= link_to "➕ New Transaction", new_accounting_transaction_path(project_id: @project.id),
         class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
   </div>
-  <%= render "projects/transactions_table", project: @project %>
+  <%= render "accounting/transactions/transactions_table", project: @project %>
 </div>
 <div id="budget-tab" class="tab-content hidden">
   <!-- Budget Section -->
@@ -104,6 +114,32 @@
     </div>
     <p class="mt-2 text-sm"><%= @project.budget_consumed_percentage %>% of budget used</p>
   </div>
+</div>
+<div id="reports-tab" class="tab-content hidden">
+  <!-- Reports Section -->
+  <h3 class="text-xl font-bold mb-4">Reports</h3>
+  <!-- Dashboard Summary -->
+  <div class="grid md:grid-cols-3 gap-6 mb-6">
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
+      <p class="text-sm font-medium">Total Reports</p>
+      <p class="text-xl font-bold"><%= @project.reports.count %></p>
+    </div>
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
+      <p class="text-sm font-medium">Submitted</p>
+      <p class="text-xl font-bold"><%= @project.reports.status_submitted.count %></p>
+    </div>
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
+      <p class="text-sm font-medium">Reviewed</p>
+      <p class="text-xl font-bold"><%= @project.reports.status_reviewed.count %></p>
+    </div>
+  </div>
+  <!-- New Report Button -->
+  <div class="mb-6 flex justify-end">
+    <%= link_to "➕ New Report", new_project_report_path(@project),
+        class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
+  </div>
+  <!-- Reports Table -->
+  <%= render "projects/reports_table", project: @project, reports: @project.reports %>
 </div>
 <!-- Tab Toggle Script -->
 <script nonce="<%= content_security_policy_nonce %>">

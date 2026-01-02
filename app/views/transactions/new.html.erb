@@ -1,9 +1,0 @@
-<% content_for :title, "New Transaction" %>
-<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
-  New Transaction
-</h1>
-<%= render "form", transaction: @transaction %>
-<div class="mt-4">
-  <%= link_to "← Back", transactions_path,
-      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
-</div>

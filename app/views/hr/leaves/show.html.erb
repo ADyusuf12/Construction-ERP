@@ -1,0 +1,55 @@
+<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+  <!-- Title -->
+  <h2 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper">
+    Leave Request — <%= @leave.start_date.strftime("%b %d, %Y") %> to <%= @leave.end_date.strftime("%b %d, %Y") %>
+  </h2>
+  <!-- Reason -->
+  <% if @leave.reason.present? %>
+    <p class="mt-2"><%= @leave.reason %></p>
+  <% end %>
+  <!-- Details -->
+  <div class="mt-4 space-y-2 text-sm">
+    <div id="leave_status">
+      <p>
+        <span class="font-medium">Status:</span>
+        <%= @leave.status.humanize %>
+      </p>
+    </div>
+    <p>
+      <span class="font-medium">Employee:</span>
+      <%= @leave.employee.user.email %>
+    </p>
+    <% if @leave.manager.present? %>
+      <p>
+        <span class="font-medium">Manager:</span>
+        <%= @leave.manager.user.email %>
+      </p>
+    <% end %>
+    <p>
+      <span class="font-medium">Duration:</span>
+      <%= @leave.duration %> days
+    </p>
+  </div>
+  <!-- Actions -->
+  <div class="mt-6 flex gap-2">
+    <% if policy(@leave).approve? %>
+      <%= button_to "Approve", approve_hr_leave_path(@leave),
+          method: :patch,
+          data: { turbo_stream: true, disable_with: "Approving..." },
+          class: "px-3 py-1 rounded bg-green-600 text-white hover:bg-green-800 transition" %>
+      <%= button_to "Reject", reject_hr_leave_path(@leave),
+          method: :patch,
+          data: { turbo_stream: true, disable_with: "Rejecting..." },
+          class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition" %>
+    <% end %>
+    <% if policy(@leave).cancel? %>
+      <%= button_to "Cancel", cancel_hr_leave_path(@leave),
+          method: :patch,
+          data: { turbo_stream: true, disable_with: "Cancelling..." },
+          class: "px-3 py-1 rounded bg-gray-600 text-white hover:bg-gray-800 transition" %>
+    <% end %>
+    <%= link_to "Back to Leaves", my_leaves_hr_leaves_path,
+        class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+  </div>
+</div>

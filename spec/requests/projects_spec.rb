@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Projects", type: :request do
   let(:cto)      { create(:user, :cto) }
-  let(:manager)  { create(:user, :manager) }
+  let(:site_manager) { create(:user, :site_manager) }
   let(:qs)       { create(:user, :qs) }
   let(:engineer) { create(:user, :engineer) }
 
@@ -15,7 +15,7 @@ RSpec.describe "Projects", type: :request do
     end
 
     it "allows logged in users" do
-      sign_in manager
+      sign_in site_manager
       get projects_path
       expect(response).to have_http_status(:ok)
     end
@@ -37,10 +37,10 @@ RSpec.describe "Projects", type: :request do
 
     context "as Manager" do
       it "is not authorized" do
-        sign_in manager
+        sign_in site_manager
         delete project_path(project)
 
-        expect(response).to redirect_to(root_path).or redirect_to(projects_path)
+        expect(response).to redirect_to(home_index_path).or redirect_to(projects_path)
         follow_redirect!
         expect(response.body).to include("You are not authorized to perform this action.")
       end
@@ -51,7 +51,7 @@ RSpec.describe "Projects", type: :request do
         sign_in qs
         delete project_path(project)
 
-        expect(response).to redirect_to(root_path).or redirect_to(projects_path)
+        expect(response).to redirect_to(home_index_path).or redirect_to(projects_path)
         follow_redirect!
         expect(response.body).to include("You are not authorized to perform this action.")
       end
@@ -62,7 +62,7 @@ RSpec.describe "Projects", type: :request do
         sign_in engineer
         delete project_path(project)
 
-        expect(response).to redirect_to(root_path).or redirect_to(projects_path)
+        expect(response).to redirect_to(home_index_path).or redirect_to(projects_path)
         follow_redirect!
         expect(response.body).to include("You are not authorized to perform this action.")
       end
