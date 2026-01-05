@@ -1,7 +1,7 @@
 class ReportPolicy < ApplicationPolicy
   def index?
-    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr? || user.role_accountant? ||
-    project_member?
+    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? ||
+    user.role_hr? || user.role_accountant? || project_member?
   end
 
   def show?
@@ -30,10 +30,14 @@ class ReportPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr? || user.role_accountant?
+      if user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? ||
+         user.role_hr? || user.role_accountant?
         scope.all
       else
-        scope.joins(project: { tasks: :assignments }).where(assignments: { user_id: user.id })
+        # Engineers/QS only see reports tied to projects they have tasks on
+        scope.joins(project: { tasks: :assignments })
+             .where(assignments: { user_id: user.id })
+             .distinct
       end
     end
   end
