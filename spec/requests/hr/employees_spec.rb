@@ -53,25 +53,25 @@ RSpec.describe "Hr::Employees", type: :request do
     it "denies QS" do
       sign_in qs
       get hr_employees_path
-      expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+      expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
     end
 
     it "denies Engineer" do
       sign_in engineer
       get hr_employees_path
-      expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+      expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
     end
 
     it "denies Storekeeper" do
       sign_in storekeeper
       get hr_employees_path
-      expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+      expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
     end
 
     it "denies Accountant" do
       sign_in accountant
       get hr_employees_path
-      expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+      expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
     end
   end
 
@@ -89,7 +89,7 @@ RSpec.describe "Hr::Employees", type: :request do
       expect(response).to have_http_status(:ok)
 
       get hr_employee_path(employee) # someone else’s record
-      expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+      expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
     end
 
     it "allows QS to view own record only" do
@@ -99,7 +99,7 @@ RSpec.describe "Hr::Employees", type: :request do
       expect(response).to have_http_status(:ok)
 
       get hr_employee_path(employee)
-      expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+      expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
     end
 
     it "allows Storekeeper to view own record only" do
@@ -109,7 +109,7 @@ RSpec.describe "Hr::Employees", type: :request do
       expect(response).to have_http_status(:ok)
 
       get hr_employee_path(employee)
-      expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+      expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
     end
 
     it "allows Accountant to view own record only" do
@@ -119,7 +119,7 @@ RSpec.describe "Hr::Employees", type: :request do
       expect(response).to have_http_status(:ok)
 
       get hr_employee_path(employee)
-      expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+      expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
     end
   end
 
@@ -148,7 +148,7 @@ RSpec.describe "Hr::Employees", type: :request do
       it "is not authorized" do
         sign_in engineer
         post hr_employees_path, params: { hr_employee: { department: "Eng Dept" } }
-        expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+        expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
       end
     end
 
@@ -156,7 +156,7 @@ RSpec.describe "Hr::Employees", type: :request do
       it "is not authorized" do
         sign_in cto
         post hr_employees_path, params: { hr_employee: { department: "CTO Dept" } }
-        expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+        expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
       end
     end
 
@@ -164,7 +164,7 @@ RSpec.describe "Hr::Employees", type: :request do
       it "is not authorized" do
         sign_in site_manager
         post hr_employees_path, params: { hr_employee: { department: "Mgr Dept" } }
-        expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+        expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
       end
     end
   end
@@ -183,7 +183,7 @@ RSpec.describe "Hr::Employees", type: :request do
       it "is not authorized" do
         sign_in engineer
         patch hr_employee_path(employee), params: { hr_employee: { department: "Updated Dept" } }
-        expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+        expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
       end
     end
 
@@ -191,7 +191,7 @@ RSpec.describe "Hr::Employees", type: :request do
       it "is not authorized" do
         sign_in site_manager
         patch hr_employee_path(employee), params: { hr_employee: { department: "Updated Dept" } }
-        expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+        expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
       end
     end
   end
@@ -231,7 +231,7 @@ RSpec.describe "Hr::Employees", type: :request do
       it "is not authorized" do
         sign_in engineer
         delete hr_employee_path(employee)
-        expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+        expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
       end
     end
 
@@ -239,7 +239,7 @@ RSpec.describe "Hr::Employees", type: :request do
       it "is not authorized" do
         sign_in site_manager
         delete hr_employee_path(employee)
-        expect(response).to redirect_to(home_index_path).or redirect_to(hr_employees_path)
+        expect(response).to redirect_to(dashboard_home_path).or redirect_to(hr_employees_path)
       end
     end
   end

@@ -33,6 +33,10 @@ module Hr
       record.employee.user_id == user.id
     end
 
+    def dashboard?
+      user.employee.present?
+    end
+
     class Scope < Scope
       def resolve
         if user.role_hr? || user.role_ceo? || user.role_admin?

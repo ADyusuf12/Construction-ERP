@@ -40,7 +40,7 @@ RSpec.describe "Hr::Leaves", type: :request do
     it "denies Engineer" do
       sign_in engineer
       get hr_leaves_path
-      expect(response).to redirect_to(home_index_path).or redirect_to(my_leaves_hr_leaves_path)
+      expect(response).to redirect_to(dashboard_home_path).or redirect_to(my_leaves_hr_leaves_path)
     end
   end
 
@@ -102,7 +102,7 @@ RSpec.describe "Hr::Leaves", type: :request do
     it "denies Engineer" do
       sign_in engineer
       patch approve_hr_leave_path(leave)
-      expect(response).to redirect_to(home_index_path).or redirect_to(my_leaves_hr_leaves_path)
+      expect(response).to redirect_to(dashboard_home_path).or redirect_to(my_leaves_hr_leaves_path)
       expect(leave.reload.status).to eq("pending")
     end
   end
@@ -121,7 +121,7 @@ RSpec.describe "Hr::Leaves", type: :request do
     it "denies QS" do
       sign_in qs
       patch reject_hr_leave_path(leave)
-      expect(response).to redirect_to(home_index_path).or redirect_to(my_leaves_hr_leaves_path)
+      expect(response).to redirect_to(dashboard_home_path).or redirect_to(my_leaves_hr_leaves_path)
       expect(leave.reload.status).to eq("pending")
     end
   end
@@ -137,7 +137,7 @@ RSpec.describe "Hr::Leaves", type: :request do
     it "denies other employee" do
       sign_in engineer
       patch cancel_hr_leave_path(leave)
-      expect(response).to redirect_to(home_index_path).or redirect_to(my_leaves_hr_leaves_path)
+      expect(response).to redirect_to(dashboard_home_path).or redirect_to(my_leaves_hr_leaves_path)
       expect(leave.reload.status).to eq("pending")
     end
   end

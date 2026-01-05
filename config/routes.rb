@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :dashboard do
+    get "/", to: "home#index", as: :home
+  end
   namespace :hr do
     resources :employees
     resources :leaves do
@@ -44,5 +47,4 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, skip: [ :registrations ]
-  get "home/index"
 end
