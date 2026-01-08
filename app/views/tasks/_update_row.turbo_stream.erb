@@ -1,5 +1,8 @@
 <%= turbo_stream.replace dom_id(@task) do %>
-  <%= render partial: "tasks/task_row", locals: { task: @task } %>
+  <%= render "tasks/task_row",
+             task: @task,
+             show_project: params[:project_id].blank?,
+             show_details: params[:project_id].present? %>
 <% end %>
 <%= turbo_stream.replace "project_progress" do %>
   <%= render "projects/progress_bar", project: @task.project %>

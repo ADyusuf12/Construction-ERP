@@ -5,7 +5,7 @@ class TasksController < ApplicationController
 
   # GET /tasks (global index)
   def index
-    @tasks = policy_scope(Task.includes(:project, :users))
+    @tasks = policy_scope(Task.includes(:project, users: { employee: :personal_detail }))
   end
 
   # GET /projects/:project_id/tasks/:id
@@ -62,12 +62,12 @@ class TasksController < ApplicationController
     authorize @task, :mark_in_progress?
     if @task.update(status: :in_progress)
       respond_to do |format|
-        format.turbo_stream
+        format.turbo_stream { render partial: "tasks/update_row" }
         format.html { redirect_to project_tasks_path(@project), notice: "Task marked as in progress." }
       end
     else
       respond_to do |format|
-        format.turbo_stream
+        format.turbo_stream { render partial: "tasks/update_row" }
         format.html { redirect_to project_tasks_path(@project), alert: "Failed to mark task as in progress." }
       end
     end
@@ -77,12 +77,12 @@ class TasksController < ApplicationController
     authorize @task, :mark_done?
     if @task.update(status: :done)
       respond_to do |format|
-        format.turbo_stream
+        format.turbo_stream { render partial: "tasks/update_row" }
         format.html { redirect_to project_tasks_path(@project), notice: "Task marked as complete." }
       end
     else
       respond_to do |format|
-        format.turbo_stream
+        format.turbo_stream { render partial: "tasks/update_row" }
         format.html { redirect_to project_tasks_path(@project), alert: "Failed to mark task as complete." }
       end
     end

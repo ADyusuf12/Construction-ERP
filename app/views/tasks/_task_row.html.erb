@@ -1,8 +1,14 @@
+<!-- app/views/tasks/_task_row.html.erb -->
 <tr id="<%= dom_id(task) %>" class="border-b border-hamzis-brown/20 hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
   <!-- Title -->
   <td class="px-4 py-2 font-semibold"><%= task.title %></td>
-  <!-- Details -->
-  <td class="px-4 py-2"><%= truncate(task.details, length: 50) if task.details.present? %></td>
+  <% if local_assigns[:show_project] %>
+    <!-- Project -->
+    <td class="px-4 py-2"><%= task.project.name %></td>
+  <% elsif local_assigns[:show_details] %>
+    <!-- Details -->
+    <td class="px-4 py-2"><%= truncate(task.details, length: 50) if task.details.present? %></td>
+  <% end %>
   <!-- Status -->
   <td class="px-4 py-2">
     <span class="px-2 py-1 rounded
@@ -13,13 +19,13 @@
     </span>
   </td>
   <!-- Due Date -->
-  <td class="px-4 py-2"><%= task.due_date.strftime("%b %d, %Y") if task.due_date.present? %></td>
+  <td class="px-4 py-2"><%= task.due_date&.strftime("%b %d, %Y") %></td>
   <!-- Weight -->
   <td class="px-4 py-2"><%= task.weight %></td>
   <!-- Assigned Users -->
   <td class="px-4 py-2">
     <% if task.users.any? %>
-      <%= task.users.map(&:email).join(", ") %>
+      <%= task.users.map { |u| u.employee&.full_name || u.email }.join(", ") %>
     <% else %>
       <span class="text-gray-500">Unassigned</span>
     <% end %>

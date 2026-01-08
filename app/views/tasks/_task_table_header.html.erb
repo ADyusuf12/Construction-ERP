@@ -1,0 +1,16 @@
+<!-- app/views/tasks/_task_table_header.html.erb -->
+<thead>
+  <tr class="text-hamzis-brown dark:text-hamzis-copper border-b border-hamzis-brown/20">
+    <th class="px-4 py-2">Title</th>
+    <% if local_assigns[:show_project] %>
+      <th class="px-4 py-2">Project</th>
+    <% elsif local_assigns[:show_details] %>
+      <th class="px-4 py-2">Details</th>
+    <% end %>
+    <th class="px-4 py-2">Status</th>
+    <th class="px-4 py-2">Due Date</th>
+    <th class="px-4 py-2">Weight</th>
+    <th class="px-4 py-2">Assigned To</th>
+    <th class="px-4 py-2">Actions</th>
+  </tr>
+</thead>
