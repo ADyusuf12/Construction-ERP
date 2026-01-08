@@ -1,0 +1,67 @@
+<% if user_signed_in? && policy(Accounting::Transaction).index? %>
+  <div class="space-y-2">
+    <span class="block px-3 py-1 text-xs font-semibold tracking-wider text-hamzis-copper uppercase border-b border-hamzis-brown/30">Accounting</span>
+    <div class="ml-4 space-y-1">
+      <button type="button"
+              class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
+              onclick="document.getElementById('transactions-dropdown').classList.toggle('hidden')">
+        <span class="flex items-center">
+          <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 7h18M3 11h18M5 15h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2z" />
+          </svg>
+          Transactions
+        </span>
+        <svg class="w-4 h-4 transform transition-transform" id="transactions-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div id="transactions-dropdown" class="ml-4 space-y-1 hidden">
+        <%= link_to "All Transactions", accounting_transactions_path,
+            class: "block px-3 py-2 rounded transition-colors #{current_page?(accounting_transactions_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+        <% if policy(Accounting::Transaction).create? %>
+          <%= link_to "New Transaction", new_accounting_transaction_path,
+              class: "block px-3 py-2 rounded transition-colors #{current_page?(new_accounting_transaction_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+        <% end %>
+      </div>
+      <button type="button"
+              class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
+              onclick="document.getElementById('salary-batches-dropdown').classList.toggle('hidden')">
+        <span class="flex items-center">
+          <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+          Salary Batches
+        </span>
+        <svg class="w-4 h-4 transform transition-transform" id="salary-batches-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div id="salary-batches-dropdown" class="ml-4 space-y-1 hidden">
+        <%= link_to "All Batches", accounting_salary_batches_path,
+            class: "block px-3 py-2 rounded transition-colors #{current_page?(accounting_salary_batches_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+        <% if policy(Accounting::SalaryBatch).create? %>
+          <%= link_to "New Batch", new_accounting_salary_batch_path,
+              class: "block px-3 py-2 rounded transition-colors #{current_page?(new_accounting_salary_batch_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+        <% end %>
+      </div>
+      <%= link_to accounting_salaries_path,
+          class: "flex items-center px-3 py-2 rounded transition-colors #{current_page?(accounting_salaries_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" do %>
+        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 6v6l4 2m6 4H6a2 2 0 01-2-2V6a2 2 0 012-2h12a2 2 0 012 2z" />
+        </svg>
+        Salaries
+      <% end %>
+      <%= link_to accounting_deductions_path,
+          class: "flex items-center px-3 py-2 rounded transition-colors #{current_page?(accounting_deductions_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" do %>
+        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M5 12h14" />
+        </svg>
+        Deductions
+      <% end %>
+    </div>
+  </div>
+<% end %>

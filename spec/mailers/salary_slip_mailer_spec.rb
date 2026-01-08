@@ -18,7 +18,7 @@ RSpec.describe SalarySlipMailer, type: :mailer do
     end
 
     it "renders the headers" do
-      expect(mail.to).to eq([user.email])
+      expect(mail.to).to eq([ user.email ])
       expect(mail.subject).to eq("Your Salary Slip for #{salary.batch.period_label}")
     end
 

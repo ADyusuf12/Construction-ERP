@@ -1,5 +1,6 @@
 module Accounting
   class Transaction < ApplicationRecord
+    self.table_name = "transactions"
     before_validation :normalize_amount
 
     belongs_to :project

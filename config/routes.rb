@@ -2,8 +2,12 @@ Rails.application.routes.draw do
   namespace :dashboard do
     get "/", to: "home#index", as: :home
   end
+
   namespace :hr do
-    resources :employees
+    resources :employees do
+      resource :personal_detail
+    end
+
     resources :leaves do
       collection do
         get :my_leaves
@@ -40,6 +44,23 @@ Rails.application.routes.draw do
         patch :mark_paid
       end
     end
+
+    resources :salary_batches do
+      member do
+        patch :mark_paid
+      end
+      resources :salaries do
+        resources :deductions
+      end
+    end
+
+    resources :salaries do
+      member do
+        patch :mark_paid
+      end
+    end
+
+    resources :deductions
   end
 
   devise_scope :user do
