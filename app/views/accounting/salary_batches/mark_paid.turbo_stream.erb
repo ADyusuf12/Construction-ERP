@@ -1,0 +1,3 @@
+<%= turbo_stream.replace dom_id(@salary_batch) do %>
+  <%= render "accounting/salary_batches/batch_row", batch: @salary_batch %>
+<% end %>

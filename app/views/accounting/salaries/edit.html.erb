@@ -1,0 +1,11 @@
+<% content_for :title, "Edit Salary" %>
+<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
+  Editing Salary for <%= @salary.employee.full_name %>
+</h1>
+<%= render "form", salary: @salary %>
+<div class="mt-4 flex gap-2">
+  <%= link_to "Show Salary", accounting_salary_path(@salary),
+      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+  <%= link_to "← Back to Salaries", accounting_salaries_path,
+      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+</div>

@@ -1,0 +1,34 @@
+<% content_for :title, "Salary Details" %>
+<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-6">
+  Salary for <%= @salary.employee.full_name %>
+</h1>
+<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6 space-y-4">
+  <p><span class="font-semibold">Employee:</span> <%= @salary.employee.full_name %></p>
+  <p><span class="font-semibold">Base Pay:</span> <%= number_to_currency(@salary.base_pay, unit: "₦") %></p>
+  <p><span class="font-semibold">Allowances:</span> <%= number_to_currency(@salary.allowances, unit: "₦") %></p>
+  <p><span class="font-semibold">Deductions:</span> <%= number_to_currency(@salary.total_deductions, unit: "₦") %></p>
+  <p><span class="font-semibold">Net Pay:</span> <%= number_to_currency(@salary.net_pay, unit: "₦") %></p>
+  <p><span class="font-semibold">Status:</span>
+    <span class="px-2 py-1 rounded
+      <%= @salary.status_paid? ? 'bg-green-600 text-white' : 'bg-hamzis-copper text-hamzis-white' %>">
+      <%= @salary.status.humanize %>
+    </span>
+  </p>
+</div>
+<div class="mt-6 flex gap-2">
+  <%= link_to "Edit", edit_accounting_salary_path(@salary),
+      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+  <%= link_to "← Back to Salaries", accounting_salaries_path,
+      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+  <% if policy(@salary).destroy? %>
+    <%= button_to "Delete", "#",
+        class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition",
+        form: {
+          "data-action" => "click->confirm-delete#open",
+          "data-confirm-delete-title-param" => "Delete Salary?",
+          "data-confirm-delete-message-param" => "Are you sure you want to delete this salary? This action cannot be undone.",
+          "data-confirm-delete-confirm-path-param" => accounting_salary_path(@salary)
+        } %>
+  <% end %>
+</div>

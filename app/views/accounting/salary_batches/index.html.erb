@@ -1,0 +1,26 @@
+<h2 class="text-2xl font-bold mb-6">Salary Batches</h2>
+<!-- Dashboard Summary -->
+<div class="grid md:grid-cols-3 gap-6 mb-8">
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Total Batches</p>
+    <p class="text-2xl font-bold"><%= @salary_batches.count %></p>
+  </div>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Processed</p>
+    <p class="text-2xl font-bold"><%= @salary_batches.status_processed.count %></p>
+  </div>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Paid</p>
+    <p class="text-2xl font-bold"><%= @salary_batches.status_paid.count %></p>
+  </div>
+</div>
+<!-- New Batch Button -->
+<div class="mb-6 flex justify-end">
+  <%= link_to "➕ New Salary Batch", new_accounting_salary_batch_path,
+      class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+</div>
+<!-- Salary Batches Table -->
+<%= render "accounting/salary_batches/batch_table", salary_batches: @salary_batches %>

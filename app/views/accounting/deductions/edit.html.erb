@@ -1,0 +1,11 @@
+<% content_for :title, "Edit Deduction" %>
+<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
+  Editing Deduction: <%= @deduction.deduction_type.humanize %>
+</h1>
+<%= render "form", deduction: @deduction %>
+<div class="mt-4 flex gap-2">
+  <%= link_to "Show Deduction", accounting_deduction_path(@deduction),
+      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+  <%= link_to "← Back to Deductions", accounting_deductions_path,
+      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+</div>

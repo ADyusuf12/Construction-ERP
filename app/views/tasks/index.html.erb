@@ -32,20 +32,10 @@
             border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
   <% if @tasks.any? %>
     <table class="min-w-full text-sm text-left">
-      <thead>
-        <tr class="text-hamzis-brown dark:text-hamzis-copper border-b border-hamzis-brown/20">
-          <th class="px-4 py-2">Title</th>
-          <th class="px-4 py-2">Project</th>
-          <th class="px-4 py-2">Status</th>
-          <th class="px-4 py-2">Due Date</th>
-          <th class="px-4 py-2">Weight</th>
-          <th class="px-4 py-2">Assigned To</th>
-          <th class="px-4 py-2">Actions</th>
-        </tr>
-      </thead>
+      <%= render "tasks/task_table_header", show_project: true %>
       <tbody>
         <% @tasks.each do |task| %>
-          <%= render "tasks/task_row", task: task %>
+          <%= render "tasks/task_row", task: task, show_project: true %>
         <% end %>
       </tbody>
     </table>

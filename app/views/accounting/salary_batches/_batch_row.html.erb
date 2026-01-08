@@ -1,0 +1,29 @@
+<tr id="<%= dom_id(batch) %>" class="border-b border-hamzis-brown/20 hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+  <!-- Name -->
+  <td class="px-4 py-2 font-semibold"><%= batch.name %></td>
+  <!-- Period -->
+  <td class="px-4 py-2"><%= batch.period_label %></td>
+  <!-- Status -->
+  <td class="px-4 py-2">
+    <span class="px-2 py-1 rounded
+      <%= batch.status_paid? ? 'bg-green-600 text-white' : batch.status_processed? ? 'bg-blue-600 text-white' : 'bg-yellow-500 text-white' %>">
+      <%= batch.status.humanize %>
+    </span>
+  </td>
+  <!-- Total Net Pay -->
+  <td class="px-4 py-2 font-semibold"><%= number_to_currency(batch.total_net_pay, unit: "₦") %></td>
+  <!-- Actions -->
+  <td class="px-4 py-2 flex gap-2">
+    <%= link_to "View", accounting_salary_batch_path(batch),
+        class: "px-3 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
+    <%= link_to "Edit", edit_accounting_salary_batch_path(batch),
+        class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+    <% if policy(batch).mark_paid? && batch.status_pending? %>
+      <%= button_to "Mark Paid",
+          mark_paid_accounting_salary_batch_path(batch),
+          method: :patch,
+          data: { turbo_stream: true, disable_with: "Marking..." },
+          class: "px-3 py-1 rounded bg-green-600 text-white hover:bg-green-800 transition" %>
+    <% end %>
+  </td>
+</tr>
