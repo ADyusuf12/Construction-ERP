@@ -1,0 +1,17 @@
+<tr id="<%= dom_id(deduction) %>" class="border-b border-hamzis-brown/20 hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+  <!-- Employee -->
+  <td class="px-4 py-2"><%= deduction.salary.employee.full_name %></td>
+  <!-- Type -->
+  <td class="px-4 py-2"><%= deduction.deduction_type.humanize %></td>
+  <!-- Amount -->
+  <td class="px-4 py-2 font-semibold"><%= number_to_currency(deduction.amount, unit: "₦") %></td>
+  <!-- Notes -->
+  <td class="px-4 py-2"><%= deduction.notes.presence || "-" %></td>
+  <!-- Actions -->
+  <td class="px-4 py-2 flex gap-2">
+    <%= link_to "View", accounting_deduction_path(deduction),
+        class: "px-3 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
+    <%= link_to "Edit", edit_accounting_deduction_path(deduction),
+        class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+  </td>
+</tr>

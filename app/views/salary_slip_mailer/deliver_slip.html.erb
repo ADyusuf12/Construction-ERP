@@ -1,0 +1,9 @@
+<h1>Salary Slip</h1>
+<p>Dear <%= @employee.full_name %>,</p>
+<p>Here is your salary slip for <%= @salary.batch.period_label %>:</p>
+<ul>
+  <li>Base Pay: <%= number_to_currency(@salary.base_pay, unit: "₦") %></li>
+  <li>Allowances: <%= number_to_currency(@salary.allowances, unit: "₦") %></li>
+  <li>Deductions: <%= number_to_currency(@salary.deductions_total, unit: "₦") %></li>
+  <li><strong>Net Pay: <%= number_to_currency(@salary.net_pay, unit: "₦") %></strong></li>
+</ul>

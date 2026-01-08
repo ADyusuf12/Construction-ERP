@@ -1,0 +1,33 @@
+<tr id="<%= dom_id(salary) %>" class="border-b border-hamzis-brown/20 hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+  <!-- Employee -->
+  <td class="px-4 py-2"><%= salary.employee.full_name %></td>
+  <!-- Base Pay -->
+  <td class="px-4 py-2"><%= number_to_currency(salary.base_pay, unit: "₦") %></td>
+  <!-- Allowances -->
+  <td class="px-4 py-2"><%= number_to_currency(salary.allowances, unit: "₦") %></td>
+  <!-- Deductions -->
+  <td class="px-4 py-2"><%= number_to_currency(salary.total_deductions, unit: "₦") %></td>
+  <!-- Net Pay -->
+  <td class="px-4 py-2 font-semibold"><%= number_to_currency(salary.net_pay, unit: "₦") %></td>
+  <!-- Status -->
+  <td class="px-4 py-2">
+    <span class="px-2 py-1 rounded
+      <%= salary.status_paid? ? 'bg-green-600 text-white' : 'bg-yellow-500 text-white' %>">
+      <%= salary.status.humanize %>
+    </span>
+  </td>
+  <!-- Actions -->
+  <td class="px-4 py-2 flex gap-2">
+    <%= link_to "View", accounting_salary_path(salary),
+        class: "px-3 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
+    <%= link_to "Edit", edit_accounting_salary_path(salary),
+        class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+    <% if policy(salary).mark_paid? && salary.status_pending? %>
+      <%= button_to "Mark Paid",
+          mark_paid_accounting_salary_path(salary),
+          method: :patch,
+          data: { turbo_stream: true, disable_with: "Marking..." },
+          class: "px-3 py-1 rounded bg-green-600 text-white hover:bg-green-800 transition" %>
+    <% end %>
+  </td>
+</tr>
