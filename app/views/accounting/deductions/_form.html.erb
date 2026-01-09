@@ -9,27 +9,27 @@
       </ul>
     </div>
   <% end %>
-  <!-- Salary -->
+  <!-- Employee -->
   <div>
-    <%= f.label :salary_id, "Salary", class: "block text-sm font-medium mb-1" %>
-    <%= f.collection_select :salary_id, Accounting::Salary.all, :id, :id,
-          { prompt: "Select a salary" },
-          { class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" } %>
+    <%= f.label :employee_id, "Employee", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+    <%= f.collection_select :employee_id, Hr::Employee.all, :id, :full_name,
+          { prompt: "Select an employee" },
+          { class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" } %>
   </div>
   <!-- Deduction Type -->
   <div>
-    <%= f.label :deduction_type, "Type", class: "block text-sm font-medium mb-1" %>
+    <%= f.label :deduction_type, "Type", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
     <%= f.select :deduction_type, Accounting::Deduction.deduction_types.keys.map { |t| [t.humanize, t] },
-          {}, { class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" } %>
+          {}, { class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" } %>
   </div>
   <!-- Amount -->
   <div>
-    <%= f.label :amount, class: "block text-sm font-medium mb-1" %>
-    <%= f.number_field :amount, step: "0.01", class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    <%= f.label :amount, class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+    <%= f.text_field :amount, class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
   </div>
   <!-- Notes -->
   <div>
-    <%= f.label :notes, "Notes (optional)", class: "block text-sm font-medium mb-1" %>
+    <%= f.label :notes, "Notes (optional)", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
     <%= f.text_area :notes, rows: 3, class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
   </div>
   <!-- Submit -->

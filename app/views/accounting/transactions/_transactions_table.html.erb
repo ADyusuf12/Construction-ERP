@@ -1,23 +1,25 @@
-<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 rounded-xl p-6">
-  <% if project.accounting_transactions.any? %>
-    <table class="min-w-full text-sm text-left">
-      <thead>
-        <tr>
-          <th class="px-4 py-2">Date</th>
-          <th class="px-4 py-2">Description</th>
-          <th class="px-4 py-2">Type</th>
-          <th class="px-4 py-2">Amount</th>
-          <th class="px-4 py-2">Status</th>
-          <th class="px-4 py-2">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%= render partial: "accounting/transactions/transaction_row",
-                   collection: project.accounting_transactions,
-                   as: :t %>
+<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+  <% if transactions.any? %>
+    <table class="min-w-full text-sm text-left border-collapse">
+      <%= render "accounting/transactions/transaction_table_header", show_project: show_project %>
+      <tbody class="divide-y divide-hamzis-brown/20">
+        <% transactions.each_with_index do |t, index| %>
+          <%= render "accounting/transactions/transaction_row",
+                     t: t,
+                     show_project: show_project,
+                     row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
+        <% end %>
       </tbody>
     </table>
   <% else %>
-    <p class="text-center text-sm">No transactions yet.</p>
+    <div class="text-center py-6">
+      <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No transactions yet</p>
+      <p class="text-sm mt-2">Start by recording your first invoice or receipt.</p>
+      <div class="mt-4">
+        <%= link_to "➕ New Transaction", new_accounting_transaction_path,
+            class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+      </div>
+    </div>
   <% end %>
 </div>

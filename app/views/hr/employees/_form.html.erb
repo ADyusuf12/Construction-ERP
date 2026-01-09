@@ -22,13 +22,13 @@
   <!-- Hire Date -->
   <div>
     <%= form.label :hire_date, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-    <%= form.date_select :hire_date, class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    <%= form.date_field :hire_date, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
   </div>
   <!-- Status -->
   <div>
     <%= form.label :status, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
     <%= form.select :status, Hr::Employee.statuses.keys.map { |s| [s.humanize, s] },
-        {}, class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+        {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
   </div>
   <!-- Leave Balance -->
   <div>

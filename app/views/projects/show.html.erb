@@ -77,17 +77,23 @@
     <%= link_to "➕ New Task", new_project_task_path(@project),
         class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
   </div>
-  <%= render "projects/tasks_table", project: @project %>
+  <%= render "tasks/tasks_table", project: @project %>
 </div>
 <div id="accounting-tab" class="tab-content hidden">
   <!-- Transactions Section -->
   <h3 class="text-xl font-bold mb-4">Transactions</h3>
+  <!-- Dashboard Summary -->
   <%= render "accounting/transactions/transactions_summary", project: @project %>
+  <!-- New Transaction Button -->
   <div class="mb-6 flex justify-end">
     <%= link_to "➕ New Transaction", new_accounting_transaction_path(project_id: @project.id),
         class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
   </div>
-  <%= render "accounting/transactions/transactions_table", project: @project %>
+  <!-- Transactions Table -->
+  <%= render "accounting/transactions/transactions_table",
+             project: @project,
+             transactions: @project.accounting_transactions,
+             show_project: false %>
 </div>
 <div id="budget-tab" class="tab-content hidden">
   <!-- Budget Section -->
@@ -119,27 +125,14 @@
   <!-- Reports Section -->
   <h3 class="text-xl font-bold mb-4">Reports</h3>
   <!-- Dashboard Summary -->
-  <div class="grid md:grid-cols-3 gap-6 mb-6">
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-      <p class="text-sm font-medium">Total Reports</p>
-      <p class="text-xl font-bold"><%= @project.reports.count %></p>
-    </div>
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-      <p class="text-sm font-medium">Submitted</p>
-      <p class="text-xl font-bold"><%= @project.reports.status_submitted.count %></p>
-    </div>
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-      <p class="text-sm font-medium">Reviewed</p>
-      <p class="text-xl font-bold"><%= @project.reports.status_reviewed.count %></p>
-    </div>
-  </div>
+  <%= render "reports/dashboard_summary", reports: @project.reports %>
   <!-- New Report Button -->
   <div class="mb-6 flex justify-end">
     <%= link_to "➕ New Report", new_project_report_path(@project),
         class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
   </div>
   <!-- Reports Table -->
-  <%= render "projects/reports_table", project: @project, reports: @project.reports %>
+  <%= render "reports/reports_table", reports: @project.reports, show_project: false %>
 </div>
 <!-- Tab Toggle Script -->
 <script nonce="<%= content_security_policy_nonce %>">
