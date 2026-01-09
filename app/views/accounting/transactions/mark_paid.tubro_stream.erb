@@ -1,5 +1,10 @@
 <%= turbo_stream.replace dom_id(@transaction) do %>
-  <%= render partial: "accounting/transactions/transaction_row", locals: { t: @transaction } %>
+  <%# Compute zebra striping for consistency %>
+  <% index = @transaction.project.accounting_transactions.order(:created_at).pluck(:id).index(@transaction.id) %>
+  <%= render "accounting/transactions/transaction_row",
+             t: @transaction,
+             show_project: params[:project_id].blank?,   # global index shows Project column
+             row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
 <% end %>
 <%= turbo_stream.replace "project_transactions_summary" do %>
   <%= render "accounting/transactions/transactions_summary", project: @transaction.project %>

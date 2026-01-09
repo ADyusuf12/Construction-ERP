@@ -4,17 +4,17 @@
     <!-- Start Date -->
     <div>
       <%= form.label :start_date, "Start Date", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= form.date_select :start_date, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.date_field :start_date, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <!-- End Date -->
     <div>
       <%= form.label :end_date, "End Date", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= form.date_select :end_date, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.date_field :end_date, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <!-- Reason -->
     <div>
       <%= form.label :reason, "Reason", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= form.text_area :reason, rows: 3, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.text_area :reason, rows: 3, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <!-- Actions -->
     <div class="flex gap-2">

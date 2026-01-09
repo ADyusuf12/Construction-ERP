@@ -7,40 +7,40 @@
         <%= form.label :project_id, "Project", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
         <%= form.collection_select :project_id, Project.all, :id, :name,
               { prompt: "Select a project" },
-              { class: "w-full rounded border-gray-300 shadow-sm" } %>
+              { class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" } %>
       </div>
     <% end %>
     <!-- Report Date -->
     <div>
       <%= form.label :report_date, class: "block font-medium mb-1" %>
-      <%= form.date_select :report_date, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.date_field :report_date, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <!-- Report Type -->
     <div>
       <%= form.label :report_type, "Report Type", class: "block font-medium mb-1" %>
       <%= form.select :report_type, Report.report_types.keys.map { |t| [t.titleize, t] },
-                      {}, class: "w-full rounded border-gray-300 shadow-sm" %>
+                      {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <!-- Status -->
     <div>
       <%= form.label :status, class: "block font-medium mb-1" %>
       <%= form.select :status, Report.statuses.keys.map { |s| [s.titleize, s] },
-                      {}, class: "w-full rounded border-gray-300 shadow-sm" %>
+                      {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <!-- Progress Summary -->
     <div>
       <%= form.label :progress_summary, class: "block font-medium mb-1" %>
-      <%= form.text_area :progress_summary, rows: 4, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.text_area :progress_summary, rows: 4, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <!-- Issues -->
     <div>
       <%= form.label :issues, class: "block font-medium mb-1" %>
-      <%= form.text_area :issues, rows: 3, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.text_area :issues, rows: 3, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <!-- Next Steps -->
     <div>
       <%= form.label :next_steps, class: "block font-medium mb-1" %>
-      <%= form.text_area :next_steps, rows: 3, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.text_area :next_steps, rows: 3, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <!-- Actions -->
     <div class="flex gap-2">

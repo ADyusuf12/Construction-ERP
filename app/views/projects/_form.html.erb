@@ -3,28 +3,28 @@
               border border-hamzis-brown/20 rounded-xl shadow-lg p-6 space-y-4">
     <div>
       <%= form.label :name, class: "block font-medium mb-1" %>
-      <%= form.text_field :name, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.text_field :name, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <div>
       <%= form.label :description, class: "block font-medium mb-1" %>
-      <%= form.text_area :description, rows: 4, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.text_area :description, rows: 4, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <div>
       <%= form.label :status, class: "block font-medium mb-1" %>
       <%= form.select :status, Project.statuses.keys.map { |s| [s.titleize, s] },
-                      {}, class: "w-full rounded border-gray-300 shadow-sm" %>
+                      {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <div>
       <%= form.label :deadline, class: "block font-medium mb-1" %>
-      <%= form.date_select :deadline, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.date_field :deadline, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <div>
       <%= form.label :budget, class: "block font-medium mb-1" %>
-      <%= form.number_field :budget, step: 0.01, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.text_field :budget, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <div>
       <%= form.label :progress, class: "block font-medium mb-1" %>
-      <%= form.number_field :progress, in: 0..100, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.number_field :progress, in: 0..100, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <div class="flex gap-2">
       <%= form.submit "Save", class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>

@@ -1,7 +1,6 @@
 module Accounting
   class Transaction < ApplicationRecord
     self.table_name = "transactions"
-    before_validation :normalize_amount
 
     belongs_to :project
 
@@ -22,12 +21,6 @@ module Accounting
         receipts: scope.receipt.count,
         outstanding: scope.invoice.unpaid.count
       }
-    end
-
-    private
-
-    def normalize_amount
-      self.amount = amount.to_d.round(2) if amount.present?
     end
   end
 end
