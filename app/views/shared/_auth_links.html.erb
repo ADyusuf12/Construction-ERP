@@ -1,22 +1,44 @@
 <!-- Auth / Profile -->
-<div class="px-4 py-6 border-t border-hamzis-brown/20">
+<div class="px-4 py-6 border-t border-hamzis-brown/30 backdrop-blur-lg">
   <% if user_signed_in? %>
     <% if current_user.employee && policy(current_user.employee).show? %>
       <%= link_to hr_employee_path(current_user.employee),
-            class: "flex items-center w-full px-3 py-2 mb-2 rounded bg-hamzis-black/20 hover:bg-hamzis-copper transition-colors" do %>
-        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-     viewBox="0 0 24 24" stroke="currentColor">
+            class: "flex items-center w-full px-3 py-2 mb-3 rounded-lg bg-hamzis-brown/20
+                   hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown
+                   transition-all duration-300 shadow-sm" do %>
+        <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M5.121 17.804A9 9 0 1118.879 6.196 9 9 0 015.121 17.804zM12 14a4 4 0 100-8 4 4 0 000 8z" />
+                d="M5.121 17.804A9 9 0 1118.879 6.196a9 9 0 01-13.758 11.608zM12 12a4 4 0 100-8 4 4 0 000 8z" />
         </svg>
-        Profile
+        <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Profile</span>
       <% end %>
     <% end %>
-    <%= button_to "Logout", destroy_user_session_path, method: :delete,
+    <!-- Logout -->
+    <%= button_to destroy_user_session_path, method: :delete,
           form: { class: "inline" },
-          class: "w-full px-3 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition-colors" %>
+          class: "flex items-center w-full px-3 py-2 rounded-lg bg-gradient-to-r from-hamzis-copper to-hamzis-brown
+                 text-hamzis-white hover:from-hamzis-black hover:to-hamzis-copper
+                 transition-all duration-300 shadow-md font-semibold" do %>
+      <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
+           viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M6 18L18 6M6 6l12 12" />
+      </svg>
+      <span class="sidebar-label text-hamzis-white" data-sidebar-target="label">Logout</span>
+    <% end %>
   <% else %>
-    <%= link_to "Login", new_user_session_path,
-          class: "w-full block px-3 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition-colors" %>
+    <!-- Login -->
+    <%= link_to new_user_session_path,
+          class: "flex items-center w-full px-3 py-2 rounded-lg bg-gradient-to-r from-hamzis-copper to-hamzis-brown
+                 text-hamzis-white hover:from-hamzis-black hover:to-hamzis-copper
+                 transition-all duration-300 shadow-md font-semibold text-center" do %>
+      <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
+           viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0zM12 14v7m0-7H5m7 0h7" />
+      </svg>
+      <span class="sidebar-label text-hamzis-white" data-sidebar-target="label">Login</span>
+    <% end %>
   <% end %>
 </div>
