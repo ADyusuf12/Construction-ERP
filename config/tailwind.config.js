@@ -15,6 +15,8 @@ module.exports = {
           black: "#212121",
           white: "#ffffff",
           copper: "#b87333",
+          textLight: "#1f2937", // dark gray for light mode text
+          textDark: "#f3f4f6",  // light gray for dark mode text
         },
       },
     },

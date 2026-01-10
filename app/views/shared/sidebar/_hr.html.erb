@@ -1,53 +1,78 @@
 <% if user_signed_in? && policy(Hr::Employee).index? %>
-  <div class="space-y-2">
-    <span class="block px-3 py-1 text-xs font-semibold tracking-wider text-hamzis-copper uppercase border-b border-hamzis-brown/30">HR</span>
-    <div class="ml-4 space-y-1">
+  <div class="space-y-3">
+    <!-- Section Header -->
+    <span class="sidebar-label block px-3 py-1 text-xs font-semibold tracking-wider uppercase border-b border-hamzis-brown/30 text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
+      HR
+    </span>
+    <div class="ml-2 space-y-2">
+      <!-- Employees -->
       <button type="button"
-              class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
+              class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20
+                     hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown
+                     transition-all duration-300 shadow-sm"
               onclick="document.getElementById('hr-dropdown').classList.toggle('hidden')">
         <span class="flex items-center">
-          <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <!-- Refined icon: users/people -->
+          <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m10-4a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
-          Employees
+          <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Employees</span>
         </span>
-        <svg class="w-4 h-4 transform transition-transform" id="hr-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="w-4 h-4 transform transition-transform opacity-70" id="hr-chevron"
+             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
       <div id="hr-dropdown" class="ml-4 space-y-1 hidden">
-        <%= link_to "All Employees", hr_employees_path,
-            class: "block px-3 py-2 rounded transition-colors #{current_page?(hr_employees_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+        <%= link_to hr_employees_path,
+            class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(hr_employees_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">All Employees</span>
+        <% end %>
         <% if user_signed_in? && policy(Hr::Employee).create? %>
-          <%= link_to "New Employee", new_hr_employee_path,
-              class: "block px-3 py-2 rounded transition-colors #{current_page?(new_hr_employee_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+          <%= link_to new_hr_employee_path,
+              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_hr_employee_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">New Employee</span>
+          <% end %>
         <% end %>
       </div>
+      <!-- Leaves -->
       <button type="button"
-              class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
+              class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20
+                     hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown
+                     transition-all duration-300 shadow-sm"
               onclick="document.getElementById('leaves-dropdown').classList.toggle('hidden')">
         <span class="flex items-center">
-          <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <!-- Refined icon: calendar -->
+          <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M9 12h6m-6 4h6m-6-8h6" />
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z" />
           </svg>
-          Leaves
+          <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Leaves</span>
         </span>
-        <svg class="w-4 h-4 transform transition-transform" id="leaves-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="w-4 h-4 transform transition-transform opacity-70" id="leaves-chevron"
+             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
       <div id="leaves-dropdown" class="ml-4 space-y-1 hidden">
         <% if policy(Hr::Leave).index? %>
-          <%= link_to "All Leaves", hr_leaves_path,
-              class: "block px-3 py-2 rounded transition-colors #{current_page?(hr_leaves_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+          <%= link_to hr_leaves_path,
+              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(hr_leaves_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">All Leaves</span>
+          <% end %>
         <% end %>
-        <%= link_to "My Leaves", my_leaves_hr_leaves_path,
-            class: "block px-3 py-2 rounded transition-colors #{current_page?(my_leaves_hr_leaves_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+        <%= link_to my_leaves_hr_leaves_path,
+            class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(my_leaves_hr_leaves_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">My Leaves</span>
+        <% end %>
         <% if policy(Hr::Leave.new).create? %>
-          <%= link_to "New Leave", new_hr_leave_path,
-              class: "block px-3 py-2 rounded transition-colors #{current_page?(new_hr_leave_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
+          <%= link_to new_hr_leave_path,
+              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_hr_leave_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">New Leave</span>
+          <% end %>
         <% end %>
       </div>
     </div>

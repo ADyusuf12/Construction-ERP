@@ -10,5 +10,6 @@
   --color-hamzis-black: #212121;
   --color-hamzis-white: #ffffff;
   --color-hamzis-copper: #b87333;
+  --color-hamzis-textLight: #1f2937; /* dark gray for light mode text */
+  --color-hamzis-textDark: #f3f4f6;  /* light gray for dark mode text */
 }
-
