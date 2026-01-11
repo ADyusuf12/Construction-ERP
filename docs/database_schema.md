@@ -44,7 +44,7 @@ Stores information about projects.
 | `description`| `text` | yes | | |
 | `status` | `integer`| no | `0` | |
 | `deadline` | `datetime`| yes| | |
-| `budget` | `decimal`| yes | | |
+| `budget` | `decimal(12,2)`| yes | | |
 | `progress` | `integer`| no | `0` | |
 | `user_id` | `bigint`| no | | `index_projects_on_user_id` |
 | `created_at`| `datetime`| no | | |
@@ -108,7 +108,7 @@ Stores financial transactions related to projects.
 | `id` | `bigint`| no | | Primary Key |
 | `date` | `date` | no | | `index_transactions_on_project_id_and_date` |
 | `description` | `string`| no | | |
-| `amount` | `decimal`| no | | |
+| `amount` | `decimal(12,2)`| no | | |
 | `transaction_type`| `integer`| no | `0` | `index_transactions_on_transaction_type` |
 | `status` | `integer`| no | `0` | `index_transactions_on_status` |
 | `reference` | `string`| yes | | |
@@ -135,7 +135,7 @@ Stores information about employees for the HR module.
 | `hire_date` | `date` | yes | | |
 | `status` | `integer` | yes | `0` | |
 | `leave_balance` | `integer` | yes | `0` | |
-| `performance_score`| `decimal`| yes | | |
+| `performance_score`| `decimal(5,2)`| yes | | |
 | `user_id` | `bigint` | yes | | `index_hr_employees_on_user_id` |
 | `manager_id` | `bigint` | yes | | `index_hr_employees_on_manager_id` |
 | `created_at` | `datetime`| no | | |
@@ -146,6 +146,8 @@ Stores information about employees for the HR module.
 - `belongs_to :manager, class_name: 'HrEmployee', optional: true`
 - `has_many :subordinates, class_name: 'HrEmployee', foreign_key: 'manager_id'`
 - `has_many :leaves, class_name: 'HrLeave', foreign_key: 'employee_id'`
+- `has_one :personal_detail, class_name: 'HrPersonalDetail'`
+- `has_many :salaries, class_name: 'Accounting::Salary'`
 
 ---
 
@@ -171,6 +173,34 @@ Stores leave requests for employees.
 
 ---
 
+### `hr_personal_details`
+
+Stores personal details for employees.
+
+| Column | Type | Null | Default | Indexes |
+| --- | --- | --- | --- | --- |
+| `id` | `bigint` | no | | Primary Key |
+| `employee_id` | `bigint` | yes | | `index_hr_personal_details_on_employee_id` |
+| `first_name` | `string` | yes | | |
+| `last_name` | `string` | yes | | |
+| `dob` | `date` | yes | | |
+| `gender` | `integer` | yes | | |
+| `bank_name` | `string` | yes | | |
+| `account_number` | `string` | yes | | |
+| `account_name` | `string` | yes | | |
+| `means_of_identification`| `integer`| yes | | |
+| `id_number` | `string` | yes | | |
+| `marital_status` | `integer` | yes | | |
+| `address` | `text` | yes | | |
+| `phone_number` | `string` | yes | | |
+| `created_at` | `datetime`| no | | |
+| `updated_at` | `datetime`| no | | |
+
+**Associations:**
+- `belongs_to :employee, class_name: 'HrEmployee'`
+
+---
+
 ### `reports`
 
 Stores project reports.
@@ -193,16 +223,101 @@ Stores project reports.
 - `belongs_to :project`
 - `belongs_to :user`
 
+---
+
+## Accounting Module
+
+### `accounting_salary_batches`
+
+Represents a batch of salaries to be processed.
+
+| Column | Type | Null | Default | Indexes |
+| --- | --- | --- | --- | --- |
+| `id` | `bigint` | no | | Primary Key |
+| `name` | `string` | yes | | |
+| `period_start` | `date` | yes | | |
+| `period_end` | `date` | yes | | |
+| `status` | `integer` | yes | | |
+| `created_at` | `datetime`| no | | |
+| `updated_at` | `datetime`| no | | |
+
+**Associations:**
+- `has_many :salaries, class_name: 'Accounting::Salary'`
+
+### `accounting_salaries`
+
+Represents an employee's salary for a specific batch.
+
+| Column | Type | Null | Default | Indexes |
+| --- | --- | --- | --- | --- |
+| `id` | `bigint` | no | | Primary Key |
+| `employee_id` | `bigint` | no | | `index_accounting_salaries_on_employee_id` |
+| `batch_id` | `bigint` | no | | `index_accounting_salaries_on_batch_id` |
+| `base_pay` | `decimal(12,2)`| no | | |
+| `allowances`| `decimal(12,2)`| yes | `0.0` | |
+| `deductions_total`| `decimal(12,2)`| yes | `0.0` | |
+| `net_pay` | `decimal(12,2)`| no | | |
+| `status` | `integer` | no | `0` | |
+| `created_at` | `datetime`| no | | |
+| `updated_at` | `datetime`| no | | |
+
+**Associations:**
+- `belongs_to :employee, class_name: 'HrEmployee'`
+- `belongs_to :batch, class_name: 'Accounting::SalaryBatch'`
+- `has_many :deductions, class_name: 'Accounting::Deduction'`
+
+### `accounting_deductions`
+
+Represents deductions from an employee's salary.
+
+| Column | Type | Null | Default | Indexes |
+| --- | --- | --- | --- | --- |
+| `id` | `bigint` | no | | Primary Key |
+| `salary_id` | `bigint` | no | | `index_accounting_deductions_on_salary_id` |
+| `deduction_type` | `integer` | no | | |
+| `amount` | `decimal(12,2)`| no | | |
+| `notes` | `text` | yes | | |
+| `created_at` | `datetime`| no | | |
+| `updated_at` | `datetime`| no | | |
+
+**Associations:**
+- `belongs_to :salary, class_name: 'Accounting::Salary'`
+
+---
+
+## Background Jobs (Solid Queue)
+
+Tables used by the Solid Queue background processing framework.
+
+- `solid_queue_jobs`
+- `solid_queue_ready_executions`
+- `solid_queue_scheduled_executions`
+- `solid_queue_claimed_executions`
+- `solid_queue_blocked_executions`
+- `solid_queue_failed_executions`
+- `solid_queue_pauses`
+- `solid_queue_processes`
+- `solid_queue_semaphores`
+- `solid_queue_recurring_tasks`
+- `solid_queue_recurring_executions`
+
+---
+
 ## Foreign Keys
 
+- `accounting_deductions` -> `accounting_salaries` (as salary)
+- `accounting_salaries` -> `accounting_salary_batches` (as batch)
+- `accounting_salaries` -> `hr_employees` (as employee)
 - `assignments` -> `tasks`
 - `assignments` -> `users`
 - `hr_employees` -> `users`
 - `hr_employees` -> `hr_employees` (as manager)
 - `hr_leaves` -> `hr_employees` (as employee)
 - `hr_leaves` -> `hr_employees` (as manager)
+- `hr_personal_details` -> `hr_employees` (as employee)
 - `projects` -> `users`
 - `reports` -> `projects`
 - `reports` -> `users`
 - `tasks` -> `projects`
 - `transactions` -> `projects`
+- `solid_queue_*` tables have foreign keys to `solid_queue_jobs`.

@@ -2,8 +2,9 @@
 
 **Hamzis Systems** is a comprehensive project management and business administration application designed to streamline workflows, manage projects, track tasks, and handle internal resources like human resources and financial transactions.
 
-![App Screenshot Placeholder](https://via.placeholder.com/800x450.png?text=Hamzis+Systems+UI)
-_A placeholder for the main application dashboard or a key feature._
+![Hamzis Systems dashboard](docs/images/Screenshot 2026-01-11 130248.png)
+
+_A screenshot of the main application dashboard._
 
 ## Table of Contents
 
@@ -25,27 +26,48 @@ This application provides a centralized platform for managing core business oper
 
 ## Features
 
-- **User Authentication:** Secure user login using Devise. (Note: Self-registration is disabled).
-- **Role-Based Authorization:** Granular permissions for different user roles (e.g., admin, manager, employee) using Pundit.
-- **Project Management:** Create, update, and track projects from inception to completion, including budget, progress, and deadlines.
-- **Task Tracking:** Assign and monitor tasks within projects, with status updates and priorities.
-- **Project Reporting System:** A complete workflow for creating, submitting, and reviewing project reports (e.g., daily or weekly updates).
-- **Human Resources Module:**
-    - Manage employee records and hierarchical relationships (manager/subordinate).
-    - A full **Leave Management System** for employees to request leave and managers to approve or reject it.
-- **Accounting Module:** Log, categorize, and manage financial transactions associated with projects.
+- **User Authentication & Authorization:** Secure user management powered by **Devise** for authentication and **Pundit** for role-based authorization. User registration is restricted, with administrators responsible for creating and managing accounts.
 
-## Documentation
+- **Modular Architecture:** The application is organized into logical modules (**HR**, **Accounting**) using namespacing, ensuring a clean and scalable codebase.
 
-For a deeper understanding of the application's architecture, APIs, and features, please refer to our detailed documentation:
+- **Project Management:**
 
-- **[Architecture Overview](./docs/architecture.md)**
-- **[Database Schema](./docs/database_schema.md)**
-- **[API Endpoints](./docs/api_endpoints.md)**
-- **[Frontend Guide](./docs/frontend_guide.md)**
-- **Feature Guides:**
-    - **[HR Leave Management](./docs/leave_management_guide.md)**
-    - **[Project Reporting](./docs/project_reporting_guide.md)**
+  - **Project Tracking:** Create, manage, and monitor projects, including setting budgets, tracking progress, and assigning project managers.
+  - **Task Management:** Define tasks within projects, assign them to users, and track their status from "To Do" to "Done."
+
+- **Reporting & Analytics:**
+
+  - **Project Reporting System:** A structured workflow for creating, submitting, and reviewing project reports, enabling transparent progress tracking.
+  - **Dashboard:** A central dashboard provides a high-level overview of ongoing projects, pending tasks, and other key metrics.
+
+- **Human Resources (HR) Module:**
+
+  - **Employee Management:** Maintain a directory of employees and manage organizational structure (e.g., manager-subordinate relationships).
+  - **Leave Management System:** A complete workflow for employees to request time off and for managers to approve or deny requests.
+
+- **Accounting Module:**
+  - **Transaction Logging:** Record financial transactions related to specific projects, helping to monitor budgets and expenses.
+
+## Project Structure
+
+The application follows the standard Ruby on Rails directory structure. Key directories include:
+
+- **`app/`**: Contains the core application code, organized by functionality:
+
+  - **`controllers/`**: Handles incoming HTTP requests and coordinates with models and views. Namespaced controllers for `Accounting`, `HR`, and `Dashboard`.
+  - **`models/`**: Defines the application's data models and business logic. Namespaced models for `Accounting` and `HR`.
+  - **`views/`**: Contains the ERB templates for rendering the user interface.
+  - **`javascript/`**: Frontend JavaScript code, managed by **Hotwire** (Stimulus controllers).
+  - **`assets/`**: Static assets like images and stylesheets.
+  - **`jobs/`**, **`mailers/`**, **`policies/`**: Application components for background jobs, email notifications, and authorization policies.
+
+- **`config/`**: Application configuration files, including `routes.rb` for routing, `database.yml` for database settings, and initializers.
+
+- **`db/`**: Database-related files, including the schema (`schema.rb`) and migrations.
+
+- **`docs/`**: A dedicated directory for detailed documentation on architecture, features, and APIs.
+
+- **`spec/`**: Test files written with **RSpec**, including factories and request specs.
 
 ## Technology Stack
 
@@ -104,26 +126,35 @@ Follow these steps to get the application running locally.
     ```
     The application will be available at `http://localhost:3000`.
 
-## Usage
+## Development
 
-- Access the application at `http://localhost:3000`.
-- Log in with existing credentials. User accounts must be created by an administrator.
+This section provides guidelines for developers contributing to the project.
 
-## Running Tests
+### Running Tests
 
-To ensure code quality and stability, run the test suite:
+To ensure code quality and stability, run the full test suite:
 
 ```bash
 bundle exec rspec
 ```
 
-You can also run the RuboCop linter to check for style violations:
+### Code Style & Linting
+
+This project uses **RuboCop** with the `rubocop-rails-omakase` configuration to enforce a consistent code style. Before committing, run the linter to check for violations:
 
 ```bash
 bundle exec rubocop
 ```
 
-And run Brakeman to scan for security vulnerabilities:
+For auto-correcting offenses, run:
+
+```bash
+bundle exec rubocop -A
+```
+
+### Security Scanning
+
+Use **Brakeman** to scan the application for potential security vulnerabilities:
 
 ```bash
 bundle exec brakeman
@@ -141,7 +172,7 @@ kamal deploy
 
 ## Contributing
 
-Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+Contributions are welcome! Please read our [CONTRIBUTING.md](./CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
 ## License
 

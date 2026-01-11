@@ -67,9 +67,108 @@ Views are built using Rails' standard ERB templates, enhanced with Hotwire for a
 
 The application uses **Solid Queue** to run background jobs, such as sending emails, processing data, or handling long-running tasks without blocking the web server. Job definitions are located in the `app/jobs/` directory.
 
+### Creating a Job
+
+To create a new job, you can use the Rails generator:
+
+```bash
+rails generate job MyNewJob
+```
+
+This will create `app/jobs/my_new_job.rb`. You can then define the job's behavior in the `perform` method.
+
+### Enqueuing a Job
+
+To enqueue a job to be run in the background, you can use `perform_later`:
+
+```ruby
+# Enqueue a job to be performed as soon as possible
+MyNewJob.perform_later(record)
+
+# Enqueue a job to be performed at a specific time
+MyNewJob.set(wait_until: Date.tomorrow.noon).perform_later(record)
+```
+
 ## Authorization
 
 Authorization is managed by the **Pundit** gem. For each model that requires authorization, a corresponding policy class is created in the `app/policies/` directory. These policies define who can perform which actions (e.g., who can create a project, approve a leave request, etc.).
+
+### How Pundit Works
+
+Pundit uses policy classes that correspond to your models. For a `Project` model, you would have a `ProjectPolicy` class. Each policy class has methods that match the controller actions (e.g., `create?`, `update?`, `destroy?`).
+
+### Example Policy
+
+Here is an example of a simple policy for the `Project` model:
+
+```ruby
+# app/policies/project_policy.rb
+class ProjectPolicy < ApplicationPolicy
+  def show?
+    user.admin? || record.users.include?(user)
+  end
+
+  def create?
+    user.admin? || user.manager?
+  end
+
+  def update?
+    user.admin? || record.manager == user
+  end
+
+  def destroy?
+    user.admin?
+  end
+
+  class Scope < Scope
+    def resolve
+      if user.admin?
+        scope.all
+      else
+        scope.where(id: user.projects.pluck(:id))
+      end
+    end
+  end
+end
+```
+
+In your controller, you would use the `authorize` helper to enforce these policies:
+
+```ruby
+# app/controllers/projects_controller.rb
+class ProjectsController < ApplicationController
+  def show
+    @project = Project.find(params[:id])
+    authorize @project
+  end
+end
+```
+
+## Testing
+
+The application uses **RSpec** as its primary testing framework. Our goal is to have a comprehensive test suite that covers all critical parts of the application.
+
+### Test Structure
+
+- **`spec/models`**: Tests for models, focusing on business logic, validations, and associations.
+- **`spec/requests`**: Integration tests that simulate HTTP requests and test the full stack (controllers, views, and models).
+- **`spec/factories`**: Factory Bot definitions for creating test data.
+- **`spec/policies`**: Tests for Pundit authorization policies.
+- **`spec/jobs`**: Tests for background jobs.
+- **`spec/system`**: End-to-end tests that simulate user interaction in a real browser, powered by Capybara.
+
+### Running Tests
+
+To run the entire test suite, use the following command:
+
+```bash
+bundle exec rspec
+```
+
+To run a specific file:
+```bash
+bundle exec rspec spec/models/project_spec.rb
+```
 
 ---
 
