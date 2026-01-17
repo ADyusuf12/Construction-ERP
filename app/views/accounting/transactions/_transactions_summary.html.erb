@@ -3,21 +3,21 @@
               border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
     <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Invoices</p>
     <p class="text-2xl font-bold">
-      <%= project ? project.accounting_transactions.invoice.count : transactions.invoice.count %>
+      <%= Accounting::Transaction.invoice_count %>
     </p>
   </div>
   <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
               border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
     <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Receipts</p>
     <p class="text-2xl font-bold">
-      <%= project ? project.accounting_transactions.receipt.count : transactions.receipt.count %>
+      <%= Accounting::Transaction.receipt_count %>
     </p>
   </div>
   <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
               border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
     <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Outstanding</p>
     <p class="text-2xl font-bold">
-      <%= project ? project.accounting_transactions.invoice.unpaid.count : transactions.invoice.unpaid.count %>
+      <%= Accounting::Transaction.outstanding %>
     </p>
   </div>
 </div>

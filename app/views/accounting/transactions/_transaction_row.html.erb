@@ -1,11 +1,6 @@
-<% show_project = local_assigns.fetch(:show_project, false) %>
 <tr id="<%= dom_id(t) %>" class="<%= row_class %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
   <!-- Date -->
   <td class="px-4 py-3"><%= t.date.strftime("%b %d, %Y") %></td>
-  <!-- Project (optional for index) -->
-  <% if show_project %>
-    <td class="px-4 py-3"><%= link_to t.project.name, project_path(t.project), class: "text-hamzis-copper hover:underline" %></td>
-  <% end %>
   <!-- Description -->
   <td class="px-4 py-3"><%= t.description %></td>
   <!-- Type -->

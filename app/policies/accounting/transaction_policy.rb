@@ -34,10 +34,7 @@ module Accounting
           # Exec/management/finance roles see all transactions
           scope.all
         else
-          # Engineers/QS only see transactions tied to projects they have tasks on
-          scope.joins(project: { tasks: :assignments })
-               .where(assignments: { user_id: user.id })
-               .distinct
+          scope.none
         end
       end
     end

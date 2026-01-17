@@ -2,8 +2,6 @@ module Accounting
   class Transaction < ApplicationRecord
     self.table_name = "transactions"
 
-    belongs_to :project
-
     enum :transaction_type, { invoice: 0, receipt: 1 }, prefix: true
     enum :status, { unpaid: 0, paid: 1 }, prefix: true
 
@@ -15,11 +13,24 @@ module Accounting
     scope :unpaid,   -> { where(status: :unpaid) }
     scope :paid,     -> { where(status: :paid) }
 
+    # --- Global transaction summaries ---
+    def self.invoice_count(scope = all)
+      scope.invoice.count
+    end
+
+    def self.receipt_count(scope = all)
+      scope.receipt.count
+    end
+
+    def self.outstanding(scope = all)
+      scope.invoice.unpaid.count
+    end
+
     def self.summary_counts(scope = all)
       {
-        invoices: scope.invoice.count,
-        receipts: scope.receipt.count,
-        outstanding: scope.invoice.unpaid.count
+        invoices: invoice_count(scope),
+        receipts: receipt_count(scope),
+        outstanding: outstanding(scope)
       }
     end
   end

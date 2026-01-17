@@ -33,10 +33,20 @@ Rails.application.routes.draw do
         patch :complete
       end
     end
+    resources :project_expenses
   end
 
-  resources :tasks, only: [ :index, :new, :create ]
-  resources :reports, only: [ :index, :new, :create ]
+  resources :tasks
+  resources :reports
+  resources :project_expenses
+
+  namespace :inventory do
+    resources :inventory_items do
+      resources :stock_movements, only: %i[index new create edit update destroy show]
+    end
+    resources :warehouses
+    resources :project_inventories, only: [ :create, :edit, :update, :destroy ]
+  end
 
   namespace :accounting do
     resources :transactions do

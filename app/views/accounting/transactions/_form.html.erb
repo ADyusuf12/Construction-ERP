@@ -9,13 +9,6 @@
       </ul>
     </div>
   <% end %>
-  <!-- Project -->
-  <div>
-    <%= f.label :project_id, "Project", class: "block text-sm font-medium mb-1" %>
-    <%= f.collection_select :project_id, Project.all, :id, :name,
-          { prompt: "Select a project" },
-          { class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" } %>
-  </div>
   <!-- Date -->
   <div>
     <%= f.label :date, class: "block text-sm font-medium mb-1" %>

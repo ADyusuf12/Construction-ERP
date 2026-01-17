@@ -30,13 +30,5 @@ FactoryBot.define do
         create_list(:task, 3, project: project)
       end
     end
-
-    # With transactions
-    trait :with_transactions do
-      after(:create) do |project|
-        create(:transaction, :invoice, project: project)
-        create(:transaction, :receipt, project: project)
-      end
-    end
   end
 end

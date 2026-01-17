@@ -4,7 +4,7 @@ module Accounting
     before_action :set_transaction, only: %i[show edit update destroy mark_paid]
 
     def index
-      @transactions = policy_scope(Accounting::Transaction.includes(:project).order(date: :desc))
+      @transactions = policy_scope(Accounting::Transaction.order(date: :desc))
       counts = Accounting::Transaction.summary_counts(policy_scope(Accounting::Transaction))
       @total_invoices = counts[:invoices]
       @total_receipts = counts[:receipts]
@@ -66,7 +66,7 @@ module Accounting
 
     def transaction_params
       params.require(:accounting_transaction).permit(
-        :project_id, :date, :description, :amount, :transaction_type, :status, :reference, :notes
+        :date, :description, :amount, :transaction_type, :status, :reference, :notes
       )
     end
   end

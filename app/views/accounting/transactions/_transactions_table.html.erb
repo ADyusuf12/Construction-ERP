@@ -2,13 +2,49 @@
             border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
   <% if transactions.any? %>
     <table class="min-w-full text-sm text-left border-collapse">
-      <%= render "accounting/transactions/transaction_table_header", show_project: show_project %>
+      <thead>
+        <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
+          <th class="px-4 py-3">Date</th>
+          <th class="px-4 py-3">Description</th>
+          <th class="px-4 py-3">Type</th>
+          <th class="px-4 py-3">Amount</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3">Actions</th>
+        </tr>
+      </thead>
       <tbody class="divide-y divide-hamzis-brown/20">
         <% transactions.each_with_index do |t, index| %>
-          <%= render "accounting/transactions/transaction_row",
-                     t: t,
-                     show_project: show_project,
-                     row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
+          <tr id="<%= dom_id(t) %>" class="<%= index.even? ? 'bg-hamzis-brown/5 dark:bg-hamzis-copper/5' : '' %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+            <!-- Date -->
+            <td class="px-4 py-3"><%= t.date.strftime("%b %d, %Y") %></td>
+            <!-- Description -->
+            <td class="px-4 py-3"><%= t.description %></td>
+            <!-- Type -->
+            <td class="px-4 py-3"><%= t.transaction_type.humanize %></td>
+            <!-- Amount -->
+            <td class="px-4 py-3 font-semibold"><%= number_to_currency(t.amount, unit: "₦") %></td>
+            <!-- Status -->
+            <td class="px-4 py-3">
+              <span class="px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap
+                <%= t.status_paid? ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' %>">
+                <%= t.status.humanize %>
+              </span>
+            </td>
+            <!-- Actions -->
+            <td class="px-4 py-3 flex gap-2">
+              <%= link_to "View", accounting_transaction_path(t),
+                  class: "px-3 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition text-xs" %>
+              <%= link_to "Edit", edit_accounting_transaction_path(t),
+                  class: "px-3 py-1 rounded bg-hamzis-brown text-white hover:bg-hamzis-copper transition text-xs" %>
+              <% if policy(t).mark_paid? && t.status_unpaid? %>
+                <%= button_to "Mark Paid",
+                    mark_paid_accounting_transaction_path(t),
+                    method: :patch,
+                    data: { turbo_stream: true, disable_with: "Marking..." },
+                    class: "px-3 py-1 rounded bg-green-600 text-white hover:bg-green-800 transition text-xs" %>
+              <% end %>
+            </td>
+          </tr>
         <% end %>
       </tbody>
     </table>
