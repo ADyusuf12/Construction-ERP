@@ -5,7 +5,7 @@ RSpec.describe "Tasks", type: :request do
   let(:task)    { create(:task, project: project) }
   let(:user)    { create(:user, :ceo) }
 
-  before { sign_in user } # if using Devise
+  before { sign_in user } # because using devise
 
   describe "GET /tasks" do
     it "returns success" do

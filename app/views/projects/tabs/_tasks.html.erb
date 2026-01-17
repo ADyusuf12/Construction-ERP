@@ -1,0 +1,20 @@
+<h3 class="text-xl font-bold mb-4">Tasks</h3>
+<div class="grid md:grid-cols-3 gap-6 mb-6">
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
+    <p class="text-sm font-medium">Total Weight</p>
+    <p class="text-xl font-bold"><%= project.tasks.sum(:weight) %></p>
+  </div>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
+    <p class="text-sm font-medium">Pending Weight</p>
+    <p class="text-xl font-bold"><%= project.tasks.status_pending.sum(:weight) %></p>
+  </div>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
+    <p class="text-sm font-medium">Completed Weight</p>
+    <p class="text-xl font-bold"><%= project.tasks.status_done.sum(:weight) %></p>
+  </div>
+</div>
+<div class="mb-6 flex justify-end">
+  <%= link_to "➕ New Task", new_project_task_path(project),
+      class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
+</div>
+<%= render "tasks/tasks_table", project: project %>

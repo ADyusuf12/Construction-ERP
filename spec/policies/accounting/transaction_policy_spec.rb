@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Accounting::TransactionPolicy do
   let(:project)     { create(:project) }
-  let(:transaction) { create(:accounting_transaction, project: project) }
+  let(:transaction) { create(:accounting_transaction) }
 
   describe "CEO" do
     let(:user)   { create(:user, :ceo) }

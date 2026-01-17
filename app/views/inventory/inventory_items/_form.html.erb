@@ -1,0 +1,50 @@
+<%= form_with(model: [ :inventory, @inventory_item ], local: true, class: "space-y-4") do |f| %>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 space-y-4 max-w-3xl">
+    <!-- SKU -->
+    <div>
+      <%= f.label :sku, "SKU", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= f.text_field :sku, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    </div>
+    <!-- Name -->
+    <div>
+      <%= f.label :name, "Name", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= f.text_field :name, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    </div>
+    <!-- Unit -->
+    <div>
+      <%= f.label :unit, "Unit", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= f.text_field :unit, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    </div>
+    <!-- Unit Cost -->
+    <div>
+      <%= f.label :unit_cost, "Unit Cost", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= f.number_field :unit_cost, step: 0.01, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    </div>
+    <!-- Reorder Threshold -->
+    <div>
+      <%= f.label :reorder_threshold, "Reorder Threshold", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= f.number_field :reorder_threshold, step: 1, min: 0, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    </div>
+    <!-- Description -->
+    <div>
+      <%= f.label :description, "Description", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= f.text_area :description, rows: 4, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    </div>
+    <!-- Projects (optional) -->
+    <div>
+      <%= f.label :project_ids, "Assign to Projects (optional)", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= f.collection_select :project_ids, Project.all, :id, :name,
+            { include_hidden: false, multiple: true },
+            class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
+      <p class="text-xs text-gray-500 mt-1">Hold Ctrl/Cmd to select multiple projects.</p>
+    </div>
+    <!-- Actions -->
+    <div class="flex gap-2">
+      <%= f.submit (@inventory_item.persisted? ? "Update Item" : "Create Item"),
+            class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+      <%= link_to "Cancel", inventory_inventory_items_path,
+            class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+    </div>
+  </div>
+<% end %>

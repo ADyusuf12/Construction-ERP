@@ -1,8 +1,5 @@
-require "rails_helper"
-
 RSpec.describe "Accounting::Transactions", type: :request do
-  let(:project)     { create(:project) }
-  let(:transaction) { create(:accounting_transaction, project: project) }
+  let(:transaction) { create(:accounting_transaction) }
   let(:user)        { create(:user, :ceo) } # CEO has full permissions
 
   before { sign_in user, scope: :user }
@@ -26,8 +23,7 @@ RSpec.describe "Accounting::Transactions", type: :request do
       it "creates a transaction" do
         expect {
           post accounting_transactions_path, params: {
-            accounting_transaction: {   # ✅ updated key
-              project_id: project.id,
+            accounting_transaction: {
               date: Date.today,
               description: "New Transaction",
               amount: 500,
@@ -46,8 +42,7 @@ RSpec.describe "Accounting::Transactions", type: :request do
       it "does not create a transaction" do
         expect {
           post accounting_transactions_path, params: {
-            accounting_transaction: {   # ✅ updated key
-              project_id: project.id,
+            accounting_transaction: {
               date: nil, # invalid
               description: "",
               amount: -10,
@@ -57,7 +52,7 @@ RSpec.describe "Accounting::Transactions", type: :request do
           }
         }.not_to change(Accounting::Transaction, :count)
 
-        expect(response).to have_http_status(:unprocessable_content)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -65,7 +60,7 @@ RSpec.describe "Accounting::Transactions", type: :request do
   describe "PATCH /accounting/transactions/:id" do
     it "updates a transaction" do
       patch accounting_transaction_path(transaction), params: {
-        accounting_transaction: { description: "Updated Transaction" } # ✅ updated key
+        accounting_transaction: { description: "Updated Transaction" }
       }
       expect(response).to redirect_to(accounting_transactions_path)
       expect(transaction.reload.description).to eq("Updated Transaction")

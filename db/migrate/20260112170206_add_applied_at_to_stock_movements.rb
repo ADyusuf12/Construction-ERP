@@ -1,0 +1,6 @@
+class AddAppliedAtToStockMovements < ActiveRecord::Migration[8.0]
+  def change
+    add_column :stock_movements, :applied_at, :datetime
+    add_index :stock_movements, :applied_at
+  end
+end
