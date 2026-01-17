@@ -48,6 +48,40 @@
         <% end %>
       </div>
     <% end %>
+    <!-- Expenses -->
+    <button type="button"
+        class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20 hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown transition-all duration-300 shadow-sm"
+        onclick="document.getElementById('expenses-dropdown').classList.toggle('hidden')">
+      <span class="flex items-center">
+        <!-- Icon: receipt / bill -->
+        <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
+         viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 17v-2h6v2H9zm-4 4h14a2 2 0 002-2V5a2 2 0 00-2-2H7l-2 2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
+          Expenses
+        </span>
+      </span>
+      <svg class="w-4 h-4 transform transition-transform opacity-70" id="expenses-chevron"
+       xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+    <div id="expenses-dropdown" class="ml-4 space-y-1 hidden">
+      <%= link_to project_expenses_path,
+      class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(project_expenses_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+        <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
+          All Expenses
+        </span>
+      <% end %>
+      <%= link_to new_project_expense_path,
+      class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_project_expense_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+        <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
+          New Expense
+        </span>
+      <% end %>
+    </div>
     <!-- Salary Batches -->
     <% if policy(Accounting::SalaryBatch).index? %>
       <button type="button"

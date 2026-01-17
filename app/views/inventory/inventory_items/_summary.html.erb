@@ -1,0 +1,32 @@
+<div class="grid md:grid-cols-4 gap-6 mb-8">
+  <!-- Total Items -->
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Total Items</p>
+    <p class="text-2xl font-bold"><%= inventory_items.count %></p>
+  </div>
+  <!-- Low Stock -->
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Low Stock</p>
+    <p class="text-2xl font-bold">
+      <%= inventory_items.select do |i|
+            threshold = i.reorder_threshold
+            total = @inventory_totals[i.id] || i.total_quantity
+            threshold.present? && total <= threshold
+          end.count %>
+    </p>
+  </div>
+  <!-- With Projects -->
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">With Projects</p>
+    <p class="text-2xl font-bold"><%= inventory_items.joins(:project_inventories).distinct.count %></p>
+  </div>
+  <!-- Warehouses -->
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Warehouses</p>
+    <p class="text-2xl font-bold"><%= Warehouse.count %></p>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<% content_for :title, "Edit Expense" %>
+<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
+  Editing Expense: <%= @expense.description %>
+</h1>
+<%= render "form", expense: @expense, project: @expense.project %>
+<div class="mt-4 flex gap-2">
+  <% if @expense.project %>
+    <%= link_to "Show Expense",
+        project_project_expense_path(@expense.project, @expense),
+        class: "px-3 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition text-xs" %>
+    <%= link_to "← Back to Project",
+        project_path(@expense.project),
+        class: "px-3 py-1 rounded bg-hamzis-brown text-white hover:bg-hamzis-copper transition text-xs" %>
+  <% else %>
+    <%= link_to "Show Expense",
+        project_expense_path(@expense),
+        class: "px-3 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition text-xs" %>
+    <%= link_to "← Back to Expenses",
+        project_expenses_path,
+        class: "px-3 py-1 rounded bg-hamzis-brown text-white hover:bg-hamzis-copper transition text-xs" %>
+  <% end %>
+</div>

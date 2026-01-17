@@ -1,0 +1,22 @@
+<h2 class="text-2xl font-bold mb-6">
+  <% if @project %>
+    Expenses for <%= @project.name %>
+  <% else %>
+    All Expenses
+  <% end %>
+</h2>
+<%= render "project_expenses/expenses_summary", expenses: @expenses, project: @project %>
+<div class="mb-6 flex justify-end">
+  <% if @project %>
+    <%= link_to "➕ New Expense",
+        new_project_project_expense_path(@project),
+        class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
+  <% else %>
+    <%= link_to "➕ New Expense",
+        new_project_expense_path,
+        class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
+  <% end %>
+</div>
+<%= render "project_expenses/expenses_table",
+           expenses: @expenses,
+           show_project: @project.nil? %>

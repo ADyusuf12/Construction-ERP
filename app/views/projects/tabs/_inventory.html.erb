@@ -1,0 +1,43 @@
+<%# app/views/projects/tabs/_inventory.html.erb %>
+<% if policy([ :inventory, ProjectInventory.new(project: project) ]).create? %>
+  <%= render "inventory/project_inventories/form", project_inventory: ProjectInventory.new(project: project) %>
+<% end %>
+<% if project.project_inventories.any? %>
+  <table class="min-w-full text-sm text-left border-collapse">
+    <thead>
+      <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-xs uppercase tracking-wide">
+        <th class="px-4 py-3">Item</th>
+        <th class="px-4 py-3">Quantity</th>
+        <th class="px-4 py-3">Purpose</th>
+        <th class="px-4 py-3">Actions</th>
+      </tr>
+    </thead>
+    <h3 class="text-xl font-bold mb-4">Reserved Inventory</h3>
+    <tbody class="divide-y divide-hamzis-brown/20">
+      <% project.project_inventories.each do |pi| %>
+        <tr class="hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+          <td class="px-4 py-3"><%= pi.inventory_item&.name || "—" %></td>
+          <td class="px-4 py-3">
+            <%= pi.quantity %>
+            <span class="text-xs text-gray-500"><%= pi.inventory_item&.unit.presence || "pcs" %></span>
+          </td>
+          <td class="px-4 py-3"><%= pi.purpose.presence || "—" %></td>
+          <td class="px-4 py-3 flex gap-2">
+            <% if policy([ :inventory, pi ]).update? %>
+              <%= link_to "Edit", edit_inventory_project_inventory_path(pi),
+                  class: "px-3 py-1 rounded bg-gray-600 text-white text-xs" %>
+            <% end %>
+            <% if policy([ :inventory, pi ]).destroy? %>
+              <%= button_to "Remove", inventory_project_inventory_path(pi),
+                  method: :delete,
+                  class: "px-3 py-1 rounded bg-red-600 text-white text-xs",
+                  data: { confirm: "Remove this reservation?" } %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="text-sm text-gray-500">No inventory reserved for this project yet.</p>
+<% end %>

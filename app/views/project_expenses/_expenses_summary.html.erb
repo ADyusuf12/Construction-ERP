@@ -1,0 +1,23 @@
+<div class="grid md:grid-cols-3 gap-6 mb-6" id="project_expenses_summary">
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Total Expenses</p>
+    <p class="text-2xl font-bold">
+      <%= project ? project.project_expenses.count : expenses.count %>
+    </p>
+  </div>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Total Amount</p>
+    <p class="text-2xl font-bold">
+      ₦<%= number_with_delimiter(number_with_precision(project ? project.total_expenses : expenses.sum(:amount), precision: 2)) %>
+    </p>
+  </div>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Latest Expense</p>
+    <p class="text-2xl font-bold">
+      <%= (project ? project.project_expenses.order(date: :desc).first : expenses.order(date: :desc).first)&.date&.strftime("%b %d, %Y") || "-" %>
+    </p>
+  </div>
+</div>

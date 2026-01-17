@@ -1,0 +1,44 @@
+<% content_for :title, "Warehouses" %>
+<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">Warehouses</h1>
+<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+  <% if @warehouses.any? %>
+    <table class="min-w-full text-sm text-left border-collapse">
+      <thead>
+        <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
+          <th class="px-4 py-3">Name</th>
+          <th class="px-4 py-3">Code</th>
+          <th class="px-4 py-3">Address</th>
+          <th class="px-4 py-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-hamzis-brown/20">
+        <% @warehouses.each do |warehouse| %>
+          <tr class="hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+            <td class="px-4 py-3 font-semibold"><%= warehouse.name %></td>
+            <td class="px-4 py-3"><%= warehouse.code.presence || "—" %></td>
+            <td class="px-4 py-3"><%= warehouse.address.presence || "—" %></td>
+            <td class="px-4 py-3 flex gap-2">
+              <%= link_to "View", inventory_warehouse_path(warehouse),
+                class: "px-3 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition text-xs" %>
+              <% if policy([ :inventory, warehouse ]).update? %>
+                <%= link_to "Edit", edit_inventory_warehouse_path(warehouse),
+                  class: "px-3 py-1 rounded bg-gray-600 text-white hover:bg-gray-800 transition text-xs" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="text-center py-6">
+      <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No warehouses yet</p>
+      <% if policy([ :inventory, Warehouse.new ]).create? %>
+        <div class="mt-4">
+          <%= link_to "➕ New Warehouse", new_inventory_warehouse_path,
+              class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
