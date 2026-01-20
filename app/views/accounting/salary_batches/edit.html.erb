@@ -1,11 +1,7 @@
 <% content_for :title, "Edit Salary Batch" %>
-<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
-  Editing Salary Batch: <%= @salary_batch.name %>
-</h1>
+<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">Edit Salary Batch</h1>
 <%= render "form", salary_batch: @salary_batch %>
 <div class="mt-4 flex gap-2">
-  <%= link_to "Show Batch", accounting_salary_batch_path(@salary_batch),
-      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
   <%= link_to "← Back to Salary Batches", accounting_salary_batches_path,
-      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+        class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
 </div>

@@ -1,34 +1,65 @@
-<%= form_with(model: project, local: true, class: "space-y-4") do |form| %>
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 space-y-4">
-    <div>
-      <%= form.label :name, class: "block font-medium mb-1" %>
-      <%= form.text_field :name, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+<%= form_with(model: @project, local: true, class: "space-y-6 hr-form", data: { controller: "project-files" }) do |f| %>
+  <% if @project.errors.any? %>
+    <div class="p-4 rounded bg-hamzis-copper text-hamzis-white">
+      <h3 class="font-semibold"><%= pluralize(@project.errors.count, "error") %> prevented saving:</h3>
+      <ul class="list-disc ml-6 mt-2 text-sm">
+        <% @project.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
     </div>
-    <div>
-      <%= form.label :description, class: "block font-medium mb-1" %>
-      <%= form.text_area :description, rows: 4, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+  <% end %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Project details card -->
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border rounded-xl p-5 shadow-sm">
+      <h4 class="text-sm font-semibold text-hamzis-brown dark:text-hamzis-copper mb-3">Project Details</h4>
+      <div class="space-y-3">
+        <%= f.label :name, "Project Name", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= f.text_field :name, class: "w-full px-5 py-1 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+        <%= f.label :description, "Description", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= f.text_area :description, rows: 3, class: "w-full px-5 py-1 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+        <%= f.label :status, "Status", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= f.select :status, Project.statuses.keys.map { |s| [s.titleize, s] }, {prompt: "Select a status"},
+        class: "w-full px-5 py-1 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+        <%= f.label :deadline, "Deadline", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= f.date_field :deadline, class: "w-full px-5 py-1 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+        <%= f.label :budget, "Budget", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= f.number_field :budget, step: 0.01, class: "w-full px-5 py-1 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+      </div>
     </div>
-    <div>
-      <%= form.label :status, class: "block font-medium mb-1" %>
-      <%= form.select :status, Project.statuses.keys.map { |s| [s.titleize, s] },
-                      {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    <!-- Project files card -->
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border rounded-xl p-5 shadow-sm">
+      <h4 class="text-sm font-semibold text-hamzis-brown dark:text-hamzis-copper mb-3">Project Files</h4>
+      <div data-project-files-target="container">
+        <% @project.project_files.each do |pf| %>
+          <%= f.fields_for :project_files, pf do |pf_fields| %>
+            <%= render partial: "project_file_fields", locals: { f: pf_fields } %>
+          <% end %>
+        <% end %>
+        <% if @project.project_files.empty? %>
+          <%= f.fields_for :project_files, ProjectFile.new do |pf_fields| %>
+            <%= render partial: "project_file_fields", locals: { f: pf_fields } %>
+          <% end %>
+        <% end %>
+      </div>
+      <button type="button"
+              class="mt-2 px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition"
+              data-action="click->project-files#add">
+        + Add File
+      </button>
     </div>
-    <div>
-      <%= form.label :deadline, class: "block font-medium mb-1" %>
-      <%= form.date_field :deadline, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-    </div>
-    <div>
-      <%= form.label :budget, class: "block font-medium mb-1" %>
-      <%= form.text_field :budget, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-    </div>
-    <div>
-      <%= form.label :progress, class: "block font-medium mb-1" %>
-      <%= form.number_field :progress, in: 0..100, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-    </div>
-    <div class="flex gap-2">
-      <%= form.submit "Save", class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
-      <%= link_to "Cancel", projects_path, class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
-    </div>
+  </div>
+  <!-- Hidden template -->
+  <div id="project-file-template" class="hidden" data-project-files-target="template">
+    <%= f.fields_for :project_files, ProjectFile.new, child_index: "NEW_RECORD" do |pf_fields| %>
+      <%= render partial: "project_file_fields", locals: { f: pf_fields } %>
+    <% end %>
+  </div>
+  <!-- Actions -->
+  <div class="flex flex-col sm:flex-row gap-3 mt-2">
+    <%= f.submit (@project.persisted? ? "Update Project" : "Create Project"),
+          class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition-colors w-full sm:w-auto" %>
+    <%= link_to "Cancel", projects_path,
+          class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition w-full sm:w-auto" %>
   </div>
 <% end %>

@@ -1,6 +1,6 @@
 module Hr
   class PersonalDetail < ApplicationRecord
-    belongs_to :employee, class_name: "Hr::Employee"
+    belongs_to :employee, class_name: "Hr::Employee", inverse_of: :personal_detail
 
     enum :gender, {
       male: 0,
@@ -26,10 +26,6 @@ module Hr
 
     validates :bank_name, :account_number, :account_name, presence: true
     validate :above_eighteen
-
-    def full_name
-      "#{first_name} #{last_name}"
-    end
 
     private
 

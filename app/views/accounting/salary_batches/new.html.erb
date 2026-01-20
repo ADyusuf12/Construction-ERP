@@ -1,9 +1,7 @@
 <% content_for :title, "New Salary Batch" %>
-<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
-  New Salary Batch
-</h1>
+<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">New Salary Batch</h1>
 <%= render "form", salary_batch: @salary_batch %>
-<div class="mt-4">
-  <%= link_to "← Back", accounting_salary_batches_path,
-      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+<div class="mt-4 flex gap-2">
+  <%= link_to "← Back to Salary Batches", accounting_salary_batches_path,
+        class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
 </div>
