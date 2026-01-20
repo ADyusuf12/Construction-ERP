@@ -1,0 +1,78 @@
+<% if user_signed_in? && (policy([:inventory, InventoryItem]).index? || policy([:inventory, Warehouse]).index? || policy([:inventory, ProjectInventory]).index?) %>
+  <div class="space-y-3">
+    <!-- Section Header -->
+    <span class="sidebar-label block px-3 py-1 text-xs font-semibold tracking-wider uppercase border-b border-hamzis-brown/30 text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
+      Inventory
+    </span>
+    <div class="ml-2 space-y-2">
+      <!-- Inventory Items -->
+      <button type="button"
+              class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20 hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown transition-all duration-300 shadow-sm"
+              onclick="document.getElementById('inventory-items-dropdown').classList.toggle('hidden')">
+        <span class="flex items-center">
+          <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h7l2-2h7v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+          </svg>
+          <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Items</span>
+        </span>
+        <svg class="w-4 h-4 transform transition-transform opacity-70" id="inventory-items-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div id="inventory-items-dropdown" class="ml-4 space-y-1 hidden">
+        <% if policy([:inventory, InventoryItem]).index? %>
+          <%= link_to inventory_inventory_items_path,
+              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(inventory_inventory_items_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">All Items</span>
+          <% end %>
+        <% end %>
+        <% if policy([:inventory, InventoryItem]).create? %>
+          <%= link_to new_inventory_inventory_item_path,
+              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_inventory_inventory_item_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">New Item</span>
+          <% end %>
+        <% end %>
+      </div>
+      <!-- Warehouses -->
+      <button type="button"
+              class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20 hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown transition-all duration-300 shadow-sm"
+              onclick="document.getElementById('warehouses-dropdown').classList.toggle('hidden')">
+        <span class="flex items-center">
+          <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18v10H3z" />
+          </svg>
+          <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Warehouses</span>
+        </span>
+        <svg class="w-4 h-4 transform transition-transform opacity-70" id="warehouses-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div id="warehouses-dropdown" class="ml-4 space-y-1 hidden">
+        <% if policy([:inventory, Warehouse]).index? %>
+          <%= link_to inventory_warehouses_path,
+              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(inventory_warehouses_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">All Warehouses</span>
+          <% end %>
+        <% end %>
+        <% if policy([:inventory, Warehouse]).create? %>
+          <%= link_to new_inventory_warehouse_path,
+              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_inventory_warehouse_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">New Warehouse</span>
+          <% end %>
+        <% end %>
+      </div>
+      <!-- Project Reservations -->
+      <div class="ml-0">
+        <% if policy([:inventory, ProjectInventory]).index? %>
+          <%= link_to projects_path(anchor: "inventory"),
+              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(projects_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+            <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
+            </svg>
+            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Project Reservations</span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,5 @@
+<% content_for :title, "Edit Movement" %>
+<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
+  Edit Movement for <%= @inventory_item.name %>
+</h1>
+<%= render "form", stock_movement: @stock_movement, inventory_item: @inventory_item %>

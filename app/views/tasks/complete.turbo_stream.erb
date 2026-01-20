@@ -1,6 +1,0 @@
-<%= turbo_stream.replace dom_id(@task) do %>
-  <%= render partial: "tasks/task_row", locals: { task: @task } %>
-<% end %>
-<%= turbo_stream.replace "project_progress" do %>
-  <%= render "projects/progress_bar", project: @task.project %>
-<% end %>

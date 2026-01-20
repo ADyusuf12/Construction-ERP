@@ -1,0 +1,150 @@
+<div class="grid lg:grid-cols-3 gap-6">
+  <!-- Left: Item card -->
+  <div class="lg:col-span-1">
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+                border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+      <!-- Title -->
+      <h2 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper">
+        <%= @inventory_item.name %>
+      </h2>
+      <!-- SKU / meta -->
+      <div class="mt-3 text-sm text-gray-600 dark:text-gray-300 space-y-1">
+        <p>
+          <span class="font-medium">SKU:</span>
+          <span class="font-mono"><%= @inventory_item.sku.presence || "—" %></span>
+        </p>
+        <p>
+          <span class="font-medium">Unit:</span>
+          <%= @inventory_item.unit.presence || "—" %>
+        </p>
+        <p>
+          <span class="font-medium">Unit Cost:</span>
+          <%= number_to_currency(@inventory_item.unit_cost, unit: "₦") %>
+        </p>
+        <p>
+          <span class="font-medium">Reorder Threshold:</span>
+          <%= @inventory_item.reorder_threshold || "—" %>
+        </p>
+      </div>
+      <!-- Description -->
+      <% if @inventory_item.description.present? %>
+        <p class="mt-4 text-sm"><%= simple_format(@inventory_item.description) %></p>
+      <% end %>
+      <!-- Stock summary -->
+      <div class="mt-4 space-y-1 text-sm">
+        <p>
+          <span class="font-medium">Total Stock:</span>
+          <span class="font-semibold"><%= @inventory_item.total_quantity %></span>
+        </p>
+        <p>
+          <span class="font-medium">Available:</span>
+          <span class="font-semibold"><%= @inventory_item.available_quantity %></span>
+        </p>
+      </div>
+      <!-- Actions -->
+      <div class="mt-6 flex gap-2">
+        <% if policy([ :inventory, @inventory_item ]).update? %>
+          <%= link_to "Edit", edit_inventory_inventory_item_path(@inventory_item),
+              class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+        <% end %>
+        <%= link_to "Back to Items", inventory_inventory_items_path,
+            class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+        <% if policy([ :inventory, @inventory_item ]).destroy? %>
+          <%= button_to "Delete", "#",
+            class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition",
+            form: {
+              "data-action" => "click->confirm-delete#open",
+              "data-confirm-delete-title-param" => "Delete Inventory Item?",
+              "data-confirm-delete-message-param" => "Are you sure you want to delete '#{@inventory_item.name}'? This action cannot be undone.",
+              "data-confirm-delete-confirm-path-param" => inventory_inventory_item_path(@inventory_item)
+            } %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <!-- Right: Stock by warehouse + movements -->
+  <div class="lg:col-span-2 space-y-6">
+    <!-- Stock by Warehouse -->
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+                border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+      <h3 class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper mb-4">Stock by Warehouse</h3>
+      <% if (@inventory_item.respond_to?(:stock_levels) && @inventory_item.stock_levels.any?) || (@inventory_item.respond_to?(:project_inventories) && @inventory_item.project_inventories.any?) %>
+        <table class="min-w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
+              <th class="px-4 py-3">Warehouse / Project</th>
+              <th class="px-4 py-3">Quantity</th>
+              <th class="px-4 py-3">Location</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-hamzis-brown/20">
+            <% if @inventory_item.respond_to?(:stock_levels) && @inventory_item.stock_levels.any? %>
+              <% @inventory_item.stock_levels.each do |stock| %>
+                <tr class="hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+                  <td class="px-4 py-3"><%= stock.warehouse&.name || "—" %></td>
+                  <td class="px-4 py-3 font-medium"><%= stock.quantity %> <span class="text-xs text-gray-500"><%= @inventory_item.unit.presence || "—" %></span></td>
+                  <td class="px-4 py-3 text-sm text-gray-500"><%= stock.warehouse&.address.presence || stock.warehouse&.code.presence || "—" %></td>
+                </tr>
+              <% end %>
+            <% else %>
+              <% @inventory_item.project_inventories.each do |pi| %>
+                <tr class="hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+                  <td class="px-4 py-3"><%= pi.project&.name || "—" %></td>
+                  <td class="px-4 py-3 font-medium"><%= pi.quantity || "—" %> <span class="text-xs text-gray-500"><%= @inventory_item.unit.presence || "—" %></span></td>
+                  <td class="px-4 py-3 text-sm text-gray-500">Project stock</td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="text-center py-6">
+          <p class="text-sm text-gray-500">No stock records for this item.</p>
+        </div>
+      <% end %>
+    </div>
+    <!-- Recent Movements + Record Movement -->
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+                border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">Recent Movements</h3>
+        <div class="flex items-center gap-2">
+          <% if policy([ :inventory, StockMovement.new ]).create? %>
+            <%= link_to "➕ Record Movement", new_inventory_inventory_item_stock_movement_path(@inventory_item),
+                class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition text-sm" %>
+          <% end %>
+        </div>
+      </div>
+      <% if @stock_movements.any? %>
+        <table class="min-w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
+              <th class="px-4 py-3">Date</th>
+              <th class="px-4 py-3">Type</th>
+              <th class="px-4 py-3">Qty</th>
+              <th class="px-4 py-3">Reference</th>
+              <th class="px-4 py-3">By</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-hamzis-brown/20">
+            <% @stock_movements.each do |m| %>
+              <tr class="hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+                <td class="px-4 py-3"><%= l(m.created_at, format: :short) %></td>
+                <td class="px-4 py-3"><%= m.movement_type.to_s.humanize %></td>
+                <td class="px-4 py-3 font-medium"><%= m.quantity %> <span class="text-xs text-gray-500"><%= @inventory_item.unit.presence || "—" %></span></td>
+                <td class="px-4 py-3"><%= truncate(m.reference.to_s, length: 30) %></td>
+                <td class="px-4 py-3"><%= m.employee&.full_name || "System" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="text-center py-6">
+          <p class="text-sm text-gray-500">No movements recorded yet.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<!-- Turbo frame for movement form (kept for future Turbo work) -->
+<turbo-frame id="stock_movement_form" class="hidden"></turbo-frame>

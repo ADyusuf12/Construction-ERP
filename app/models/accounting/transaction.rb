@@ -1,8 +1,6 @@
 module Accounting
   class Transaction < ApplicationRecord
-    before_validation :normalize_amount
-
-    belongs_to :project
+    self.table_name = "transactions"
 
     enum :transaction_type, { invoice: 0, receipt: 1 }, prefix: true
     enum :status, { unpaid: 0, paid: 1 }, prefix: true
@@ -15,18 +13,25 @@ module Accounting
     scope :unpaid,   -> { where(status: :unpaid) }
     scope :paid,     -> { where(status: :paid) }
 
-    def self.summary_counts(scope = all)
-      {
-        invoices: scope.invoice.count,
-        receipts: scope.receipt.count,
-        outstanding: scope.invoice.unpaid.count
-      }
+    # --- Global transaction summaries ---
+    def self.invoice_count(scope = all)
+      scope.invoice.count
     end
 
-    private
+    def self.receipt_count(scope = all)
+      scope.receipt.count
+    end
 
-    def normalize_amount
-      self.amount = amount.to_d.round(2) if amount.present?
+    def self.outstanding(scope = all)
+      scope.invoice.unpaid.count
+    end
+
+    def self.summary_counts(scope = all)
+      {
+        invoices: invoice_count(scope),
+        receipts: receipt_count(scope),
+        outstanding: outstanding(scope)
+      }
     end
   end
 end

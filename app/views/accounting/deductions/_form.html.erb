@@ -1,0 +1,52 @@
+<%= form_with(model: @deduction, local: true, class: "space-y-6 hr-form") do |f| %>
+  <% if @deduction.errors.any? %>
+    <div class="p-4 rounded bg-hamzis-copper text-hamzis-white">
+      <h3 class="font-semibold"><%= pluralize(@deduction.errors.count, "error") %> prevented saving:</h3>
+      <ul class="list-disc ml-6 mt-2 text-sm">
+        <% @deduction.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 space-y-4">
+    <!-- Employee -->
+    <div>
+      <%= f.label :employee_id, "Employee", class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= f.collection_select :employee_id, Hr::Employee.all, :id, :full_name,
+            { prompt: "Select an employee" },
+            { class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper
+                      focus:ring-hamzis-copper focus:border-hamzis-copper" } %>
+    </div>
+    <!-- Deduction Type -->
+    <div>
+      <%= f.label :deduction_type, "Type", class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= f.select :deduction_type,
+            Accounting::Deduction.deduction_types.keys.map { |t| [t.humanize, t] },
+            {}, { class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper
+                      focus:ring-hamzis-copper focus:border-hamzis-copper" } %>
+    </div>
+    <!-- Amount -->
+    <div>
+      <%= f.label :amount, "Amount", class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= f.text_field :amount,
+            class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper
+                    focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    </div>
+    <!-- Notes -->
+    <div>
+      <%= f.label :notes, "Notes (optional)", class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= f.text_area :notes, rows: 3,
+            class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper
+                    focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    </div>
+    <!-- Actions -->
+    <div class="flex flex-col sm:flex-row gap-3 mt-2">
+      <%= f.submit (@deduction.persisted? ? "Update Deduction" : "Create Deduction"),
+            class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition-colors w-full sm:w-auto" %>
+      <%= link_to "Cancel", accounting_deductions_path,
+            class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition w-full sm:w-auto" %>
+    </div>
+  </div>
+<% end %>

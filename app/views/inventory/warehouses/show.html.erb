@@ -1,0 +1,65 @@
+<div class="space-y-8">
+  <!-- Overview cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="bg-white shadow rounded-lg p-4">
+      <h3 class="text-xs font-medium text-gray-500">Total Items</h3>
+      <p class="mt-1 text-xl font-semibold text-gray-900">
+        <%= @inventory_items.count %>
+      </p>
+    </div>
+    <div class="bg-white shadow rounded-lg p-4">
+      <h3 class="text-xs font-medium text-gray-500">Total Stock Value</h3>
+      <p class="mt-1 text-xl font-semibold text-gray-900">
+        <%= number_to_currency(@warehouse.total_stock_value, unit: "₦") %>
+      </p>
+    </div>
+  </div>
+  <!-- Inventory items table -->
+  <div>
+    <h2 class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper mb-4">
+      Inventory Items Stored
+    </h2>
+    <%= render "inventory/inventory_items/inventory_table",
+               inventory_items: @inventory_items,
+               inventory_totals: @inventory_totals %>
+  </div>
+  <!-- Recent stock movements -->
+  <div>
+    <h2 class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper mb-4">
+      Recent Stock Movements
+    </h2>
+    <div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+                border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+      <% if @recent_movements.any? %>
+        <table class="min-w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
+              <th class="px-4 py-3">Date</th>
+              <th class="px-4 py-3">Type</th>
+              <th class="px-4 py-3">Item</th>
+              <th class="px-4 py-3">Quantity</th>
+              <th class="px-4 py-3">Project</th>
+              <th class="px-4 py-3">Performed By</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-hamzis-brown/20">
+            <% @recent_movements.each_with_index do |movement, index| %>
+              <tr class="<%= index.even? ? 'bg-hamzis-brown/5 dark:bg-hamzis-copper/5' : '' %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+                <td class="px-4 py-3"><%= l(movement.created_at, format: :short) %></td>
+                <td class="px-4 py-3"><%= movement.movement_type.capitalize %></td>
+                <td class="px-4 py-3"><%= movement.inventory_item.name %></td>
+                <td class="px-4 py-3"><%= movement.quantity %></td>
+                <td class="px-4 py-3"><%= movement.project&.name || "—" %></td>
+                <td class="px-4 py-3"><%= movement.performed_by&.full_name || "—" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="text-center py-6">
+          <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No recent movements</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

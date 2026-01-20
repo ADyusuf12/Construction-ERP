@@ -4,8 +4,7 @@ module Accounting
 
     def index?
       user.role_ceo? || user.role_admin? ||
-      user.role_accountant? || user.role_cto? || user.role_site_manager? ||
-      user.role_qs? || user.role_engineer? || user.role_storekeeper? || user.role_hr?
+      user.role_accountant? || user.role_cto? || user.role_site_manager? || user.role_engineer? || user.role_storekeeper? || user.role_hr?
     end
 
     def show?
@@ -30,10 +29,12 @@ module Accounting
 
     class Scope < Scope
       def resolve
-        if user.role_ceo? || user.role_admin? || user.role_accountant? || user.role_cto? || user.role_site_manager? || user.role_hr? || user.role_storekeeper?
+        if user.role_ceo? || user.role_admin? || user.role_accountant? ||
+           user.role_cto? || user.role_site_manager? || user.role_hr? || user.role_storekeeper?
+          # Exec/management/finance roles see all transactions
           scope.all
         else
-          scope.joins(project: :assignments).where(assignments: { user_id: user.id })
+          scope.none
         end
       end
     end

@@ -1,194 +1,48 @@
-  <!-- SIDEBAR -->
-<aside class="w-64 bg-hamzis-brown text-hamzis-white dark:bg-hamzis-black dark:text-hamzis-copper min-h-screen flex flex-col">
+<aside id="sidebar"
+      data-controller="sidebar"
+       class="w-64 bg-hamzis-brown/40 dark:bg-hamzis-black/40 backdrop-blur-xl text-hamzis-white dark:text-hamzis-copper min-h-screen flex flex-col shadow-2xl transition-all duration-300">
   <!-- Logo -->
-  <div class="px-4 py-6 border-b border-hamzis-brown/20 flex justify-between items-center">
-    <h1 class="text-xl font-bold tracking-wide">Hamzis Systems</h1>
-    <!-- Mobile toggle -->
-    <button id="nav-toggle"
-            class="md:hidden px-2 py-1 rounded bg-hamzis-copper text-hamzis-white
-                   hover:bg-hamzis-black hover:text-hamzis-white transition-colors"
-            aria-label="Toggle navigation">
-      ☰
+  <div class="px-4 py-6 border-b border-hamzis-brown/30 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <!-- Always-visible icon (compact logo) -->
+      <a href="<%= dashboard_home_path %>" class="flex items-center" aria-label="Hamzis Systems home" title="Hamzis Systems">
+        <svg class="w-7 h-7 text-hamzis-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7h7l2-2h7v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+        </svg>
+        <!-- Full name — hidden when sidebar is collapsed by the sidebar controller -->
+        <span class="ml-2 text-xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-hamzis-copper to-hamzis-white sidebar-label transition-opacity duration-200"
+            data-sidebar-target="label">
+          Hamzis Systems
+        </span>
+      </a>
+    </div>
+    <!-- Optional: keep the collapse toggle here if you want it in the header -->
+    <button id="sidebar-toggle" data-action="sidebar#toggle" aria-label="Toggle sidebar"
+          class="p-1 rounded hover:bg-hamzis-brown/10 dark:hover:bg-hamzis-black/10">
+      <svg class="w-5 h-5 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
     </button>
   </div>
   <!-- Nav links -->
-  <nav id="nav-menu" class="flex-1 px-4 py-6 space-y-4 hidden md:block text-sm">
-    <!-- Home -->
-    <%= link_to home_index_path, class: "flex items-center px-3 py-2 rounded transition-colors #{current_page?(home_index_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" do %>
-      <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7m-9 2v8m0-8h8" />
+  <nav id="nav-menu" class="flex-1 px-4 py-6 space-y-6 text-sm">
+    <!-- Dashboard -->
+    <%= link_to dashboard_home_path,
+    class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(dashboard_home_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown text-hamzis-white shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown hover:text-hamzis-white'}" do %>
+      <!-- Refined icon: grid/dashboard -->
+      <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
+       viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 3h7v7H3V3zm11 0h7v7h-7V3zM3 14h7v7H3v-7zm11 0h7v7h-7v-7z" />
       </svg>
-      Home
+      <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
+        Dashboard
+      </span>
     <% end %>
-    <!-- Projects section -->
-    <% if user_signed_in? && policy(Project).index? %>
-      <div class="space-y-2">
-        <span class="block px-3 py-1 text-xs font-semibold tracking-wider text-hamzis-copper uppercase border-b border-hamzis-brown/30">Operations</span>
-        <div class="ml-4 space-y-1">
-          <button type="button"
-              class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
-              onclick="document.getElementById('projects-dropdown').classList.toggle('hidden')">
-            <span class="flex items-center">
-              <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6h5v2H4v-2h5z" />
-              </svg>
-              Projects
-            </span>
-            <svg class="w-4 h-4 transform transition-transform" id="projects-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <div id="projects-dropdown" class="ml-4 space-y-1 hidden">
-            <%= link_to "All Projects", projects_path,
-            class: "block px-3 py-2 rounded transition-colors #{current_page?(projects_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <% if policy(Project).create? %>
-              <%= link_to "New Project", new_project_path,
-              class: "block px-3 py-2 rounded transition-colors #{current_page?(new_project_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-      <% if user_signed_in? && policy(Task).index? %>
-        <div class="ml-4 space-y-1">
-          <button type="button"
-              class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
-              onclick="document.getElementById('tasks-dropdown').classList.toggle('hidden')">
-            <span class="flex items-center">
-              <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m-6-8h6" />
-              </svg>
-              Tasks
-            </span>
-            <svg class="w-4 h-4 transform transition-transform" id="tasks-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <div id="tasks-dropdown" class="ml-4 space-y-1 hidden">
-            <%= link_to "All Tasks", tasks_path,
-            class: "block px-3 py-2 rounded transition-colors #{current_page?(tasks_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <% if policy(Task).create? %>
-              <%= link_to "New Task", new_task_path,
-              class: "block px-3 py-2 rounded transition-colors #{current_page?(new_task_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-      <% if user_signed_in? && policy_scope(Report).exists? %>
-        <div class="ml-4 space-y-1">
-          <button type="button"
-              class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
-              onclick="document.getElementById('reports-dropdown').classList.toggle('hidden')">
-            <span class="flex items-center">
-              <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m-6-8h6" />
-              </svg>
-              Reports
-            </span>
-            <svg class="w-4 h-4 transform transition-transform" id="reports-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <div id="reports-dropdown" class="ml-4 space-y-1 hidden">
-            <%= link_to "All Reports", reports_path,
-            class: "block px-3 py-2 rounded transition-colors #{current_page?(reports_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <% if policy(Report.new).create? %>
-              <%= link_to "New Report", new_report_path,
-              class: "block px-3 py-2 rounded transition-colors #{current_page?(new_report_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    <!-- HR section -->
-    <% if user_signed_in? && policy(Hr::Employee).index? %>
-      <div class="space-y-2">
-        <span class="block px-3 py-1 text-xs font-semibold tracking-wider text-hamzis-copper uppercase border-b border-hamzis-brown/30">HR</span>
-        <div class="ml-4 space-y-1">
-          <button type="button"
-                  class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
-                  onclick="document.getElementById('hr-dropdown').classList.toggle('hidden')">
-            <span class="flex items-center">
-              <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m10-4a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-              Employees
-            </span>
-            <svg class="w-4 h-4 transform transition-transform" id="hr-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <div id="hr-dropdown" class="ml-4 space-y-1 hidden">
-            <%= link_to "All Employees", hr_employees_path,
-                class: "block px-3 py-2 rounded transition-colors #{current_page?(hr_employees_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <% if user_signed_in? && policy(Hr::Employee).create? %>
-              <%= link_to "New Employee", new_hr_employee_path,
-                  class: "block px-3 py-2 rounded transition-colors #{current_page?(new_hr_employee_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-    <% if user_signed_in? %>
-      <div class="ml-4 space-y-1">
-        <button type="button"
-      class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
-      onclick="document.getElementById('leaves-dropdown').classList.toggle('hidden')">
-          <span class="flex items-center">
-            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M9 12h6m-6 4h6m-6-8h6" />
-            </svg>
-            Leaves
-          </span>
-          <svg class="w-4 h-4 transform transition-transform" id="leaves-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        <div id="leaves-dropdown" class="ml-4 space-y-1 hidden">
-          <% if policy(Hr::Leave).index? %>
-            <%= link_to "All Leaves", hr_leaves_path,
-          class: "block px-3 py-2 rounded transition-colors #{current_page?(hr_leaves_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-          <% end %>
-          <%= link_to "My Leaves", my_leaves_hr_leaves_path,
-        class: "block px-3 py-2 rounded transition-colors #{current_page?(my_leaves_hr_leaves_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-          <% if policy(Hr::Leave.new).create? %>
-            <%= link_to "New Leave", new_hr_leave_path,
-          class: "block px-3 py-2 rounded transition-colors #{current_page?(new_hr_leave_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-    <!-- Accounting section -->
-    <% if user_signed_in? && policy(Accounting::Transaction).index? %>
-      <div class="space-y-2">
-        <span class="block px-3 py-1 text-xs font-semibold tracking-wider text-hamzis-copper uppercase border-b border-hamzis-brown/30">Accounting</span>
-        <div class="ml-4 space-y-1">
-          <button type="button"
-              class="flex justify-between items-center w-full px-3 py-2 rounded hover:bg-hamzis-copper hover:text-hamzis-white"
-              onclick="document.getElementById('transactions-dropdown').classList.toggle('hidden')">
-            <span class="flex items-center">
-              <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M3 7h18M3 11h18M5 15h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2z" />
-              </svg>
-              Transactions
-            </span>
-            <svg class="w-4 h-4 transform transition-transform" id="transactions-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <div id="transactions-dropdown" class="ml-4 space-y-1 hidden">
-            <%= link_to "All Transactions", accounting_transactions_path,
-            class: "block px-3 py-2 rounded transition-colors #{current_page?(accounting_transactions_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <% if user_signed_in? && policy(Accounting::Transaction).create? %>
-              <%= link_to "New Transaction", new_accounting_transaction_path,
-              class: "block px-3 py-2 rounded transition-colors #{current_page?(new_accounting_transaction_path) ? 'bg-hamzis-copper text-hamzis-white' : 'hover:bg-hamzis-copper hover:text-hamzis-white'}" %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    <% end %>
+    <%= render "shared/sidebar/operations" %>
+    <%= render "shared/sidebar/inventory" %>
+    <%= render "shared/sidebar/hr" %>
+    <%= render "shared/sidebar/accounting" %>
   </nav>
-  <%= render 'shared/auth_links' %>
+  <%= render "shared/auth_links" %>
 </aside>

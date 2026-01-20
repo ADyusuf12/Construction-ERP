@@ -7,29 +7,29 @@
         <%= form.label :project_id, "Project", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
         <%= form.collection_select :project_id, Project.all, :id, :name,
               { prompt: "Select a project" },
-              { class: "w-full rounded border-gray-300 shadow-sm" } %>
+              { class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" } %>
       </div>
     <% end %>
     <!-- Title -->
     <div>
       <%= form.label :title, class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= form.text_field :title, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.text_field :title, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <!-- Details -->
     <div>
       <%= form.label :details, class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= form.text_area :details, rows: 4, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.text_area :details, rows: 4, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <!-- Status -->
     <div>
       <%= form.label :status, class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
       <%= form.select :status, Task.statuses.keys.map { |s| [s.titleize, s] },
-                      {}, class: "w-full rounded border-gray-300 shadow-sm" %>
+                      {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <!-- Due Date -->
     <div>
       <%= form.label :due_date, class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= form.date_select :due_date, class: "w-full rounded border-gray-300 shadow-sm" %>
+      <%= form.date_field :due_date, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
     <!-- Weight -->
     <div>
@@ -42,12 +42,21 @@
     </div>
     <!-- Assigned Users -->
     <div>
-      <%= form.label :user_ids, "Assign To", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= form.collection_select :user_ids, User.all, :id, :email,
-            { include_hidden: false },
-            { multiple: true, class: "w-full rounded border-gray-300 shadow-sm" } %>
+      <%= form.label :user_ids, "Assign To",
+        class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <% Hr::Employee.status_active.each do |emp| %>
+          <% if emp.user.present? %>
+            <label class="flex items-center space-x-2 px-2 py-1 rounded hover:bg-hamzis-white/20 dark:hover:bg-hamzis-black/20 transition">
+              <%= check_box_tag "task[user_ids][]", emp.user.id, form.object.user_ids.include?(emp.user.id),
+                class: "rounded border-hamzis-brown focus:ring-hamzis-copper" %>
+              <span class="text-gray-900 dark:text-hamzis-copper"><%= emp.full_name %></span>
+            </label>
+          <% end %>
+        <% end %>
+      </div>
       <p class="text-xs text-gray-500 mt-1">
-        Select one or more users responsible for this task.
+        Select one or more employees responsible for this task.
       </p>
     </div>
     <!-- Actions -->

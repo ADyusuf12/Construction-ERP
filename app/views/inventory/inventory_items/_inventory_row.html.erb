@@ -1,0 +1,26 @@
+<tr id="<%= dom_id(item) %>" class="<%= row_class %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+  <!-- SKU -->
+  <td class="px-4 py-3 font-mono text-xs"><%= item.sku.presence || "—" %></td>
+  <!-- Name -->
+  <td class="px-4 py-3 font-semibold">
+    <%= link_to item.name, inventory_inventory_item_path(item),
+                class: "hover:underline text-hamzis-brown dark:text-hamzis-copper" %>
+  </td>
+  <!-- Stock (use precomputed totals to avoid N+1) -->
+  <td class="px-4 py-3">
+    <% total = @inventory_totals[item.id] || item.total_quantity %>
+    <span class="font-medium"><%= total %></span>
+    <div class="text-xs text-gray-500"><%= item.unit.presence || "pcs" %></div>
+  </td>
+  <!-- Unit Cost -->
+  <td class="px-4 py-3"><%= number_to_currency(item.unit_cost, unit: "₦") %></td>
+  <!-- Actions -->
+  <td class="px-4 py-3 flex gap-2">
+    <%= link_to "View", inventory_inventory_item_path(item),
+      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition text-xs" %>
+    <% if policy([:inventory, item]).update? %>
+      <%= link_to "Edit", edit_inventory_inventory_item_path(item),
+        class: "px-3 py-1 rounded bg-gray-600 text-white hover:bg-gray-800 transition text-xs" %>
+    <% end %>
+  </td>
+</tr>

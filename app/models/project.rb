@@ -1,16 +1,18 @@
 class Project < ApplicationRecord
   belongs_to :user, optional: true
   has_many :tasks, dependent: :destroy
-  has_many :accounting_transactions,
-           class_name: "Accounting::Transaction",
-           dependent: :destroy
   has_many :reports, dependent: :destroy
+  has_many :assignments, through: :tasks
+  has_many :project_inventories, dependent: :destroy
+  has_many :inventory_items, through: :project_inventories
+  has_many :project_expenses, dependent: :destroy
+  has_many :project_files, dependent: :destroy
+  accepts_nested_attributes_for :project_files, allow_destroy: true
 
   enum :status, { ongoing: 0, completed: 1 }, prefix: true
 
   validates :name, presence: true, length: { maximum: 100 }
   validates :description, presence: true
-  validates :progress, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
 
   scope :due_soon, -> { where("deadline <= ?", 1.week.from_now) }
   scope :overdue, -> { where("deadline < ? AND status != ?", Time.current, statuses[:completed]) }
@@ -25,22 +27,9 @@ class Project < ApplicationRecord
     ((completed_weight.to_f / total_weight) * 100).round
   end
 
-  # --- Transaction summaries ---
-  def invoice_count
-    accounting_transactions.invoice.count
-  end
-
-  def receipt_count
-    accounting_transactions.receipt.count
-  end
-
-  def outstanding
-    accounting_transactions.invoice.unpaid.count
-  end
-
   # --- Budget calculations ---
   def total_expenses
-    accounting_transactions.sum(:amount)
+    project_expenses.sum(:amount)
   end
 
   def remaining_budget

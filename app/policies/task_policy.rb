@@ -43,7 +43,9 @@ class TaskPolicy < ApplicationPolicy
         scope.all
       else
         # QS/Engineer only see tasks assigned to them
-        scope.joins(:assignments).where(assignments: { user_id: user.id })
+        scope.joins(:assignments)
+             .where(assignments: { user_id: user.id })
+             .distinct
       end
     end
   end

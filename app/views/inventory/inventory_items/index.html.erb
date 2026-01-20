@@ -1,0 +1,21 @@
+<h2 class="text-2xl font-bold mb-6">Inventory Items</h2>
+<!-- Dashboard Summary -->
+<%= render "inventory/inventory_items/summary", inventory_items: @inventory_items %>
+<!-- New Item Button -->
+<div class="mb-6 flex justify-end">
+  <% if policy([:inventory, InventoryItem.new]).create? %>
+    <%= link_to "➕ New Item", new_inventory_inventory_item_path,
+        class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+  <% end %>
+</div>
+<!-- Filters row (simple server-side search) -->
+<div class="mb-4 flex items-center gap-4">
+  <%= form_with url: inventory_inventory_items_path, method: :get, local: true, class: "flex gap-2" do |f| %>
+    <%= f.text_field :q, value: params[:q], placeholder: "Search by name or SKU",
+          class: "px-3 py-2 rounded border border-hamzis-brown/20 bg-transparent text-sm w-80" %>
+    <%= f.submit "Search", class: "px-3 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition text-sm" %>
+  <% end %>
+  <%= link_to "Reset", inventory_inventory_items_path, class: "px-3 py-2 rounded bg-gray-300 text-gray-900 hover:bg-gray-400 transition text-sm" %>
+</div>
+<!-- Items Table -->
+<%= render "inventory/inventory_items/inventory_table", inventory_items: @inventory_items %>

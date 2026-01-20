@@ -5,7 +5,8 @@ class ProjectPolicy < ApplicationPolicy
     # CEO and Admin see everything
     user.role_ceo? || user.role_admin? ||
     # Other roles with project visibility
-    user.role_cto? || user.role_site_manager? || user.role_qs? || user.role_engineer? || user.role_storekeeper? || user.role_hr?
+    user.role_cto? || user.role_site_manager? || user.role_qs? ||
+    user.role_engineer? || user.role_storekeeper? || user.role_hr?
   end
 
   def show?
@@ -29,11 +30,14 @@ class ProjectPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr? || user.role_storekeeper?
-        scope.all
+      if user.role_engineer? || user.role_qs?
+        # Engineers/QS only see projects where they have tasks assigned
+        scope.joins(tasks: :assignments)
+             .where(assignments: { user_id: user.id })
+             .distinct
       else
-        # QS, Engineer, etc. only see projects they are assigned to
-        scope.joins(:assignments).where(assignments: { user_id: user.id })
+        # All other roles see all projects (company-owned)
+        scope.all
       end
     end
   end

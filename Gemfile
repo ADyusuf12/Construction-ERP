@@ -63,6 +63,7 @@ group :development, :test do
   gem "faker"
 
   gem "letter_opener"
+   gem "pry"
 end
 
 group :development do

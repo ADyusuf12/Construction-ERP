@@ -1,0 +1,100 @@
+<% if user_signed_in? && (policy(Project).index? || policy(Task).index? || policy_scope(Report).exists?) %>
+  <div class="space-y-3">
+    <!-- Section Header -->
+    <span class="sidebar-label block px-3 py-1 text-xs font-semibold tracking-wider uppercase border-b border-hamzis-brown/30 text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
+      Operations
+    </span>
+    <div class="ml-2 space-y-2">
+      <!-- Projects -->
+      <button type="button"
+              class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20 hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown transition-all duration-300 shadow-sm"
+              onclick="document.getElementById('projects-dropdown').classList.toggle('hidden')">
+        <span class="flex items-center">
+          <!-- Refined icon: folder/project -->
+          <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 7h4l2-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+          </svg>
+          <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Projects</span>
+        </span>
+        <svg class="w-4 h-4 transform transition-transform opacity-70" id="projects-chevron"
+             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div id="projects-dropdown" class="ml-4 space-y-1 hidden">
+        <%= link_to projects_path,
+            class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(projects_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">All Projects</span>
+        <% end %>
+        <% if policy(Project).create? %>
+          <%= link_to new_project_path,
+              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_project_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">New Project</span>
+          <% end %>
+        <% end %>
+      </div>
+      <!-- Tasks -->
+      <button type="button"
+              class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20 hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown transition-all duration-300 shadow-sm"
+              onclick="document.getElementById('tasks-dropdown').classList.toggle('hidden')">
+        <span class="flex items-center">
+          <!-- Refined icon: checklist -->
+          <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 11l3 3L22 4M4 6h16M4 12h4M4 18h4" />
+          </svg>
+          <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Tasks</span>
+        </span>
+        <svg class="w-4 h-4 transform transition-transform opacity-70" id="tasks-chevron"
+             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div id="tasks-dropdown" class="ml-4 space-y-1 hidden">
+        <%= link_to tasks_path,
+            class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(tasks_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">All Tasks</span>
+        <% end %>
+        <% if policy(Task).create? %>
+          <%= link_to new_task_path,
+              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_task_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">New Task</span>
+          <% end %>
+        <% end %>
+      </div>
+      <!-- Reports -->
+      <button type="button"
+              class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20 hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown transition-all duration-300 shadow-sm"
+              onclick="document.getElementById('reports-dropdown').classList.toggle('hidden')">
+        <span class="flex items-center">
+          <!-- Refined icon: bar chart -->
+          <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6h4v12H4V6zm6 4h4v8h-4v-8zm6-6h4v14h-4V4z" />
+          </svg>
+          <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Reports</span>
+        </span>
+        <svg class="w-4 h-4 transform transition-transform opacity-70" id="reports-chevron"
+             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div id="reports-dropdown" class="ml-4 space-y-1 hidden">
+        <%= link_to reports_path,
+            class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(reports_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">All Reports</span>
+        <% end %>
+        <% if policy(Report.new).create? %>
+          <%= link_to new_report_path,
+              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_report_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">New Report</span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

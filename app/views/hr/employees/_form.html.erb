@@ -1,52 +1,161 @@
-<%= form_with(model: @employee, local: true, class: "space-y-6") do |form| %>
-  <% if @employee.errors.any? %>
+<%= form_with(model: @employee, local: true, class: "space-y-6 hr-form") do |f| %>
+  <% if @employee.errors.any? || (@employee.personal_detail && @employee.personal_detail.errors.any?) %>
     <div class="p-4 rounded bg-hamzis-copper text-hamzis-white">
-      <h2 class="font-bold"><%= pluralize(@employee.errors.count, "error") %> prevented saving:</h2>
-      <ul class="list-disc ml-6">
-        <% @employee.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+      <h3 class="font-semibold">
+        <%= pluralize(@employee.errors.count + (@employee.personal_detail&.errors&.count || 0), "error") %> prevented saving:
+      </h3>
+      <ul class="list-disc ml-6 mt-2 text-sm">
+        <% (@employee.errors.full_messages + (@employee.personal_detail&.errors&.full_messages || [])).each do |msg| %>
+          <li><%= msg %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
-  <!-- Department -->
-  <div>
-    <%= form.label :department, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-    <%= form.text_field :department, class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-  </div>
-  <!-- Position Title -->
-  <div>
-    <%= form.label :position_title, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-    <%= form.text_field :position_title, class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-  </div>
-  <!-- Hire Date -->
-  <div>
-    <%= form.label :hire_date, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-    <%= form.date_select :hire_date, class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-  </div>
-  <!-- Status -->
-  <div>
-    <%= form.label :status, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-    <%= form.select :status, Hr::Employee.statuses.keys.map { |s| [s.humanize, s] },
-        {}, class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-  </div>
-  <!-- Leave Balance -->
-  <div>
-    <%= form.label :leave_balance, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-    <%= form.number_field :leave_balance, value: @employee.leave_balance || 0,
-        class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-  </div>
-  <!-- Performance Score -->
-  <div>
-    <%= form.label :performance_score, class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-    <%= form.number_field :performance_score, step: 0.01,
-        class: "w-full px-3 py-2 border rounded focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-    <p class="text-xs text-gray-500 mt-1">Leave blank for new hires; use only for existing employees being imported.</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Employment details card -->
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-xl p-5 shadow-sm">
+      <h4 class="text-sm font-semibold text-hamzis-brown dark:text-hamzis-copper mb-3">Employment</h4>
+      <div class="space-y-3">
+        <div>
+          <%= f.label :department, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= f.text_field :department,
+                list: "departments",
+                class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+          <datalist id="departments">
+            <% @departments.each do |d| %>
+              <option value="<%= d %>"></option>
+            <% end %>
+          </datalist>
+        </div>
+        <div>
+          <%= f.label :position_title, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= f.text_field :position_title,
+                class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <%= f.label :hire_date, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+            <%= f.date_field :hire_date,
+                  class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+          </div>
+          <div>
+            <%= f.label :manager_id, "Manager", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+            <%= f.select :manager_id,
+                  options_for_select([["— No manager —", nil]] + @managers.map { |m| [m.full_name, m.id] }, @employee.manager_id),
+                  {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <%= f.label :status, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+            <%= f.select :status,
+                  options_for_select(@status_options, @employee.status),
+                  {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+          </div>
+          <div>
+            <%= f.label :leave_balance, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+            <%= f.number_field :leave_balance,
+                  value: @employee.leave_balance || 0,
+                  class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+          </div>
+        </div>
+        <div>
+          <%= f.label :performance_score, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= f.number_field :performance_score,
+                step: 0.01,
+                class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Leave blank for new hires; used for imports/legacy data.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Personal details card -->
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-xl p-5 shadow-sm">
+      <h4 class="text-sm font-semibold text-hamzis-brown dark:text-hamzis-copper mb-3">Personal Details</h4>
+      <%= f.fields_for :personal_detail do |pd| %>
+        <div class="space-y-3">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <%= pd.label :first_name, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+              <%= pd.text_field :first_name,
+                    class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+            </div>
+            <div>
+              <%= pd.label :last_name, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+              <%= pd.text_field :last_name,
+                    class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <%= pd.label :dob, "Date of birth", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+              <%= pd.date_field :dob,
+                    class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+            </div>
+            <div>
+              <%= pd.label :gender, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+              <%= pd.select :gender,
+                    options_for_select(@gender_options, pd.object.gender),
+                    {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+            </div>
+          </div>
+          <div>
+            <%= pd.label :phone_number, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+            <%= pd.telephone_field :phone_number,
+                  placeholder: "+234 80x xxx xxxx",
+                  class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+          </div>
+          <div>
+            <%= pd.label :address, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+            <%= pd.text_area :address,
+                  rows: 2,
+                  class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <%= pd.label :means_of_identification, "ID Type", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+              <%= pd.select :means_of_identification,
+                    options_for_select(@id_options, pd.object.means_of_identification),
+                    {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+            </div>
+            <div>
+              <%= pd.label :id_number, "ID Number", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+              <%= pd.text_field :id_number,
+                    class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <%= pd.label :bank_name, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+              <%= pd.text_field :bank_name,
+                    class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+            </div>
+            <div>
+              <%= pd.label :account_number, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+              <%= pd.text_field :account_number,
+                    inputmode: "numeric",
+                    class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+            </div>
+          </div>
+          <div>
+            <%= pd.label :account_name, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+            <%= pd.text_field :account_name,
+                  class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+          </div>
+          <div>
+            <%= pd.label :marital_status, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+            <%= pd.select :marital_status,
+                  options_for_select(@marital_options, pd.object.marital_status),
+                  {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
   <!-- Actions -->
-  <div class="flex gap-2">
-    <%= form.submit "Save Employee", class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition-colors" %>
+  <div class="flex flex-col sm:flex-row gap-3 mt-2">
+    <%= f.submit (@employee.persisted? ? "Update Employee" : "Create Employee"),
+          class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition-colors w-full sm:w-auto" %>
     <%= link_to "Cancel", hr_employees_path,
-        class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+          class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition w-full sm:w-auto" %>
   </div>
 <% end %>

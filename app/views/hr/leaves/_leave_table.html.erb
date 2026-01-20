@@ -1,20 +1,22 @@
 <div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
             border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
   <% if leaves.any? %>
-    <table class="min-w-full text-sm text-left">
+    <table class="min-w-full text-sm text-left border-collapse">
       <thead>
-        <tr class="text-hamzis-brown dark:text-hamzis-copper border-b border-hamzis-brown/20">
-          <th class="px-4 py-2">Start</th>
-          <th class="px-4 py-2">End</th>
-          <th class="px-4 py-2">Reason</th>
-          <th class="px-4 py-2">Status</th>
-          <th class="px-4 py-2">Employee</th>
-          <th class="px-4 py-2">Actions</th>
+        <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
+          <th class="px-4 py-3">Start</th>
+          <th class="px-4 py-3">End</th>
+          <th class="px-4 py-3">Reason</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3">Employee</th>
+          <th class="px-4 py-3">Actions</th>
         </tr>
       </thead>
-      <tbody>
-        <% leaves.each do |leave| %>
-          <%= render "hr/leaves/leave_row", leave: leave %>
+      <tbody class="divide-y divide-hamzis-brown/20">
+        <% leaves.each_with_index do |leave, index| %>
+          <%= render "hr/leaves/leave_row",
+                     leave: leave,
+                     row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
         <% end %>
       </tbody>
     </table>

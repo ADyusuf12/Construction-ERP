@@ -1,48 +1,14 @@
 <% content_for :title, @project.name %>
-<!-- Project Info -->
-<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-            border border-hamzis-brown/20 rounded-xl shadow-lg p-6 mb-8">
-  <h2 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper">
-    <%= @project.name %>
-  </h2>
-  <p class="mt-2"><%= @project.description %></p>
-  <div class="mt-4 space-y-2 text-sm">
-    <p><span class="font-medium">Status:</span> <%= @project.status.humanize %></p>
-    <% if @project.deadline.present? %>
-      <p><span class="font-medium">Deadline:</span> <%= @project.deadline.strftime("%b %d, %Y") %></p>
-    <% end %>
-    <% if @project.budget.present? %>
-      <p><span class="font-medium">Budget:</span> ₦<%= number_with_delimiter(number_with_precision(@project.budget, precision: 2)) %></p>
-    <% end %>
-    <%= render "projects/progress_bar", project: @project %>
-  </div>
-  <div class="mt-6 flex gap-2">
-    <%= link_to "Edit", edit_project_path(@project),
-      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
-    <%= link_to "Back", projects_path,
-      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
-    <% if policy(@project).destroy? %>
-      <%= button_to "Delete", "#",
-        class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition",
-        form: {
-          "data-action" => "click->confirm-delete#open",
-          "data-confirm-delete-title-param" => "Delete Project?",
-          "data-confirm-delete-message-param" => "Are you sure you want to delete '#{@project.name}'? This action cannot be undone.",
-          "data-confirm-delete-confirm-path-param" => project_path(@project)
-        } %>
-    <% end %>
-  </div>
-</div>
-<!-- Tabs -->
+<%= render "info_card", project: @project %>
 <div class="border-b border-hamzis-brown/20 mb-6">
   <nav class="flex gap-6 text-sm font-medium">
     <button data-tab="tasks"
             class="tab-link px-3 py-2 rounded-t bg-hamzis-copper text-white">
       Tasks
     </button>
-    <button data-tab="accounting"
+    <button data-tab="expenses"
             class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-      Accounting
+      Expenses
     </button>
     <button data-tab="budget"
             class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
@@ -52,96 +18,27 @@
             class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
       Reports
     </button>
+    <button data-tab="inventory"
+            class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+      Inventory
+    </button>
   </nav>
 </div>
-<!-- Tab Content -->
 <div id="tasks-tab" class="tab-content">
-  <!-- Tasks Section -->
-  <h3 class="text-xl font-bold mb-4">Tasks</h3>
-  <!-- Dashboard Summary (Weighted) -->
-  <div class="grid md:grid-cols-3 gap-6 mb-6">
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-      <p class="text-sm font-medium">Total Weight</p>
-      <p class="text-xl font-bold"><%= @project.tasks.sum(:weight) %></p>
-    </div>
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-      <p class="text-sm font-medium">Pending Weight</p>
-      <p class="text-xl font-bold"><%= @project.tasks.status_pending.sum(:weight) %></p>
-    </div>
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-      <p class="text-sm font-medium">Completed Weight</p>
-      <p class="text-xl font-bold"><%= @project.tasks.status_done.sum(:weight) %></p>
-    </div>
-  </div>
-  <div class="mb-6 flex justify-end">
-    <%= link_to "➕ New Task", new_project_task_path(@project),
-        class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
-  </div>
-  <%= render "projects/tasks_table", project: @project %>
+  <%= render "projects/tabs/tasks", project: @project %>
 </div>
-<div id="accounting-tab" class="tab-content hidden">
-  <!-- Transactions Section -->
-  <h3 class="text-xl font-bold mb-4">Transactions</h3>
-  <%= render "accounting/transactions/transactions_summary", project: @project %>
-  <div class="mb-6 flex justify-end">
-    <%= link_to "➕ New Transaction", new_accounting_transaction_path(project_id: @project.id),
-        class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
-  </div>
-  <%= render "accounting/transactions/transactions_table", project: @project %>
+<div id="expenses-tab" class="tab-content hidden">
+  <%= render "projects/tabs/expenses", project: @project %>
 </div>
 <div id="budget-tab" class="tab-content hidden">
-  <!-- Budget Section -->
-  <h3 class="text-xl font-bold mb-4">Budget Overview</h3>
-  <div class="grid md:grid-cols-3 gap-6 mb-6">
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-      <p class="text-sm font-medium">Allocated Budget</p>
-      <p class="text-xl font-bold">₦<%= number_with_delimiter(number_with_precision(@project.budget, precision: 2)) %></p>
-    </div>
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-      <p class="text-sm font-medium">Total Expenses</p>
-      <p class="text-xl font-bold">₦<%= number_with_delimiter(number_with_precision(@project.total_expenses, precision: 2)) %></p>
-    </div>
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-      <p class="text-sm font-medium">Remaining Balance</p>
-      <p class="text-xl font-bold">₦<%= number_with_delimiter(number_with_precision(@project.remaining_budget, precision: 2)) %></p>
-    </div>
-  </div>
-  <div class="mb-6">
-    <p class="text-sm font-medium mb-2">Budget Consumption</p>
-    <div class="w-full bg-gray-200 rounded-full h-4">
-      <div class="bg-hamzis-copper h-4 rounded-full"
-           style="width: <%= @project.budget_consumed_percentage %>%"></div>
-    </div>
-    <p class="mt-2 text-sm"><%= @project.budget_consumed_percentage %>% of budget used</p>
-  </div>
+  <%= render "projects/tabs/budget", project: @project %>
 </div>
 <div id="reports-tab" class="tab-content hidden">
-  <!-- Reports Section -->
-  <h3 class="text-xl font-bold mb-4">Reports</h3>
-  <!-- Dashboard Summary -->
-  <div class="grid md:grid-cols-3 gap-6 mb-6">
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-      <p class="text-sm font-medium">Total Reports</p>
-      <p class="text-xl font-bold"><%= @project.reports.count %></p>
-    </div>
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-      <p class="text-sm font-medium">Submitted</p>
-      <p class="text-xl font-bold"><%= @project.reports.status_submitted.count %></p>
-    </div>
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-      <p class="text-sm font-medium">Reviewed</p>
-      <p class="text-xl font-bold"><%= @project.reports.status_reviewed.count %></p>
-    </div>
-  </div>
-  <!-- New Report Button -->
-  <div class="mb-6 flex justify-end">
-    <%= link_to "➕ New Report", new_project_report_path(@project),
-        class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
-  </div>
-  <!-- Reports Table -->
-  <%= render "projects/reports_table", project: @project, reports: @project.reports %>
+  <%= render "projects/tabs/reports", project: @project %>
 </div>
-<!-- Tab Toggle Script -->
+<div id="inventory-tab" class="tab-content hidden">
+  <%= render "projects/tabs/inventory", project: @project %>
+</div>
 <script nonce="<%= content_security_policy_nonce %>">
   (() => {
     const links = document.querySelectorAll(".tab-link");

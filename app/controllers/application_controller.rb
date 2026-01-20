@@ -8,11 +8,11 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized
     flash[:alert] = "You are not authorized to perform this action."
-    redirect_to(request.referrer || home_index_path)
+    redirect_to(request.referrer || dashboard_home_path)
   end
 
   def after_sign_in_path_for(resource)
-    home_index_path
+    dashboard_home_path
   end
 
   def after_sign_out_path_for(resource_or_scope)

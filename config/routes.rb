@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
+  namespace :dashboard do
+    get "/", to: "home#index", as: :home
+  end
+
   namespace :hr do
-    resources :employees
+    resources :employees do
+      resource :personal_detail
+    end
+
     resources :leaves do
       collection do
         get :my_leaves
@@ -26,10 +33,20 @@ Rails.application.routes.draw do
         patch :complete
       end
     end
+    resources :project_expenses
   end
 
-  resources :tasks, only: [ :index, :new, :create ]
-  resources :reports, only: [ :index, :new, :create ]
+  resources :tasks
+  resources :reports
+  resources :project_expenses
+
+  namespace :inventory do
+    resources :inventory_items do
+      resources :stock_movements, only: %i[index new create edit update destroy show]
+    end
+    resources :warehouses
+    resources :project_inventories, only: [ :create, :edit, :update, :destroy ]
+  end
 
   namespace :accounting do
     resources :transactions do
@@ -37,6 +54,23 @@ Rails.application.routes.draw do
         patch :mark_paid
       end
     end
+
+    resources :salary_batches do
+      member do
+        patch :mark_paid
+      end
+      resources :salaries do
+        resources :deductions
+      end
+    end
+
+    resources :salaries do
+      member do
+        patch :mark_paid
+      end
+    end
+
+    resources :deductions
   end
 
   devise_scope :user do
@@ -44,5 +78,4 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, skip: [ :registrations ]
-  get "home/index"
 end
