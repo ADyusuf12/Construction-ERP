@@ -28,5 +28,14 @@
   <%= link_to "➕ New Employee", new_hr_employee_path,
       class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
 </div>
+<!-- Filters row (simple server-side search) -->
+<div class="mb-4 flex items-center gap-4">
+  <%= form_with url: hr_employees_path, method: :get, local: true, class: "flex gap-2" do |f| %>
+    <%= f.text_field :q, value: params[:q], placeholder: "Search by Hamzis ID",
+          class: "px-3 py-2 rounded border border-hamzis-brown/20 bg-transparent text-sm w-80" %>
+    <%= f.submit "Search", class: "px-3 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition text-sm" %>
+  <% end %>
+  <%= link_to "Reset", hr_employees_path, class: "px-3 py-2 rounded bg-gray-300 text-gray-900 hover:bg-gray-400 transition text-sm" %>
+</div>
 <!-- Employee Table -->
 <%= render "hr/employees/employee_table", employees: @employees %>

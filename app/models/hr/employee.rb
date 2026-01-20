@@ -6,8 +6,11 @@ module Hr
     has_many :subordinates, class_name: "Hr::Employee", foreign_key: "manager_id", dependent: :nullify
     has_many :leaves, class_name: "Hr::Leave", foreign_key: "employee_id", dependent: :destroy
     has_many :leave_approvals, class_name: "Hr::Leave", foreign_key: "manager_id", dependent: :nullify
-    has_one :personal_detail, class_name: "Hr::PersonalDetail", dependent: :destroy
+    has_one :personal_detail, class_name: "Hr::PersonalDetail", dependent: :destroy, inverse_of: :employee
     has_many :salaries, class_name: "Accounting::Salary", foreign_key: "employee_id", dependent: :destroy
+
+    accepts_nested_attributes_for :personal_detail, update_only: true, allow_destroy: true
+    validates_associated :personal_detail
 
     enum :status, { active: 0, on_leave: 1, terminated: 2 }, prefix: true
 

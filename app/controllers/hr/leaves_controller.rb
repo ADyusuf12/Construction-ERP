@@ -6,6 +6,9 @@ module Hr
     def index
       authorize Hr::Leave
       @leaves = policy_scope(Hr::Leave)
+      if params[:status].present? && Hr::Leave.statuses.key?(params[:status])
+        @leaves = @leaves.where(status: params[:status])
+      end
     end
 
     def my_leaves

@@ -1,25 +1,35 @@
-<div class="flex items-center justify-center min-h-screen bg-hamzis-white dark:bg-hamzis-black">
-  <div class="w-full max-w-md bg-hamzis-white/30 dark:bg-hamzis-black/30
-              backdrop-blur-md rounded-xl shadow-md p-8">
-    <h2 class="text-2xl font-bold text-center mb-6">Forgot your password?</h2>
-    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-      <div class="mb-4">
-        <%= f.label :email, class: "block text-sm font-medium mb-1" %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email",
-              class: "w-full px-3 py-2 rounded border border-hamzis-brown/30
-                      bg-hamzis-white dark:bg-hamzis-black
-                      focus:ring-2 focus:ring-hamzis-copper" %>
+<div class="flex min-h-screen bg-gradient-to-br from-hamzis-white via-hamzis-copper/10 to-hamzis-brown/20 dark:from-hamzis-black dark:via-hamzis-brown/30 dark:to-hamzis-copper/20">
+  <!-- Left brand panel -->
+  <div class="hidden md:flex md:w-1/2 items-center justify-center p-12">
+    <div class="text-center space-y-6">
+      <h1 class="text-4xl font-extrabold text-hamzis-brown dark:text-hamzis-copper">Hamzis Systems</h1>
+      <p class="text-lg text-hamzis-brown/70 dark:text-hamzis-copper/70">Reset your password securely</p>
+    </div>
+  </div>
+  <!-- Right form -->
+  <div class="flex w-full md:w-1/2 items-center justify-center p-8">
+    <div class="w-full max-w-md bg-hamzis-white/40 dark:bg-hamzis-black/40 backdrop-blur-md rounded-2xl shadow-xl p-10">
+      <h2 class="text-2xl font-bold text-center mb-2 text-hamzis-brown dark:text-hamzis-copper">Forgot your password?</h2>
+      <p class="text-center text-sm text-hamzis-brown/70 dark:text-hamzis-copper/70 mb-6">Enter your email to receive reset instructions</p>
+      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+        <div class="mb-5">
+          <%= f.label :email, "Email Address", class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email",
+                class: "w-full px-4 py-3 rounded-lg border border-hamzis-brown/30 bg-transparent
+                        text-gray-900 dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper
+                        focus:border-hamzis-copper transition" %>
+        </div>
+        <div class="mb-6">
+          <%= f.submit "Send reset instructions",
+                class: "w-full px-4 py-3 rounded-lg bg-hamzis-copper text-hamzis-white
+                        hover:bg-hamzis-black hover:text-hamzis-white transition-colors
+                        font-semibold shadow-md" %>
+        </div>
+      <% end %>
+      <div class="text-center text-sm text-hamzis-brown/70 dark:text-hamzis-copper/70">
+        <%= render "devise/shared/links" %>
       </div>
-      <div class="mb-6">
-        <%= f.submit "Send me reset password instructions",
-              class: "w-full px-4 py-2 rounded bg-hamzis-copper text-hamzis-white
-                      hover:bg-hamzis-black hover:text-hamzis-white
-                      dark:bg-hamzis-brown transition-colors font-semibold" %>
-      </div>
-    <% end %>
-    <div class="text-center text-sm">
-      <%= render "devise/shared/links" %>
     </div>
   </div>
 </div>

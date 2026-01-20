@@ -7,12 +7,14 @@ FactoryBot.define do
     status      { :ongoing }
     deadline    { 1.month.from_now }
     budget      { 50_000 }
-    progress    { 0 } # starts at 0, recalculated by tasks
 
     # Traits for variations
     trait :completed do
-      status   { :completed }
-      progress { 100 }
+      status { :completed }
+      # progress is now calculated, so no manual assignment
+      after(:create) do |project|
+        create_list(:task, 3, project: project, status: :done, weight: 10)
+      end
     end
 
     trait :due_soon do
@@ -24,7 +26,6 @@ FactoryBot.define do
       status   { :ongoing }
     end
 
-    # With tasks
     trait :with_tasks do
       after(:create) do |project|
         create_list(:task, 3, project: project)
