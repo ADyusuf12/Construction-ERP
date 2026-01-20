@@ -189,6 +189,80 @@ Manages the leave request and approval process.
 
 ---
 
+## Inventory
+
+Manages inventory items, stock movements, and warehouse operations, namespaced under `/inventory`.
+
+### Inventory Items
+
+| Method   | Path                                  | Controller#Action                   | Purpose                        |
+| -------- | ------------------------------------- | ----------------------------------- | ------------------------------ |
+| `GET`    | `/inventory/inventory_items`          | `inventory/inventory_items#index`   | List all inventory items       |
+| `GET`    | `/inventory/inventory_items/new`      | `inventory/inventory_items#new`     | Show new inventory item form   |
+| `POST`   | `/inventory/inventory_items`          | `inventory/inventory_items#create`  | Create a new inventory item    |
+| `GET`    | `/inventory/inventory_items/:id`      | `inventory/inventory_items#show`    | Show a specific inventory item |
+| `GET`    | `/inventory/inventory_items/:id/edit` | `inventory/inventory_items#edit`    | Show edit inventory item form  |
+| `PATCH`  | `/inventory/inventory_items/:id`      | `inventory/inventory_items#update`  | Update an inventory item       |
+| `PUT`    | `/inventory/inventory_items/:id`      | `inventory/inventory_items#update`  | Update an inventory item       |
+| `DELETE` | `/inventory/inventory_items/:id`      | `inventory/inventory_items#destroy` | Delete an inventory item       |
+
+### Stock Movements
+
+| Method   | Path                                                                     | Controller#Action                   | Purpose                       |
+| -------- | ------------------------------------------------------------------------ | ----------------------------------- | ----------------------------- |
+| `GET`    | `/inventory/inventory_items/:inventory_item_id/stock_movements`          | `inventory/stock_movements#index`   | List stock movements for item |
+| `GET`    | `/inventory/inventory_items/:inventory_item_id/stock_movements/new`      | `inventory/stock_movements#new`     | New stock movement form       |
+| `POST`   | `/inventory/inventory_items/:inventory_item_id/stock_movements`          | `inventory/stock_movements#create`  | Create stock movement         |
+| `GET`    | `/inventory/inventory_items/:inventory_item_id/stock_movements/:id`      | `inventory/stock_movements#show`    | Show stock movement detail    |
+| `GET`    | `/inventory/inventory_items/:inventory_item_id/stock_movements/:id/edit` | `inventory/stock_movements#edit`    | Edit stock movement form      |
+| `PATCH`  | `/inventory/inventory_items/:inventory_item_id/stock_movements/:id`      | `inventory/stock_movements#update`  | Update stock movement         |
+| `PUT`    | `/inventory/inventory_items/:inventory_item_id/stock_movements/:id`      | `inventory/stock_movements#update`  | Update stock movement         |
+| `DELETE` | `/inventory/inventory_items/:inventory_item_id/stock_movements/:id`      | `inventory/stock_movements#destroy` | Delete stock movement         |
+
+### Warehouses
+
+| Method   | Path                             | Controller#Action              | Purpose                  |
+| -------- | -------------------------------- | ------------------------------ | ------------------------ |
+| `GET`    | `/inventory/warehouses`          | `inventory/warehouses#index`   | List all warehouses      |
+| `GET`    | `/inventory/warehouses/new`      | `inventory/warehouses#new`     | Show new warehouse form  |
+| `POST`   | `/inventory/warehouses`          | `inventory/warehouses#create`  | Create a new warehouse   |
+| `GET`    | `/inventory/warehouses/:id`      | `inventory/warehouses#show`    | Show a warehouse         |
+| `GET`    | `/inventory/warehouses/:id/edit` | `inventory/warehouses#edit`    | Show edit warehouse form |
+| `PATCH`  | `/inventory/warehouses/:id`      | `inventory/warehouses#update`  | Update a warehouse       |
+| `PUT`    | `/inventory/warehouses/:id`      | `inventory/warehouses#update`  | Update a warehouse       |
+| `DELETE` | `/inventory/warehouses/:id`      | `inventory/warehouses#destroy` | Delete a warehouse       |
+
+### Project Inventories
+
+Project inventories are managed via form submissions in projects and through API endpoints for dynamic management.
+
+| Method   | Path                                      | Controller#Action                       | Purpose                       |
+| -------- | ----------------------------------------- | --------------------------------------- | ----------------------------- |
+| `POST`   | `/inventory/project_inventories`          | `inventory/project_inventories#create`  | Allocate inventory to project |
+| `GET`    | `/inventory/project_inventories/:id/edit` | `inventory/project_inventories#edit`    | Show edit form                |
+| `PATCH`  | `/inventory/project_inventories/:id`      | `inventory/project_inventories#update`  | Update allocation             |
+| `PUT`    | `/inventory/project_inventories/:id`      | `inventory/project_inventories#update`  | Update allocation             |
+| `DELETE` | `/inventory/project_inventories/:id`      | `inventory/project_inventories#destroy` | Remove allocation             |
+
+---
+
+## Project Expenses
+
+Manages expense tracking for projects.
+
+| Method   | Path                                              | Controller#Action          | Purpose               |
+| -------- | ------------------------------------------------- | -------------------------- | --------------------- |
+| `GET`    | `/projects/:project_id/project_expenses`          | `project_expenses#index`   | List project expenses |
+| `GET`    | `/projects/:project_id/project_expenses/new`      | `project_expenses#new`     | Show new expense form |
+| `POST`   | `/projects/:project_id/project_expenses`          | `project_expenses#create`  | Create expense        |
+| `GET`    | `/projects/:project_id/project_expenses/:id`      | `project_expenses#show`    | Show expense detail   |
+| `GET`    | `/projects/:project_id/project_expenses/:id/edit` | `project_expenses#edit`    | Edit expense form     |
+| `PATCH`  | `/projects/:project_id/project_expenses/:id`      | `project_expenses#update`  | Update expense        |
+| `PUT`    | `/projects/:project_id/project_expenses/:id`      | `project_expenses#update`  | Update expense        |
+| `DELETE` | `/projects/:project_id/project_expenses/:id`      | `project_expenses#destroy` | Delete expense        |
+
+---
+
 ## Notes and Implementation Details
 
 - **Authentication**: Most controllers call `before_action :authenticate_user!` — endpoints require a signed-in user.

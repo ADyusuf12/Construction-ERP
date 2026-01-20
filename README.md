@@ -31,31 +31,39 @@ This application provides a centralized platform for managing core business oper
 - **Modular Architecture:** The application is organized into logical modules (**HR**, **Accounting**) using namespacing, ensuring a clean and scalable codebase.
 
 - **Project Management:**
-
   - **Project Tracking:** Create, manage, and monitor projects, including setting budgets, tracking progress, and assigning project managers.
   - **Task Management:** Define tasks within projects, assign them to users, and track their status from "To Do" to "Done."
 
 - **Reporting & Analytics:**
-
   - **Project Reporting System:** A structured workflow for creating, submitting, and reviewing project reports, enabling transparent progress tracking.
   - **Dashboard:** A central dashboard provides a high-level overview of ongoing projects, pending tasks, and other key metrics.
 
 - **Human Resources (HR) Module:**
-
   - **Employee Management:** Maintain a directory of employees and manage organizational structure (e.g., manager-subordinate relationships).
   - **Leave Management System:** A complete workflow for employees to request time off and for managers to approve or deny requests.
+  - **Personal Details:** Store comprehensive personal and banking information for payroll and HR purposes.
 
 - **Accounting Module:**
-  - **Transaction Logging:** Record financial transactions related to specific projects, helping to monitor budgets and expenses.
+  - **Transaction Logging:** Record financial transactions related to the organization.
+  - **Salary Management:** Manage employee salaries, batches, and deductions (taxes, pension, insurance, etc.).
+
+- **Inventory Module:**
+  - **Inventory Items Master:** Maintain master data for all inventory items with SKU, unit cost, and status tracking.
+  - **Warehouse Management:** Manage multiple warehouse locations for inventory storage.
+  - **Stock Level Tracking:** Real-time tracking of inventory quantities across warehouses.
+  - **Stock Movements Audit Trail:** Complete history of all inventory movements (inbound, outbound, adjustments, allocations) with references to employees, projects, and tasks.
+  - **Project Inventory Allocation:** Reserve and allocate inventory items to specific projects for work tracking.
+
+- **Project Expense Tracking:**
+  - Record and track expenses for individual projects to monitor budget utilization.
 
 ## Project Structure
 
 The application follows the standard Ruby on Rails directory structure. Key directories include:
 
 - **`app/`**: Contains the core application code, organized by functionality:
-
-  - **`controllers/`**: Handles incoming HTTP requests and coordinates with models and views. Namespaced controllers for `Accounting`, `HR`, and `Dashboard`.
-  - **`models/`**: Defines the application's data models and business logic. Namespaced models for `Accounting` and `HR`.
+  - **`controllers/`**: Handles incoming HTTP requests and coordinates with models and views. Namespaced controllers for `Accounting`, `HR`, `Inventory`, and `Dashboard`.
+  - **`models/`**: Defines the application's data models and business logic. Namespaced models for `Accounting`, `HR`, and `Inventory`.
   - **`views/`**: Contains the ERB templates for rendering the user interface.
   - **`javascript/`**: Frontend JavaScript code, managed by **Hotwire** (Stimulus controllers).
   - **`assets/`**: Static assets like images and stylesheets.
@@ -66,8 +74,6 @@ The application follows the standard Ruby on Rails directory structure. Key dire
 - **`db/`**: Database-related files, including the schema (`schema.rb`) and migrations.
 
 - **`docs/`**: A dedicated directory for detailed documentation on architecture, features, and APIs.
-
-- **`spec/`**: Test files written with **RSpec**, including factories and request specs.
 
 ## Technology Stack
 

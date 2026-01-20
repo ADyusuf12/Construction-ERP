@@ -26,34 +26,72 @@ Here is a breakdown of the key directories and their purposes:
 
 ### Core Project Management
 
-- **`User`**: Represents a user of the application. Handles authentication (via Devise) and roles. **Note:** User self-registration is currently disabled.
-- **`Project`**: Represents a project with a name, description, status, and other details.
-- **`Task`**: Represents a task within a project. It has a description, status, weight, and can be assigned to users.
-- **`Assignment`**: A join model that connects `User`s to `Task`s, representing task assignments.
-- **`Report`**: A new feature that allows users to create, submit, and review reports associated with a project.
+- **`User`**: Represents a user of the application. Handles authentication (via Devise) and roles (CEO, CTO, QS, Site Manager, Engineer, Storekeeper, HR, Accountant, Admin). User self-registration is disabled; admins create accounts.
+- **`Project`**: Represents a project with a name, description, status (ongoing/completed), deadline, and budget.
+- **`Task`**: Represents a task within a project with a title, details, status (pending/in_progress/done), due date, and weight for effort estimation.
+- **`Assignment`**: A join model connecting `User`s to `Task`s, representing task assignments and accountability.
+- **`Report`**: Allows users assigned to tasks to create, submit, and review progress reports associated with a project.
+- **`ProjectExpense`**: Tracks expenses related to specific projects for budget tracking.
+- **`ProjectFile`**: Manages file attachments associated with projects via Active Storage.
+- **`ProjectInventory`**: Links inventory items to projects/tasks with reserved quantities.
 
 ### Accounting Module
 
-- **`Transaction`**: Represents a financial transaction, namespaced under the `Accounting` module.
+- **`Accounting::Transaction`**: Represents financial transactions (income/expenses) for the organization.
+- **`Accounting::SalaryBatch`**: Represents a batch of salaries (e.g., monthly payroll) to be processed.
+- **`Accounting::Salary`**: Represents an employee's salary record within a salary batch, including base pay, allowances, and deductions.
+- **`Accounting::Deduction`**: Itemized deductions from salaries (taxes, pension, insurance, etc.).
 
 ### Human Resources (HR) Module
 
-- **`Hr::Employee`**: Represents an employee in the HR module. This model supports a hierarchical structure via a `manager_id`, allowing for reporting lines and approval workflows.
-- **`Hr::Leave`**: A new feature that facilitates a complete leave management workflow, including leave requests by employees and approval/rejection by managers.
+- **`Hr::Employee`**: Represents an employee with hierarchical support via `manager_id` for organizational structure and approval workflows.
+- **`Hr::Leave`**: Manages leave/time-off requests with complete workflow: employee requests, manager approval/rejection, and cancellation.
+- **`Hr::PersonalDetail`**: Stores extended personal and banking information for employees.
+
+### Inventory Module
+
+- **`Warehouse`**: Represents a physical warehouse location where inventory is stored.
+- **`InventoryItem`**: Master data for inventory items with SKU, name, unit cost, status (in_stock/low_stock/out_of_stock), and reorder threshold.
+- **`StockLevel`**: Tracks the quantity of each inventory item per warehouse (snapshot/actual inventory).
+- **`StockMovement`**: Complete audit trail of all inventory movements (inbound/outbound/adjustment/allocation) with optional employee, project, and task references.
+
+---
 
 ## Controllers
 
-Controllers are responsible for handling web requests. Key controllers include:
+Controllers handle web requests and coordinate between models and views. Key controllers include:
 
-- **`ProjectsController`**: Handles CRUD operations for projects.
-- **`TasksController`**: Handles CRUD operations for tasks.
-- **`ReportsController`**: Manages the project reporting workflow (submission, review, etc.).
-- **`Accounting::TransactionsController`**: Manages financial transactions.
-- **`Hr::EmployeesController`**: Manages employee records.
-- **`Hr::LeavesController`**: Manages the leave request and approval process.
-- **`HomeController`**: Renders the main dashboard or landing page.
+### Core
 
-Application-wide logic, such as authentication and base authorization, is handled in `ApplicationController`.
+- **`ProjectsController`**: CRUD operations for projects
+- **`TasksController`**: CRUD operations and status changes for tasks
+- **`ReportsController`**: Reporting workflow (create, submit, review)
+- **`Dashboard::HomeController`**: Main dashboard with overview metrics
+- **`ProjectExpensesController`**: Expense tracking for projects
+
+### Accounting
+
+- **`Accounting::TransactionsController`**: Financial transaction management
+- **`Accounting::SalaryBatchesController`**: Salary batch processing
+- **`Accounting::SalariesController`**: Individual salary management
+- **`Accounting::DeductionsController`**: Salary deduction tracking
+
+### Human Resources
+
+- **`Hr::EmployeesController`**: Employee management and directory
+- **`Hr::LeavesController`**: Leave request workflow with approval/rejection
+- **`Hr::PersonalDetailsController`**: Extended employee information
+
+### Inventory
+
+- **`Inventory::InventoryItemsController`**: Master inventory item management
+- **`Inventory::WarehousesController`**: Warehouse location management
+- **`Inventory::StockMovementsController`**: Stock movement recording and tracking
+- **`Inventory::ProjectInventoriesController`**: Project inventory allocation
+
+### Base
+
+- **`ApplicationController`**: Handles authentication, authorization, and shared logic
 
 ## Views
 
@@ -166,10 +204,11 @@ bundle exec rspec
 ```
 
 To run a specific file:
+
 ```bash
 bundle exec rspec spec/models/project_spec.rb
 ```
 
 ---
 
-*This document is intended to be a living document and should be updated as the application's architecture evolves.*
+_This document is intended to be a living document and should be updated as the application's architecture evolves._
