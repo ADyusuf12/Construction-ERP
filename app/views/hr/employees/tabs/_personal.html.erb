@@ -1,0 +1,25 @@
+<div class="rounded-xl bg-hamzis-white/40 dark:bg-hamzis-black/40 border border-hamzis-brown/20 shadow-md p-6">
+  <h4 class="text-base font-semibold text-hamzis-brown dark:text-hamzis-copper mb-4 flex items-center gap-2">
+    <svg class="w-4 h-4 text-hamzis-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+    Personal Details
+  </h4>
+  <% if employee.personal_detail.present? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6 text-sm">
+      <div><span class="font-medium">Name:</span> <%= employee.personal_detail.first_name %> <%= employee.personal_detail.last_name %></div>
+      <div><span class="font-medium">Date of Birth:</span> <%= employee.personal_detail.dob %></div>
+      <div><span class="font-medium">Gender:</span> <%= employee.personal_detail.gender.humanize %></div>
+      <div><span class="font-medium">Phone:</span> <%= employee.personal_detail.phone_number %></div>
+      <div class="md:col-span-2"><span class="font-medium">Address:</span> <%= employee.personal_detail.address %></div>
+      <div><span class="font-medium">ID Type:</span> <%= employee.personal_detail.means_of_identification.humanize.upcase %></div>
+      <div><span class="font-medium">ID Number:</span> <%= employee.personal_detail.id_number %></div>
+      <div><span class="font-medium">Bank:</span> <%= employee.personal_detail.bank_name %></div>
+      <div><span class="font-medium">Account Number:</span> <%= employee.personal_detail.account_number %></div>
+      <div><span class="font-medium">Account Name:</span> <%= employee.personal_detail.account_name %></div>
+      <div><span class="font-medium">Marital Status:</span> <%= employee.personal_detail.marital_status.humanize %></div>
+    </div>
+  <% else %>
+    <p class="text-sm text-gray-500">No personal details recorded.</p>
+  <% end %>
+</div>

@@ -1,0 +1,34 @@
+<div class="rounded-xl bg-hamzis-white/40 dark:bg-hamzis-black/40 border border-hamzis-brown/20 shadow-md p-6">
+  <h4 class="text-base font-semibold text-hamzis-brown dark:text-hamzis-copper mb-4 flex items-center gap-2">
+    <svg class="w-4 h-4 text-hamzis-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/>
+    </svg>
+    Employment History
+  </h4>
+  <div class="space-y-6 text-sm">
+    <% if employee.leaves.any? %>
+      <div>
+        <h5 class="text-xs font-semibold text-hamzis-brown dark:text-hamzis-copper mb-2">Leaves Taken</h5>
+        <ul class="list-disc ml-6 space-y-1">
+          <% employee.leaves.each do |leave| %>
+            <li><%= leave.start_date %> – <%= leave.end_date %> (<%= leave.status.humanize %>)</li>
+          <% end %>
+        </ul>
+      </div>
+    <% else %>
+      <p class="text-sm text-gray-500">No leave history available.</p>
+    <% end %>
+    <% if employee.salaries.any? %>
+      <div>
+        <h5 class="text-xs font-semibold text-hamzis-brown dark:text-hamzis-copper mb-2">Salary Records</h5>
+        <ul class="list-disc ml-6 space-y-1">
+          <% employee.salaries.each do |salary| %>
+            <li><%= salary.period %>: <%= number_to_currency(salary.amount) %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% else %>
+      <p class="text-sm text-gray-500">No salary records available.</p>
+    <% end %>
+  </div>
+</div>
