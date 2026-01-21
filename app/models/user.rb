@@ -11,4 +11,12 @@ class User < ApplicationRecord
   has_many :transactions, dependent: :destroy, class_name: "Accounting::Transaction"
   has_many :reports, dependent: :destroy
   has_many :leaves, through: :employee, class_name: "Hr::Leave"
+
+  def full_name
+    if employee.present?
+      employee.full_name
+    else
+      "User ##{id}"
+    end
+  end
 end
