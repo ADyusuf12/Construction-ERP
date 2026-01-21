@@ -29,7 +29,7 @@ class ProjectsController < ApplicationController
     if @project.save
       redirect_to @project, notice: "Project was successfully created."
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -38,7 +38,7 @@ class ProjectsController < ApplicationController
     if @project.update(project_params)
       redirect_to @project, notice: "Project was successfully updated.", status: :see_other
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
@@ -57,7 +57,7 @@ class ProjectsController < ApplicationController
   def project_params
     params.require(:project).permit(
       :name, :description, :status, :deadline, :budget, :progress,
-      project_files_attributes: [ :id, :category, :description, :_destroy, files: [] ]
+      project_files_attributes: [ :id, :title, :description, :file, :_destroy ]
     )
   end
 end

@@ -22,6 +22,10 @@
             class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
       Inventory
     </button>
+    <button data-tab="files"
+        class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+      Files
+    </button>
   </nav>
 </div>
 <div id="tasks-tab" class="tab-content">
@@ -38,6 +42,9 @@
 </div>
 <div id="inventory-tab" class="tab-content hidden">
   <%= render "projects/tabs/inventory", project: @project %>
+</div>
+<div id="files-tab" class="tab-content hidden">
+  <%= render "projects/tabs/files", project: @project %>
 </div>
 <script nonce="<%= content_security_policy_nonce %>">
   (() => {
