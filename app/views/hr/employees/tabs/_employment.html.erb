@@ -1,0 +1,26 @@
+<div class="rounded-xl bg-hamzis-white/40 dark:bg-hamzis-black/40 border border-hamzis-brown/20 shadow-md p-6">
+  <h4 class="text-base font-semibold text-hamzis-brown dark:text-hamzis-copper mb-4 flex items-center gap-2">
+    <svg class="w-4 h-4 text-hamzis-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 6h12M6 12h12M6 18h12"/>
+    </svg>
+    Employment Overview
+  </h4>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6 text-sm">
+    <div><span class="font-medium text-hamzis-brown dark:text-hamzis-copper">Hamzis ID:</span> <%= employee.hamzis_id %></div>
+    <div><span class="font-medium text-hamzis-brown dark:text-hamzis-copper">Department:</span> <%= employee.department %></div>
+    <div><span class="font-medium text-hamzis-brown dark:text-hamzis-copper">Position:</span> <%= employee.position_title %></div>
+    <div><span class="font-medium text-hamzis-brown dark:text-hamzis-copper">Hire Date:</span> <%= employee.hire_date %></div>
+    <div><span class="font-medium text-hamzis-brown dark:text-hamzis-copper">Manager:</span> <%= employee.manager&.full_name || "—" %></div>
+    <div><span class="font-medium text-hamzis-brown dark:text-hamzis-copper">Status:</span>
+      <span class="px-2 py-1 rounded bg-hamzis-copper text-white text-xs"><%= employee.status.humanize %></span>
+    </div>
+    <div><span class="font-medium text-hamzis-brown dark:text-hamzis-copper">Leave Balance:</span> <%= employee.leave_balance %></div>
+    <div><span class="font-medium text-hamzis-brown dark:text-hamzis-copper">Performance Score:</span> <%= employee.performance_score || "N/A" %></div>
+    <% if employee.user.present? %>
+      <div class="md:col-span-2"><span class="font-medium text-hamzis-brown dark:text-hamzis-copper">Linked User:</span> <%= employee.user.email %></div>
+    <% end %>
+    <% if employee.subordinates.any? %>
+      <div class="md:col-span-2"><span class="font-medium text-hamzis-brown dark:text-hamzis-copper">Subordinates:</span> <%= employee.subordinates.count %> employees</div>
+    <% end %>
+  </div>
+</div>

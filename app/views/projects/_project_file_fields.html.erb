@@ -1,26 +1,75 @@
-<div class="project-file-block space-y-2 border rounded p-3 mb-3 bg-hamzis-white/20 dark:bg-hamzis-black/20">
+<div class="project-file-block space-y-3 border rounded-lg p-4 mb-4 bg-hamzis-white/20 dark:bg-hamzis-black/20 shadow-sm">
   <div class="flex justify-between items-start gap-3">
-    <div class="flex-1">
-      <div class="mb-2">
-        <%= f.label :category, "File Type", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-        <%= f.select :category, ProjectFile.categories.keys.map { |c| [c.humanize, c] }, {prompt: "Select a file type"},
-        class: "w-full px-5 py-1 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper"%>
+    <div class="flex-1 space-y-3">
+      <!-- Title -->
+      <div class="flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-hamzis-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <%= f.label :title, "File Title", class: "text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
       </div>
-      <div class="mb-2">
-        <%= f.label :files, "Upload Files", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-        <%= f.file_field :files, multiple: true, class: "w-full px-5 py-1 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+      <%= f.text_field :title,
+            class: "w-full px-4 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+      <!-- Existing file preview -->
+      <% if f.object.persisted? && f.object.file.attached? %>
+        <div class="mt-2">
+          <% if f.object.file.image? %>
+            <%= image_tag f.object.file.variant(resize_to_limit: [200, 150]),
+                  class: "rounded shadow-sm mb-2" %>
+          <% else %>
+            <p class="text-xs text-gray-600 dark:text-gray-400">
+              Current file: <%= f.object.file.filename.to_s %>
+            </p>
+          <% end %>
+        </div>
+        <p class="text-xs text-gray-500">To add another file, use the “Add File” button below. Uploading here will replace the existing one.</p>
+      <% else %>
+        <!-- File upload (only for new records) -->
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-hamzis-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 4v16m8-8H4" />
+          </svg>
+          <%= f.label :file, "Upload File", class: "text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        </div>
+        <%= f.file_field :file, direct_upload: true,
+              class: "w-full px-4 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+      <% end %>
+      <!-- Description -->
+      <div class="flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-hamzis-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 20h9M12 4h9M4 4h4v16H4z" />
+        </svg>
+        <%= f.label :description, "Description (optional)", class: "text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
       </div>
-      <div>
-        <%= f.label :description, "Description (optional)", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-        <%= f.text_field :description, class: "w-full px-5 py-4 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-      </div>
+      <%= f.text_area :description, rows: 3,
+            class: "w-full px-4 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
     </div>
+    <!-- Remove button -->
     <div class="flex-shrink-0 ml-3">
       <% if f.object.persisted? %>
         <%= f.check_box :_destroy, class: "hidden destroy-checkbox" %>
-        <button type="button" data-action="click->project-files#markDestroy" class="mark-destroy-btn text-xs text-red-600">Remove</button>
+        <button type="button" data-action="click->project-files#markDestroy"
+          class="flex items-center gap-1 text-xs text-red-600 hover:text-red-800">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M10 3h4a1 1 0 011 1v1H9V4a1 1 0 011-1z" />
+          </svg>
+          Remove
+        </button>
       <% else %>
-        <button type="button" data-action="click->project-files#removeNew" class="remove-new-file-btn text-xs text-red-600">Remove</button>
+        <button type="button" data-action="click->project-files#removeNew"
+          class="flex items-center gap-1 text-xs text-red-600 hover:text-red-800">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          Remove
+        </button>
       <% end %>
     </div>
   </div>

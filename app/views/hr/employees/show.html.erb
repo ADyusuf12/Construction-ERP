@@ -1,55 +1,52 @@
 <% content_for :title, "Employee Profile" %>
-<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-6">Employee Profile</h1>
-<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-            border border-hamzis-brown/20 rounded-xl shadow-lg p-6 space-y-6">
-  <!-- Header -->
-  <div class="flex items-center justify-between">
-    <div>
-      <h2 class="text-xl font-semibold"><%= @employee.position_title %></h2>
-      <p class="text-sm text-gray-600 dark:text-gray-400"><%= @employee.department %></p>
-    </div>
-    <span class="px-3 py-1 rounded bg-hamzis-copper text-hamzis-white">
-      <%= @employee.status.humanize %>
-    </span>
-  </div>
-  <!-- Details Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div>
-      <span class="font-medium">Hamzis ID:</span>
-      <span><%= @employee.hamzis_id %></span>
-    </div>
-    <div>
-      <span class="font-medium">Hire Date:</span>
-      <span><%= @employee.hire_date %></span>
-    </div>
-    <div>
-      <span class="font-medium">Leave Balance:</span>
-      <span><%= @employee.leave_balance %></span>
-    </div>
-    <div>
-      <span class="font-medium">Performance Score:</span>
-      <span><%= @employee.performance_score || "N/A" %></span>
-    </div>
-    <% if @employee.user.present? %>
-      <div class="md:col-span-2">
-        <span class="font-medium">Linked User:</span>
-        <span><%= @employee.user.email %></span>
-      </div>
-    <% end %>
-  </div>
+<div class="border-b border-hamzis-brown/20 mb-6">
+  <nav class="flex gap-6 text-sm font-medium">
+    <button data-tab="employment"
+            class="tab-link px-3 py-2 rounded-t bg-hamzis-copper text-white">
+      Employment
+    </button>
+    <button data-tab="personal"
+            class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+      Personal Details
+    </button>
+    <button data-tab="history"
+            class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+      History
+    </button>
+    <button data-tab="documents"
+            class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+      Documents
+    </button>
+  </nav>
 </div>
-<!-- Actions -->
-<div class="mt-6 flex gap-2">
-  <% if policy(@employee).update? %> <%= link_to "Edit Employee", edit_hr_employee_path(@employee),
-    class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %> <% end %>
-  <% if policy(@employee).destroy? %>
-    <%= button_to "Delete", "#",
-        class: "px-4 py-2 rounded bg-red-600 text-white hover:bg-red-800 transition",
-        form: {
-          "data-action" => "click->confirm-delete#open",
-          "data-confirm-delete-title-param" => "Delete Employee?",
-          "data-confirm-delete-message-param" => "Are you sure you want to delete '#{@employee.hamzis_id}'? This action cannot be undone.",
-          "data-confirm-delete-confirm-path-param" => hr_employee_path(@employee)
-        } %>
-  <% end %>
+<div id="employment-tab" class="tab-content">
+  <%= render "hr/employees/tabs/employment", employee: @employee %>
 </div>
+<div id="personal-tab" class="tab-content hidden">
+  <%= render "hr/employees/tabs/personal", employee: @employee %>
+</div>
+<div id="history-tab" class="tab-content hidden">
+  <%= render "hr/employees/tabs/history", employee: @employee %>
+</div>
+<div id="documents-tab" class="tab-content hidden">
+  <%= render "hr/employees/tabs/documents", employee: @employee %>
+</div>
+<script nonce="<%= content_security_policy_nonce %>">
+  (() => {
+    const links = document.querySelectorAll(".tab-link");
+    const contents = document.querySelectorAll(".tab-content");
+
+    links.forEach(link => {
+      link.addEventListener("click", () => {
+        // reset all tabs
+        links.forEach(l => l.classList.remove("bg-hamzis-copper", "text-white"));
+        contents.forEach(c => c.classList.add("hidden"));
+
+        // activate clicked tab
+        link.classList.add("bg-hamzis-copper", "text-white");
+        const tabId = link.getAttribute("data-tab") + "-tab";
+        document.getElementById(tabId).classList.remove("hidden");
+      });
+    });
+  })();
+</script>

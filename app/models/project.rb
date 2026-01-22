@@ -1,11 +1,14 @@
 class Project < ApplicationRecord
   belongs_to :user, optional: true
+
   has_many :tasks, dependent: :destroy
   has_many :reports, dependent: :destroy
   has_many :assignments, through: :tasks
   has_many :project_inventories, dependent: :destroy
   has_many :inventory_items, through: :project_inventories
   has_many :project_expenses, dependent: :destroy
+
+  # --- Files ---
   has_many :project_files, dependent: :destroy
   accepts_nested_attributes_for :project_files, allow_destroy: true
 
@@ -40,5 +43,10 @@ class Project < ApplicationRecord
   def budget_consumed_percentage
     return 0 unless budget.present? && budget > 0
     ((total_expenses.to_f / budget) * 100).round
+  end
+
+  # --- Convenience ---
+  def all_files
+    project_files.includes(file_attachment: :blob).map(&:file)
   end
 end
