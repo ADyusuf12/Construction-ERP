@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :business do
+    resources :clients
+  end
   namespace :dashboard do
     get "/", to: "home#index", as: :home
   end

@@ -1,5 +1,6 @@
 class Project < ApplicationRecord
   belongs_to :user, optional: true
+  belongs_to :client, class_name: "Business::Client", optional: true
 
   has_many :tasks, dependent: :destroy
   has_many :reports, dependent: :destroy
