@@ -11,15 +11,15 @@ module Inventory
     end
 
     def create?
-      user.role_ceo? || user.role_admin? || user.role_site_manager? || user.role_storekeeper?
+      user.role_ceo? || user.role_admin? || user.role_site_manager? || user.role_storekeeper? || user.role_hr?
     end
 
     def update?
-      user.role_ceo? || user.role_admin? || user.role_site_manager? || user.role_storekeeper?
+      user.role_ceo? || user.role_admin? || user.role_site_manager? || user.role_storekeeper? || user.role_hr?
     end
 
     def destroy?
-      user.role_ceo? || user.role_admin? || user.role_storekeeper?
+      user.role_ceo? || user.role_admin? || user.role_storekeeper? || user.role_hr?
     end
 
     class Scope < Scope

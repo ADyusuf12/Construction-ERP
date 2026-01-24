@@ -12,25 +12,25 @@ module Accounting
     end
 
     def create?
-      user.role_ceo? || user.role_admin? || user.role_accountant? || user.role_cto? || user.role_site_manager?
+      user.role_ceo? || user.role_admin? || user.role_accountant? || user.role_cto? || user.role_hr?
     end
 
     def update?
-      user.role_ceo? || user.role_admin? || user.role_accountant? || user.role_cto? || user.role_site_manager?
+      user.role_ceo? || user.role_admin? || user.role_accountant? || user.role_cto? || user.role_hr?
     end
 
     def destroy?
-      user.role_ceo? || user.role_admin?
+      user.role_ceo? || user.role_admin? || user.role_hr?
     end
 
     def mark_paid?
-      user.role_ceo? || user.role_admin? || user.role_accountant?
+      user.role_ceo? || user.role_admin? || user.role_accountant? || user.role_hr?
     end
 
     class Scope < Scope
       def resolve
         if user.role_ceo? || user.role_admin? || user.role_accountant? ||
-           user.role_cto? || user.role_site_manager? || user.role_hr? || user.role_storekeeper?
+           user.role_cto? || user.role_hr?
           # Exec/management/finance roles see all transactions
           scope.all
         else
