@@ -1,15 +1,18 @@
 class ReportPolicy < ApplicationPolicy
+  include ClientScopedPolicy # newly added
+
   def index?
     user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? ||
-    user.role_hr? || user.role_accountant? || project_member?
+    user.role_hr? || user.role_accountant? || project_member? ||
+    user.role_client? # newly added
   end
 
   def show?
-    index?
+    user.role_client? ? record.project&.client_id == user.client&.id : index?
   end
 
   def create?
-    project_member? || user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager?
+    project_member? || user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr?
   end
 
   def update?
@@ -17,7 +20,7 @@ class ReportPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.role_ceo? || user.role_admin? || user.role_cto?
+    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_hr?
   end
 
   def submit?
@@ -25,16 +28,18 @@ class ReportPolicy < ApplicationPolicy
   end
 
   def review?
-    (user.role_site_manager? || user.role_cto? || user.role_ceo?) && record.status_submitted?
+    (user.role_site_manager? || user.role_cto? || user.role_ceo? || user.role_admin? || user.role_hr?) &&
+    record.status_submitted?
   end
 
   class Scope < Scope
     def resolve
-      if user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? ||
-         user.role_hr? || user.role_accountant?
+      if user.role_client? && user.client.present? # newly added
+        scope.joins(:project).where(projects: { client_id: user.client.id })
+      elsif user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? ||
+            user.role_hr? || user.role_accountant?
         scope.all
       else
-        # Engineers/QS only see reports tied to projects they have tasks on
         scope.joins(project: { tasks: :assignments })
              .where(assignments: { user_id: user.id })
              .distinct

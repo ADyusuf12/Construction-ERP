@@ -1,0 +1,11 @@
+<tr id="<%= dom_id(client) %>" class="<%= row_class %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+  <td class="px-4 py-3 font-semibold"><%= client.name %></td>
+  <td class="px-4 py-3"><%= client.company %></td>
+  <td class="px-4 py-3"><%= client.email %></td>
+  <td class="px-4 py-3 flex gap-2">
+    <%= link_to "View", business_client_path(client),
+      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition text-xs" %>
+    <%= link_to "Edit", edit_business_client_path(client),
+      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition text-xs" %>
+  </td>
+</tr>

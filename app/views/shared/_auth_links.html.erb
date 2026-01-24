@@ -1,19 +1,6 @@
-<!-- Auth / Profile -->
+<!-- Auth Links -->
 <div class="px-4 py-6 border-t border-hamzis-brown/30 backdrop-blur-lg">
   <% if user_signed_in? %>
-    <% if current_user.employee && policy(current_user.employee).show? %>
-      <%= link_to hr_employee_path(current_user.employee),
-            class: "flex items-center w-full px-3 py-2 mb-3 rounded-lg bg-hamzis-brown/20
-                   hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown
-                   transition-all duration-300 shadow-sm" do %>
-        <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
-             viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M5.121 17.804A9 9 0 1118.879 6.196a9 9 0 01-13.758 11.608zM12 12a4 4 0 100-8 4 4 0 000 8z" />
-        </svg>
-        <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Profile</span>
-      <% end %>
-    <% end %>
     <!-- Logout -->
     <%= button_to destroy_user_session_path, method: :delete,
           form: { class: "inline" },

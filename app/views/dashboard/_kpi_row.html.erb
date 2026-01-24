@@ -1,0 +1,17 @@
+<section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-10">
+  <% if policy_scope(Project).any? %>
+    <%= render "dashboard/kpi_card", title: "Projects", count: @projects.count, icon: "folder" %>
+  <% end %>
+  <% if policy_scope(Task).any? %>
+    <%= render "dashboard/kpi_card", title: "Tasks", count: @tasks.count, icon: "checklist" %>
+  <% end %>
+  <% if policy_scope(Report).any? %>
+    <%= render "dashboard/kpi_card", title: "Reports", count: @reports.count, icon: "document" %>
+  <% end %>
+  <% if policy_scope(Accounting::Transaction).any? %>
+    <%= render "dashboard/kpi_card", title: "Transactions", count: @transactions.count, icon: "currency-dollar" %>
+  <% end %>
+  <% if policy_scope(ProjectExpense).any? %>
+    <%= render "dashboard/kpi_card", title: "Expenses", count: @expenses.count, icon: "credit-card" %>
+  <% end %>
+</section>

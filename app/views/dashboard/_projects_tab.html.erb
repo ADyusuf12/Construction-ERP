@@ -1,0 +1,45 @@
+<% if policy_scope(Project).any? %>
+  <div id="projects-tab" class="tab-content hidden">
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+                border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+      <h2 class="text-xl font-bold mb-4 text-hamzis-brown dark:text-hamzis-copper">Projects</h2>
+      <% if @projects.any? %>
+        <table class="min-w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
+              <th class="px-4 py-3">Name</th>
+              <th class="px-4 py-3">Status</th>
+              <th class="px-4 py-3">Deadline</th>
+              <th class="px-4 py-3">Progress</th>
+              <th class="px-4 py-3">Budget</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-hamzis-brown/20">
+            <% @projects.each_with_index do |project, index| %>
+              <tr id="<%= dom_id(project) %>" class="<%= index.even? ? 'bg-hamzis-brown/5 dark:bg-hamzis-copper/5' : '' %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+                <td class="px-4 py-3 font-semibold"><%= project.name %></td>
+                <td class="px-4 py-3"><%= project.status.humanize %></td>
+                <td class="px-4 py-3"><%= project.deadline&.strftime("%b %d, %Y") %></td>
+                <td class="px-4 py-3">
+                  <div class="w-full bg-hamzis-brown/20 rounded-full h-2">
+                    <div class="bg-hamzis-copper h-2 rounded-full" style="width: <%= project.progress %>%"></div>
+                  </div>
+                  <span class="text-xs text-hamzis-brown dark:text-hamzis-copper ml-2"><%= project.progress %>%</span>
+                </td>
+                <td class="px-4 py-3">
+                  <% if project.budget.present? %>
+                    <span class="text-xs"><%= number_to_currency(project.budget, unit: "₦", precision: 0) %></span>
+                  <% else %>
+                    <span class="text-xs text-gray-500">N/A</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="text-center py-6 text-sm text-hamzis-brown dark:text-hamzis-copper">No projects available</p>
+      <% end %>
+    </div>
+  </div>
+<% end %>

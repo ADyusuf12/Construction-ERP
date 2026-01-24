@@ -114,27 +114,4 @@ Report.create!(
   next_steps: "Hire subcontractors to speed up work."
 )
 
-# Create transactions
-Accounting::Transaction.create!(
-  project: project1,
-  date: Date.new(2026, 1, 4),
-  description: "Purchase cement",
-  amount: 50_000,
-  transaction_type: :receipt,
-  status: :paid,
-  reference: "TXN001",
-  notes: "Bulk cement order"
-)
-
-Accounting::Transaction.create!(
-  project: project2,
-  date: Date.new(2026, 1, 6),
-  description: "Purchase steel beams",
-  amount: 75_000,
-  transaction_type: :receipt,
-  status: :paid,
-  reference: "TXN002",
-  notes: "Steel beams for warehouse framing"
-)
-
-puts "Seeded construction projects (CEO + Admin owners), tasks, assignments, reports by task assignees, and transactions."
+puts "Seeded construction projects (CEO + Admin owners), tasks, assignments and reports by task assignees."

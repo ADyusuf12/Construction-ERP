@@ -1,7 +1,9 @@
 module Inventory
   class ProjectInventoryPolicy < ApplicationPolicy
+    include ClientScopedPolicy # newly added
+
     def create?
-      return true if user.role_admin? || user.role_ceo? || user.role_site_manager? || user.role_storekeeper?
+      return true if user.role_admin? || user.role_ceo? || user.role_site_manager? || user.role_storekeeper? || user.role_hr?
       return true if user.role_engineer? && user_belongs_to_project?
       false
     end
@@ -11,13 +13,11 @@ module Inventory
     end
 
     def destroy?
-      user.role_admin? || user.role_ceo? || user.role_storekeeper? || user_belongs_to_project?
+      user.role_admin? || user.role_ceo? || user.role_storekeeper? || user_belongs_to_project? || user.role_hr?
     end
 
     private
 
-    # Returns true when the current user is assigned to the project for this record.
-    # Works for both persisted records and new records (guards for missing associations).
     def user_belongs_to_project?
       project_id = record.try(:project_id) || (record.respond_to?(:project) && record.project&.id)
       return false unless project_id.present?
@@ -29,7 +29,9 @@ module Inventory
 
     class Scope < Scope
       def resolve
-        if user.role_engineer? || user.role_qs?
+        if user.role_client? && user.client.present? # newly added
+          scope.joins(:project).where(projects: { client_id: user.client.id })
+        elsif user.role_engineer? || user.role_qs?
           project_ids = Project.joins(tasks: :assignments)
                                .where(assignments: { user_id: user.id })
                                .distinct

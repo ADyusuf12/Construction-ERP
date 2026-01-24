@@ -1,0 +1,45 @@
+<div class="border-b border-hamzis-brown/20 mb-6">
+  <nav class="flex flex-wrap gap-4 text-sm font-medium">
+    <!-- Profile tab always visible -->
+    <button data-tab="profile"
+            class="tab-link px-4 py-2 rounded-t bg-hamzis-copper text-white">
+      Profile
+    </button>
+    <% if policy_scope(Project).any? %>
+      <button data-tab="projects"
+              class="tab-link px-4 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+        Projects
+      </button>
+    <% end %>
+    <% if policy_scope(Task).any? %>
+      <button data-tab="tasks"
+              class="tab-link px-4 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+        Tasks
+      </button>
+    <% end %>
+    <% if policy_scope(Report).any? %>
+      <button data-tab="reports"
+              class="tab-link px-4 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+        Reports
+      </button>
+    <% end %>
+    <% if policy_scope(Accounting::Transaction).any? %>
+      <button data-tab="transactions"
+              class="tab-link px-4 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+        Transactions
+      </button>
+    <% end %>
+    <% if policy_scope(ProjectExpense).any? %>
+      <button data-tab="expenses"
+              class="tab-link px-4 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+        Expenses
+      </button>
+    <% end %>
+    <% if policy_scope(Hr::Employee).any? %>
+      <button data-tab="hr"
+              class="tab-link px-4 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+        HR
+      </button>
+    <% end %>
+  </nav>
+</div>
