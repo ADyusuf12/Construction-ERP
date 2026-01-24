@@ -1,0 +1,37 @@
+<% content_for :title, @client.name %>
+<%= render "business/clients/info_card", client: @client %>
+<div class="border-b border-hamzis-brown/20 mb-6">
+  <nav class="flex gap-6 text-sm font-medium">
+    <button data-tab="projects"
+            class="tab-link px-3 py-2 rounded-t bg-hamzis-copper text-white">
+      Projects
+    </button>
+    <button data-tab="details"
+            class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+      Details
+    </button>
+  </nav>
+</div>
+<div id="projects-tab" class="tab-content">
+  <%= render "business/clients/tabs/projects", client: @client %>
+</div>
+<div id="details-tab" class="tab-content hidden">
+  <%= render "business/clients/tabs/details", client: @client %>
+</div>
+<script nonce="<%= content_security_policy_nonce %>">
+  (() => {
+    const links = document.querySelectorAll(".tab-link");
+    const contents = document.querySelectorAll(".tab-content");
+
+    links.forEach(link => {
+      link.addEventListener("click", () => {
+        links.forEach(l => l.classList.remove("bg-hamzis-copper", "text-white"));
+        contents.forEach(c => c.classList.add("hidden"));
+
+        link.classList.add("bg-hamzis-copper", "text-white");
+        const tabId = link.getAttribute("data-tab") + "-tab";
+        document.getElementById(tabId).classList.remove("hidden");
+      });
+    });
+  })();
+</script>
