@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :hr_employee, class: 'Hr::Employee' do
     department       { "Engineering" }
-    position_title   { "Software Engineer" }
+    position_title   { "Civil Engineer" }
     hire_date        { Date.today }
     status           { :active }
     leave_balance    { 10 }
