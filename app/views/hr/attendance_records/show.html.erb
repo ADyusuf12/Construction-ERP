@@ -1,0 +1,59 @@
+<h2 class="text-2xl font-bold mb-6">
+  Attendance Record Details
+</h2>
+<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6 space-y-4">
+  <!-- Employee -->
+  <div>
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Employee</p>
+    <p class="text-lg font-semibold"><%= @attendance_record.employee.full_name %></p>
+  </div>
+  <!-- Project -->
+  <div>
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Project</p>
+    <p class="text-lg font-semibold"><%= @attendance_record.project.name %></p>
+  </div>
+  <!-- Date -->
+  <div>
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Date</p>
+    <p class="text-lg font-semibold"><%= @attendance_record.date.strftime("%B %d, %Y") %></p>
+  </div>
+  <!-- Status -->
+  <div>
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Status</p>
+    <span class="px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap
+      <%= @attendance_record.status_present? ? 'bg-green-100 text-green-700' :
+          @attendance_record.status_absent? ? 'bg-red-100 text-red-700' :
+          @attendance_record.status_late? ? 'bg-yellow-100 text-yellow-700' :
+          @attendance_record.status_on_leave? ? 'bg-blue-100 text-blue-700' :
+          'bg-gray-100 text-gray-700' %>">
+      <%= @attendance_record.status.humanize %>
+    </span>
+  </div>
+  <!-- Time -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Check In</p>
+      <p class="text-lg font-semibold"><%= @attendance_record.check_in_time&.strftime("%H:%M") || "—" %></p>
+    </div>
+    <div>
+      <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Check Out</p>
+      <p class="text-lg font-semibold"><%= @attendance_record.check_out_time&.strftime("%H:%M") || "—" %></p>
+    </div>
+  </div>
+  <!-- Actions -->
+  <div class="flex flex-col sm:flex-row gap-3 mt-6">
+    <%= link_to "Edit", edit_hr_attendance_record_path(@attendance_record),
+        class: "px-4 py-2 rounded bg-hamzis-brown text-white hover:bg-hamzis-copper transition w-full sm:w-auto" %>
+    <%= link_to "Back", hr_attendance_records_path,
+        class: "px-4 py-2 rounded bg-gray-300 text-gray-900 hover:bg-gray-400 transition w-full sm:w-auto" %>
+    <%= button_to "Delete", "#",
+  class: "px-4 py-2 rounded bg-red-600 text-white hover:bg-red-800 transition w-full sm:w-auto",
+  form: {
+    "data-action" => "click->confirm-delete#open",
+    "data-confirm-delete-title-param" => "Delete Attendance Record?",
+    "data-confirm-delete-message-param" => "Are you sure you want to delete the attendance record for #{@attendance_record.employee.full_name} on #{@attendance_record.date.strftime("%B %d, %Y")}? This action cannot be undone.",
+    "data-confirm-delete-confirm-path-param" => hr_attendance_record_path(@attendance_record)
+  } %>
+  </div>
+</div>

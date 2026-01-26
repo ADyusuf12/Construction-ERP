@@ -15,7 +15,7 @@ module Inventory
       return false unless user
 
       # Match InventoryItemPolicy#create? privileges
-      return true if user.role_ceo? || user.role_admin? || user.role_site_manager? || user.role_storekeeper?
+      return true if user.role_ceo? || user.role_admin? || user.role_site_manager? || user.role_storekeeper? || user.role_hr?
 
       # Engineers may create movements only for items tied to projects they belong to
       return true if user.role_engineer? && movement_for_user_project?
@@ -28,14 +28,14 @@ module Inventory
       return false unless user
 
       # Match InventoryItemPolicy#update? privileges
-      user.role_ceo? || user.role_admin? || user.role_site_manager? || user.role_storekeeper?
+      user.role_ceo? || user.role_admin? || user.role_site_manager? || user.role_storekeeper? || user.role_hr?
     end
 
     def destroy?
       return false unless user
 
       # Match InventoryItemPolicy#destroy? privileges
-      user.role_ceo? || user.role_admin? || user.role_storekeeper?
+      user.role_ceo? || user.role_admin? || user.role_storekeeper? || user.role_hr?
     end
 
     private

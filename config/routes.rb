@@ -7,7 +7,13 @@ Rails.application.routes.draw do
   end
 
   namespace :hr do
+    resources :attendance_records do
+      collection do
+        get :my_attendance
+      end
+    end
     resources :employees do
+      resources :attendance_records, only: [ :index ]
       resource :personal_detail
     end
 

@@ -1,0 +1,30 @@
+<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+  <% if attendance_records.any? %>
+    <table class="min-w-full text-sm text-left border-collapse">
+      <%= render "hr/attendance_records/attendance_table_header",
+                 show_employee: local_assigns[:show_employee],
+                 show_actions: local_assigns[:show_actions] %>
+      <tbody class="divide-y divide-hamzis-brown/20">
+        <% attendance_records.each_with_index do |record, index| %>
+          <%= render "hr/attendance_records/attendance_row",
+                     record: record,
+                     show_employee: local_assigns[:show_employee],
+                     show_actions: local_assigns[:show_actions],
+                     row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="text-center py-6">
+      <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No attendance records yet</p>
+      <p class="text-sm mt-2">Attendance records will appear here once they are created.</p>
+      <% if local_assigns[:show_actions] %>
+        <div class="mt-4">
+          <%= link_to "➕ New Attendance Record", new_hr_attendance_record_path,
+              class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

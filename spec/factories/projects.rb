@@ -7,11 +7,12 @@ FactoryBot.define do
     status      { :ongoing }
     deadline    { 1.month.from_now }
     budget      { 50_000 }
+    location    { "Abuja" }
+    address     { "Jabi, Abuja" }
 
     # Traits for variations
     trait :completed do
       status { :completed }
-      # progress is now calculated, so no manual assignment
       after(:create) do |project|
         create_list(:task, 3, project: project, status: :done, weight: 10)
       end

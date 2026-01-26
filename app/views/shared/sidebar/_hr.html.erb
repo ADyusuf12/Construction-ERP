@@ -1,3 +1,4 @@
+<%# app/views/shared/sidebar/_hr.html.erb %>
 <% if user_signed_in? && policy(Hr::Employee).index? %>
   <div class="space-y-3">
     <!-- Section Header -->
@@ -7,12 +8,12 @@
     <div class="ml-2 space-y-2">
       <!-- Employees -->
       <button type="button"
+              id="employees-button"
               class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20
                      hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown
                      transition-all duration-300 shadow-sm"
-              onclick="document.getElementById('hr-dropdown').classList.toggle('hidden')">
+              onclick="document.getElementById('employees-dropdown').classList.toggle('hidden'); document.getElementById('employees-chevron').classList.toggle('rotate-180')">
         <span class="flex items-center">
-          <!-- Refined icon: users/people -->
           <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
                viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -20,12 +21,12 @@
           </svg>
           <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Employees</span>
         </span>
-        <svg class="w-4 h-4 transform transition-transform opacity-70" id="hr-chevron"
+        <svg class="w-4 h-4 transform transition-transform opacity-70" id="employees-chevron"
              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
-      <div id="hr-dropdown" class="ml-4 space-y-1 hidden">
+      <div id="employees-dropdown" class="ml-4 space-y-1 hidden">
         <%= link_to hr_employees_path,
             class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(hr_employees_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
           <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">All Employees</span>
@@ -39,12 +40,12 @@
       </div>
       <!-- Leaves -->
       <button type="button"
+              id="leaves-button"
               class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20
                      hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown
                      transition-all duration-300 shadow-sm"
-              onclick="document.getElementById('leaves-dropdown').classList.toggle('hidden')">
+              onclick="document.getElementById('leaves-dropdown').classList.toggle('hidden'); document.getElementById('leaves-chevron').classList.toggle('rotate-180')">
         <span class="flex items-center">
-          <!-- Refined icon: calendar -->
           <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
                viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -75,6 +76,61 @@
           <% end %>
         <% end %>
       </div>
+      <!-- Attendance -->
+      <button type="button"
+              id="attendance-button"
+              class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20
+                     hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown
+                     transition-all duration-300 shadow-sm"
+              onclick="document.getElementById('attendance-dropdown').classList.toggle('hidden'); document.getElementById('attendance-chevron').classList.toggle('rotate-180')">
+        <span class="flex items-center">
+          <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Attendance</span>
+        </span>
+        <svg class="w-4 h-4 transform transition-transform opacity-70" id="attendance-chevron"
+             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div id="attendance-dropdown" class="ml-4 space-y-1 hidden">
+        <% if policy(Hr::AttendanceRecord).index? %>
+          <%= link_to hr_attendance_records_path,
+              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(hr_attendance_records_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">All Attendance</span>
+          <% end %>
+        <% end %>
+        <%= link_to my_attendance_hr_attendance_records_path,
+            class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(my_attendance_hr_attendance_records_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">My Attendance</span>
+        <% end %>
+        <% if policy(Hr::AttendanceRecord.new).create? %>
+          <%= link_to new_hr_attendance_record_path,
+              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_hr_attendance_record_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
+            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">New Attendance</span>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
+  <!-- Inline script to ensure chevrons rotate when dropdowns are toggled (keeps behavior consistent) -->
+  <script nonce="<%= content_security_policy_nonce %>">
+    // Ensure chevrons reflect initial open state if any dropdown is not hidden server-side
+    document.addEventListener("DOMContentLoaded", function () {
+      [['employees-dropdown','employees-chevron'], ['leaves-dropdown','leaves-chevron'], ['attendance-dropdown','attendance-chevron']].forEach(function(pair) {
+        var dropdown = document.getElementById(pair[0]);
+        var chevron = document.getElementById(pair[1]);
+        if (dropdown && chevron) {
+          if (!dropdown.classList.contains('hidden')) {
+            chevron.classList.add('rotate-180');
+          } else {
+            chevron.classList.remove('rotate-180');
+          }
+        }
+      });
+    });
+  </script>
 <% end %>

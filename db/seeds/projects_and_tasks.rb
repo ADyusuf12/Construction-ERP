@@ -1,29 +1,37 @@
-# Pick the admin and CEO to own projects
-admin = User.find_by(email: "admin@example.com")
-ceo   = User.find_by(email: "ceo@example.com")
+# Pick seeded users
+admin        = User.find_by(email: "admin@example.com")
+ceo          = User.find_by(email: "ceo@example.com")
 site_manager = User.find_by(email: "site_manager@example.com")
 engineer     = User.find_by(email: "engineer@example.com")
 qs           = User.find_by(email: "qs@example.com")
 
-# Create sample projects owned by admin and CEO
+# Pick seeded clients
+client1 = Business::Client.find_by(email: "client1@example.com")
+client2 = Business::Client.find_by(email: "client2@example.com")
+
+# Create sample projects owned by admin and CEO, linked to clients
 project1 = Project.create!(
   name: "Headquarters Construction",
   description: "Build the new company headquarters.",
   user: ceo,
+  client: client1,
   status: :ongoing,
   deadline: Date.new(2026, 6, 30),
   budget: 1_000_000,
-  progress: 10
+  location: "Abuja",
+  address: "Central Business District"
 )
 
 project2 = Project.create!(
   name: "Warehouse Expansion",
   description: "Expand the company warehouse facilities.",
   user: admin,
+  client: client2,
   status: :ongoing,
   deadline: Date.new(2026, 4, 30),
   budget: 500_000,
-  progress: 20
+  location: "Lagos",
+  address: "Industrial Layout"
 )
 
 # Create construction-related tasks for projects
@@ -114,4 +122,4 @@ Report.create!(
   next_steps: "Hire subcontractors to speed up work."
 )
 
-puts "Seeded construction projects (CEO + Admin owners), tasks, assignments and reports by task assignees."
+puts "Seeded projects (CEO + Admin owners), tasks, assignments, and reports by task assignees."

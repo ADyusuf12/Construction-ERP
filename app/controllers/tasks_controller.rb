@@ -37,7 +37,7 @@ class TasksController < ApplicationController
     if @task.save
       redirect_to [ @task.project, @task ], notice: "Task was successfully created."
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -47,7 +47,7 @@ class TasksController < ApplicationController
     if @task.update(task_params)
       redirect_to [ @project, @task ], notice: "Task was successfully updated."
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
