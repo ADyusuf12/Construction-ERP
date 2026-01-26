@@ -1,0 +1,45 @@
+<tr id="<%= dom_id(record) %>" class="<%= row_class %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+  <% if local_assigns[:show_employee] %>
+    <!-- Employee -->
+    <td class="px-4 py-3 font-semibold"><%= record.employee.full_name %></td>
+  <% end %>
+  <!-- Project -->
+  <td class="px-4 py-3">
+    <%= link_to record.project.name, project_path(record.project),
+        class: "text-hamzis-copper hover:underline" %>
+  </td>
+  <!-- Date -->
+  <td class="px-4 py-3"><%= record.date.strftime("%b %d, %Y") %></td>
+  <!-- Status -->
+  <td class="px-4 py-3">
+    <span class="px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap
+      <%= record.status_present? ? 'bg-green-100 text-green-700' :
+          record.status_absent? ? 'bg-red-100 text-red-700' :
+          record.status_late? ? 'bg-yellow-100 text-yellow-700' :
+          record.status_on_leave? ? 'bg-blue-100 text-blue-700' :
+          'bg-gray-100 text-gray-700' %>">
+      <%= record.status.humanize %>
+    </span>
+  </td>
+  <!-- Time: Check In -->
+  <td class="px-4 py-3 text-center">
+    <%= record.check_in_time&.strftime("%H:%M") || "—" %>
+  </td>
+  <!-- Time: Check Out -->
+  <td class="px-4 py-3 text-center">
+    <%= record.check_out_time&.strftime("%H:%M") || "—" %>
+  </td>
+  <% if local_assigns[:show_actions] %>
+    <!-- Actions -->
+    <td class="px-4 py-3 flex gap-2">
+      <%= link_to "View", hr_attendance_record_path(record),
+        class: "px-3 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition text-xs" %>
+      <%= link_to "Edit", edit_hr_attendance_record_path(record),
+        class: "px-3 py-1 rounded bg-hamzis-brown text-white hover:bg-hamzis-copper transition text-xs" %>
+      <%= button_to "Delete", hr_attendance_record_path(record),
+        method: :delete,
+        data: { turbo_confirm: "Are you sure?" },
+        class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition text-xs" %>
+    </td>
+  <% end %>
+</tr>

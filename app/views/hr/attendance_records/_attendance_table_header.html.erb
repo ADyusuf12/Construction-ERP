@@ -1,0 +1,29 @@
+<thead>
+  <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
+    <% if local_assigns[:show_employee] %>
+      <th class="px-4 py-3">Employee</th>
+    <% end %>
+    <th class="px-4 py-3">Project</th>
+    <th class="px-4 py-3">Date</th>
+    <th class="px-4 py-3">Status</th>
+    <!-- Time grouped header -->
+    <th colspan="2" class="px-4 py-3 text-center">Time</th>
+    <% if local_assigns[:show_actions] %>
+      <th class="px-4 py-3">Actions</th>
+    <% end %>
+  </tr>
+  <tr class="bg-hamzis-brown/5 dark:bg-hamzis-copper/5 text-xs text-gray-700 dark:text-gray-300">
+    <% if local_assigns[:show_employee] %>
+      <th></th>
+    <% end %>
+    <th></th>
+    <th></th>
+    <th></th>
+    <!-- Sub-columns under Time -->
+    <th class="px-4 py-2 text-center">Check In</th>
+    <th class="px-4 py-2 text-center">Check Out</th>
+    <% if local_assigns[:show_actions] %>
+      <th></th>
+    <% end %>
+  </tr>
+</thead>
