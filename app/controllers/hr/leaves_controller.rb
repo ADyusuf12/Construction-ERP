@@ -37,7 +37,7 @@ module Hr
           format.turbo_stream { redirect_to my_leaves_hr_leaves_path, notice: "Leave request submitted." }
         end
       else
-        render :new, status: :unprocessable_entity
+        render :new, status: :unprocessable_content
       end
     end
 

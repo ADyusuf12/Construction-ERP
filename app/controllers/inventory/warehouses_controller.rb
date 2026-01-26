@@ -30,7 +30,7 @@ module Inventory
       if @warehouse.save
         redirect_to inventory_warehouse_path(@warehouse), notice: "Warehouse created."
       else
-        render :new, status: :unprocessable_entity
+        render :new, status: :unprocessable_content
       end
     end
 
@@ -43,7 +43,7 @@ module Inventory
       if @warehouse.update(warehouse_params)
         redirect_to inventory_warehouse_path(@warehouse), notice: "Warehouse updated."
       else
-        render :edit, status: :unprocessable_entity
+        render :edit, status: :unprocessable_content
       end
     end
 

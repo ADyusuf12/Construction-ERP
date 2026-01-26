@@ -26,7 +26,7 @@ module Accounting
       if @transaction.save
         redirect_to accounting_transactions_path, notice: "Transaction recorded."
       else
-        render :new, status: :unprocessable_entity
+        render :new, status: :unprocessable_content
       end
     end
 
@@ -39,7 +39,7 @@ module Accounting
       if @transaction.update(transaction_params)
         redirect_to accounting_transactions_path, notice: "Transaction updated."
       else
-        render :edit, status: :unprocessable_entity
+        render :edit, status: :unprocessable_content
       end
     end
 
