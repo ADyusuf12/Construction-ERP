@@ -36,7 +36,7 @@ class ProjectExpensesController < ApplicationController
         redirect_to project_expenses_path, notice: "Expense recorded."
       end
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -53,7 +53,7 @@ class ProjectExpensesController < ApplicationController
         redirect_to project_expenses_path, notice: "Expense updated."
       end
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

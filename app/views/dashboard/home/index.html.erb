@@ -1,148 +1,39 @@
-<div class="space-y-6">
+<div class="space-y-10">
   <!-- Page Header -->
-  <header class="flex items-center justify-between">
-    <h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper">
-      Dashboard
-    </h1>
-    <p class="text-2x font-bold text-hamzis-brown dark:text-hamzis-copper flex items-center gap-2">
-      Welcome, <%= current_user.full_name %>
-    </p>
-  </header>
+  <%= render "dashboard/header" %>
   <!-- KPI Summary Row -->
-  <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-6">
-    <% if policy_scope(Project).any? %>
-      <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-        <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Projects</p>
-        <p class="text-xl font-bold"><%= @projects.count %></p>
-      </div>
-    <% end %>
-    <% if policy_scope(Task).any? %>
-      <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-        <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Tasks</p>
-        <p class="text-xl font-bold"><%= @tasks.count %></p>
-      </div>
-    <% end %>
-    <% if policy_scope(Report).any? %>
-      <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-        <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Reports</p>
-        <p class="text-xl font-bold"><%= @reports.count %></p>
-      </div>
-    <% end %>
-    <% if policy_scope(Accounting::Transaction).any? %>
-      <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-        <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Transactions</p>
-        <p class="text-xl font-bold"><%= @transactions.count %></p>
-      </div>
-    <% end %>
-    <% if policy_scope(ProjectExpense).any? %>
-      <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-        <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Expenses</p>
-        <p class="text-xl font-bold"><%= @expenses.count %></p>
-      </div>
-    <% end %>
-  </section>
+  <%= render "dashboard/kpi_row",
+      projects: @projects,
+      tasks: @tasks,
+      reports: @reports,
+      transactions: @transactions,
+      expenses: @expenses %>
   <!-- Tabs -->
-  <div class="border-b border-hamzis-brown/20 mb-6">
-    <nav class="flex gap-6 text-sm font-medium">
-      <!-- Profile tab always visible -->
-      <button data-tab="profile"
-              class="tab-link px-3 py-2 rounded-t bg-hamzis-copper text-white">
-        Profile
-      </button>
-      <% if policy_scope(Project).any? %>
-        <button data-tab="projects"
-                class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-          Projects
-        </button>
-      <% end %>
-      <% if policy_scope(Task).any? %>
-        <button data-tab="tasks"
-                class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-          Tasks
-        </button>
-      <% end %>
-      <% if policy_scope(Report).any? %>
-        <button data-tab="reports"
-                class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-          Reports
-        </button>
-      <% end %>
-      <% if policy_scope(Accounting::Transaction).any? %>
-        <button data-tab="transactions"
-                class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-          Transactions
-        </button>
-      <% end %>
-      <% if policy_scope(ProjectExpense).any? %>
-        <button data-tab="expenses"
-          class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-          Expenses
-        </button>
-      <% end %>
-      <% if policy_scope(Hr::Employee).any? %>
-        <button data-tab="hr"
-                class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-          HR
-        </button>
-      <% end %>
-    </nav>
-  </div>
+  <%= render "dashboard/tabs" %>
   <!-- Tab Content -->
-  <div id="profile-tab" class="tab-content">
-    <%= render "dashboard/profile", employee: @employee %>
-  </div>
-  <% if policy_scope(Project).any? %>
-    <div id="projects-tab" class="tab-content hidden">
-      <h2 class="text-xl font-bold mb-4">Projects</h2>
-      <%= render "dashboard/projects", projects: @projects %>
-    </div>
-  <% end %>
-  <% if policy_scope(Task).any? %>
-    <div id="tasks-tab" class="tab-content hidden">
-      <h2 class="text-xl font-bold mb-4">Recent Tasks</h2>
-      <%= render "dashboard/tasks", tasks: @tasks %>
-    </div>
-  <% end %>
-  <% if policy_scope(Report).any? %>
-    <div id="reports-tab" class="tab-content hidden">
-      <h2 class="text-xl font-bold mb-4">Recent Reports</h2>
-      <%= render "dashboard/reports", reports: @reports %>
-    </div>
-  <% end %>
-  <% if policy_scope(Accounting::Transaction).any? %>
-    <div id="transactions-tab" class="tab-content hidden">
-      <h2 class="text-xl font-bold mb-4">Recent Transactions</h2>
-      <%= render "dashboard/transactions", transactions: @transactions %>
-    </div>
-  <% end %>
-  <% if policy_scope(ProjectExpense).any? %>
-    <div id="expenses-tab" class="tab-content hidden">
-      <h2 class="text-xl font-bold mb-4">Recent Expenses</h2>
-      <%= render "dashboard/expenses", expenses: @expenses %>
-    </div>
-  <% end %>
-  <% if policy(Hr::Leave).dashboard? %>
-    <div id="hr-tab" class="tab-content hidden">
-      <h2 class="text-xl font-bold mb-4">Leave History</h2>
-      <%= render "dashboard/hr", employee: @employee, leaves: @leaves %>
-    </div>
-  <% end %>
-</div>
-<!-- Tab Toggle Script -->
-<script nonce="<%= content_security_policy_nonce %>">
-  (() => {
-    const links = document.querySelectorAll(".tab-link");
-    const contents = document.querySelectorAll(".tab-content");
+  <%= render "dashboard/profile_tab", employee: @employee %>
+  <%= render "dashboard/projects_tab", projects: @projects %>
+  <%= render "dashboard/tasks_tab", tasks: @tasks %>
+  <%= render "dashboard/reports_tab", reports: @reports %>
+  <%= render "dashboard/transactions_tab", transactions: @transactions %>
+  <%= render "dashboard/expenses_tab", expenses: @expenses %>
+  <%= render "dashboard/hr_tab", employee: @employee, leaves: @leaves %>
+  <!-- Tab Toggle Script (inline) -->
+  <script nonce="<%= content_security_policy_nonce %>">
+    (() => {
+      const links = document.querySelectorAll(".tab-link");
+      const contents = document.querySelectorAll(".tab-content");
 
-    links.forEach(link => {
-      link.addEventListener("click", () => {
-        links.forEach(l => l.classList.remove("bg-hamzis-copper", "text-white"));
-        contents.forEach(c => c.classList.add("hidden"));
+      links.forEach(link => {
+        link.addEventListener("click", () => {
+          links.forEach(l => l.classList.remove("bg-hamzis-copper", "text-white"));
+          contents.forEach(c => c.classList.add("hidden"));
 
-        link.classList.add("bg-hamzis-copper", "text-white");
-        const tabId = link.getAttribute("data-tab") + "-tab";
-        document.getElementById(tabId).classList.remove("hidden");
+          link.classList.add("bg-hamzis-copper", "text-white");
+          const tabId = link.getAttribute("data-tab") + "-tab";
+          document.getElementById(tabId).classList.remove("hidden");
+        });
       });
-    });
-  })();
-</script>
+    })();
+  </script>
+</div>

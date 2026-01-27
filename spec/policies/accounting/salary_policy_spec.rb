@@ -39,14 +39,14 @@ RSpec.describe Accounting::SalaryPolicy do
     let(:user)   { create(:user, :hr) }
     let(:policy) { described_class.new(user, salary) }
 
-    it "allows viewing only" do
+    it "allows everything" do
       expect(policy.index?).to eq true
       expect(policy.show?).to eq true
-      expect(policy.create?).to eq false
-      expect(policy.update?).to eq false
-      expect(policy.destroy?).to eq false
-      expect(policy.adjust_deductions?).to eq false
-      expect(policy.mark_paid?).to eq false
+      expect(policy.create?).to eq true
+      expect(policy.update?).to eq true
+      expect(policy.destroy?).to eq true
+      expect(policy.adjust_deductions?).to eq true
+      expect(policy.mark_paid?).to eq true
     end
   end
 

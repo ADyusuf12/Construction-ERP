@@ -1,0 +1,35 @@
+<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition">
+  <div class="flex items-center justify-center mb-3">
+    <%# Simple icon mapping — replace with Heroicons or SVGs %>
+    <% case icon
+       when "folder" %>
+      <svg class="w-6 h-6 text-hamzis-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 7h4l2-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+      </svg>
+    <% when "checklist" %>
+      <svg class="w-6 h-6 text-hamzis-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 11l3 3L22 4M4 6h16M4 12h4M4 18h4" />
+      </svg>
+    <% when "document" %>
+      <svg class="w-6 h-6 text-hamzis-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M7 8h10M7 12h4m-2 8h8a2 2 0 002-2V6a2 2 0 00-2-2H9l-2 2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+    <% when "currency-dollar" %>
+      <svg class="w-6 h-6 text-hamzis-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2h0c1.657 0 3 .895 3 2s-1.343 2-3 2m0-8V4m0 16v-4" />
+      </svg>
+    <% when "credit-card" %>
+      <svg class="w-6 h-6 text-hamzis-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M2 7h20M2 11h20M2 15h20M2 19h20" />
+      </svg>
+    <% end %>
+  </div>
+  <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper"><%= title %></p>
+  <p class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper"><%= count %></p>
+</div>

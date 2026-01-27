@@ -1,45 +1,42 @@
 class ProjectExpensePolicy < ApplicationPolicy
-  # user = current_user, record = @expense
+  include ClientScopedPolicy # newly added
 
   def index?
-    # Broad visibility for most roles
     user.role_ceo? || user.role_admin? ||
     user.role_accountant? || user.role_cto? ||
     user.role_site_manager? || user.role_engineer? ||
-    user.role_storekeeper? || user.role_hr?
+    user.role_storekeeper? || user.role_hr? ||
+    user.role_client? # newly added
   end
 
   def show?
-    index?
+    user.role_client? ? record.project&.client_id == user.client&.id : index?
   end
 
   def create?
-    # Finance + leadership + site managers can record expenses
     user.role_ceo? || user.role_admin? ||
     user.role_accountant? || user.role_cto? ||
-    user.role_site_manager?
+    user.role_site_manager? || user.role_hr?
   end
 
   def update?
-    # Same group as create
     user.role_ceo? || user.role_admin? ||
     user.role_accountant? || user.role_cto? ||
-    user.role_site_manager?
+    user.role_site_manager? || user.role_hr?
   end
 
   def destroy?
-    # Restrict destructive actions to top roles
-    user.role_ceo? || user.role_admin?
+    user.role_ceo? || user.role_admin? || user.role_hr?
   end
 
   class Scope < Scope
     def resolve
-      if user.role_ceo? || user.role_admin? || user.role_accountant? ||
-         user.role_cto? || user.role_site_manager? || user.role_hr? || user.role_storekeeper?
-        # Exec/management/finance roles see all expenses
+      if user.role_client? && user.client.present? # newly added
+        scope.joins(:project).where(projects: { client_id: user.client.id })
+      elsif user.role_ceo? || user.role_admin? || user.role_accountant? ||
+            user.role_cto? || user.role_site_manager? || user.role_hr? || user.role_storekeeper?
         scope.all
       else
-        # Engineers/QS only see expenses tied to projects they have tasks on
         scope.joins(project: { tasks: :assignments })
              .where(assignments: { user_id: user.id })
              .distinct

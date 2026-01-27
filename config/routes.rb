@@ -1,10 +1,19 @@
 Rails.application.routes.draw do
+  namespace :business do
+    resources :clients
+  end
   namespace :dashboard do
     get "/", to: "home#index", as: :home
   end
 
   namespace :hr do
+    resources :attendance_records do
+      collection do
+        get :my_attendance
+      end
+    end
     resources :employees do
+      resources :attendance_records, only: [ :index ]
       resource :personal_detail
     end
 

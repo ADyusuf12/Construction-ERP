@@ -1,0 +1,68 @@
+<header class="flex items-center justify-between mb-8">
+  <div>
+    <h1 class="text-3xl font-extrabold text-hamzis-brown dark:text-hamzis-copper">
+      Dashboard
+    </h1>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+      Tailored overview for your role
+    </p>
+  </div>
+  <div class="relative">
+    <!-- Avatar initials (styled as clickable) -->
+    <button id="user-menu-button"
+            class="w-10 h-10 rounded-full bg-hamzis-copper text-white flex items-center justify-center font-bold focus:outline-none
+                   ring-2 ring-hamzis-brown/30 hover:ring-hamzis-copper transition duration-200 cursor-pointer">
+      <%= current_user.full_name.split.map { |n| n[0] }.join.upcase %>
+    </button>
+    <!-- Dropdown -->
+    <div id="user-menu"
+         class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-hamzis-brown/20 z-50">
+      <ul class="py-2">
+        <% if current_user.employee && policy(current_user.employee).show? %>
+          <li>
+            <%= link_to hr_employee_path(current_user.employee),
+                  class: "flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-hamzis-brown/10 dark:hover:bg-hamzis-copper/10 transition" do %>
+              <!-- Profile icon -->
+              <svg class="w-5 h-5 text-hamzis-copper" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5.121 17.804A9 9 0 1118.879 6.196a9 9 0 01-13.758 11.608zM12 12a4 4 0 100-8 4 4 0 000 8z" />
+              </svg>
+              <span>Profile</span>
+            <% end %>
+          </li>
+        <% end %>
+        <li>
+          <%= button_to destroy_user_session_path, method: :delete,
+                form: { class: "inline" },
+                class: "flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-hamzis-brown/10 dark:hover:bg-hamzis-copper/10 transition" do %>
+            <!-- Logout icon -->
+            <svg class="w-5 h-5 text-hamzis-copper" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <span>Logout</span>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+<script nonce="<%= content_security_policy_nonce %>">
+  (() => {
+    const button = document.getElementById("user-menu-button");
+    const menu   = document.getElementById("user-menu");
+
+    button.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!button.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.add("hidden");
+      }
+    });
+  })();
+</script>

@@ -1,0 +1,38 @@
+<h2 class="text-2xl font-bold mb-6">
+  My Attendance
+</h2>
+<!-- Dashboard Summary -->
+<div class="grid md:grid-cols-3 gap-6 mb-8">
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Total Records</p>
+    <p class="text-2xl font-bold"><%= @attendance_records.count %></p>
+  </div>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Present</p>
+    <p class="text-2xl font-bold"><%= @attendance_records.status_present.count %></p>
+  </div>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
+    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Absent</p>
+    <p class="text-2xl font-bold"><%= @attendance_records.status_absent.count %></p>
+  </div>
+</div>
+<!-- Filters row -->
+<div class="mb-4 flex items-center gap-4">
+  <%= form_with url: my_attendance_hr_attendance_records_path, method: :get, local: true, class: "flex gap-2" do |f| %>
+    <%= f.select :status, Hr::AttendanceRecord.statuses.keys.map { |s| [s.titleize, s] }, {prompt: "Filter By Status"},
+          class: "w-full px-5 py-1 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    <%= f.date_field :date, class: "w-full px-5 py-1 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+    <%= f.submit "Filter", class: "px-5 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition text-sm" %>
+  <% end %>
+  <%= link_to "Reset", my_attendance_hr_attendance_records_path, class: "px-5 py-1 rounded bg-gray-300 text-gray-900 hover:bg-gray-400 transition text-sm" %>
+</div>
+<!-- Attendance Table -->
+<%= render "hr/attendance_records/attendance_table",
+           attendance_records: @attendance_records,
+           show_employee: false,
+           show_actions: false %>
+<!-- Pagination controls -->
+<div class="mt-6 flex justify-center"> <%= paginate @attendance_records, params: request.query_parameters %> </div>

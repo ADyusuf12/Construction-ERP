@@ -1,5 +1,6 @@
 class Project < ApplicationRecord
   belongs_to :user, optional: true
+  belongs_to :client, class_name: "Business::Client", optional: true
 
   has_many :tasks, dependent: :destroy
   has_many :reports, dependent: :destroy
@@ -7,6 +8,7 @@ class Project < ApplicationRecord
   has_many :project_inventories, dependent: :destroy
   has_many :inventory_items, through: :project_inventories
   has_many :project_expenses, dependent: :destroy
+  has_many :attendance_records, class_name: "Hr::AttendanceRecord", dependent: :destroy
 
   # --- Files ---
   has_many :project_files, dependent: :destroy
@@ -16,6 +18,8 @@ class Project < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 100 }
   validates :description, presence: true
+  validates :location, presence: true
+  validates :address, presence: true
 
   scope :due_soon, -> { where("deadline <= ?", 1.week.from_now) }
   scope :overdue, -> { where("deadline < ? AND status != ?", Time.current, statuses[:completed]) }

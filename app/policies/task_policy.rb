@@ -1,51 +1,44 @@
 class TaskPolicy < ApplicationPolicy
-  # user = current_user, record = @task
+  include ClientScopedPolicy # newly added
 
   def index?
-    # CEO/Admin see everything
-    user.role_ceo? || user.role_admin? ||
-    # Other roles with task visibility
-    user.role_cto? || user.role_site_manager? || user.role_qs? || user.role_engineer?
+    user.role_ceo? || user.role_admin? || user.role_hr? ||
+    user.role_cto? || user.role_site_manager? || user.role_qs? || user.role_engineer? ||
+    user.role_client? # newly added
   end
 
   def show?
-    index?
+    user.role_client? ? record.project&.client_id == user.client&.id : index? || user.role_hr?
   end
 
   def create?
-    # CEO/Admin/CTO/Site Manager can create tasks
-    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager?
+    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr?
   end
 
   def update?
-    # CEO/Admin/CTO/Site Manager can update tasks
-    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager?
+    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr?
   end
 
   def destroy?
-    # CEO/Admin/CTO can destroy tasks
-    user.role_ceo? || user.role_admin? || user.role_cto?
+    user.role_ceo? || user.role_admin? || user.role_cto?  || user.role_hr?
   end
 
   def mark_in_progress?
-    # CEO/Admin/CTO/Site Manager can move tasks forward
-    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager?
+    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr?
   end
 
   def mark_done?
-    # CEO/Admin/CTO/Site Manager can mark tasks complete
-    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager?
+    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr?
   end
 
   class Scope < Scope
     def resolve
-      if user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager?
+      if user.role_client? && user.client.present? # newly added
+        scope.joins(:project).where(projects: { client_id: user.client.id })
+      elsif user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr?
         scope.all
       else
-        # QS/Engineer only see tasks assigned to them
-        scope.joins(:assignments)
-             .where(assignments: { user_id: user.id })
-             .distinct
+        scope.joins(:assignments).where(assignments: { user_id: user.id }).distinct
       end
     end
   end

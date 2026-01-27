@@ -50,7 +50,7 @@ class ReportsController < ApplicationController
     if @report.save
       redirect_to [ @report.project, @report ], notice: "Report was successfully created."
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -60,7 +60,7 @@ class ReportsController < ApplicationController
     if @report.update(report_params)
       redirect_to [ @project, @report ], notice: "Report was successfully updated.", status: :see_other
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

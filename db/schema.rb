@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_21_170212) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_25_134433) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -82,6 +82,35 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_21_170212) do
     t.bigint "user_id", null: false
     t.index [ "task_id" ], name: "index_assignments_on_task_id"
     t.index [ "user_id" ], name: "index_assignments_on_user_id"
+  end
+
+  create_table "business_clients", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "company"
+    t.string "email"
+    t.string "phone"
+    t.text "address"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index [ "email" ], name: "index_business_clients_on_email", unique: true
+    t.index [ "name" ], name: "index_business_clients_on_name"
+    t.index [ "user_id" ], name: "index_business_clients_on_user_id"
+  end
+
+  create_table "hr_attendance_records", force: :cascade do |t|
+    t.bigint "employee_id", null: false
+    t.bigint "project_id", null: false
+    t.date "date", null: false
+    t.integer "status", null: false
+    t.datetime "check_in_time"
+    t.datetime "check_out_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index [ "employee_id", "date" ], name: "index_hr_attendance_records_on_employee_id_and_date", unique: true
+    t.index [ "employee_id" ], name: "index_hr_attendance_records_on_employee_id"
+    t.index [ "project_id" ], name: "index_hr_attendance_records_on_project_id"
   end
 
   create_table "hr_employees", force: :cascade do |t|
@@ -194,6 +223,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_21_170212) do
     t.integer "status", default: 0, null: false
     t.datetime "deadline"
     t.decimal "budget", precision: 12, scale: 2
+    t.bigint "client_id"
+    t.string "location"
+    t.string "address"
+    t.index [ "client_id" ], name: "index_projects_on_client_id"
     t.index [ "user_id" ], name: "index_projects_on_user_id"
   end
 
@@ -405,6 +438,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_21_170212) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "role"
+    t.bigint "client_id"
+    t.index [ "client_id" ], name: "index_users_on_client_id"
     t.index [ "email" ], name: "index_users_on_email", unique: true
     t.index [ "reset_password_token" ], name: "index_users_on_reset_password_token", unique: true
   end
@@ -426,6 +461,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_21_170212) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "assignments", "tasks"
   add_foreign_key "assignments", "users"
+  add_foreign_key "business_clients", "users"
+  add_foreign_key "hr_attendance_records", "hr_employees", column: "employee_id"
+  add_foreign_key "hr_attendance_records", "projects"
   add_foreign_key "hr_employees", "hr_employees", column: "manager_id"
   add_foreign_key "hr_employees", "users"
   add_foreign_key "hr_leaves", "hr_employees", column: "employee_id"
@@ -436,6 +474,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_21_170212) do
   add_foreign_key "project_inventories", "inventory_items"
   add_foreign_key "project_inventories", "projects"
   add_foreign_key "project_inventories", "tasks"
+  add_foreign_key "projects", "business_clients", column: "client_id"
   add_foreign_key "projects", "users"
   add_foreign_key "reports", "projects"
   add_foreign_key "reports", "users"
@@ -453,4 +492,5 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_21_170212) do
   add_foreign_key "stock_movements", "tasks"
   add_foreign_key "stock_movements", "warehouses"
   add_foreign_key "tasks", "projects"
+  add_foreign_key "users", "business_clients", column: "client_id"
 end

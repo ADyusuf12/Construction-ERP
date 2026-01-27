@@ -1,0 +1,2 @@
+module Hr::AttendanceRecordsHelper
+end

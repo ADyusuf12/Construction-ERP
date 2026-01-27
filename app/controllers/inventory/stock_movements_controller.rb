@@ -27,7 +27,7 @@ class Inventory::StockMovementsController < ApplicationController
     if @stock_movement.save
       redirect_to inventory_inventory_item_path(@inventory_item), notice: "Movement recorded."
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -41,7 +41,7 @@ class Inventory::StockMovementsController < ApplicationController
     if @stock_movement.update(stock_movement_params)
       redirect_to inventory_inventory_item_path(@inventory_item), notice: "Movement updated."
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
