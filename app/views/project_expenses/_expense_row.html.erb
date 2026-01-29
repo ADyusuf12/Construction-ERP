@@ -1,7 +1,5 @@
 <tr id="<%= dom_id(expense) %>" class="<%= row_class %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
-  <!-- Date -->
   <td class="px-4 py-3"><%= expense.date.strftime("%b %d, %Y") %></td>
-  <!-- Project (optional for global index) -->
   <% if show_project %>
     <td class="px-4 py-3">
       <%= link_to expense.project.name,
@@ -9,13 +7,9 @@
                   class: "text-hamzis-copper hover:underline" %>
     </td>
   <% end %>
-  <!-- Description -->
   <td class="px-4 py-3"><%= expense.description %></td>
-  <!-- Amount -->
   <td class="px-4 py-3 font-semibold"><%= number_to_currency(expense.amount, unit: "₦") %></td>
-  <!-- Reference -->
   <td class="px-4 py-3"><%= expense.reference.presence || "-" %></td>
-  <!-- Actions -->
   <td class="px-4 py-3 flex gap-2">
     <%= link_to "View", project_project_expense_path(expense.project, expense),
         class: "px-3 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition text-xs" %>

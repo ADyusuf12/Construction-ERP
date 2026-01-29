@@ -6,5 +6,6 @@
       class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
 </div>
 <%= render "project_expenses/expenses_table",
+           project: project,
            expenses: project.project_expenses,
            show_project: false %>
