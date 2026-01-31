@@ -5,6 +5,9 @@
   </h2>
   <p class="mt-2"><%= project.description %></p>
   <div class="mt-4 space-y-2 text-sm">
+    <p><span class="font-medium">Client:</span> <%= project.client.name %></p>
+    <p><span class="font-medium">Location:</span> <%= project.location.presence || "—" %></p>
+    <p><span class="font-medium">Address:</span> <%= project.address.presence || "—" %></p>
     <p><span class="font-medium">Status:</span> <%= project.status.humanize %></p>
     <% if project.deadline.present? %>
       <p><span class="font-medium">Deadline:</span> <%= project.deadline.strftime("%b %d, %Y") %></p>

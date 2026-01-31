@@ -2,12 +2,13 @@
 module Inventory
   class StockMovementPolicy < ApplicationPolicy
     def index?
-      # You can view movements if you can view the underlying inventory item
-      Inventory::InventoryItemPolicy.new(user, record.inventory_item).show?
+      return false unless user
+      user.role_ceo? || user.role_admin? || user.role_site_manager? || user.role_storekeeper? || user.role_hr?
     end
 
     def show?
-      index?
+      return false unless user
+      user.role_ceo? || user.role_admin? || user.role_site_manager? || user.role_storekeeper? || user.role_hr?
     end
 
     def create?
