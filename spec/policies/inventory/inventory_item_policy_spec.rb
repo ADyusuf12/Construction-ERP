@@ -93,7 +93,7 @@ RSpec.describe Inventory::InventoryItemPolicy do
 
       # item linked to user's project
       linked_item = create(:inventory_item)
-      create(:project_inventory, project: project, inventory_item: linked_item, quantity: 1)
+      create(:project_inventory, project: project, inventory_item: linked_item, quantity_reserved: 1)
 
       # item not linked to user's projects
       other_item = create(:inventory_item)

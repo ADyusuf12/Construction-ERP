@@ -54,6 +54,7 @@ Rails.application.routes.draw do
       resources :stock_movements, only: %i[index new create edit update destroy show]
     end
     resources :warehouses
+    resources :stock_movements, only: %i[index show]
     resources :project_inventories, only: [ :create, :edit, :update, :destroy ]
   end
 

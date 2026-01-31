@@ -1,0 +1,60 @@
+<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+  <h2 class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper mb-4">
+    All Stock Movements
+  </h2>
+  <% if stock_movements.any? %>
+    <table class="min-w-full text-sm text-left border-collapse">
+      <thead>
+        <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
+          <th class="px-4 py-3">Date/Time</th>
+          <th class="px-4 py-3">Type</th>
+          <th class="px-4 py-3">Item</th>
+          <th class="px-4 py-3">Qty</th>
+          <th class="px-4 py-3">Project</th>
+          <th class="px-4 py-3">Warehouse</th>
+          <th class="px-4 py-3">Reference</th>
+          <th class="px-4 py-3">By</th>
+          <th class="px-4 py-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-hamzis-brown/20">
+        <% stock_movements.each_with_index do |m, index| %>
+          <tr class="hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition <%= index.even? ? 'bg-hamzis-brown/5 dark:bg-hamzis-copper/5' : '' %>">
+            <td class="px-4 py-3"><%= l(m.created_at, format: :short) %></td>
+            <td class="px-4 py-3"><%= m.movement_type.humanize %></td>
+            <td class="px-4 py-3"><%= m.inventory_item&.name || "—" %></td>
+            <td class="px-4 py-3 font-medium">
+              <%= m.quantity %>
+              <span class="text-xs text-gray-500"><%= m.inventory_item&.unit.presence || "—" %></span>
+            </td>
+            <td class="px-4 py-3"><%= m.project&.name || "—" %></td>
+            <td class="px-4 py-3">
+              <% if m.source_warehouse.present? %>
+                From: <%= m.source_warehouse.name %>
+              <% elsif m.destination_warehouse.present? %>
+                To: <%= m.destination_warehouse.name %>
+              <% else %>
+                —
+              <% end %>
+            </td>
+            <td class="px-4 py-3"><%= truncate(m.reference.to_s, length: 30) %></td>
+            <td class="px-4 py-3"><%= m.employee&.full_name || "System" %></td>
+            <td class="px-4 py-3 flex gap-2">
+              <%= link_to "View", inventory_inventory_item_stock_movement_path(m.inventory_item, m),
+              class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+              <% if policy([:inventory, m]).update? %>
+                <%= link_to "Edit", edit_inventory_inventory_item_stock_movement_path(m.inventory_item, m),
+              class: "px-3 py-1 rounded bg-gray-600 text-white text-xs" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="text-center py-6">
+      <p class="text-sm text-gray-500">No stock movements recorded yet.</p>
+    </div>
+  <% end %>
+</div>

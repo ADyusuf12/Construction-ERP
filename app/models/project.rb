@@ -9,6 +9,7 @@ class Project < ApplicationRecord
   has_many :inventory_items, through: :project_inventories
   has_many :project_expenses, dependent: :destroy
   has_many :attendance_records, class_name: "Hr::AttendanceRecord", dependent: :destroy
+  has_many :stock_movements, dependent: :nullify
 
   # --- Files ---
   has_many :project_files, dependent: :destroy
@@ -47,6 +48,23 @@ class Project < ApplicationRecord
   def budget_consumed_percentage
     return 0 unless budget.present? && budget > 0
     ((total_expenses.to_f / budget) * 100).round
+  end
+
+  # --- Inventory tracking (aggregates across items) ---
+  def reserved_quantity_for(item)
+    project_inventories.for_item(item).sum(:quantity)
+  end
+
+  def issued_quantity_for(item)
+    StockMovement.where(
+      project: self,
+      inventory_item: item,
+      movement_type: [ :outbound, :site_delivery ]
+    ).sum(:quantity)
+  end
+
+  def total_project_quantity_for(item)
+    reserved_quantity_for(item) + issued_quantity_for(item)
   end
 
   # --- Convenience ---

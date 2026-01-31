@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :project do
     association :user, factory: :user
+    association :client, factory: :business_client
 
     name        { "Test Project" }
     description { "A sample project for testing purposes" }
