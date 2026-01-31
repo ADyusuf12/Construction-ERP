@@ -1,23 +1,22 @@
-# spec/requests/inventory/project_inventories_spec.rb
 require "rails_helper"
 
 RSpec.describe "Inventory::ProjectInventories", type: :request do
-  let(:ceo)          { create(:user, :ceo) }
-  let(:admin)        { create(:user, :admin) }
-  let(:site_manager) { create(:user, :site_manager) }
-  let(:storekeeper)  { create(:user, :storekeeper) }
-  let(:engineer)     { create(:user, :engineer) }
+  let(:ceo)            { create(:user, :ceo) }
+  let(:admin)          { create(:user, :admin) }
+  let(:site_manager)   { create(:user, :site_manager) }
+  let(:storekeeper)    { create(:user, :storekeeper) }
+  let(:engineer)       { create(:user, :engineer) }
   let(:other_engineer) { create(:user, :engineer) }
 
-  let!(:project)     { create(:project) }
-  let!(:item)        { create(:inventory_item) }
-  let!(:existing_pi) { create(:project_inventory, project: project, inventory_item: item, quantity: 2) }
+  let!(:project)       { create(:project) }
+  let!(:item)          { create(:inventory_item) }
+  let!(:existing_pi)   { create(:project_inventory, project: project, inventory_item: item, quantity_reserved: 2) }
 
   let(:referer) { project_path(project) }
 
   describe "POST /inventory/project_inventories" do
     let(:params) do
-      { project_inventory: { project_id: project.id, inventory_item_id: item.id, quantity: 3, purpose: "reserved_for_task" } }
+      { project_inventory: { project_id: project.id, inventory_item_id: item.id, quantity_reserved: 3 } }
     end
 
     context "when not signed in" do
@@ -42,7 +41,7 @@ RSpec.describe "Inventory::ProjectInventories", type: :request do
 
       it "returns an alert on validation failure" do
         post inventory_project_inventories_path,
-             params: { project_inventory: { project_id: project.id, inventory_item_id: nil, quantity: -1 } },
+             params: { project_inventory: { project_id: project.id, inventory_item_id: nil, quantity_reserved: -1 } },
              headers: referer_headers(referer)
 
         expect(response).to redirect_to(referer)
@@ -80,7 +79,7 @@ RSpec.describe "Inventory::ProjectInventories", type: :request do
   end
 
   describe "PATCH /inventory/project_inventories/:id" do
-    let(:update_params) { { project_inventory: { quantity: 5 } } }
+    let(:update_params) { { project_inventory: { quantity_reserved: 5 } } }
 
     context "when signed in as site_manager (allowed to update)" do
       before { sign_in site_manager }
@@ -90,7 +89,7 @@ RSpec.describe "Inventory::ProjectInventories", type: :request do
         expect(response).to redirect_to(referer)
         follow_redirect!
         expect(response.body).to include("Reservation updated.")
-        expect(existing_pi.reload.quantity).to eq(5)
+        expect(existing_pi.reload.quantity_reserved).to eq(5)
       end
     end
 
@@ -106,7 +105,7 @@ RSpec.describe "Inventory::ProjectInventories", type: :request do
         expect(response).to redirect_to(referer)
         follow_redirect!
         expect(response.body).to include("Reservation updated.")
-        expect(existing_pi.reload.quantity).to eq(5)
+        expect(existing_pi.reload.quantity_reserved).to eq(5)
       end
     end
 

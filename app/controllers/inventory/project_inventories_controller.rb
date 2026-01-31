@@ -53,7 +53,7 @@ module Inventory
     end
 
     def project_inventory_params
-      params.require(:project_inventory).permit(:inventory_item_id, :quantity, :purpose, :task_id)
+      params.require(:project_inventory).permit(:inventory_item_id, :quantity_reserved, :task_id)
     end
   end
 end

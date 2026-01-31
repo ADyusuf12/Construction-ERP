@@ -12,6 +12,7 @@ RSpec.describe Inventory::StockMovementPolicy, type: :policy do
   let(:engineer)     { create(:user, :engineer) }
   let(:other_eng)    { create(:user, :engineer) }
   let(:qs)           { create(:user, :qs) }
+  let(:hr)           { create(:user, :hr) }
   let(:guest)        { nil }
 
   let!(:inventory_item) { create(:inventory_item) }
@@ -21,8 +22,8 @@ RSpec.describe Inventory::StockMovementPolicy, type: :policy do
     context "index? and show?" do
       it "delegates to InventoryItemPolicy#show? (true case)" do
         allow_any_instance_of(Inventory::InventoryItemPolicy).to receive(:show?).and_return(true)
-        expect(described_class.new(engineer, stock_movement).index?).to be true
-        expect(described_class.new(engineer, stock_movement).show?).to be true
+        expect(described_class.new(hr, stock_movement).index?).to be true
+        expect(described_class.new(hr, stock_movement).show?).to be true
       end
 
       it "delegates to InventoryItemPolicy#show? (false case)" do

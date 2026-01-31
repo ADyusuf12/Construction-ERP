@@ -89,7 +89,7 @@ class StockMovement < ApplicationRecord
     # Business decision: issuing stock reduces reservation
     if movement_type == "outbound"
       # reduce reservation if any exists
-      new_reserved = [pi.quantity_reserved - quantity, 0].max
+      new_reserved = [ pi.quantity_reserved - quantity, 0 ].max
       pi.update!(quantity_reserved: new_reserved)
     end
 

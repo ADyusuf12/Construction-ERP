@@ -59,7 +59,7 @@ class Project < ApplicationRecord
     StockMovement.where(
       project: self,
       inventory_item: item,
-      movement_type: [:outbound, :site_delivery]
+      movement_type: [ :outbound, :site_delivery ]
     ).sum(:quantity)
   end
 

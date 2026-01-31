@@ -1,4 +1,3 @@
-# spec/requests/inventory/stock_movements_spec.rb
 require "rails_helper"
 
 RSpec.describe "Inventory::StockMovements", type: :request do
@@ -32,7 +31,13 @@ RSpec.describe "Inventory::StockMovements", type: :request do
 
   describe "POST create" do
     let(:valid_params) do
-      { stock_movement: { warehouse_id: warehouse.id, movement_type: :inbound, quantity: 5 } }
+      {
+        stock_movement: {
+          destination_warehouse_id: warehouse.id,
+          movement_type: :inbound,
+          quantity: 5
+        }
+      }
     end
 
     context "when not signed in" do
@@ -43,40 +48,34 @@ RSpec.describe "Inventory::StockMovements", type: :request do
     end
 
     context "when signed in as storekeeper" do
-      before do
-        sign_in storekeeper
-        allow(Inventory::ApplyMovementJob).to receive(:perform_later)
-      end
+      before { sign_in storekeeper }
 
-      it "creates a movement and enqueues the job (stubbed)" do
+      it "creates and applies a movement" do
         expect {
           post inventory_inventory_item_stock_movements_path(item), params: valid_params, headers: html_headers
         }.to change(StockMovement, :count).by(1)
 
         expect(response).to redirect_to(inventory_inventory_item_path(item))
-        expect(Inventory::ApplyMovementJob).to have_received(:perform_later).once
-        movement = StockMovement.last
-        expect(movement.quantity).to eq(5)
-        expect(movement.warehouse_id).to eq(warehouse.id)
+        follow_redirect!
+        expect(response.body).to include("Movement recorded and applied.")
       end
 
       it "renders new on validation failure" do
         expect {
           post inventory_inventory_item_stock_movements_path(item),
-               params: { stock_movement: { warehouse_id: nil, movement_type: :inbound, quantity: 0 } },
+               params: { stock_movement: { destination_warehouse_id: nil, movement_type: :inbound, quantity: 0 } },
                headers: html_headers
         }.to_not change(StockMovement, :count)
 
-        # controller uses :unprocessable_content; assert the numeric status to be robust
-        expect(response.status).to eq(422)
+        # controller uses redirect with flash alert on failure
+        expect(response).to redirect_to(new_inventory_inventory_item_stock_movement_path(item))
+        follow_redirect!
+        expect(response.body).to include("Quantity must be greater than 0")
       end
     end
 
     context "when signed in as engineer (not authorized to create)" do
-      before do
-        sign_in engineer
-        allow(Inventory::ApplyMovementJob).to receive(:perform_later)
-      end
+      before { sign_in engineer }
 
       it "is not authorized to create" do
         post inventory_inventory_item_stock_movements_path(item), params: valid_params, headers: html_headers

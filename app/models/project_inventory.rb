@@ -15,13 +15,13 @@ class ProjectInventory < ApplicationRecord
     StockMovement.where(
       project: project,
       inventory_item: inventory_item,
-      movement_type: [:outbound, :site_delivery]
+      movement_type: [ :outbound, :site_delivery ]
     ).sum(:quantity)
   end
 
   # Reservation still outstanding (reserved but not yet delivered)
   def outstanding_reservation
-    [quantity_reserved - issued_quantity, 0].max
+    [ quantity_reserved - issued_quantity, 0 ].max
   end
 
   # Current stock physically at the project site
@@ -37,7 +37,7 @@ class ProjectInventory < ApplicationRecord
   scope :issued, -> {
     joins(:project).where(
       id: StockMovement.select(:inventory_item_id)
-                       .where(movement_type: [:outbound, :site_delivery])
+                       .where(movement_type: [ :outbound, :site_delivery ])
     )
   }
 

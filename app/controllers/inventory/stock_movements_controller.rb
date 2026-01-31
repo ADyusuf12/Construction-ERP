@@ -7,16 +7,16 @@ class Inventory::StockMovementsController < ApplicationController
     if params[:inventory_item_id].present?
       # Nested case: movements for a specific item
       @inventory_item = InventoryItem.find(params[:inventory_item_id])
-      @stock_movements = policy_scope([:inventory, @inventory_item.stock_movements])
+      @stock_movements = policy_scope([ :inventory, @inventory_item.stock_movements ])
                             .includes(:inventory_item, :project, :employee, :source_warehouse, :destination_warehouse)
                             .order(created_at: :desc)
       authorize [ :inventory, @inventory_item ]
     else
       # Global case: all movements
-      @stock_movements = policy_scope([:inventory, StockMovement])
+      @stock_movements = policy_scope([ :inventory, StockMovement ])
                             .includes(:inventory_item, :project, :employee, :source_warehouse, :destination_warehouse)
                             .order(created_at: :desc)
-      authorize [:inventory, StockMovement]
+      authorize [ :inventory, StockMovement ]
     end
 
     @summary = {
@@ -28,19 +28,19 @@ class Inventory::StockMovementsController < ApplicationController
   end
 
   def show
-    authorize [:inventory, @stock_movement]
+    authorize [ :inventory, @stock_movement ]
   end
 
   def new
     @stock_movement = @inventory_item.stock_movements.build(movement_type: nil)
-    authorize [:inventory, @stock_movement]
+    authorize [ :inventory, @stock_movement ]
   end
 
   def create
     @stock_movement = @inventory_item.stock_movements.build(
       stock_movement_params.merge(employee: current_user.employee)
     )
-    authorize [:inventory, @stock_movement]
+    authorize [ :inventory, @stock_movement ]
 
     if @stock_movement.save
       begin
@@ -57,11 +57,11 @@ class Inventory::StockMovementsController < ApplicationController
   end
 
   def edit
-    authorize [:inventory, @stock_movement]
+    authorize [ :inventory, @stock_movement ]
   end
 
   def update
-    authorize [:inventory, @stock_movement]
+    authorize [ :inventory, @stock_movement ]
 
     if @stock_movement.update(stock_movement_params)
       begin
@@ -77,7 +77,7 @@ class Inventory::StockMovementsController < ApplicationController
   end
 
   def destroy
-    authorize [:inventory, @stock_movement]
+    authorize [ :inventory, @stock_movement ]
     @stock_movement.destroy
     redirect_to inventory_inventory_item_path(@inventory_item), notice: "Movement removed."
   end
@@ -86,7 +86,7 @@ class Inventory::StockMovementsController < ApplicationController
 
   def set_inventory_item
     return unless params[:inventory_item_id].present?
-    @inventory_item = policy_scope([:inventory, InventoryItem]).find(params[:inventory_item_id])
+    @inventory_item = policy_scope([ :inventory, InventoryItem ]).find(params[:inventory_item_id])
   end
 
   def set_stock_movement
