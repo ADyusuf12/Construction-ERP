@@ -1,19 +1,20 @@
-# app/jobs/salary_slip_job.rb
 class SalarySlipJob < ApplicationJob
   queue_as :default
 
   def perform(batch_id)
-    # Load the batch by ID
     batch = Accounting::SalaryBatch.find(batch_id)
 
-    # Use the association to fetch salaries correctly
-    batch.salaries.includes(:employee, :deductions).find_each do |salary|
+    batch.salaries.includes(:employee).find_each do |salary|
+      next if salary.slip_sent_at.present? # idempotency check
+
       SalarySlipMailer.with(
         salary: salary,
         employee: salary.employee,
         personal_detail: salary.employee.personal_detail,
         user: salary.employee.user
-      ).deliver_slip.deliver_later
+      ).deliver_slip.deliver_now
+
+      salary.update!(slip_sent_at: Time.current)
     end
   end
 end

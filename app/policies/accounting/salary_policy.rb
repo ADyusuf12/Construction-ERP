@@ -34,10 +34,6 @@ module Accounting
       user.role_hr?
     end
 
-    def mark_paid?
-      user.role_ceo? || user.role_admin? || user.role_accountant? || user.role_hr?
-    end
-
     class Scope < Scope
       def resolve
         if user.role_ceo? || user.role_admin? || user.role_accountant? ||

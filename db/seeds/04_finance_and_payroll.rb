@@ -20,17 +20,15 @@ Accounting::SalaryBatch.create!(
   salary = Accounting::Salary.create!(
     batch: batch_jan,
     employee: employee,
-    base_pay: rand(3000..7000),
-    allowances: rand(200..1000),
+    base_pay: rand(200000..700000),
+    allowances: rand(20000..100000),
     deductions_total: 0,
     status: :pending
   )
 
   # Add deductions
-  Accounting::Deduction.create!(salary: salary, deduction_type: :tax, amount: rand(100..300), notes: "Tax deduction")
-  Accounting::Deduction.create!(salary: salary, deduction_type: :pension, amount: rand(50..150), notes: "Pension contribution")
-
-  salary.update!(status: :paid)
+  Accounting::Deduction.create!(salary: salary, deduction_type: :tax, amount: rand(1000..3000), notes: "Tax deduction")
+  Accounting::Deduction.create!(salary: salary, deduction_type: :pension, amount: rand(500..1500), notes: "Pension contribution")
 end
 
 puts "Seeded January & February payroll batches with multiple employees and deductions."
