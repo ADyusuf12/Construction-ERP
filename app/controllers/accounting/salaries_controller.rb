@@ -1,10 +1,9 @@
 module Accounting
   class SalariesController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_salary, only: %i[ show edit update destroy mark_paid ]
+    before_action :set_salary, only: %i[ show edit update destroy ]
 
     # GET /accounting/salaries
-    # Optionally scoped to a batch
     def index
       authorize Accounting::Salary
       @salaries = policy_scope(Accounting::Salary)
@@ -53,25 +52,6 @@ module Accounting
       authorize @salary
       @salary.destroy
       redirect_to accounting_salaries_path, notice: "Salary was successfully deleted."
-    end
-
-    # PATCH /accounting/salaries/:id/mark_paid
-    def mark_paid
-      authorize @salary
-      if @salary.update(status: :paid)
-        # Optionally enqueue slip delivery for this salary
-        SalarySlipJob.perform_later(@salary.id)
-
-        respond_to do |format|
-          format.html { redirect_to accounting_salaries_path, notice: "Salary marked as paid." }
-          format.turbo_stream
-        end
-      else
-        respond_to do |format|
-          format.html { redirect_to accounting_salaries_path, alert: "Failed to mark salary as paid." }
-          format.turbo_stream
-        end
-      end
     end
 
     private

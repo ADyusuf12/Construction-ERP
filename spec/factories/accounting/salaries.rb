@@ -3,8 +3,8 @@ FactoryBot.define do
     association :employee, factory: :hr_employee
     association :batch,    factory: :accounting_salary_batch
 
-    base_pay    { 1000.0 }
-    allowances  { 200.0 }
+    base_pay    { 10000.0 }
+    allowances  { 2000.0 }
     status      { :pending }
     net_pay     { base_pay + allowances } # model recalculates anyway
 

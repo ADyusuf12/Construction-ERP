@@ -17,5 +17,9 @@ module Accounting
     def total_net_pay
       salaries.sum(:net_pay)
     end
+
+    def mark_all_salaries_paid!
+      salaries.update_all(status: :paid)
+    end
   end
 end

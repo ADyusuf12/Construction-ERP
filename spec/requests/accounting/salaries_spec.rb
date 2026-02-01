@@ -71,14 +71,6 @@ RSpec.describe "Accounting::Salaries", type: :request do
     end
   end
 
-  describe "PATCH /accounting/salaries/:id/mark_paid" do
-    it "marks salary as paid" do
-      patch mark_paid_accounting_salary_path(salary)
-      expect(response).to redirect_to(accounting_salaries_path)
-      expect(salary.reload.status).to eq("paid")
-    end
-  end
-
   describe "DELETE /accounting/salaries/:id" do
     it "deletes a salary" do
       salary # ensure created
