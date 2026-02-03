@@ -46,7 +46,7 @@ jobs:
         env:
           RAILS_ENV: test
           PGUSER: postgres
-          PGPASSWORD: postgres
+          PGPASSWORD: ${{ secrets.PGPASSWORD }}
           PGHOST: localhost
         run: bundle exec rspec
 
