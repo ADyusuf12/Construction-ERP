@@ -15,6 +15,8 @@ jobs:
       PGHOST: localhost
       POSTGRES_DB: hamzis_systems_test
       DATABASE_URL: postgres://postgres:${{ secrets.PGPASSWORD }}@localhost:5432/hamzis_systems_test
+      JOBS_USER: ${{ secrets.JOBS_USER }}
+      JOBS_PASSWORD: ${{ secrets.JOBS_PASSWORD }}
 
     services:
       postgres:
