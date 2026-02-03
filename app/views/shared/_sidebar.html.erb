@@ -3,20 +3,17 @@
        class="w-64 bg-hamzis-brown/40 dark:bg-hamzis-black/40 backdrop-blur-xl text-hamzis-white dark:text-hamzis-copper min-h-screen flex flex-col shadow-2xl transition-all duration-300">
   <!-- Logo -->
   <div class="px-4 py-6 border-b border-hamzis-brown/30 flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-      <!-- Always-visible icon (compact logo) -->
-      <a href="<%= dashboard_home_path %>" class="flex items-center" aria-label="Hamzis Systems home" title="Hamzis Systems">
-        <svg class="w-7 h-7 text-hamzis-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7h7l2-2h7v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-        </svg>
-        <!-- Full name — hidden when sidebar is collapsed by the sidebar controller -->
-        <span class="ml-2 text-xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-hamzis-copper to-hamzis-white sidebar-label transition-opacity duration-200"
-            data-sidebar-target="label">
-          Hamzis Systems
-        </span>
+    <div class="px-4 py-6 border-b border-hamzis-brown/30 flex flex-col items-center space-y-2">
+      <a href="<%= dashboard_home_path %>" aria-label="Hamzis Systems home" title="Hamzis Systems">
+        <img src="<%= asset_path('hamzis-logo.svg') %>" alt="Hamzis Logo"
+         class="w-16 h-16 object-contain opacity-95" />
       </a>
+      <span class="text-lg font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-hamzis-copper to-hamzis-white sidebar-label transition-opacity duration-200"
+        data-sidebar-target="label">
+        Hamzis Systems
+      </span>
     </div>
-    <!-- Optional: keep the collapse toggle here if you want it in the header -->
+    <!-- Collapse toggle -->
     <button id="sidebar-toggle" data-action="sidebar#toggle" aria-label="Toggle sidebar"
           class="p-1 rounded hover:bg-hamzis-brown/10 dark:hover:bg-hamzis-black/10">
       <svg class="w-5 h-5 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -26,10 +23,8 @@
   </div>
   <!-- Nav links -->
   <nav id="nav-menu" class="flex-1 px-4 py-6 space-y-6 text-sm">
-    <!-- Dashboard -->
     <%= link_to dashboard_home_path,
     class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(dashboard_home_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown text-hamzis-white shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown hover:text-hamzis-white'}" do %>
-      <!-- Refined icon: grid/dashboard -->
       <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
        viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
