@@ -10,17 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RAILS_ENV: test
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      PGUSER: postgres
+      PGPASSWORD: ${{ secrets.PGPASSWORD }}
+      PGHOST: localhost
       POSTGRES_DB: hamzis_systems_test
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/hamzis_systems_test
+      DATABASE_URL: postgres://postgres:${{ secrets.PGPASSWORD }}@localhost:5432/hamzis_systems_test
 
     services:
       postgres:
         image: postgres:14
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD }}
           POSTGRES_DB: hamzis_systems_test
         ports:
           - 5432:5432
