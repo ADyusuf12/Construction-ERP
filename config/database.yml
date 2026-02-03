@@ -56,9 +56,9 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: hamzis_systems_test
-  username: <%= ENV.fetch("PGUSER", "postgres") %>
-  password: <%= ENV.fetch("PGPASSWORD", "") %>
+  database: <%= ENV.fetch("POSTGRES_DB", "hamzis_systems_test") %>
+  username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "postgres") %>
   host: <%= ENV.fetch("PGHOST", "localhost") %>
 
 # As with config/credentials.yml, you never want to store sensitive information,
