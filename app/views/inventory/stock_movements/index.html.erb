@@ -1,4 +1,25 @@
-<div>
-  <h1 class="font-bold text-4xl">Inventory::StockMovements#index</h1>
-  <p>Find me in app/views/inventory/stock_movements/index.html.erb</p>
+<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6 mb-6">
+  <h2 class="text-xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
+    Stock Movement Summary
+  </h2>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+    <div class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 rounded-lg p-4 text-center">
+      <p class="font-medium">Inbound</p>
+      <p class="text-lg font-bold"><%= @summary[:inbound] %></p>
+    </div>
+    <div class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 rounded-lg p-4 text-center">
+      <p class="font-medium">Outbound</p>
+      <p class="text-lg font-bold"><%= @summary[:outbound] %></p>
+    </div>
+    <div class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 rounded-lg p-4 text-center">
+      <p class="font-medium">Site Delivery</p>
+      <p class="text-lg font-bold"><%= @summary[:site_delivery] %></p>
+    </div>
+    <div class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 rounded-lg p-4 text-center">
+      <p class="font-medium">Adjustment</p>
+      <p class="text-lg font-bold"><%= @summary[:adjustment] %></p>
+    </div>
+  </div>
 </div>
+<%= render "inventory/stock_movements/table", stock_movements: @stock_movements %>

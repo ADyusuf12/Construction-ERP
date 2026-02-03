@@ -4,35 +4,35 @@
     <h2 class="text-xl font-bold mb-4 text-hamzis-brown dark:text-hamzis-copper">Profile</h2>
     <div class="grid md:grid-cols-2 gap-6">
       <!-- User Info -->
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
-        <p class="text-sm text-gray-700 dark:text-gray-300">
-          <span class="font-medium">Email:</span> <%= current_user.email %>
+      <div class="bg-hamzis-copper dark:bg-gray-800 rounded-xl shadow p-4">
+        <p class="text-sm text-white dark:text-gray-300">
+          <span class="font-medium  text-black dark:text-hamzis-copper">Email:</span> <%= current_user.email %>
         </p>
-        <p class="text-sm text-gray-700 dark:text-gray-300 mt-2">
-          <span class="font-medium">Role:</span> <%= current_user.role.upcase %>
+        <p class="text-sm text-white dark:text-gray-300 mt-2">
+          <span class="font-medium  text-black dark:text-hamzis-copper">Role:</span> <%= current_user.role.upcase %>
         </p>
       </div>
       <!-- Employee Info -->
       <% if @employee %>
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4 space-y-2">
-          <p class="text-sm text-gray-700 dark:text-gray-300">
-            <span class="font-medium">Hamzis ID:</span> <%= @employee.hamzis_id %>
+        <div class="bg-hamzis-copper dark:bg-gray-800 rounded-xl shadow p-4 space-y-2">
+          <p class="text-sm text-white dark:text-gray-300">
+            <span class="font-medium  text-black dark:text-hamzis-copper ">Hamzis ID:</span> <%= @employee.hamzis_id %>
           </p>
-          <p class="text-sm text-gray-700 dark:text-gray-300">
-            <span class="font-medium">Department:</span> <%= @employee.department || "N/A" %>
+          <p class="text-sm text-white dark:text-gray-300">
+            <span class="font-medium  text-black dark:text-hamzis-copper ">Department:</span> <%= @employee.department || "N/A" %>
           </p>
-          <p class="text-sm text-gray-700 dark:text-gray-300">
-            <span class="font-medium">Position:</span> <%= @employee.position_title.upcase || "N/A" %>
+          <p class="text-sm text-white dark:text-gray-300">
+            <span class="font-medium  text-black dark:text-hamzis-copper">Position:</span> <%= @employee.position_title.upcase || "N/A" %>
           </p>
-          <p class="text-sm text-gray-700 dark:text-gray-300">
-            <span class="font-medium">Leave Balance:</span> <%= @employee.leave_balance %> days
+          <p class="text-sm text-white dark:text-gray-300">
+            <span class="font-medium  text-black dark:text-hamzis-copper">Leave Balance:</span> <%= @employee.leave_balance %> days
           </p>
-          <p class="text-sm text-gray-700 dark:text-gray-300">
-            <span class="font-medium">Performance Score:</span> <%= @employee.performance_score || "N/A" %>
+          <p class="text-sm text-white dark:text-gray-300">
+            <span class="font-medium  text-black dark:text-hamzis-copper">Performance Score:</span> <%= @employee.performance_score || "N/A" %>
           </p>
         </div>
       <% else %>
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
+        <div class="bg-hamzis-copper dark:bg-gray-800 rounded-xl shadow p-4">
           <p class="text-sm text-gray-500 dark:text-gray-400">
             No HR record linked to your account.
           </p>

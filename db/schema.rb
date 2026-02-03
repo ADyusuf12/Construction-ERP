@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_25_134433) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_31_163737) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -34,6 +34,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_134433) do
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "slip_sent_at"
     t.index [ "batch_id" ], name: "index_accounting_salaries_on_batch_id"
     t.index [ "employee_id" ], name: "index_accounting_salaries_on_employee_id"
   end
@@ -188,7 +189,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_134433) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "stock_movement_id"
     t.index [ "project_id" ], name: "index_project_expenses_on_project_id"
+    t.index [ "stock_movement_id" ], name: "index_project_expenses_on_stock_movement_id"
   end
 
   create_table "project_files", force: :cascade do |t|
@@ -203,7 +206,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_134433) do
   create_table "project_inventories", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.bigint "inventory_item_id", null: false
-    t.integer "quantity", default: 0, null: false
+    t.integer "quantity_reserved", default: 0, null: false
     t.string "purpose"
     t.bigint "task_id"
     t.datetime "created_at", null: false
@@ -380,7 +383,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_134433) do
 
   create_table "stock_movements", force: :cascade do |t|
     t.bigint "inventory_item_id", null: false
-    t.bigint "warehouse_id", null: false
     t.integer "movement_type", default: 0, null: false
     t.integer "quantity", null: false
     t.decimal "unit_cost", precision: 12, scale: 2
@@ -392,15 +394,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_134433) do
     t.datetime "applied_at"
     t.bigint "project_id"
     t.bigint "task_id"
+    t.bigint "source_warehouse_id"
+    t.bigint "destination_warehouse_id"
     t.index [ "applied_at" ], name: "index_stock_movements_on_applied_at"
     t.index [ "created_at" ], name: "index_stock_movements_on_created_at"
+    t.index [ "destination_warehouse_id" ], name: "index_stock_movements_on_destination_warehouse_id"
     t.index [ "employee_id" ], name: "index_stock_movements_on_employee_id"
     t.index [ "inventory_item_id", "created_at" ], name: "index_stock_movements_on_item_and_created_at"
     t.index [ "inventory_item_id" ], name: "index_stock_movements_on_inventory_item_id"
     t.index [ "movement_type" ], name: "index_stock_movements_on_movement_type"
     t.index [ "project_id" ], name: "index_stock_movements_on_project_id"
+    t.index [ "source_warehouse_id" ], name: "index_stock_movements_on_source_warehouse_id"
     t.index [ "task_id" ], name: "index_stock_movements_on_task_id"
-    t.index [ "warehouse_id" ], name: "index_stock_movements_on_warehouse_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -470,6 +475,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_134433) do
   add_foreign_key "hr_leaves", "hr_employees", column: "manager_id"
   add_foreign_key "hr_personal_details", "hr_employees", column: "employee_id"
   add_foreign_key "project_expenses", "projects"
+  add_foreign_key "project_expenses", "stock_movements"
   add_foreign_key "project_files", "projects"
   add_foreign_key "project_inventories", "inventory_items"
   add_foreign_key "project_inventories", "projects"
@@ -490,7 +496,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_134433) do
   add_foreign_key "stock_movements", "inventory_items"
   add_foreign_key "stock_movements", "projects"
   add_foreign_key "stock_movements", "tasks"
-  add_foreign_key "stock_movements", "warehouses"
   add_foreign_key "tasks", "projects"
   add_foreign_key "users", "business_clients", column: "client_id"
 end

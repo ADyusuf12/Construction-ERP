@@ -4,4 +4,7 @@
   <%= link_to "➕ New Report", new_project_report_path(project),
       class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
 </div>
-<%= render "reports/reports_table", reports: project.reports, show_project: false %>
+<%= render "reports/reports_table",
+            project: project,
+            reports: project.reports,
+            show_project: false %>

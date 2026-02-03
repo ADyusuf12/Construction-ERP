@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  mount MissionControl::Jobs::Engine, at: "/jobs"
+
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
   namespace :business do
     resources :clients
   end
@@ -54,6 +59,7 @@ Rails.application.routes.draw do
       resources :stock_movements, only: %i[index new create edit update destroy show]
     end
     resources :warehouses
+    resources :stock_movements, only: %i[index show]
     resources :project_inventories, only: [ :create, :edit, :update, :destroy ]
   end
 

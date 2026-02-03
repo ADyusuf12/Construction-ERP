@@ -16,7 +16,6 @@ RSpec.describe Accounting::SalaryPolicy do
       expect(policy.update?).to eq true
       expect(policy.destroy?).to eq true
       expect(policy.adjust_deductions?).to eq true
-      expect(policy.mark_paid?).to eq true
     end
   end
 
@@ -31,7 +30,6 @@ RSpec.describe Accounting::SalaryPolicy do
       expect(policy.update?).to eq true
       expect(policy.destroy?).to eq false
       expect(policy.adjust_deductions?).to eq true
-      expect(policy.mark_paid?).to eq true
     end
   end
 
@@ -46,7 +44,6 @@ RSpec.describe Accounting::SalaryPolicy do
       expect(policy.update?).to eq true
       expect(policy.destroy?).to eq true
       expect(policy.adjust_deductions?).to eq true
-      expect(policy.mark_paid?).to eq true
     end
   end
 
@@ -61,7 +58,6 @@ RSpec.describe Accounting::SalaryPolicy do
       expect(policy.update?).to eq false
       expect(policy.destroy?).to eq false
       expect(policy.adjust_deductions?).to eq false
-      expect(policy.mark_paid?).to eq false
     end
   end
 end

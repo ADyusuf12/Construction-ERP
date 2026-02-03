@@ -17,4 +17,7 @@
   <%= link_to "➕ New Task", new_project_task_path(project),
       class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
 </div>
-<%= render "tasks/tasks_table", project: project %>
+<%= render "tasks/tasks_table",
+          project: project,
+          tasks: project.tasks,
+          show_project: project %>

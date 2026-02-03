@@ -1,55 +1,87 @@
-<%= form_with(model: [ :inventory, @inventory_item, @stock_movement ], local: true, class: "space-y-4") do |f| %>
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 space-y-4 max-w-2xl">
-    <!-- Movement Type -->
+<%= form_with(model: [ :inventory, @inventory_item, @stock_movement ], local: true,
+              class: "space-y-8 max-w-4xl mx-auto bg-white dark:bg-gray-900 p-10 rounded-xl shadow-lg") do |f| %>
+  <!-- Movement Type -->
+  <div>
+    <h2 class="text-xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">Step 1: Choose Movement Type</h2>
+    <%= f.label :movement_type, "Movement Type", class: "block font-semibold mb-2" %>
+    <%= f.select :movement_type,
+          StockMovement.movement_types.keys.map { |t| [t.humanize, t] },
+          { prompt: "Select type of movement" },
+          class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
+    <p class="text-sm text-gray-500 mt-1">
+      • Inbound = purchase into warehouse<br>
+      • Outbound = issue from warehouse to project<br>
+      • Site Delivery = direct to project<br>
+      • Adjustment = correct warehouse stock
+    </p>
+  </div>
+  <!-- Warehouses -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <div>
-      <%= f.label :movement_type, "Movement Type", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= f.select :movement_type, StockMovement.movement_types.keys.map { |t| [t.humanize, t] },
-            {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
+      <%= f.label :source_warehouse_id, "Source Warehouse", class: "block font-semibold mb-2" %>
+      <%= f.collection_select :source_warehouse_id, Warehouse.all, :id, :name,
+            { prompt: "Select warehouse stock leaves from" },
+            class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
+      <p class="text-xs text-gray-500 mt-1">Required for outbound movements.</p>
     </div>
-    <!-- Quantity -->
     <div>
-      <%= f.label :quantity, "Quantity", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= f.label :destination_warehouse_id, "Destination Warehouse", class: "block font-semibold mb-2" %>
+      <%= f.collection_select :destination_warehouse_id, Warehouse.all, :id, :name,
+            { prompt: "Select warehouse stock goes into" },
+            class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
+      <p class="text-xs text-gray-500 mt-1">Required for inbound and adjustment movements.</p>
+    </div>
+  </div>
+  <!-- Project -->
+  <div>
+    <%= f.label :project_id, "Project", class: "block font-semibold mb-2" %>
+    <%= f.collection_select :project_id, Project.order(:name), :id, :name,
+          { prompt: "Select project receiving stock" },
+          class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
+    <p class="text-xs text-gray-500 mt-1">Required for outbound and site delivery movements.</p>
+  </div>
+  <!-- Costs & Quantity -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <%= f.label :unit_cost, "Unit Cost", class: "block font-semibold mb-2" %>
+      <%= f.number_field :unit_cost, step: 0.01, min: 0,
+            placeholder: "Enter cost per unit",
+            class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
+      <p class="text-xs text-gray-500 mt-1">Optional for outbound, inbound, and site delivery.</p>
+    </div>
+    <div>
+      <%= f.label :quantity, "Quantity", class: "block font-semibold mb-2" %>
       <%= f.number_field :quantity, step: 1, min: 1,
+            placeholder: "Enter quantity",
             class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
+      <p class="text-xs text-gray-500 mt-1">Required for all movement types.</p>
     </div>
-    <!-- Warehouse -->
+  </div>
+  <!-- Optional Details -->
+  <div class="space-y-4">
     <div>
-      <%= f.label :warehouse_id, "Warehouse", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= f.collection_select :warehouse_id, Warehouse.all, :id, :name,
-            { prompt: "Select warehouse" },
-            class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
-    </div>
-    <!-- Project -->
-    <div>
-      <%= f.label :project_id, "Project (optional)", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= f.collection_select :project_id, Project.order(:name), :id, :name,
-        { prompt: "Select project" },
-        class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
-    </div>
-    <!-- Task -->
-    <div>
-      <%= f.label :task_id, "Task (optional)", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
+      <%= f.label :task_id, "Task (optional)", class: "block font-semibold mb-2" %>
       <%= f.collection_select :task_id, Task.order(:title), :id, :title,
-        { prompt: "Select task" },
-        class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
+            { prompt: "Link to a task" },
+            class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
     </div>
-    <!-- Reference -->
     <div>
-      <%= f.label :reference, "Reference (optional)", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= f.text_field :reference, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
+      <%= f.label :reference, "Reference (optional)", class: "block font-semibold mb-2" %>
+      <%= f.text_field :reference, placeholder: "Enter reference code or note",
+            class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
     </div>
-    <!-- Notes -->
     <div>
-      <%= f.label :notes, "Notes (optional)", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= f.text_area :notes, rows: 3, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
+      <%= f.label :notes, "Notes (optional)", class: "block font-semibold mb-2" %>
+      <%= f.text_area :notes, rows: 3,
+            placeholder: "Add any extra details here...",
+            class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
     </div>
-    <!-- Actions -->
-    <div class="flex gap-2">
-      <%= f.submit (@stock_movement.persisted? ? "Update Movement" : "Record Movement"),
-            class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
-      <%= link_to "Cancel", inventory_inventory_item_path(@inventory_item),
-            class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
-    </div>
+  </div>
+  <!-- Actions -->
+  <div class="flex gap-4 justify-end mt-6">
+    <%= f.submit (@stock_movement.persisted? ? "Update Movement" : "Record Movement"),
+          class: "px-6 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition font-semibold" %>
+    <%= link_to "Cancel", inventory_inventory_item_path(@inventory_item),
+          class: "px-6 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition font-semibold" %>
   </div>
 <% end %>

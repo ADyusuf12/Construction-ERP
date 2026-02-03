@@ -57,7 +57,11 @@ module Accounting
     # PATCH /accounting/salary_batches/:id/mark_paid
     def mark_paid
       authorize @salary_batch
-      @salary_batch.update!(status: :paid)
+      @salary_batch.transaction do
+        @salary_batch.update!(status: :paid)
+        @salary_batch.mark_all_salaries_paid!
+        SalarySlipJob.perform_later(@salary_batch.id)
+      end
 
       respond_to do |format|
         format.html { redirect_to accounting_salary_batches_path, notice: "Batch marked as paid." }

@@ -12,18 +12,23 @@ class InventoryItem < ApplicationRecord
   has_many :projects, through: :project_inventories
   has_many :warehouses, through: :stock_levels
 
+  # --- Inventory calculations ---
+  # Total quantity across all warehouses
   def total_quantity
     stock_levels.sum(:quantity)
   end
 
+  # Total reserved quantity across all projects
   def reserved_quantity
-    project_inventories.sum(:quantity)
+    project_inventories.sum(:quantity_reserved)
   end
 
+  # Available = warehouse stock minus reserved commitments
   def available_quantity
     total_quantity - reserved_quantity
   end
 
+  # --- Status refresh ---
   def refresh_status!
     qty = total_quantity
     new_status =
@@ -34,6 +39,7 @@ class InventoryItem < ApplicationRecord
       else
         :in_stock
       end
+
     update_column(:status, InventoryItem.statuses[new_status]) unless status == new_status.to_s
   end
 end

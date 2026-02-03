@@ -3,25 +3,47 @@
   <%= render "inventory/project_inventories/form", project_inventory: ProjectInventory.new(project: project) %>
 <% end %>
 <% if project.project_inventories.any? %>
+  <h3 class="text-xl font-bold mb-4">Project Inventory</h3>
   <table class="min-w-full text-sm text-left border-collapse">
     <thead>
       <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-xs uppercase tracking-wide">
         <th class="px-4 py-3">Item</th>
-        <th class="px-4 py-3">Quantity</th>
+        <th class="px-4 py-3 text-center" colspan="3">Quantity</th>
         <th class="px-4 py-3">Purpose</th>
         <th class="px-4 py-3">Actions</th>
       </tr>
+      <tr class="bg-hamzis-brown/5 dark:bg-hamzis-copper/5 text-xs uppercase tracking-wide">
+        <th></th>
+        <th class="px-4 py-2 text-center">Reserved</th>
+        <th class="px-4 py-2 text-center">Issued</th>
+        <th class="px-4 py-2 text-center">At Site</th>
+        <th></th>
+        <th></th>
+      </tr>
     </thead>
-    <h3 class="text-xl font-bold mb-4">Reserved Inventory</h3>
     <tbody class="divide-y divide-hamzis-brown/20">
       <% project.project_inventories.each do |pi| %>
         <tr class="hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
-          <td class="px-4 py-3"><%= pi.inventory_item&.name || "—" %></td>
-          <td class="px-4 py-3">
-            <%= pi.quantity %>
+          <!-- Item -->
+          <td class="px-4 py-3 font-medium"><%= pi.inventory_item&.name || "—" %></td>
+          <!-- Reserved -->
+          <td class="px-4 py-3 text-center">
+            <%= pi.quantity_reserved %>
             <span class="text-xs text-gray-500"><%= pi.inventory_item&.unit.presence || "pcs" %></span>
           </td>
+          <!-- Issued -->
+          <td class="px-4 py-3 text-center">
+            <%= pi.issued_quantity %>
+            <span class="text-xs text-gray-500"><%= pi.inventory_item&.unit.presence || "pcs" %></span>
+          </td>
+          <!-- At Site -->
+          <td class="px-4 py-3 text-center">
+            <%= pi.site_quantity %>
+            <span class="text-xs text-gray-500"><%= pi.inventory_item&.unit.presence || "pcs" %></span>
+          </td>
+          <!-- Purpose -->
           <td class="px-4 py-3"><%= pi.purpose.presence || "—" %></td>
+          <!-- Actions -->
           <td class="px-4 py-3 flex gap-2">
             <% if policy([ :inventory, pi ]).update? %>
               <%= link_to "Edit", edit_inventory_project_inventory_path(pi),
@@ -39,5 +61,5 @@
     </tbody>
   </table>
 <% else %>
-  <p class="text-sm text-gray-500">No inventory reserved for this project yet.</p>
+  <p class="text-sm text-gray-500">No inventory reserved or issued for this project yet.</p>
 <% end %>
