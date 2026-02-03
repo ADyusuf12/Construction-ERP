@@ -4,7 +4,7 @@
   <%= f.collection_select :inventory_item_id, InventoryItem.order(:name), :id, :name,
         { prompt: "Select item" },
         class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
-  <%= f.number_field :quantity, min: 0, step: 1,
+  <%= f.number_field :quantity_reserved, min: 0, step: 1,
         class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper", placeholder: "Qty" %>
   <%= f.text_field :purpose, placeholder: "Purpose (optional)",
         class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>

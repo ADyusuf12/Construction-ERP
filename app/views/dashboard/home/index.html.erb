@@ -1,39 +1,45 @@
-<div class="space-y-10">
-  <!-- Page Header -->
-  <%= render "dashboard/header" %>
-  <!-- KPI Summary Row -->
-  <%= render "dashboard/kpi_row",
-      projects: @projects,
-      tasks: @tasks,
-      reports: @reports,
-      transactions: @transactions,
-      expenses: @expenses %>
-  <!-- Tabs -->
-  <%= render "dashboard/tabs" %>
-  <!-- Tab Content -->
-  <%= render "dashboard/profile_tab", employee: @employee %>
-  <%= render "dashboard/projects_tab", projects: @projects %>
-  <%= render "dashboard/tasks_tab", tasks: @tasks %>
-  <%= render "dashboard/reports_tab", reports: @reports %>
-  <%= render "dashboard/transactions_tab", transactions: @transactions %>
-  <%= render "dashboard/expenses_tab", expenses: @expenses %>
-  <%= render "dashboard/hr_tab", employee: @employee, leaves: @leaves %>
-  <!-- Tab Toggle Script (inline) -->
-  <script nonce="<%= content_security_policy_nonce %>">
-    (() => {
-      const links = document.querySelectorAll(".tab-link");
-      const contents = document.querySelectorAll(".tab-content");
+<div class="relative space-y-10 overflow-hidden">
+  <!-- Transparent full-page logo background -->
+  <img src="<%= asset_path('hamzis-logo.svg') %>" alt="Hamzis Logo"
+       class="absolute inset-0 w-full h-full object-cover opacity-5 pointer-events-none select-none z-0" />
+  <!-- Dashboard content sits above -->
+  <div class="relative z-10">
+    <!-- Page Header -->
+    <%= render "dashboard/header" %>
+    <!-- KPI Summary Row -->
+    <%= render "dashboard/kpi_row",
+        projects: @projects,
+        tasks: @tasks,
+        reports: @reports,
+        transactions: @transactions,
+        expenses: @expenses %>
+    <!-- Tabs -->
+    <%= render "dashboard/tabs" %>
+    <!-- Tab Content -->
+    <%= render "dashboard/profile_tab", employee: @employee %>
+    <%= render "dashboard/projects_tab", projects: @projects %>
+    <%= render "dashboard/tasks_tab", tasks: @tasks %>
+    <%= render "dashboard/reports_tab", reports: @reports %>
+    <%= render "dashboard/transactions_tab", transactions: @transactions %>
+    <%= render "dashboard/expenses_tab", expenses: @expenses %>
+    <%= render "dashboard/hr_tab", employee: @employee, leaves: @leaves %>
+    <!-- Tab Toggle Script -->
+    <script nonce="<%= content_security_policy_nonce %>">
+      (() => {
+        const links = document.querySelectorAll(".tab-link");
+        const contents = document.querySelectorAll(".tab-content");
 
-      links.forEach(link => {
-        link.addEventListener("click", () => {
-          links.forEach(l => l.classList.remove("bg-hamzis-copper", "text-white"));
-          contents.forEach(c => c.classList.add("hidden"));
+        links.forEach(link => {
+          link.addEventListener("click", () => {
+            links.forEach(l => l.classList.remove("bg-hamzis-copper", "text-white"));
+            contents.forEach(c => c.classList.add("hidden"));
 
-          link.classList.add("bg-hamzis-copper", "text-white");
-          const tabId = link.getAttribute("data-tab") + "-tab";
-          document.getElementById(tabId).classList.remove("hidden");
+            link.classList.add("bg-hamzis-copper", "text-white");
+            const tabId = link.getAttribute("data-tab") + "-tab";
+            document.getElementById(tabId).classList.remove("hidden");
+          });
         });
-      });
-    })();
-  </script>
+      })();
+    </script>
+  </div>
 </div>
