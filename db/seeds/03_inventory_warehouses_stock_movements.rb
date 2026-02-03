@@ -17,7 +17,7 @@ StockLevel.create!(inventory_item: electrical_cables, warehouse: warehouse2, qua
 # --- Stock Movements ---
 StockMovement.create!(
   inventory_item: cement,
-  warehouse: warehouse1,
+  destination_warehouse: warehouse1,
   employee: Hr::Employee.joins(:user).find_by(users: { email: "storekeeper@example.com" }),
   movement_type: :inbound,
   quantity: 200,
@@ -28,7 +28,7 @@ StockMovement.create!(
 
 StockMovement.create!(
   inventory_item: steel_rods,
-  warehouse: warehouse1,
+  source_warehouse: warehouse1,
   employee: Hr::Employee.joins(:user).find_by(users: { email: "engineer@example.com" }),
   project: Project.find_by(name: "Headquarters Construction"),
   movement_type: :outbound,
@@ -40,7 +40,7 @@ StockMovement.create!(
 
 StockMovement.create!(
   inventory_item: roofing_sheets,
-  warehouse: warehouse2,
+  source_warehouse: warehouse2,
   employee: Hr::Employee.joins(:user).find_by(users: { email: "site_manager@example.com" }),
   project: Project.find_by(name: "Warehouse Expansion"),
   movement_type: :outbound,
