@@ -1,6 +1,6 @@
 <%= form_with(model: @task, url: (@project ? project_tasks_path(@project) : tasks_path), local: true, class: "space-y-4") do |form| %>
   <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 space-y-4">
+              border rounded-xl shadow-lg p-6 space-y-4">
     <% unless @project %>
       <!-- Project dropdown (global form only) -->
       <div>
