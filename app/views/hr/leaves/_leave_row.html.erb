@@ -1,4 +1,5 @@
-<tr id="<%= dom_id(leave) %>" class="<%= row_class %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
+<tr id="<%= dom_id(leave) %>" class="<% row_class ||= "" %>
+ hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
   <!-- Start -->
   <td class="px-4 py-3 font-semibold"><%= leave.start_date.strftime("%b %d, %Y") %></td>
   <!-- End -->

@@ -1,55 +1,43 @@
-<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+<div class="bg-gradient-to-br from-hamzis-white/40 via-hamzis-copper/10 to-hamzis-brown/10
+            dark:from-hamzis-black/40 dark:via-hamzis-brown/20 dark:to-hamzis-copper/20
+            border border-hamzis-brown/30 rounded-2xl shadow-xl p-8 space-y-8">
   <!-- Title -->
   <h2 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper">
     Leave Request — <%= @leave.start_date.strftime("%b %d, %Y") %> to <%= @leave.end_date.strftime("%b %d, %Y") %>
   </h2>
   <!-- Reason -->
   <% if @leave.reason.present? %>
-    <p class="mt-2"><%= @leave.reason %></p>
+    <p class="mt-2 text-gray-700 dark:text-gray-300"><%= @leave.reason %></p>
   <% end %>
-  <!-- Details -->
-  <div class="mt-4 space-y-2 text-sm">
-    <div id="leave_status">
-      <p>
-        <span class="font-medium">Status:</span>
-        <%= @leave.status.humanize %>
-      </p>
-    </div>
-    <p>
-      <span class="font-medium">Employee:</span>
-      <%= @leave.employee.user.email %>
-    </p>
-    <% if @leave.manager.present? %>
-      <p>
-        <span class="font-medium">Manager:</span>
-        <%= @leave.manager.user.email %>
-      </p>
-    <% end %>
-    <p>
-      <span class="font-medium">Duration:</span>
-      <%= @leave.duration %> days
-    </p>
+  <!-- Status Badge -->
+  <div id="<%= dom_id(@leave, :status) %>">
+    <span class="inline-block px-4 py-2 rounded-full text-sm font-semibold
+      <%= case @leave.status
+          when "approved" then "bg-emerald-100 text-emerald-700"
+          when "rejected" then "bg-rose-100 text-rose-700"
+          when "pending" then "bg-amber-100 text-amber-700"
+          else "bg-gray-200 text-gray-700"
+          end %>">
+      <%= @leave.status.humanize.upcase %>
+    </span>
   </div>
-  <!-- Actions -->
-  <div class="mt-6 flex gap-2">
-    <% if policy(@leave).approve? %>
-      <%= button_to "Approve", approve_hr_leave_path(@leave),
-          method: :patch,
-          data: { turbo_stream: true, disable_with: "Approving..." },
-          class: "px-3 py-1 rounded bg-green-600 text-white hover:bg-green-800 transition" %>
-      <%= button_to "Reject", reject_hr_leave_path(@leave),
-          method: :patch,
-          data: { turbo_stream: true, disable_with: "Rejecting..." },
-          class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition" %>
-    <% end %>
-    <% if policy(@leave).cancel? %>
-      <%= button_to "Cancel", cancel_hr_leave_path(@leave),
-          method: :patch,
-          data: { turbo_stream: true, disable_with: "Cancelling..." },
-          class: "px-3 py-1 rounded bg-gray-600 text-white hover:bg-gray-800 transition" %>
-    <% end %>
-    <%= link_to "Back to Leaves", my_leaves_hr_leaves_path,
-        class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+  <!-- Details -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-xl p-6">
+      <p><span class="font-medium">Employee:</span> <%= @leave.employee.user.email %></p>
+      <p class="mt-1"><span class="font-medium">Duration:</span> <%= @leave.duration %> days</p>
+    </div>
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-xl p-6">
+      <% if @leave.manager.present? %>
+        <p><span class="font-medium">Manager:</span> <%= @leave.manager.user.email %></p>
+      <% else %>
+        <p class="italic text-gray-500 dark:text-gray-400">No manager assigned.</p>
+      <% end %>
+    </div>
+  </div>
+  <!-- Back Action Only -->
+  <div class="mt-6">
+    <%= link_to "Back to Leaves", hr_leaves_path,
+        class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition text-sm" %>
   </div>
 </div>

@@ -35,8 +35,7 @@ module Hr
 
     def my_attendance
       unless current_user&.employee
-        @attendance_records = Hr::AttendanceRecord.none.page(params[:page]).per(25)
-        flash[:alert] = "You are not linked to an employee record."
+        redirect_to dashboard_home_path, alert: "You are not linked to an employee record."
         return
       end
 
@@ -59,8 +58,7 @@ module Hr
         end
       end
 
-      # Kaminari pagination
-      per_page = params.fetch(:per_page, 25).to_i
+      per_page = params.fetch(:per_page, 15).to_i
       @attendance_records = @attendance_records.page(params[:page]).per(per_page)
     end
 

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Hr::Employee, type: :model do
   describe "associations" do
     it "can belong to a user (optional)" do
-      user = create(:user)
+      user = create(:user, :engineer)
       employee = create(:hr_employee, user: user)
       expect(employee.user).to eq(user)
 
