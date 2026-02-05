@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
+    namespace :admin do
+    resources :users
+  end
   namespace :business do
     resources :clients
   end

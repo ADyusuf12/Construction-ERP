@@ -54,7 +54,7 @@ module Business
     end
 
     def client_params
-      params.require(:client).permit(:name, :company, :email, :phone, :address, :notes)
+      params.require(:client).permit(:name, :company, :email, :phone, :address, :notes, :user_id)
     end
   end
 end

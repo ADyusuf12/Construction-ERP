@@ -22,8 +22,6 @@ module Hr
     end
 
     def create?
-      # Any user linked to an employee can create their own attendance record.
-      # HR/Admin/CEO can create for anyone via UI.
       user.employee.present?
     end
 

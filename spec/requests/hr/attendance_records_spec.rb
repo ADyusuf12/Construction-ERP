@@ -45,7 +45,7 @@ RSpec.describe "Hr::AttendanceRecords", type: :request do
 
     it "filters by status" do
       sign_in hr_user
-      late_record = create(:attendance_record, employee: hr_employee, project: project,
+      create(:attendance_record, employee: hr_employee, project: project,
                                          status: :late, date: Date.tomorrow)
 
       get hr_attendance_records_path, params: { status: "late" }
@@ -73,9 +73,10 @@ RSpec.describe "Hr::AttendanceRecords", type: :request do
     end
 
     it "denies users without employee record" do
-      user_without_employee = create(:user, :accountant)
+      user_without_employee = create(:user, :client)
       sign_in user_without_employee
       get my_attendance_hr_attendance_records_path
+      expect(response).to redirect_to(dashboard_home_path)
       expect(flash[:alert]).to eq("You are not linked to an employee record.")
     end
   end

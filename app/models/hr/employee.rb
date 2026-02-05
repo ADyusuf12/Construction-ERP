@@ -19,6 +19,8 @@ module Hr
     validates :department, presence: true
     validates :position_title, presence: true
 
+    validate :user_role_and_email_valid, if: -> { user.present? }
+
     before_validation :generate_hamzis_id, on: :create
 
     def full_name
@@ -51,6 +53,17 @@ module Hr
       end
 
       self.hamzis_id = "#{sequence}#{year_suffix}" # e.g. "00120", "00221", "00322"
+    end
+
+    def user_role_and_email_valid
+      staff_roles = %w[ceo cto qs site_manager engineer storekeeper hr accountant]
+      unless user.role.in?(staff_roles)
+        errors.add(:user, "must have a staff role")
+      end
+
+      unless user.email.ends_with?("@hamzis.com")
+        errors.add(:user, "must have a Hamzis company email")
+      end
     end
   end
 end

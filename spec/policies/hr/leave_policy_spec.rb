@@ -22,14 +22,13 @@ RSpec.describe Hr::LeavePolicy do
 
   context "as Admin" do
     let(:user) { create(:user, :admin) }
-    let!(:own_employee) { create(:hr_employee, user: user) }
     subject { described_class.new(user, leave) }
 
     it "permits index, my_leaves, show, create, approve/reject but not cancel own" do
       expect(subject.index?).to eq(true)
-      expect(subject.my_leaves?).to eq(true)
+      expect(subject.my_leaves?).to eq(false)
       expect(subject.show?).to eq(true)
-      expect(subject.create?).to eq(true)
+      expect(subject.create?).to eq(false)
       expect(subject.approve?).to eq(true)
       expect(subject.reject?).to eq(true)
       expect(subject.cancel?).to eq(false)

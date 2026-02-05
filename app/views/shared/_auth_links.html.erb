@@ -1,6 +1,20 @@
 <!-- Auth Links -->
 <div class="px-4 py-6 border-t border-hamzis-brown/30 backdrop-blur-lg">
   <% if user_signed_in? %>
+    <!-- Admin Panel (only for admins) -->
+    <% if current_user.role_admin? %>
+      <%= link_to admin_users_path,
+            class: "flex items-center w-full mb-3 px-3 py-2 rounded-lg bg-gradient-to-r from-hamzis-brown to-hamzis-copper
+                   text-hamzis-white hover:from-hamzis-black hover:to-hamzis-copper
+                   transition-all duration-300 shadow-md font-semibold" do %>
+        <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 7h18M3 12h18M3 17h18" />
+        </svg>
+        <span class="sidebar-label text-hamzis-white" data-sidebar-target="label">Admin Panel</span>
+      <% end %>
+    <% end %>
     <!-- Logout -->
     <%= button_to destroy_user_session_path, method: :delete,
           form: { class: "inline" },
