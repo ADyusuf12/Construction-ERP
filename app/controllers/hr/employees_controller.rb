@@ -78,7 +78,7 @@ module Hr
       def employee_params
         params.require(:hr_employee).permit(
           :department, :position_title, :hire_date,
-          :status, :leave_balance, :performance_score, :manager_id,
+          :status, :leave_balance, :performance_score, :manager_id, :user_id,
           personal_detail_attributes: [
             :id, :first_name, :last_name, :dob, :gender,
             :bank_name, :account_number, :account_name,

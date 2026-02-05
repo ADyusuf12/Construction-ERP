@@ -1,0 +1,16 @@
+<table class="min-w-full text-sm text-left border-collapse">
+  <thead>
+    <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
+      <th class="px-4 py-3">Email</th>
+      <th class="px-4 py-3">Role</th>
+      <th class="px-4 py-3">Employee Linked?</th>
+      <th class="px-4 py-3">Client Linked?</th>
+      <th class="px-4 py-3">Actions</th>
+    </tr>
+  </thead>
+  <tbody class="divide-y divide-hamzis-brown/20">
+    <% users.each_with_index do |user, index| %>
+      <%= render "user_row", user: user, row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
+    <% end %>
+  </tbody>
+</table>

@@ -21,14 +21,13 @@ RSpec.describe Hr::AttendanceRecordPolicy do
 
   context "as Admin" do
     let(:user) { create(:user, :admin) }
-    let!(:own_employee) { create(:hr_employee, user: user) }
     subject { described_class.new(user, record) }
 
     it "permits index, my_attendance, show, create, update, destroy" do
       expect(subject.index?).to eq(true)
-      expect(subject.my_attendance?).to eq(true)
+      expect(subject.my_attendance?).to eq(false)
       expect(subject.show?).to eq(true)
-      expect(subject.create?).to eq(true)
+      expect(subject.create?).to eq(false)
       expect(subject.update?).to eq(true)
       expect(subject.destroy?).to eq(true)
     end

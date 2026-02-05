@@ -1,11 +1,10 @@
 FactoryBot.define do
-  factory :business_client, class: 'Business::Client' do
+  factory :business_client, class: "Business::Client" do
     sequence(:name) { |n| "Test Client #{n}" }
-    sequence(:email) { |n| "client#{n}@example.com" }
+    sequence(:email) { |n| "client#{n}@hamzis.com" }
 
-    association :user, factory: :user
+    association :user, factory: [ :user, :client ]
 
-    # traits for flexibility
     trait :without_user do
       user { nil }
     end

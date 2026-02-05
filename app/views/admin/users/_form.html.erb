@@ -1,0 +1,47 @@
+<% if f.object.errors.any? %>
+  <div class="p-4 rounded bg-hamzis-copper text-hamzis-white">
+    <h3 class="font-semibold">
+      <%= pluralize(f.object.errors.count, "error") %> prevented saving:
+    </h3>
+    <ul class="list-disc ml-6 mt-2 text-sm">
+      <% f.object.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <!-- Account details card -->
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-xl p-5 shadow-sm">
+    <h4 class="text-sm font-semibold text-hamzis-brown dark:text-hamzis-copper mb-3">User Details</h4>
+    <div class="space-y-3">
+      <div>
+        <%= f.label :email, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= f.email_field :email,
+              placeholder: "user@hamzissystems.com",
+              class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+      </div>
+      <div>
+        <%= f.label :role, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= f.select :role,
+              options_for_select(User.roles.keys.map { |r| [r.humanize.upcase, r] }, f.object.role),
+              { include_blank: "Select a role" },
+              class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+      </div>
+      <div>
+        <%= f.label :password, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= f.password_field :password,
+              placeholder: "Default password",
+              class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Set a default password; user can reset later.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col sm:flex-row gap-3 mt-2">
+  <%= f.submit (f.object.persisted? ? "Update User" : "Create User"),
+        class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition-colors w-full sm:w-auto" %>
+  <%= link_to "Cancel", admin_users_path,
+        class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition w-full sm:w-auto" %>
+</div>

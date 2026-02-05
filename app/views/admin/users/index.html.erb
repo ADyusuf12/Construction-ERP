@@ -1,0 +1,23 @@
+<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+  <% if @users.any? %>
+    <!-- Summary -->
+    <div class="mb-4 flex items-center justify-between">
+      <p class="text-sm text-hamzis-brown dark:text-hamzis-copper">
+        Total Users: <span class="font-semibold"><%= @users.count %></span>
+      </p>
+      <%= link_to "➕ New User", new_admin_user_path,
+          class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition text-sm" %>
+    </div>
+    <%= render "table", users: @users %>
+  <% else %>
+    <div class="text-center py-6">
+      <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No users yet</p>
+      <p class="text-sm mt-2">Start by creating your first system user.</p>
+      <div class="mt-4">
+        <%= link_to "➕ New User", new_admin_user_path,
+            class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+      </div>
+    </div>
+  <% end %>
+</div>

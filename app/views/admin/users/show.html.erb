@@ -1,0 +1,86 @@
+<div class="bg-gradient-to-br from-hamzis-white/40 via-hamzis-copper/10 to-hamzis-brown/10
+            dark:from-hamzis-black/40 dark:via-hamzis-brown/20 dark:to-hamzis-copper/20
+            border border-hamzis-brown/30 rounded-2xl shadow-xl p-8 space-y-8">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper">
+        <%= @user.email %>
+      </h2>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+        User ID: <%= @user.id %>
+      </p>
+    </div>
+    <div class="flex gap-3">
+      <%= link_to "Edit", edit_admin_user_path(@user),
+      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+      <%= button_to "Delete", "#",
+        class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition",
+        form: {
+          "data-action" => "click->confirm-delete#open",
+          "data-confirm-delete-title-param" => "Delete User?",
+          "data-confirm-delete-message-param" => "Are you sure you want to delete this user? This action cannot be undone.",
+          "data-confirm-delete-confirm-path-param" => admin_user_path(@user)
+        } %>
+    </div>
+  </div>
+  <!-- Role Badge -->
+  <div>
+    <span class="inline-block px-4 py-2 rounded-full text-sm font-semibold
+      <%= case @user.role
+          when "admin" then "bg-indigo-100 text-indigo-700"
+          when "ceo", "cto" then "bg-amber-100 text-amber-700"
+          when "client" then "bg-green-100 text-green-700"
+          else "bg-gray-200 text-gray-700"
+          end %>">
+      <%= @user.role.humanize.upcase %>
+    </span>
+  </div>
+  <!-- Linked Records -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Employee card -->
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-xl p-6">
+      <h3 class="text-sm font-semibold text-hamzis-brown dark:text-hamzis-copper mb-3">Employee Record</h3>
+      <% if @user.employee.present? %>
+        <p class="text-gray-700 dark:text-gray-300">
+          Linked Employee: <span class="font-semibold"><%= @user.employee.full_name %></span>
+        </p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          Department: <%= @user.employee.department %> — Position: <%= @user.employee.position_title %>
+        </p>
+        <%= link_to "View Employee", hr_employee_path(@user.employee),
+            class: "mt-3 inline-block px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition text-xs" %>
+      <% else %>
+        <p class="text-gray-500 dark:text-gray-400 italic">No employee record linked.</p>
+      <% end %>
+    </div>
+    <!-- Client card -->
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-xl p-6">
+      <h3 class="text-sm font-semibold text-hamzis-brown dark:text-hamzis-copper mb-3">Client Record</h3>
+      <% if @user.client.present? %>
+        <p class="text-gray-700 dark:text-gray-300">
+          Linked Client: <span class="font-semibold"><%= @user.client.name %></span>
+        </p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          Company: <%= @user.client.company %>
+        </p>
+        <%= link_to "View Client", business_client_path(@user.client),
+            class: "mt-3 inline-block px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition text-xs" %>
+      <% else %>
+        <p class="text-gray-500 dark:text-gray-400 italic">No client record linked.</p>
+      <% end %>
+    </div>
+  </div>
+  <!-- System Summary -->
+  <div class="bg-gradient-to-r from-hamzis-copper/20 via-hamzis-brown/20 to-hamzis-black/20
+              dark:from-hamzis-brown/30 dark:via-hamzis-copper/30 dark:to-hamzis-black/40
+              rounded-xl p-6 text-sm text-gray-800 dark:text-gray-200">
+    <h3 class="text-sm font-semibold text-hamzis-brown dark:text-hamzis-copper mb-3">System Summary</h3>
+    <ul class="space-y-2">
+      <li>Projects owned: <span class="font-semibold"><%= @user.projects.count %></span></li>
+      <li>Tasks assigned: <span class="font-semibold"><%= @user.tasks.count %></span></li>
+      <li>Reports submitted: <span class="font-semibold"><%= @user.reports.count %></span></li>
+      <li>Leaves taken: <span class="font-semibold"><%= @user.leaves.count %></span></li>
+    </ul>
+  </div>
+</div>
