@@ -37,6 +37,6 @@ Thumbs.db
 
 #-- Kamal --#
 .kamal/secrets.yml
-*.lock
+.kamal/*.lock
 
 /demo
