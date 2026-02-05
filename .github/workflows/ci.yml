@@ -77,5 +77,6 @@ jobs:
       - name: Run migrations on staging DB
         env:
           DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+          SECRET_KEY_BASE: ${{ secrets.STAGING_SECRET_KEY_BASE }}
         run: |
           RAILS_ENV=staging bundle exec rails db:migrate
