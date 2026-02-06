@@ -47,4 +47,15 @@ Rails.application.configure do
 
   # Don’t dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.action_mailer.default_url_options = { host: "hamzis-systems.onrender.com" }
+  config.action_mailer.default_url_options = { host: "hamzis-systems.onrender.com" }
+  config.action_mailer.smtp_settings = {
+    user_name: Rails.application.credentials.dig(:smtp, :user_name),
+    password: Rails.application.credentials.dig(:smtp, :password),
+    address: "smtp.gmail.com",
+    port: 587,
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
 end
