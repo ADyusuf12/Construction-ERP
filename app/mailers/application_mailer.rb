@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: Rails.application.credentials.dig(:smtp, :user_name)
+  default from: "no-reply@hamzis-systems.test"
   layout "mailer"
 end
