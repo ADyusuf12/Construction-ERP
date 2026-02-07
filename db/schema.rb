@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_31_163737) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_07_162733) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -142,6 +142,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_31_163737) do
     t.datetime "updated_at", null: false
     t.index [ "employee_id" ], name: "index_hr_leaves_on_employee_id"
     t.index [ "manager_id" ], name: "index_hr_leaves_on_manager_id"
+  end
+
+  create_table "hr_next_of_kins", force: :cascade do |t|
+    t.bigint "employee_id", null: false
+    t.string "name", null: false
+    t.string "relationship", null: false
+    t.string "phone_number", null: false
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index [ "employee_id" ], name: "index_hr_next_of_kins_on_employee_id"
   end
 
   create_table "hr_personal_details", force: :cascade do |t|
@@ -473,6 +484,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_31_163737) do
   add_foreign_key "hr_employees", "users"
   add_foreign_key "hr_leaves", "hr_employees", column: "employee_id"
   add_foreign_key "hr_leaves", "hr_employees", column: "manager_id"
+  add_foreign_key "hr_next_of_kins", "hr_employees", column: "employee_id"
   add_foreign_key "hr_personal_details", "hr_employees", column: "employee_id"
   add_foreign_key "project_expenses", "projects"
   add_foreign_key "project_expenses", "stock_movements"
