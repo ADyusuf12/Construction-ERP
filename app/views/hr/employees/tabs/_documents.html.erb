@@ -1,23 +1,32 @@
-<div class="rounded-xl bg-hamzis-white/40 dark:bg-hamzis-black/40 border border-hamzis-brown/20 shadow-md p-6">
-  <h4 class="text-base font-semibold text-hamzis-brown dark:text-hamzis-copper mb-4 flex items-center gap-2">
-    <svg class="w-4 h-4 text-hamzis-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16v16H4z"/>
+<div class="bg-gradient-to-br from-hamzis-white/40 via-hamzis-copper/10 to-hamzis-brown/10
+            dark:from-hamzis-black/40 dark:via-hamzis-brown/20 dark:to-hamzis-copper/20
+            border border-hamzis-brown/30 rounded-2xl shadow-xl p-8 space-y-8">
+  <!-- Header -->
+  <h4 class="text-base font-semibold text-hamzis-brown dark:text-hamzis-copper flex items-center gap-2">
+    <svg class="w-5 h-5 text-hamzis-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 4h16v16H4z"/>
     </svg>
     Documents
   </h4>
   <% if employee.respond_to?(:employee_files) && employee.employee_files.any? %>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       <% employee.employee_files.each do |ef| %>
-        <div class="rounded-lg bg-hamzis-white/20 dark:bg-hamzis-black/20 border border-hamzis-brown/10 p-4 shadow-sm flex flex-col">
-          <span class="text-xs font-semibold text-hamzis-copper mb-2"><%= ef.title %></span>
+        <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20
+                    rounded-xl p-5 shadow-md flex flex-col space-y-3">
+          <span class="text-sm font-semibold text-hamzis-copper"><%= ef.title %></span>
           <% if ef.file.attached? %>
             <% if ef.file.image? %>
-              <%= image_tag ef.file.variant(resize_to_limit: [300, 200]), class: "rounded shadow-md mb-2" %>
+              <%= image_tag ef.file.variant(resize_to_limit: [400, 250]),
+                    class: "rounded-lg shadow-sm" %>
             <% else %>
-              <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><%= ef.file.filename.to_s %></p>
+              <p class="text-sm text-gray-700 dark:text-gray-300">
+                <%= ef.file.filename.to_s %>
+              </p>
             <% end %>
-            <%= link_to "Download", rails_blob_path(ef.file, disposition: "attachment"),
-                  class: "inline-block px-3 py-1 rounded bg-hamzis-copper text-white text-sm hover:bg-hamzis-copper/80",
+            <%= link_to "Download",
+                  rails_blob_path(ef.file, disposition: "attachment"),
+                  class: "inline-block px-3 py-1 rounded bg-hamzis-copper text-white text-xs hover:bg-hamzis-black transition",
                   target: "_blank", rel: "noopener" %>
           <% else %>
             <p class="text-sm text-gray-500">No file attached.</p>
