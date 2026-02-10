@@ -12,5 +12,6 @@ module HamzisSystems
 
     config.active_job.queue_adapter = :solid_queue
     config.mission_control.jobs.base_controller_class = "AdminController"
+    config.autoload_paths << Rails.root.join("app/services")
   end
 end

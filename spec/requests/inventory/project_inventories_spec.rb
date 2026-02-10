@@ -8,15 +8,37 @@ RSpec.describe "Inventory::ProjectInventories", type: :request do
   let(:engineer)       { create(:user, :engineer) }
   let(:other_engineer) { create(:user, :engineer) }
 
-  let!(:project)       { create(:project) }
-  let!(:item)          { create(:inventory_item) }
-  let!(:existing_pi)   { create(:project_inventory, project: project, inventory_item: item, quantity_reserved: 2) }
+  let!(:project)   { create(:project) }
+  let!(:warehouse) { create(:warehouse) }
+  let!(:item)      { create(:inventory_item) }
+
+  # Ensure warehouse has stock for the item used in tests
+  let!(:stock_level) do
+    StockLevel.find_or_create_by!(inventory_item: item, warehouse: warehouse).tap do |sl|
+      sl.update!(quantity: 10)
+    end
+  end
+
+  # helper to create a project inventory with stock
+  def create_pi_for(item:, reserved: 2)
+    StockLevel.find_or_create_by!(inventory_item: item, warehouse: warehouse).update!(quantity: 10)
+    create(:project_inventory, project: project, inventory_item: item, warehouse: warehouse, quantity_reserved: reserved)
+  end
+
+  let!(:existing_pi) { create_pi_for(item: item, reserved: 2) }
 
   let(:referer) { project_path(project) }
 
   describe "POST /inventory/project_inventories" do
     let(:params) do
-      { project_inventory: { project_id: project.id, inventory_item_id: item.id, quantity_reserved: 3 } }
+      {
+        project_inventory: {
+          project_id: project.id,
+          inventory_item_id: item.id,
+          quantity_reserved: 3,
+          warehouse_id: warehouse.id
+        }
+      }
     end
 
     context "when not signed in" do
@@ -41,7 +63,7 @@ RSpec.describe "Inventory::ProjectInventories", type: :request do
 
       it "returns an alert on validation failure" do
         post inventory_project_inventories_path,
-             params: { project_inventory: { project_id: project.id, inventory_item_id: nil, quantity_reserved: -1 } },
+             params: { project_inventory: { project_id: project.id, inventory_item_id: nil, quantity_reserved: -1, warehouse_id: warehouse.id } },
              headers: referer_headers(referer)
 
         expect(response).to redirect_to(referer)
@@ -79,7 +101,7 @@ RSpec.describe "Inventory::ProjectInventories", type: :request do
   end
 
   describe "PATCH /inventory/project_inventories/:id" do
-    let(:update_params) { { project_inventory: { quantity_reserved: 5 } } }
+    let(:update_params) { { project_inventory: { quantity_reserved: 5, warehouse_id: warehouse.id } } }
 
     context "when signed in as site_manager (allowed to update)" do
       before { sign_in site_manager }
@@ -119,41 +141,57 @@ RSpec.describe "Inventory::ProjectInventories", type: :request do
         expect(response.body).to include("You are not authorized to perform this action.")
       end
     end
+
+    context "validation failure on update" do
+      before { sign_in site_manager }
+
+      it "redirects back with validation alert and does not change value" do
+        patch inventory_project_inventory_path(existing_pi), params: { project_inventory: { quantity_reserved: -10, warehouse_id: warehouse.id } }, headers: referer_headers(referer)
+        expect(response).to redirect_to(referer)
+        follow_redirect!
+        expect(response.body).to include("must be greater than or equal to")
+        expect(existing_pi.reload.quantity_reserved).not_to eq(-10)
+      end
+    end
   end
 
   describe "DELETE /inventory/project_inventories/:id" do
-    context "when signed in as admin (allowed to destroy)" do
+    context "when signed in as admin (allowed to cancel)" do
       before { sign_in admin }
 
-      it "destroys the reservation and redirects back with notice" do
+      it "cancels the reservation and redirects back with notice" do
         pi_item = create(:inventory_item)
-        pi = create(:project_inventory, project: project, inventory_item: pi_item)
-        expect {
-          delete inventory_project_inventory_path(pi), headers: referer_headers(referer)
-        }.to change(ProjectInventory, :count).by(-1)
+        StockLevel.find_or_create_by!(inventory_item: pi_item, warehouse: warehouse).update!(quantity: 5)
+        pi = create(:project_inventory, project: project, inventory_item: pi_item, warehouse: warehouse, quantity_reserved: 2)
+
+        delete inventory_project_inventory_path(pi), headers: referer_headers(referer)
 
         expect(response).to redirect_to(referer)
         follow_redirect!
-        expect(response.body).to include("Reservation removed.")
+        expect(response.body).to include("Reservation cancelled.")
+        expect(pi.reload.quantity_reserved).to eq(0)
       end
     end
 
-    context "when signed in as storekeeper (allowed to destroy)" do
+    context "when signed in as storekeeper (allowed to cancel)" do
       before { sign_in storekeeper }
 
-      it "destroys the reservation" do
+      it "cancels the reservation" do
         pi_item = create(:inventory_item)
-        pi = create(:project_inventory, project: project, inventory_item: pi_item)
-        expect {
-          delete inventory_project_inventory_path(pi), headers: referer_headers(referer)
-        }.to change(ProjectInventory, :count).by(-1)
+        StockLevel.find_or_create_by!(inventory_item: pi_item, warehouse: warehouse).update!(quantity: 5)
+        pi = create(:project_inventory, project: project, inventory_item: pi_item, warehouse: warehouse, quantity_reserved: 2)
+
+        delete inventory_project_inventory_path(pi), headers: referer_headers(referer)
+
+        expect(response).to redirect_to(referer)
+        expect(pi.reload.quantity_reserved).to eq(0)
       end
     end
 
-    context "when signed in as site_manager (not allowed to destroy)" do
+    context "when signed in as site_manager (not allowed to cancel)" do
       before { sign_in site_manager }
 
-      it "is not authorized to destroy" do
+      it "is not authorized to cancel" do
         delete inventory_project_inventory_path(existing_pi), headers: referer_headers(referer)
         expect(response).to redirect_to(dashboard_home_path).or redirect_to(project_path(project))
         follow_redirect!
@@ -168,14 +206,35 @@ RSpec.describe "Inventory::ProjectInventories", type: :request do
         sign_in engineer
       end
 
-      it "allows destroying the reservation" do
+      it "allows cancelling the reservation" do
         pi_item = create(:inventory_item)
-        pi = create(:project_inventory, project: project, inventory_item: pi_item)
-        expect {
-          delete inventory_project_inventory_path(pi), headers: referer_headers(referer)
-        }.to change(ProjectInventory, :count).by(-1)
+        StockLevel.find_or_create_by!(inventory_item: pi_item, warehouse: warehouse).update!(quantity: 5)
+        pi = create(:project_inventory, project: project, inventory_item: pi_item, warehouse: warehouse, quantity_reserved: 2)
+
+        delete inventory_project_inventory_path(pi), headers: referer_headers(referer)
 
         expect(response).to redirect_to(referer)
+        follow_redirect!
+        expect(response.body).to include("Reservation cancelled.")
+        expect(pi.reload.quantity_reserved).to eq(0)
+      end
+    end
+
+    context "idempotent cancel" do
+      before { sign_in admin }
+
+      it "handles cancelling an already cancelled reservation gracefully" do
+        pi_item = create(:inventory_item)
+        StockLevel.find_or_create_by!(inventory_item: pi_item, warehouse: warehouse).update!(quantity: 5)
+        pi = create(:project_inventory, project: project, inventory_item: pi_item, warehouse: warehouse, quantity_reserved: 2)
+
+        delete inventory_project_inventory_path(pi), headers: referer_headers(referer)
+        expect(response).to redirect_to(referer)
+
+        delete inventory_project_inventory_path(pi), headers: referer_headers(referer)
+        expect(response).to redirect_to(referer)
+        follow_redirect!
+        expect(response.body).to include("Reservation cancelled.")
       end
     end
   end

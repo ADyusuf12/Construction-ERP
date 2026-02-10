@@ -1,4 +1,3 @@
-<%# app/views/projects/tabs/_inventory.html.erb %>
 <% if policy([ :inventory, ProjectInventory.new(project: project) ]).create? %>
   <%= render "inventory/project_inventories/form", project_inventory: ProjectInventory.new(project: project) %>
 <% end %>
@@ -9,6 +8,7 @@
       <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-xs uppercase tracking-wide">
         <th class="px-4 py-3">Item</th>
         <th class="px-4 py-3 text-center" colspan="3">Quantity</th>
+        <th class="px-4 py-3">Warehouse</th>
         <th class="px-4 py-3">Purpose</th>
         <th class="px-4 py-3">Actions</th>
       </tr>
@@ -17,6 +17,7 @@
         <th class="px-4 py-2 text-center">Reserved</th>
         <th class="px-4 py-2 text-center">Issued</th>
         <th class="px-4 py-2 text-center">At Site</th>
+        <th></th>
         <th></th>
         <th></th>
       </tr>
@@ -41,6 +42,8 @@
             <%= pi.site_quantity %>
             <span class="text-xs text-gray-500"><%= pi.inventory_item&.unit.presence || "pcs" %></span>
           </td>
+          <!-- Warehouse -->
+          <td class="px-4 py-3"><%= pi.warehouse&.name || "—" %></td>
           <!-- Purpose -->
           <td class="px-4 py-3"><%= pi.purpose.presence || "—" %></td>
           <!-- Actions -->
@@ -50,10 +53,14 @@
                   class: "px-3 py-1 rounded bg-gray-600 text-white text-xs" %>
             <% end %>
             <% if policy([ :inventory, pi ]).destroy? %>
-              <%= button_to "Remove", inventory_project_inventory_path(pi),
-                  method: :delete,
-                  class: "px-3 py-1 rounded bg-red-600 text-white text-xs",
-                  data: { confirm: "Remove this reservation?" } %>
+              <%= button_to "Remove", "#",
+                  class: "px-3 py-1 rounded bg-red-600 text-white text-xs hover:bg-red-700 transition",
+                  form: {
+                    "data-action" => "click->confirm-delete#open",
+                    "data-confirm-delete-title-param" => "Cancel Reservation?",
+                    "data-confirm-delete-message-param" => "Are you sure you want to cancel this reservation of #{pi.quantity_reserved} #{pi.inventory_item&.unit} '#{pi.inventory_item&.name}'? Stock will be released back.",
+                    "data-confirm-delete-confirm-path-param" => inventory_project_inventory_path(pi)
+                  } %>
             <% end %>
           </td>
         </tr>

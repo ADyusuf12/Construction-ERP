@@ -4,6 +4,11 @@ require "rails_helper"
 RSpec.describe Inventory::InventoryItemPolicy do
   let(:inventory_item) { create(:inventory_item) }
 
+  # Helper to ensure a warehouse has stock for an item (satisfies ProjectInventory validation)
+  def ensure_stock(item:, warehouse:, quantity: 10)
+    StockLevel.find_or_create_by!(inventory_item: item, warehouse: warehouse).update!(quantity: quantity)
+  end
+
   context "as CTO" do
     let(:user) { create(:user, :cto) }
     subject { described_class.new(user, inventory_item) }
@@ -60,7 +65,7 @@ RSpec.describe Inventory::InventoryItemPolicy do
     let(:user) { create(:user, :storekeeper) }
     subject { described_class.new(user, inventory_item) }
 
-    it "permits index/show/create/update but forbids destroy" do
+    it "permits index/show/create/update and destroy" do
       expect(subject.index?).to eq(true)
       expect(subject.show?).to eq(true)
       expect(subject.create?).to eq(true)
@@ -86,16 +91,15 @@ RSpec.describe Inventory::InventoryItemPolicy do
     it "limits engineers and QS to items linked to their projects (via assignments)" do
       user = create(:user, :engineer)
 
-      # create a project and assign the user via a task -> assignment
       project = create(:project)
       task = create(:task, project: project)
       create(:assignment, task: task, user: user)
 
-      # item linked to user's project
       linked_item = create(:inventory_item)
-      create(:project_inventory, project: project, inventory_item: linked_item, quantity_reserved: 1)
+      warehouse = create(:warehouse)
+      ensure_stock(item: linked_item, warehouse: warehouse, quantity: 10)
+      create(:project_inventory, project: project, inventory_item: linked_item, warehouse: warehouse, quantity_reserved: 1)
 
-      # item not linked to user's projects
       other_item = create(:inventory_item)
 
       resolved = Inventory::InventoryItemPolicy::Scope.new(user, InventoryItem.all).resolve
