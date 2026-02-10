@@ -1,4 +1,3 @@
-# app/controllers/inventory/inventory_items_controller.rb
 class Inventory::InventoryItemsController < ApplicationController
   include Pundit::Authorization
   before_action :authenticate_user!

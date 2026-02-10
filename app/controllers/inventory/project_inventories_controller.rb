@@ -1,4 +1,3 @@
-# app/controllers/inventory/project_inventories_controller.rb
 module Inventory
   class ProjectInventoriesController < ApplicationController
     before_action :authenticate_user!
@@ -37,9 +36,11 @@ module Inventory
     def destroy
       @project_inventory = ProjectInventory.find(params[:id])
       authorize [ :inventory, @project_inventory ]
-      @project_inventory.destroy
+
+      # CHANGE: cancel instead of destroy
+      @project_inventory.cancel!(reason: "Cancelled via UI by #{current_user.email}")
       @project ||= @project_inventory.project
-      redirect_back fallback_location: project_path(@project), notice: "Reservation removed."
+      redirect_back fallback_location: project_path(@project), notice: "Reservation cancelled."
     end
 
     private
@@ -53,7 +54,7 @@ module Inventory
     end
 
     def project_inventory_params
-      params.require(:project_inventory).permit(:inventory_item_id, :quantity_reserved, :task_id)
+      params.require(:project_inventory).permit(:inventory_item_id, :quantity_reserved, :task_id, :warehouse_id)
     end
   end
 end

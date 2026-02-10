@@ -7,29 +7,36 @@
     <table class="min-w-full text-sm text-left border-collapse">
       <thead>
         <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
-          <th class="px-4 py-3">Date/Time</th>
-          <th class="px-4 py-3">Type</th>
-          <th class="px-4 py-3">Item</th>
-          <th class="px-4 py-3">Qty</th>
-          <th class="px-4 py-3">Project</th>
-          <th class="px-4 py-3">Warehouse</th>
-          <th class="px-4 py-3">Reference</th>
-          <th class="px-4 py-3">By</th>
-          <th class="px-4 py-3">Actions</th>
+          <th class="px-4 py-2">Date</th>
+          <th class="px-4 py-2">Type / Status</th>
+          <th class="px-4 py-2">Item</th>
+          <th class="px-4 py-2">Qty</th>
+          <th class="px-4 py-2">Project</th>
+          <th class="px-4 py-2">Warehouse</th>
+          <th class="px-4 py-2">By</th>
+          <th class="px-4 py-2">Actions</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-hamzis-brown/20">
         <% stock_movements.each_with_index do |m, index| %>
-          <tr class="hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition <%= index.even? ? 'bg-hamzis-brown/5 dark:bg-hamzis-copper/5' : '' %>">
-            <td class="px-4 py-3"><%= l(m.created_at, format: :short) %></td>
-            <td class="px-4 py-3"><%= m.movement_type.humanize %></td>
-            <td class="px-4 py-3"><%= m.inventory_item&.name || "—" %></td>
-            <td class="px-4 py-3 font-medium">
-              <%= m.quantity %>
-              <span class="text-xs text-gray-500"><%= m.inventory_item&.unit.presence || "—" %></span>
+          <tr class="hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition
+                     <%= index.even? ? 'bg-hamzis-brown/5 dark:bg-hamzis-copper/5' : '' %>
+                     <%= 'opacity-60' if m.cancelled? %>">
+            <td class="px-4 py-2"><%= l(m.created_at, format: :short) %></td>
+            <td class="px-4 py-2">
+              <span class="font-semibold"><%= m.movement_type.humanize %></span>
+              <% if m.cancelled? %>
+                <span class="ml-1 text-xs text-red-700">(Cancelled)</span>
+              <% elsif m.applied_at.present? %>
+                <span class="ml-1 text-xs text-green-700">(Applied)</span>
+              <% else %>
+                <span class="ml-1 text-xs text-gray-600">(Pending)</span>
+              <% end %>
             </td>
-            <td class="px-4 py-3"><%= m.project&.name || "—" %></td>
-            <td class="px-4 py-3">
+            <td class="px-4 py-2"><%= m.inventory_item&.name || "—" %></td>
+            <td class="px-4 py-2"><%= m.quantity %> <span class="text-xs text-gray-500"><%= m.inventory_item&.unit %></span></td>
+            <td class="px-4 py-2"><%= m.project&.name || "—" %></td>
+            <td class="px-4 py-2">
               <% if m.source_warehouse.present? %>
                 From: <%= m.source_warehouse.name %>
               <% elsif m.destination_warehouse.present? %>
@@ -38,14 +45,20 @@
                 —
               <% end %>
             </td>
-            <td class="px-4 py-3"><%= truncate(m.reference.to_s, length: 30) %></td>
-            <td class="px-4 py-3"><%= m.employee&.full_name || "System" %></td>
-            <td class="px-4 py-3 flex gap-2">
-              <%= link_to "View", inventory_inventory_item_stock_movement_path(m.inventory_item, m),
-              class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
-              <% if policy([:inventory, m]).update? %>
-                <%= link_to "Edit", edit_inventory_inventory_item_stock_movement_path(m.inventory_item, m),
-              class: "px-3 py-1 rounded bg-gray-600 text-white text-xs" %>
+            <td class="px-4 py-2"><%= m.employee&.full_name || "System" %></td>
+            <td class="px-4 py-2 flex gap-1">
+              <%= link_to "View",
+                  inventory_inventory_item_stock_movement_path(m.inventory_item, m),
+                  class: "px-2 py-1 rounded bg-hamzis-brown text-white text-xs hover:bg-hamzis-copper transition" %>
+              <% if policy([:inventory, m]).destroy? && !m.cancelled? %>
+                <%= button_to "Cancel", "#",
+    class: "px-2 py-1 rounded bg-red-600 text-white text-xs hover:bg-red-700 transition",
+    form: {
+      "data-action" => "click->confirm-delete#open",
+      "data-confirm-delete-title-param" => "Cancel Stock Movement?",
+      "data-confirm-delete-message-param" => "Are you sure you want to cancel this movement of #{m.quantity} #{m.inventory_item&.unit} '#{m.inventory_item&.name}'? This action cannot be undone.",
+      "data-confirm-delete-confirm-path-param" => inventory_inventory_item_stock_movement_path(m.inventory_item, m)
+    } %>
               <% end %>
             </td>
           </tr>

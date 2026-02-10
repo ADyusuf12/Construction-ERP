@@ -4,7 +4,6 @@ module Hr
     before_action :set_employee, only: %i[ show edit update destroy ]
     before_action :load_form_collections, only: %i[new edit create update]
 
-    # GET /hr/employees
     def index
       authorize Hr::Employee
       @employees = policy_scope(Hr::Employee)
@@ -13,25 +12,23 @@ module Hr
       end
     end
 
-    # GET /hr/employees/:id
     def show
       authorize @employee
     end
 
-    # GET /hr/employees/new
     def new
       @employee = Hr::Employee.new
       @employee.build_personal_detail
+      @employee.next_of_kins.build
       authorize @employee
     end
 
-    # GET /hr/employees/:id/edit
     def edit
       authorize @employee
       @employee.build_personal_detail if @employee.personal_detail.nil?
+      @employee.next_of_kins.build if @employee.next_of_kins.empty?
     end
 
-    # POST /hr/employees
     def create
       @employee = Hr::Employee.new(employee_params)
       authorize @employee
@@ -43,7 +40,6 @@ module Hr
       end
     end
 
-    # PATCH/PUT /hr/employees/:id
     def update
       authorize @employee
       if @employee.update(employee_params)
@@ -53,7 +49,6 @@ module Hr
       end
     end
 
-    # DELETE /hr/employees/:id
     def destroy
       authorize @employee
       @employee.destroy
@@ -78,12 +73,18 @@ module Hr
       def employee_params
         params.require(:hr_employee).permit(
           :department, :position_title, :hire_date,
-          :status, :leave_balance, :performance_score, :manager_id, :user_id,
+          :status, :leave_balance, :performance_score,
+          :manager_id, :user_id,
+
           personal_detail_attributes: [
             :id, :first_name, :last_name, :dob, :gender,
             :bank_name, :account_number, :account_name,
             :means_of_identification, :id_number, :marital_status,
             :address, :phone_number
+          ],
+
+          next_of_kins_attributes: [
+            :id, :name, :relationship, :phone_number, :address, :_destroy
           ]
         )
       end

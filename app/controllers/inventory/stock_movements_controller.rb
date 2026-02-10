@@ -5,25 +5,25 @@ class Inventory::StockMovementsController < ApplicationController
 
   def index
     if params[:inventory_item_id].present?
-      # Nested case: movements for a specific item
       @inventory_item = InventoryItem.find(params[:inventory_item_id])
       @stock_movements = policy_scope([ :inventory, @inventory_item.stock_movements ])
                             .includes(:inventory_item, :project, :employee, :source_warehouse, :destination_warehouse)
                             .order(created_at: :desc)
       authorize [ :inventory, @inventory_item ]
     else
-      # Global case: all movements
       @stock_movements = policy_scope([ :inventory, StockMovement ])
                             .includes(:inventory_item, :project, :employee, :source_warehouse, :destination_warehouse)
                             .order(created_at: :desc)
       authorize [ :inventory, StockMovement ]
     end
 
+    active_movements = @stock_movements.active
+
     @summary = {
-      inbound: @stock_movements.where(movement_type: :inbound).count,
-      outbound: @stock_movements.where(movement_type: :outbound).count,
-      site_delivery: @stock_movements.where(movement_type: :site_delivery).count,
-      adjustments: @stock_movements.where(movement_type: :adjustment).count
+      inbound: active_movements.where(movement_type: :inbound).count,
+      outbound: active_movements.where(movement_type: :outbound).count,
+      site_delivery: active_movements.where(movement_type: :site_delivery).count,
+      adjustment: active_movements.where(movement_type: :adjustment).count
     }
   end
 
@@ -78,8 +78,10 @@ class Inventory::StockMovementsController < ApplicationController
 
   def destroy
     authorize [ :inventory, @stock_movement ]
-    @stock_movement.destroy
-    redirect_to inventory_inventory_item_path(@inventory_item), notice: "Movement removed."
+    @stock_movement.cancel!(reason: "Cancelled via UI by #{current_user.email}")
+    redirect_to inventory_stock_movements_path, notice: "Movement cancelled."
+  rescue => e
+    redirect_to inventory_stock_movements_path, alert: "Failed to cancel movement: #{e.message}"
   end
 
   private

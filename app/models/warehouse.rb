@@ -11,6 +11,7 @@ class Warehouse < ApplicationRecord
 
   has_many :stock_levels, dependent: :delete_all
   has_many :inventory_items, through: :stock_levels
+  has_many :project_inventories, dependent: :restrict_with_error
 
   validates :name, presence: true, length: { in: 2..100 }
   validates :code, uniqueness: true, allow_blank: true

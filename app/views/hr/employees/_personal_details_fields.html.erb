@@ -1,0 +1,68 @@
+<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border rounded-xl p-5 shadow-sm">
+  <h4 class="text-sm font-semibold text-hamzis-brown dark:text-hamzis-copper mb-3">Personal Details</h4>
+  <%= f.fields_for :personal_detail do |pd| %>
+    <div class="space-y-3">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <%= pd.label :first_name, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= pd.text_field :first_name, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+        </div>
+        <div>
+          <%= pd.label :last_name, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= pd.text_field :last_name, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <%= pd.label :dob, "Date of birth", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= pd.date_field :dob, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+        </div>
+        <div>
+          <%= pd.label :gender, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= pd.select :gender, options_for_select(@gender_options, pd.object.gender),
+                {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+        </div>
+      </div>
+      <div>
+        <%= pd.label :phone_number, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= pd.telephone_field :phone_number, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+      </div>
+      <div>
+        <%= pd.label :address, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= pd.text_area :address, rows: 2, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <%= pd.label :means_of_identification, "ID Type", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= pd.select :means_of_identification,
+                options_for_select(@id_options, pd.object.means_of_identification),
+                {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+        </div>
+        <div>
+          <%= pd.label :id_number, "ID Number", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= pd.text_field :id_number, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <%= pd.label :bank_name, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= pd.text_field :bank_name, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+        </div>
+        <div>
+          <%= pd.label :account_number, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= pd.text_field :account_number, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+        </div>
+      </div>
+      <div>
+        <%= pd.label :account_name, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= pd.text_field :account_name, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+      </div>
+      <div>
+        <%= pd.label :marital_status, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= pd.select :marital_status,
+              options_for_select(@marital_options, pd.object.marital_status),
+              {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+      </div>
+    </div>
+  <% end %>
+</div>

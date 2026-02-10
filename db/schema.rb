@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_31_163737) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_08_213136) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -144,6 +144,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_31_163737) do
     t.index [ "manager_id" ], name: "index_hr_leaves_on_manager_id"
   end
 
+  create_table "hr_next_of_kins", force: :cascade do |t|
+    t.bigint "employee_id", null: false
+    t.string "name", null: false
+    t.string "relationship", null: false
+    t.string "phone_number", null: false
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index [ "employee_id" ], name: "index_hr_next_of_kins_on_employee_id"
+  end
+
   create_table "hr_personal_details", force: :cascade do |t|
     t.bigint "employee_id"
     t.string "first_name"
@@ -190,6 +201,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_31_163737) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "stock_movement_id"
+    t.integer "reversal_of_id"
     t.index [ "project_id" ], name: "index_project_expenses_on_project_id"
     t.index [ "stock_movement_id" ], name: "index_project_expenses_on_stock_movement_id"
   end
@@ -211,10 +223,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_31_163737) do
     t.bigint "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "cancelled_at"
+    t.string "cancellation_reason"
+    t.bigint "warehouse_id"
     t.index [ "inventory_item_id" ], name: "index_project_inventories_on_inventory_item_id"
     t.index [ "project_id", "inventory_item_id" ], name: "index_project_inventories_on_project_and_item", unique: true
     t.index [ "project_id" ], name: "index_project_inventories_on_project_id"
     t.index [ "task_id" ], name: "index_project_inventories_on_task_id"
+    t.index [ "warehouse_id" ], name: "index_project_inventories_on_warehouse_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -396,6 +412,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_31_163737) do
     t.bigint "task_id"
     t.bigint "source_warehouse_id"
     t.bigint "destination_warehouse_id"
+    t.datetime "cancelled_at"
+    t.string "cancellation_reason"
+    t.integer "reversal_of_id"
     t.index [ "applied_at" ], name: "index_stock_movements_on_applied_at"
     t.index [ "created_at" ], name: "index_stock_movements_on_created_at"
     t.index [ "destination_warehouse_id" ], name: "index_stock_movements_on_destination_warehouse_id"
@@ -473,6 +492,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_31_163737) do
   add_foreign_key "hr_employees", "users"
   add_foreign_key "hr_leaves", "hr_employees", column: "employee_id"
   add_foreign_key "hr_leaves", "hr_employees", column: "manager_id"
+  add_foreign_key "hr_next_of_kins", "hr_employees", column: "employee_id"
   add_foreign_key "hr_personal_details", "hr_employees", column: "employee_id"
   add_foreign_key "project_expenses", "projects"
   add_foreign_key "project_expenses", "stock_movements"
@@ -480,6 +500,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_31_163737) do
   add_foreign_key "project_inventories", "inventory_items"
   add_foreign_key "project_inventories", "projects"
   add_foreign_key "project_inventories", "tasks"
+  add_foreign_key "project_inventories", "warehouses"
   add_foreign_key "projects", "business_clients", column: "client_id"
   add_foreign_key "projects", "users"
   add_foreign_key "reports", "projects"

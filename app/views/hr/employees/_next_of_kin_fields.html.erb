@@ -1,0 +1,31 @@
+<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border rounded-xl p-5 shadow-sm">
+  <h4 class="text-sm font-semibold text-hamzis-brown dark:text-hamzis-copper mb-3">Next of Kin</h4>
+  <%= f.fields_for :next_of_kins do |nok| %>
+    <div class="space-y-3 border border-hamzis-brown/20 dark:border-hamzis-copper/20 rounded-lg p-4 mb-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <%= nok.label :name, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= nok.text_field :name, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+        </div>
+        <div>
+          <%= nok.label :relationship, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= nok.text_field :relationship, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+        </div>
+      </div>
+      <div>
+        <%= nok.label :phone_number, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= nok.telephone_field :phone_number, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+      </div>
+      <div>
+        <%= nok.label :address, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+        <%= nok.text_area :address, rows: 2, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+      </div>
+      <% if nok.object&.persisted? %>
+        <div class="flex items-center gap-2">
+          <%= nok.check_box :_destroy, class: "h-4 w-4" %>
+          <%= nok.label :_destroy, "Remove this next of kin", class: "text-xs text-red-600" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

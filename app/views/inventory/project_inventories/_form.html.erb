@@ -1,14 +1,24 @@
-<%= form_with(model: [ :inventory, project_inventory ], url: project_inventory.persisted? ? inventory_project_inventory_path(project_inventory) : inventory_project_inventories_path, local: true, class: "mb-6 flex gap-2") do |f| %>
-  <%# include project_id for create %>
+<%= form_with(model: [ :inventory, project_inventory ],
+              url: project_inventory.persisted? ? inventory_project_inventory_path(project_inventory) : inventory_project_inventories_path,
+              local: true,
+              class: "mb-6 flex gap-2") do |f| %>
   <%= f.hidden_field :project_id, value: project_inventory.project_id if project_inventory.new_record? %>
   <%= f.collection_select :inventory_item_id, InventoryItem.order(:name), :id, :name,
         { prompt: "Select item" },
         class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
   <%= f.number_field :quantity_reserved, min: 0, step: 1,
-        class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper", placeholder: "Qty" %>
+        class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper",
+        placeholder: "Qty" %>
+  <%= f.collection_select :warehouse_id, Warehouse.order(:name), :id, :name,
+        { prompt: "Select warehouse" },
+        class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
   <%= f.text_field :purpose, placeholder: "Purpose (optional)",
         class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
-  <%= f.collection_select :task_id, (project_inventory.project || Project.first).tasks, :id, :title, { prompt: "Link to task (optional)" },
-        class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" if defined?(project_inventory) && project_inventory.persisted? %>
-  <%= f.submit project_inventory.persisted? ? "Update" : "Reserve", class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
+  <% if project_inventory.persisted? %>
+    <%= f.collection_select :task_id, project_inventory.project.tasks, :id, :title,
+          { prompt: "Link to task (optional)" },
+          class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
+  <% end %>
+  <%= f.submit project_inventory.persisted? ? "Update" : "Reserve",
+        class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
 <% end %>

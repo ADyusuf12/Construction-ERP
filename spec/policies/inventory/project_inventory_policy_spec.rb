@@ -4,7 +4,18 @@ require "rails_helper"
 RSpec.describe Inventory::ProjectInventoryPolicy do
   let(:project) { create(:project) }
   let(:inventory_item) { create(:inventory_item) }
-  let(:project_inventory) { create(:project_inventory, project: project, inventory_item: inventory_item) }
+
+  # Helper to ensure a warehouse has stock for an item (satisfies ProjectInventory validation)
+  def ensure_stock(item:, warehouse:, quantity: 10)
+    StockLevel.find_or_create_by!(inventory_item: item, warehouse: warehouse).update!(quantity: quantity)
+  end
+
+  # create a warehouse and a valid project_inventory for tests
+  let(:warehouse) { create(:warehouse) }
+  let(:project_inventory) do
+    ensure_stock(item: inventory_item, warehouse: warehouse, quantity: 10)
+    create(:project_inventory, project: project, inventory_item: inventory_item, warehouse: warehouse)
+  end
 
   context "as Admin" do
     let(:user) { create(:user, :admin) }
@@ -55,7 +66,6 @@ RSpec.describe Inventory::ProjectInventoryPolicy do
     subject { described_class.new(user, project_inventory) }
 
     before do
-      # assign the user to the project via a task -> assignment (matches ProjectPolicy)
       task = create(:task, project: project)
       create(:assignment, task: task, user: user)
     end
@@ -84,12 +94,17 @@ RSpec.describe Inventory::ProjectInventoryPolicy do
       project_a = create(:project)
       project_b = create(:project)
 
-      # assign user to project_a via task -> assignment
       task_a = create(:task, project: project_a)
       create(:assignment, task: task_a, user: user)
 
-      pi_a = create(:project_inventory, project: project_a)
-      pi_b = create(:project_inventory, project: project_b)
+      warehouse_a = create(:warehouse)
+      warehouse_b = create(:warehouse)
+
+      ensure_stock(item: inventory_item, warehouse: warehouse_a, quantity: 10)
+      ensure_stock(item: inventory_item, warehouse: warehouse_b, quantity: 10)
+
+      pi_a = create(:project_inventory, project: project_a, inventory_item: inventory_item, warehouse: warehouse_a)
+      pi_b = create(:project_inventory, project: project_b, inventory_item: inventory_item, warehouse: warehouse_b)
 
       resolved = Inventory::ProjectInventoryPolicy::Scope.new(user, ProjectInventory.all).resolve
       expect(resolved).to include(pi_a)
@@ -98,7 +113,12 @@ RSpec.describe Inventory::ProjectInventoryPolicy do
 
     it "returns all records for non-engineer/qs roles" do
       user = create(:user, :cto)
-      pis = create_list(:project_inventory, 2)
+      warehouse1 = create(:warehouse)
+      warehouse2 = create(:warehouse)
+      ensure_stock(item: inventory_item, warehouse: warehouse1, quantity: 10)
+      ensure_stock(item: inventory_item, warehouse: warehouse2, quantity: 10)
+
+      pis = create_list(:project_inventory, 2, inventory_item: inventory_item, warehouse: warehouse1)
       resolved = Inventory::ProjectInventoryPolicy::Scope.new(user, ProjectInventory.all).resolve
       expect(resolved).to match_array(pis)
     end
