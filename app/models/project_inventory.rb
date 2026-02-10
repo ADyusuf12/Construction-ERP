@@ -13,12 +13,12 @@ class ProjectInventory < ApplicationRecord
     StockMovement.active.where(
       project: project,
       inventory_item: inventory_item,
-      movement_type: [:outbound, :site_delivery]
+      movement_type: [ :outbound, :site_delivery ]
     ).sum(:quantity)
   end
 
   def outstanding_reservation
-    [quantity_reserved - issued_quantity, 0].max
+    [ quantity_reserved - issued_quantity, 0 ].max
   end
 
   def site_quantity
