@@ -29,16 +29,20 @@ Stores user account information, including credentials and roles.
 | `reset_password_sent_at` | `datetime` | yes  |         |                                                |
 | `remember_created_at`    | `datetime` | yes  |         |                                                |
 | `role`                   | `integer`  | yes  |         |                                                |
+| `client_id`              | `bigint`   | yes  |         | `index_users_on_client_id`                     |
 | `created_at`             | `datetime` | no   |         |                                                |
 | `updated_at`             | `datetime` | no   |         |                                                |
+
+**Role Enum Values:** `ceo`, `cto`, `qs`, `site_manager`, `engineer`, `storekeeper`, `hr`, `accountant`, `admin`, `client`
 
 **Associations:**
 
 - `has_many :projects`
 - `has_many :assignments`
 - `has_many :tasks, through: :assignments`
-- `has_one :hr_employee`
 - `has_many :reports`
+- `has_one :employee, class_name: 'Hr::Employee'`
+- `has_one :client, class_name: 'Business::Client'`
 
 ---
 
@@ -56,15 +60,27 @@ Stores information about projects.
 | `budget`      | `decimal(12,2)` | yes  |         |                             |
 | `progress`    | `integer`       | no   | `0`     |                             |
 | `user_id`     | `bigint`        | no   |         | `index_projects_on_user_id` |
+| `client_id`   | `bigint`        | yes  |         | `index_projects_on_client_id` |
+| `location`    | `string`        | yes  |         |                             |
+| `address`     | `string`        | yes  |         |                             |
 | `created_at`  | `datetime`      | no   |         |                             |
 | `updated_at`  | `datetime`      | no   |         |                             |
+
+**Status Enum Values:** `ongoing: 0`, `completed: 1`
 
 **Associations:**
 
 - `belongs_to :user`
-- `has_many :tasks`
-- `has_many :transactions`
-- `has_many :reports`
+- `belongs_to :client, class_name: 'Business::Client', optional: true`
+- `has_many :tasks, dependent: :destroy`
+- `has_many :reports, dependent: :destroy`
+- `has_many :assignments, through: :tasks`
+- `has_many :project_inventories, dependent: :destroy`
+- `has_many :inventory_items, through: :project_inventories`
+- `has_many :project_expenses, dependent: :destroy`
+- `has_many :attendance_records, class_name: 'Hr::AttendanceRecord', dependent: :destroy`
+- `has_many :stock_movements, dependent: :nullify`
+- `has_many :project_files, dependent: :destroy`
 
 ---
 
@@ -113,27 +129,31 @@ A join table that assigns users to tasks.
 
 ### `transactions`
 
-Stores financial transactions related to projects.
+Stores financial transactions (global, not project-specific in the current schema).
 
 | Column             | Type            | Null | Default | Indexes                                     |
 | ------------------ | --------------- | ---- | ------- | ------------------------------------------- |
 | `id`               | `bigint`        | no   |         | Primary Key                                 |
-| `date`             | `date`          | no   |         | `index_transactions_on_project_id_and_date` |
+| `date`             | `date`          | no   |         |                                             |
 | `description`      | `string`        | no   |         |                                             |
 | `amount`           | `decimal(12,2)` | no   |         |                                             |
 | `transaction_type` | `integer`       | no   | `0`     | `index_transactions_on_transaction_type`    |
 | `status`           | `integer`       | no   | `0`     | `index_transactions_on_status`              |
-| `reference`        | `string`        | yes  |         |                                             |
+| `reference`       | `string`        | yes  |         |                                             |
 | `notes`            | `text`          | yes  |         |                                             |
-| `project_id`       | `bigint`        | no   |         | `index_transactions_on_project_id`          |
 | `created_at`       | `datetime`      | no   |         |                                             |
 | `updated_at`       | `datetime`      | no   |         |                                             |
 
+**Transaction Type Enum Values:** `invoice: 0`, `receipt: 1`
+**Status Enum Values:** `unpaid: 0`, `paid: 1`
+
 **Associations:**
 
-- `belongs_to :project`
+- None (global transactions table)
 
 ---
+
+## HR Module Tables
 
 ### `hr_employees`
 
@@ -143,25 +163,30 @@ Stores information about employees for the HR module.
 | ------------------- | -------------- | ---- | ------- | ------------------------------------------ |
 | `id`                | `bigint`       | no   |         | Primary Key                                |
 | `hamzis_id`         | `string`       | no   |         | `index_hr_employees_on_hamzis_id` (unique) |
-| `department`        | `string`       | yes  |         |                                            |
-| `position_title`    | `string`       | yes  |         |                                            |
+| `department`        | `string`       | no   |         |                                            |
+| `position_title`    | `string`       | no   |         |                                            |
 | `hire_date`         | `date`         | yes  |         |                                            |
 | `status`            | `integer`      | yes  | `0`     |                                            |
 | `leave_balance`     | `integer`      | yes  | `0`     |                                            |
-| `performance_score` | `decimal(5,2)` | yes  |         |                                            |
-| `user_id`           | `bigint`       | yes  |         | `index_hr_employees_on_user_id`            |
-| `manager_id`        | `bigint`       | yes  |         | `index_hr_employees_on_manager_id`         |
+| `performance_score`  | `decimal(5,2)` | yes  |         |                                            |
+| `user_id`           | `bigint`       | yes  |         | `index_hr_employees_on_user_id`           |
+| `manager_id`        | `bigint`       | yes  |         | `index_hr_employees_on_manager_id`        |
 | `created_at`        | `datetime`     | no   |         |                                            |
 | `updated_at`        | `datetime`     | no   |         |                                            |
 
+**Status Enum Values:** `active: 0`, `on_leave: 1`, `terminated: 2`
+
 **Associations:**
 
-- `belongs_to :user` (optional)
-- `belongs_to :manager, class_name: 'HrEmployee', optional: true`
-- `has_many :subordinates, class_name: 'HrEmployee', foreign_key: 'manager_id'`
-- `has_many :leaves, class_name: 'HrLeave', foreign_key: 'employee_id'`
-- `has_one :personal_detail, class_name: 'HrPersonalDetail'`
+- `belongs_to :user, optional: true`
+- `belongs_to :manager, class_name: 'Hr::Employee', optional: true`
+- `has_many :subordinates, class_name: 'Hr::Employee', foreign_key: 'manager_id'`
+- `has_many :leaves, class_name: 'Hr::Leave', foreign_key: 'employee_id'`
+- `has_many :leave_approvals, class_name: 'Hr::Leave', foreign_key: 'manager_id'`
+- `has_one :personal_detail, class_name: 'Hr::PersonalDetail', dependent: :destroy`
 - `has_many :salaries, class_name: 'Accounting::Salary'`
+- `has_many :attendance_records, class_name: 'Hr::AttendanceRecord'`
+- `has_many :next_of_kins, class_name: 'Hr::NextOfKin'`
 
 ---
 
@@ -181,10 +206,12 @@ Stores leave requests for employees.
 | `created_at`  | `datetime` | no   |         |                                  |
 | `updated_at`  | `datetime` | no   |         |                                  |
 
+**Status Enum Values:** `pending: 0`, `approved: 1`, `rejected: 2`, `cancelled: 3`
+
 **Associations:**
 
-- `belongs_to :employee, class_name: 'HrEmployee'`
-- `belongs_to :manager, class_name: 'HrEmployee', optional: true`
+- `belongs_to :employee, class_name: 'Hr::Employee'`
+- `belongs_to :manager, class_name: 'Hr::Employee', optional: true`
 
 ---
 
@@ -195,14 +222,14 @@ Stores personal details for employees.
 | Column                    | Type       | Null | Default | Indexes                                    |
 | ------------------------- | ---------- | ---- | ------- | ------------------------------------------ |
 | `id`                      | `bigint`   | no   |         | Primary Key                                |
-| `employee_id`             | `bigint`   | yes  |         | `index_hr_personal_details_on_employee_id` |
+| `employee_id`             | `bigint`   | no   |         | `index_hr_personal_details_on_employee_id` |
 | `first_name`              | `string`   | yes  |         |                                            |
 | `last_name`               | `string`   | yes  |         |                                            |
 | `dob`                     | `date`     | yes  |         |                                            |
 | `gender`                  | `integer`  | yes  |         |                                            |
-| `bank_name`               | `string`   | yes  |         |                                            |
-| `account_number`          | `string`   | yes  |         |                                            |
-| `account_name`            | `string`   | yes  |         |                                            |
+| `bank_name`               | `string`   | no   |         |                                            |
+| `account_number`          | `string`   | no   |         |                                            |
+| `account_name`            | `string`   | no   |         |                                            |
 | `means_of_identification` | `integer`  | yes  |         |                                            |
 | `id_number`               | `string`   | yes  |         |                                            |
 | `marital_status`          | `integer`  | yes  |         |                                            |
@@ -211,9 +238,61 @@ Stores personal details for employees.
 | `created_at`              | `datetime` | no   |         |                                            |
 | `updated_at`              | `datetime` | no   |         |                                            |
 
+**Gender Enum Values:** `male: 0`, `female: 1`, `other: 2`
+**Means of ID Enum Values:** `nin: 0`, `passport: 1`, `drivers_license: 2`, `voters_card: 3`, `student_id: 4`, `nysc: 5`
+**Marital Status Enum Values:** `single: 0`, `married: 1`, `divorced: 2`, `widowed: 3`
+
 **Associations:**
 
-- `belongs_to :employee, class_name: 'HrEmployee'`
+- `belongs_to :employee, class_name: 'Hr::Employee'`
+
+---
+
+### `hr_attendance_records`
+
+Tracks employee attendance on projects.
+
+| Column              | Type       | Null | Default | Indexes                                              |
+| ------------------- | ---------- | ---- | ------- | ---------------------------------------------------- |
+| `id`                | `bigint`   | no   |         | Primary Key                                          |
+| `employee_id`       | `bigint`   | no   |         | `index_hr_attendance_records_on_employee_id`          |
+| `project_id`        | `bigint`   | no   |         | `index_hr_attendance_records_on_project_id`          |
+| `date`              | `date`     | no   |         |                                                      |
+| `status`            | `integer`  | no   |         |                                                      |
+| `check_in_time`     | `datetime` | yes  |         |                                                      |
+| `check_out_time`    | `datetime` | yes  |         |                                                      |
+| `created_at`        | `datetime` | no   |         |                                                      |
+| `updated_at`        | `datetime` | no   |         |                                                      |
+
+**Status Enum Values:** `present: 0`, `absent: 1`, `late: 2`, `on_leave: 3`
+
+**Composite Unique Index:** `(employee_id, date)` - prevents duplicate attendance records per day
+
+**Associations:**
+
+- `belongs_to :employee, class_name: 'Hr::Employee'`
+- `belongs_to :project`
+
+---
+
+### `hr_next_of_kins`
+
+Stores emergency contact information for employees.
+
+| Column           | Type       | Null | Default | Indexes                              |
+| ---------------- | ---------- | ---- | ------- | ------------------------------------ |
+| `id`             | `bigint`   | no   |         | Primary Key                          |
+| `employee_id`    | `bigint`   | no   |         | `index_hr_next_of_kins_on_employee_id` |
+| `name`           | `string`   | no   |         |                                      |
+| `relationship`   | `string`   | no   |         |                                      |
+| `phone_number`   | `string`   | no   |         |                                      |
+| `address`        | `string`   | yes  |         |                                      |
+| `created_at`     | `datetime` | no   |         |                                      |
+| `updated_at`     | `datetime` | no   |         |                                      |
+
+**Associations:**
+
+- `belongs_to :employee, class_name: 'Hr::Employee'`
 
 ---
 
@@ -322,9 +401,11 @@ Stores information about physical warehouse locations where inventory is stored.
 
 **Associations:**
 
-- `has_many :stock_movements, dependent: :restrict_with_error`
+- `has_many :source_stock_movements, class_name: 'StockMovement', foreign_key: 'source_warehouse_id'`
+- `has_many :destination_stock_movements, class_name: 'StockMovement', foreign_key: 'destination_warehouse_id'`
 - `has_many :stock_levels, dependent: :delete_all`
 - `has_many :inventory_items, through: :stock_levels`
+- `has_many :project_inventories`
 
 ---
 
@@ -337,13 +418,16 @@ Stores master data for all inventory items managed by the system.
 | `id`                | `bigint`        | no   |         | Primary Key                             |
 | `sku`               | `string`        | no   |         | `index_inventory_items_on_sku` (unique) |
 | `name`              | `string`        | no   |         |                                         |
-| `unit_cost`         | `decimal(12,2)` | no   |         |                                         |
-| `reorder_threshold` | `integer`       | no   | `10`    |                                         |
-| `status`            | `integer`       | no   | `0`     |                                         |
-| `created_at`        | `datetime`      | no   |         |                                         |
+| `description`      | `text`          | yes  |         |                                         |
+| `unit_cost`         | `decimal(12,2)` | no   | `0.0`   |                                         |
+| `status`            | `integer`       | no   | `0`     | `index_inventory_items_on_status`        |
+| `reorder_threshold` | `integer`       | no   | `5`     |                                         |
+| `default_location`  | `string`        | yes  |         |                                         |
+| `unit`              | `string`        | no   | `pcs`   | `index_inventory_items_on_unit`         |
+| `created_at`        | `datetime`      | no   |         | `index_inventory_items_on_created_at`    |
 | `updated_at`        | `datetime`      | no   |         |                                         |
 
-**Status Enum Values:** `in_stock`, `low_stock`, `out_of_stock`
+**Status Enum Values:** `in_stock: 0`, `low_stock: 1`, `out_of_stock: 2`
 
 **Associations:**
 
@@ -388,20 +472,24 @@ Tracks all movements (in/out) of inventory items, providing a complete audit tra
 | ------------------- | --------------- | ---- | ------- | -------------------------------------------- |
 | `id`                | `bigint`        | no   |         | Primary Key                                  |
 | `inventory_item_id` | `bigint`        | no   |         | `index_stock_movements_on_inventory_item_id` |
-| `warehouse_id`      | `bigint`        | no   |         | `index_stock_movements_on_warehouse_id`      |
-| `movement_type`     | `integer`       | no   | `0`     | `index_stock_movements_on_movement_type`     |
+| `movement_type`     | `integer`       | no   | `0`     | `index_stock_movements_on_movement_type`    |
 | `quantity`          | `integer`       | no   |         |                                              |
 | `unit_cost`         | `decimal(12,2)` | yes  |         |                                              |
 | `reference`         | `string`        | yes  |         |                                              |
 | `notes`             | `text`          | yes  |         |                                              |
-| `employee_id`       | `bigint`        | yes  |         | `index_stock_movements_on_employee_id`       |
-| `project_id`        | `bigint`        | yes  |         | `index_stock_movements_on_project_id`        |
-| `task_id`           | `bigint`        | yes  |         | `index_stock_movements_on_task_id`           |
-| `applied_at`        | `datetime`      | yes  |         | `index_stock_movements_on_applied_at`        |
 | `created_at`        | `datetime`      | no   |         | `index_stock_movements_on_created_at`        |
 | `updated_at`        | `datetime`      | no   |         |                                              |
+| `employee_id`       | `bigint`        | yes  |         | `index_stock_movements_on_employee_id`       |
+| `applied_at`        | `datetime`      | yes  |         | `index_stock_movements_on_applied_at`        |
+| `project_id`        | `bigint`        | yes  |         | `index_stock_movements_on_project_id`        |
+| `task_id`           | `bigint`        | yes  |         | `index_stock_movements_on_task_id`          |
+| `source_warehouse_id` | `bigint`      | yes  |         | `index_stock_movements_on_source_warehouse_id` |
+| `destination_warehouse_id` | `bigint` | yes  |         | `index_stock_movements_on_destination_warehouse_id` |
+| `cancelled_at`      | `datetime`      | yes  |         |                                              |
+| `cancellation_reason` | `string`       | yes  |         |                                              |
+| `reversal_of_id`    | `integer`      | yes  |         |                                              |
 
-**Movement Type Enum Values:** `inbound`, `outbound`, `adjustment`, `allocation`
+**Movement Type Enum Values:** `inbound: 0`, `outbound: 1`, `adjustment: 2`, `site_delivery: 3`
 
 **Composite Indexes:**
 
@@ -410,8 +498,10 @@ Tracks all movements (in/out) of inventory items, providing a complete audit tra
 **Associations:**
 
 - `belongs_to :inventory_item`
-- `belongs_to :warehouse`
-- `belongs_to :employee, optional: true`
+- `has_one :project_expense, dependent: :nullify`
+- `belongs_to :source_warehouse, class_name: 'Warehouse', optional: true`
+- `belongs_to :destination_warehouse, class_name: 'Warehouse', optional: true`
+- `belongs_to :employee, class_name: 'Hr::Employee', optional: true`
 - `belongs_to :project, optional: true`
 - `belongs_to :task, optional: true`
 
@@ -426,11 +516,14 @@ Links inventory items to projects/tasks, tracking reserved quantities.
 | `id`                | `bigint`   | no   |         | Primary Key                                      |
 | `project_id`        | `bigint`   | no   |         | `index_project_inventories_on_project_id`        |
 | `inventory_item_id` | `bigint`   | no   |         | `index_project_inventories_on_inventory_item_id` |
-| `quantity`          | `integer`  | no   | `0`     |                                                  |
+| `quantity_reserved` | `integer`  | no   | `0`     |                                                  |
 | `purpose`           | `string`   | yes  |         |                                                  |
 | `task_id`           | `bigint`   | yes  |         | `index_project_inventories_on_task_id`           |
 | `created_at`        | `datetime` | no   |         |                                                  |
 | `updated_at`        | `datetime` | no   |         |                                                  |
+| `cancelled_at`      | `datetime` | yes  |         |                                                  |
+| `cancellation_reason` | `string`  | yes  |         |                                                  |
+| `warehouse_id`      | `bigint`   | yes  |         | `index_project_inventories_on_warehouse_id`      |
 
 **Composite Indexes:**
 
@@ -441,6 +534,78 @@ Links inventory items to projects/tasks, tracking reserved quantities.
 - `belongs_to :project`
 - `belongs_to :inventory_item`
 - `belongs_to :task, optional: true`
+- `belongs_to :warehouse, optional: true`
+
+---
+
+
+## Project Management Tables
+
+### `business_clients`
+
+Stores information about external clients/companies.
+
+| Column              | Type       | Null | Default | Indexes                              |
+| ------------------- | ---------- | ---- | ------- | ------------------------------------ |
+| `id`                | `bigint`   | no   |         | Primary Key                          |
+| `name`              | `string`   | no   |         | `index_business_clients_on_name`     |
+| `company`           | `string`   | yes  |         |                                      |
+| `email`             | `string`   | yes  |         | `index_business_clients_on_email` (unique) |
+| `phone`             | `string`   | yes  |         |                                      |
+| `address`           | `text`     | yes  |         |                                      |
+| `notes`             | `text`     | yes  |         |                                      |
+| `created_at`        | `datetime` | no   |         |                                      |
+| `updated_at`        | `datetime` | no   |         |                                      |
+| `user_id`           | `bigint`   | yes  |         | `index_business_clients_on_user_id`   |
+
+**Associations:**
+
+- `belongs_to :user, optional: true`
+- `has_many :projects, dependent: :nullify`
+
+---
+
+### `project_expenses`
+
+Tracks expenses related to specific projects.
+
+| Column              | Type            | Null | Default | Indexes                                     |
+| ------------------- | --------------- | ---- | ------- | ------------------------------------------- |
+| `id`                | `bigint`        | no   |         | Primary Key                                 |
+| `project_id`        | `bigint`        | no   |         | `index_project_expenses_on_project_id`      |
+| `date`              | `date`          | no   |         |                                             |
+| `description`       | `string`        | no   |         |                                             |
+| `amount`            | `decimal(12,2)` | no   |         |                                             |
+| `reference`         | `string`        | yes  |         |                                             |
+| `notes`             | `text`          | yes  |         |                                             |
+| `created_at`        | `datetime`      | no   |         |                                             |
+| `updated_at`        | `datetime`      | no   |         |                                             |
+| `stock_movement_id` | `bigint`        | yes  |         | `index_project_expenses_on_stock_movement_id` |
+| `reversal_of_id`    | `integer`       | yes  |         |                                             |
+
+**Associations:**
+
+- `belongs_to :project, optional: true`
+- `belongs_to :stock_movement, optional: true`
+
+---
+
+### `project_files`
+
+Manages file attachments associated with projects via Active Storage.
+
+| Column              | Type       | Null | Default | Indexes                      |
+| ------------------- | ---------- | ---- | ------- | ---------------------------- |
+| `id`                | `bigint`   | no   |         | Primary Key                  |
+| `project_id`        | `bigint`   | no   |         | `index_project_files_on_project_id` |
+| `description`       | `string`   | yes  |         |                              |
+| `created_at`        | `datetime` | no   |         |                              |
+| `updated_at`        | `datetime` | no   |         |                              |
+| `title`             | `string`   | yes  |         |                              |
+
+**Associations:**
+
+- `belongs_to :project`
 
 ---
 
