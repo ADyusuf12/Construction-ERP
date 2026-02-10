@@ -105,13 +105,13 @@
     </div>
     <!-- Recent Movements + Record Movement -->
     <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-                border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">Recent Movements</h3>
         <div class="flex items-center gap-2">
           <% if policy([ :inventory, StockMovement.new ]).create? %>
             <%= link_to "➕ Record Movement", new_inventory_inventory_item_stock_movement_path(@inventory_item),
-                class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition text-sm" %>
+            class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition text-sm" %>
           <% end %>
         </div>
       </div>
@@ -119,21 +119,35 @@
         <table class="min-w-full text-sm text-left border-collapse">
           <thead>
             <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
-              <th class="px-4 py-3">Date</th>
-              <th class="px-4 py-3">Type</th>
-              <th class="px-4 py-3">Qty</th>
-              <th class="px-4 py-3">Reference</th>
-              <th class="px-4 py-3">By</th>
+              <th class="px-4 py-2">Date</th>
+              <th class="px-4 py-2">Type / Status</th>
+              <th class="px-4 py-2">Qty</th>
+              <th class="px-4 py-2">Reference</th>
+              <th class="px-4 py-2">By</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-hamzis-brown/20">
             <% @stock_movements.each do |m| %>
-              <tr class="hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
-                <td class="px-4 py-3"><%= l(m.created_at, format: :short) %></td>
-                <td class="px-4 py-3"><%= m.movement_type.to_s.humanize %></td>
-                <td class="px-4 py-3 font-medium"><%= m.quantity %> <span class="text-xs text-gray-500"><%= @inventory_item.unit.presence || "—" %></span></td>
-                <td class="px-4 py-3"><%= truncate(m.reference.to_s, length: 30) %></td>
-                <td class="px-4 py-3"><%= m.employee&.full_name || "System" %></td>
+              <tr class="hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition <%= 'opacity-60' if m.cancelled? %>">
+                <td class="px-4 py-2"><%= l(m.created_at, format: :short) %></td>
+                <td class="px-4 py-2">
+                  <span class="font-semibold"><%= m.movement_type.to_s.humanize %></span>
+                  <% if m.cancelled? %>
+                    <span class="ml-1 text-xs text-yellow-700">(Cancelled)</span>
+                  <% elsif m.reversal_of_id.present? %>
+                    <span class="ml-1 text-xs text-red-700">(Reversal)</span>
+                  <% elsif m.applied_at.present? %>
+                    <span class="ml-1 text-xs text-green-700">(Applied)</span>
+                  <% else %>
+                    <span class="ml-1 text-xs text-gray-600">(Pending)</span>
+                  <% end %>
+                </td>
+                <td class="px-4 py-2 font-medium">
+                  <%= m.quantity %>
+                  <span class="text-xs text-gray-500"><%= @inventory_item.unit.presence || "—" %></span>
+                </td>
+                <td class="px-4 py-2"><%= truncate(m.reference.to_s, length: 30) %></td>
+                <td class="px-4 py-2"><%= m.employee&.full_name || "System" %></td>
               </tr>
             <% end %>
           </tbody>

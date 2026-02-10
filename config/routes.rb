@@ -59,10 +59,18 @@ Rails.application.routes.draw do
 
   namespace :inventory do
     resources :inventory_items do
-      resources :stock_movements, only: %i[index new create edit update destroy show]
+      resources :stock_movements, only: %i[index new create edit update destroy show] do
+        member do
+          post :reverse
+        end
+      end
     end
     resources :warehouses
-    resources :stock_movements, only: %i[index show]
+    resources :stock_movements, only: %i[index show] do
+      member do
+        post :reverse
+      end
+    end
     resources :project_inventories, only: [ :create, :edit, :update, :destroy ]
   end
 

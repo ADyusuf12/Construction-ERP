@@ -18,6 +18,11 @@ RSpec.describe Inventory::StockMovementPolicy, type: :policy do
   let!(:inventory_item) { create(:inventory_item) }
   let!(:stock_movement) { create(:stock_movement, inventory_item: inventory_item) }
 
+  # Helper to ensure a warehouse has stock for an item (satisfies ProjectInventory validation)
+  def ensure_stock(item:, warehouse:, quantity: 10)
+    StockLevel.find_or_create_by!(inventory_item: item, warehouse: warehouse).update!(quantity: quantity)
+  end
+
   describe "action permissions" do
     context "index? and show?" do
       it "delegates to InventoryItemPolicy#show? (true case)" do
@@ -48,7 +53,10 @@ RSpec.describe Inventory::StockMovementPolicy, type: :policy do
         project = create(:project)
         task = create(:task, project: project)
         create(:assignment, task: task, user: engineer)
-        create(:project_inventory, project: project, inventory_item: inventory_item)
+
+        warehouse = create(:warehouse)
+        ensure_stock(item: inventory_item, warehouse: warehouse, quantity: 10)
+        create(:project_inventory, project: project, inventory_item: inventory_item, warehouse: warehouse)
 
         expect(described_class.new(engineer, stock_movement).create?).to be true
       end
@@ -61,9 +69,11 @@ RSpec.describe Inventory::StockMovementPolicy, type: :policy do
         project = create(:project)
         task = create(:task, project: project)
         create(:assignment, task: task, user: qs)
-        create(:project_inventory, project: project, inventory_item: inventory_item)
 
-        # QS is not granted create in InventoryItemPolicy; policy requires explicit engineer project membership only
+        warehouse = create(:warehouse)
+        ensure_stock(item: inventory_item, warehouse: warehouse, quantity: 10)
+        create(:project_inventory, project: project, inventory_item: inventory_item, warehouse: warehouse)
+
         expect(described_class.new(qs, stock_movement).create?).to be false
       end
 
@@ -116,8 +126,14 @@ RSpec.describe Inventory::StockMovementPolicy, type: :policy do
     let!(:movement_global) { create(:stock_movement, inventory_item: item_global) }
 
     before do
-      create(:project_inventory, project: project_a, inventory_item: item_for_a)
-      create(:project_inventory, project: project_b, inventory_item: item_for_b)
+      warehouse_a = create(:warehouse)
+      warehouse_b = create(:warehouse)
+
+      ensure_stock(item: item_for_a, warehouse: warehouse_a, quantity: 10)
+      ensure_stock(item: item_for_b, warehouse: warehouse_b, quantity: 10)
+
+      create(:project_inventory, project: project_a, inventory_item: item_for_a, warehouse: warehouse_a)
+      create(:project_inventory, project: project_b, inventory_item: item_for_b, warehouse: warehouse_b)
       # item_global has no project_inventories
     end
 
