@@ -128,6 +128,8 @@ Manages financial transactions, namespaced under `/accounting`.
 | `DELETE` | `/accounting/transactions/:id`           | `accounting/transactions#destroy`   | Delete a transaction        |
 | `PATCH`  | `/accounting/transactions/:id/mark_paid` | `accounting/transactions#mark_paid` | Mark a transaction as paid  |
 
+Note: Transactions are global (not project-specific) in the current implementation.
+
 ### Salary Batches, Salaries, Deductions
 
 | Method   | Path                                                   | Controller#Action                     | Purpose               |

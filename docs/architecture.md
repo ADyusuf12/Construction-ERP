@@ -26,34 +26,42 @@ Here is a breakdown of the key directories and their purposes:
 
 ### Core Project Management
 
-- **`User`**: Represents a user of the application. Handles authentication (via Devise) and roles (CEO, CTO, QS, Site Manager, Engineer, Storekeeper, HR, Accountant, Admin). User self-registration is disabled; admins create accounts.
-- **`Project`**: Represents a project with a name, description, status (ongoing/completed), deadline, and budget.
+- **`User`**: Represents a user of the application. Handles authentication (via Devise) and roles (CEO, CTO, QS, Site Manager, Engineer, Storekeeper, HR, Accountant, Admin, Client). User self-registration is disabled; admins create accounts.
+- **`Project`**: Represents a project with a name, description, status (ongoing/completed), deadline, budget, location, and address. Can be linked to a client.
 - **`Task`**: Represents a task within a project with a title, details, status (pending/in_progress/done), due date, and weight for effort estimation.
 - **`Assignment`**: A join model connecting `User`s to `Task`s, representing task assignments and accountability.
 - **`Report`**: Allows users assigned to tasks to create, submit, and review progress reports associated with a project.
-- **`ProjectExpense`**: Tracks expenses related to specific projects for budget tracking.
+- **`ProjectExpense`**: Tracks expenses related to specific projects for budget tracking. Can be linked to stock movements.
 - **`ProjectFile`**: Manages file attachments associated with projects via Active Storage.
-- **`ProjectInventory`**: Links inventory items to projects/tasks with reserved quantities.
+- **`ProjectInventory`**: Links inventory items to projects/tasks with reserved quantities, supporting warehouse tracking.
+
+### Business Module
+
+- **`Business::Client`**: Represents external clients/companies that can be linked to projects and users.
 
 ### Accounting Module
 
-- **`Accounting::Transaction`**: Represents financial transactions (income/expenses) for the organization.
+- **`Accounting::Transaction`**: Represents global financial transactions (invoices/receipts) for the organization.
 - **`Accounting::SalaryBatch`**: Represents a batch of salaries (e.g., monthly payroll) to be processed.
-- **`Accounting::Salary`**: Represents an employee's salary record within a salary batch, including base pay, allowances, and deductions.
-- **`Accounting::Deduction`**: Itemized deductions from salaries (taxes, pension, insurance, etc.).
+- **`Accounting::Salary`**: Represents an employee's salary record within a salary batch, including base pay, allowances, and deductions. Tracks slip delivery via `slip_sent_at`.
+- **`Accounting::Deduction`**: Itemized deductions from salaries (tax, pension, loan, health_insurance, other).
 
 ### Human Resources (HR) Module
 
-- **`Hr::Employee`**: Represents an employee with hierarchical support via `manager_id` for organizational structure and approval workflows.
-- **`Hr::Leave`**: Manages leave/time-off requests with complete workflow: employee requests, manager approval/rejection, and cancellation.
-- **`Hr::PersonalDetail`**: Stores extended personal and banking information for employees.
+- **`Hr::Employee`**: Represents an employee with hierarchical support via `manager_id` for organizational structure and approval workflows. Auto-generates unique `hamzis_id` based on hire date.
+- **`Hr::Leave`**: Manages leave/time-off requests with complete workflow: employee requests, manager approval/rejection, and cancellation. Automatically deducts leave balance when approved.
+- **`Hr::PersonalDetail`**: Stores extended personal and banking information for employees. Validates bank details are present and employee is at least 18 years old.
+- **`Hr::AttendanceRecord`**: Tracks employee attendance on projects with check-in/check-out times and status (present/absent/late/on_leave). Unique constraint per employee per day.
+- **`Hr::NextOfKin`**: Stores emergency contact information for employees.
 
 ### Inventory Module
 
-- **`Warehouse`**: Represents a physical warehouse location where inventory is stored.
-- **`InventoryItem`**: Master data for inventory items with SKU, name, unit cost, status (in_stock/low_stock/out_of_stock), and reorder threshold.
-- **`StockLevel`**: Tracks the quantity of each inventory item per warehouse (snapshot/actual inventory).
-- **`StockMovement`**: Complete audit trail of all inventory movements (inbound/outbound/adjustment/allocation) with optional employee, project, and task references.
+- **`Warehouse`**: Represents a physical warehouse location where inventory is stored. Supports source and destination warehouse tracking for movements.
+- **`InventoryItem`**: Master data for inventory items with SKU, name, unit cost, status (in_stock/low_stock/out_of_stock), reorder threshold, unit of measurement, and default location.
+- **`StockLevel`**: Tracks the quantity of each inventory item per warehouse (snapshot/actual inventory). Uses optimistic locking (`lock_version`).
+- **`StockMovement`**: Complete audit trail of all inventory movements (inbound/outbound/adjustment/site_delivery) with source/destination warehouse, employee, project, and task references. Supports cancellation with reason tracking.
+- **`InventoryManager::MovementApplier`**: Service object that applies stock movements to update stock levels and create project expenses.
+- **`InventoryManager::MovementCanceller`**: Service object that reverses stock movements, restoring stock levels and reservations.
 
 ---
 
@@ -69,6 +77,11 @@ Controllers handle web requests and coordinate between models and views. Key con
 - **`Dashboard::HomeController`**: Main dashboard with overview metrics
 - **`ProjectExpensesController`**: Expense tracking for projects
 
+### Admin & Business
+
+- **`Admin::UsersController`**: User management (admin only)
+- **`Business::ClientsController`**: Client/company management
+
 ### Accounting
 
 - **`Accounting::TransactionsController`**: Financial transaction management
@@ -81,12 +94,13 @@ Controllers handle web requests and coordinate between models and views. Key con
 - **`Hr::EmployeesController`**: Employee management and directory
 - **`Hr::LeavesController`**: Leave request workflow with approval/rejection
 - **`Hr::PersonalDetailsController`**: Extended employee information
+- **`Hr::AttendanceRecordsController`**: Employee attendance tracking
 
 ### Inventory
 
 - **`Inventory::InventoryItemsController`**: Master inventory item management
 - **`Inventory::WarehousesController`**: Warehouse location management
-- **`Inventory::StockMovementsController`**: Stock movement recording and tracking
+- **`Inventory::StockMovementsController`**: Stock movement recording, tracking, and reversal
 - **`Inventory::ProjectInventoriesController`**: Project inventory allocation
 
 ### Base
