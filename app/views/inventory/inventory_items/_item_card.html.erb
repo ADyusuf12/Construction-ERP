@@ -1,0 +1,87 @@
+<aside class="lg:col-span-1">
+  <div
+    class="bg-gradient-to-br from-hamzis-white/40 via-hamzis-copper/10 to-hamzis-brown/10
+           dark:from-hamzis-black/40 dark:via-hamzis-brown/20 dark:to-hamzis-copper/20
+           border border-hamzis-brown/30 rounded-2xl shadow-xl p-6 space-y-6">
+    <!-- Header -->
+    <div class="flex items-start gap-4">
+      <div class="flex-shrink-0">
+        <div class="w-14 h-14 rounded-lg bg-hamzis-brown/10 flex items-center justify-center">
+          <svg class="w-7 h-7 text-hamzis-brown" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7h18M3 12h18M3 17h18" />
+          </svg>
+        </div>
+      </div>
+      <div class="min-w-0">
+        <h2 id="item-name" class="text-2xl font-semibold text-hamzis-brown dark:text-hamzis-copper truncate">
+          <%= inventory_item.name %>
+        </h2>
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+          <span class="font-medium">SKU:</span>
+          <span class="font-mono ml-1"><%= inventory_item.sku.presence || "—" %></span>
+        </p>
+      </div>
+    </div>
+    <!-- Meta grid -->
+    <dl class="space-y-2 text-sm text-gray-700 dark:text-gray-200">
+      <div class="flex justify-between items-center">
+        <dt class="font-medium">Unit:</dt>
+        <dd class="text-gray-900 dark:text-gray-100"><%= inventory_item.unit.presence || "—" %></dd>
+      </div>
+      <div class="flex justify-between items-center">
+        <dt class="font-medium">Unit Cost:</dt>
+        <dd class="text-gray-900 dark:text-gray-100"><%= number_to_currency(inventory_item.unit_cost, unit: "₦") %></dd>
+      </div>
+      <div class="flex justify-between items-center">
+        <dt class="font-medium">Reorder Threshold:</dt>
+        <dd class="text-gray-900 dark:text-gray-100"><%= inventory_item.reorder_threshold || "—" %></dd>
+      </div>
+      <div class="flex justify-between items-center">
+        <dt class="font-medium">Location:</dt>
+        <dd class="text-gray-500"><%= inventory_item.default_location || "—" %></dd>
+      </div>
+    </dl>
+    <!-- Description -->
+    <% if inventory_item.description.present? %>
+      <div class="text-sm text-gray-700 dark:text-hamzis-copper leading-relaxed">
+        <%= simple_format(inventory_item.description) %>
+      </div>
+    <% end %>
+    <!-- Stock summary -->
+    <div class="flex gap-3 items-center">
+      <div class="flex-1 grid grid-cols-2 gap-3">
+        <div class="rounded-lg bg-white/60 dark:bg-black/40 p-3 border border-hamzis-brown/10">
+          <div class="text-xs text-gray-500">Total Stock</div>
+          <div class="mt-1 text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper"><%= inventory_item.total_quantity %></div>
+        </div>
+        <div class="rounded-lg bg-white/60 dark:bg-black/40 p-3 border border-hamzis-brown/10">
+          <div class="text-xs text-gray-500">Available</div>
+          <div class="mt-1 text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper"><%= inventory_item.available_quantity %></div>
+        </div>
+      </div>
+      <div class="flex-shrink-0">
+        <div class="text-xs text-gray-500">Unit</div>
+        <div class="mt-1 text-sm font-medium text-gray-700 dark:text-hamzis-copper"><%= inventory_item.unit.presence || "—" %></div>
+      </div>
+    </div>
+    <!-- Actions -->
+    <div class="mt-4 flex flex-wrap gap-2" role="toolbar" aria-label="Item actions">
+      <% if policy([ :inventory, inventory_item ]).update? %>
+        <%= link_to "Edit", edit_inventory_inventory_item_path(inventory_item),
+            class: "inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-gradient-to-r from-hamzis-copper to-hamzis-brown text-white text-sm shadow-sm hover:brightness-95 transition" %>
+      <% end %>
+      <%= link_to "Back to Items", inventory_inventory_items_path,
+          class: "inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-hamzis-brown text-white text-sm hover:bg-hamzis-copper transition" %>
+      <% if policy([ :inventory, inventory_item ]).destroy? %>
+        <%= button_to "Delete", "#",
+          class: "inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-red-600 text-white text-sm hover:bg-red-700 transition",
+          form: {
+            "data-action" => "click->confirm-delete#open",
+            "data-confirm-delete-title-param" => "Delete Inventory Item?",
+            "data-confirm-delete-message-param" => "Are you sure you want to delete '#{inventory_item.name}'? This action cannot be undone.",
+            "data-confirm-delete-confirm-path-param" => inventory_inventory_item_path(inventory_item)
+          } %>
+      <% end %>
+    </div>
+  </div>
+</aside>

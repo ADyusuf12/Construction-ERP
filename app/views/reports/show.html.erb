@@ -1,70 +1,103 @@
-<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
-  <!-- Title -->
-  <h2 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper">
-    Report — <%= @report.report_type.titleize %> (<%= @report.report_date.strftime("%b %d, %Y") %>)
+<div class="bg-gradient-to-br from-hamzis-white/40 via-hamzis-copper/10 to-hamzis-brown/10
+            dark:from-hamzis-black/40 dark:via-hamzis-brown/20 dark:to-hamzis-copper/20
+            border border-hamzis-brown/30 rounded-2xl shadow-xl p-8 space-y-8">
+  <!-- Header -->
+  <h2 class="text-2xl font-semibold text-hamzis-brown dark:text-hamzis-copper">
+    <%= @report.project.name %> Report
+    <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">
+      <%= @report.report_date.strftime("%b %d, %Y") %>
+    </span>
   </h2>
-  <!-- Summary -->
+  <!-- Meta info (Type, Status, Author, Project) -->
+  <dl class="space-y-2 text-sm text-gray-700 dark:text-gray-200">
+    <div class="flex items-baseline gap-2">
+      <dt class="font-medium">Type:</dt>
+      <dd>
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold
+                     bg-hamzis-copper/20 text-hamzis-copper">
+          <%= @report.report_type.titleize %>
+        </span>
+      </dd>
+    </div>
+    <div class="flex items-baseline gap-2">
+      <dt class="font-medium">Status:</dt>
+      <dd>
+        <% status_color = case @report.status
+          when "submitted" then "bg-blue-100 text-blue-800"
+          when "reviewed" then "bg-green-100 text-green-800"
+          when "draft" then "bg-yellow-100 text-yellow-800"
+          else "bg-gray-100 text-gray-800"
+        end %>
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold <%= status_color %>">
+          <%= @report.status.humanize %>
+        </span>
+      </dd>
+    </div>
+    <div class="flex items-baseline gap-2">
+      <dt class="font-medium">Author:</dt>
+      <dd class="text-gray-900 dark:text-gray-100"><%= @report.user&.email %></dd>
+    </div>
+    <div class="flex items-baseline gap-2">
+      <dt class="font-medium">Project:</dt>
+      <dd>
+        <%= link_to @report.project.name, project_path(@report.project),
+            class: "text-hamzis-copper hover:underline" %>
+      </dd>
+    </div>
+  </dl>
+  <!-- Progress Summary -->
   <% if @report.progress_summary.present? %>
-    <p class="mt-2"><%= @report.progress_summary %></p>
-  <% end %>
-  <!-- Details -->
-  <div class="mt-4 space-y-2 text-sm">
-    <div id="report_status">
-      <p>
-        <span class="font-medium">Status:</span>
-        <%= @report.status.humanize %>
+    <div>
+      <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Progress Summary</h3>
+      <p class="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">
+        <%= @report.progress_summary %>
       </p>
     </div>
-    <p>
-      <span class="font-medium">Author:</span>
-      <%= @report.user&.email %>
-    </p>
-    <% if @report.issues.present? %>
-      <p>
-        <span class="font-medium">Issues:</span>
+  <% end %>
+  <!-- Issues -->
+  <% if @report.issues.present? %>
+    <div>
+      <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Issues:</h3>
+      <p class="text-sm text-red-700 dark:text-red-400 leading-relaxed whitespace-pre-line">
         <%= @report.issues %>
       </p>
-    <% end %>
-    <% if @report.next_steps.present? %>
-      <p>
-        <span class="font-medium">Next Steps:</span>
+    </div>
+  <% end %>
+  <!-- Next Steps -->
+  <% if @report.next_steps.present? %>
+    <div>
+      <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Next Steps:</h3>
+      <p class="text-sm text-green-700 dark:text-green-400 leading-relaxed whitespace-pre-line">
         <%= @report.next_steps %>
       </p>
-    <% end %>
-    <!-- Project Link -->
-    <p>
-      <span class="font-medium">Project:</span>
-      <%= link_to @report.project.name, project_path(@report.project),
-          class: "text-hamzis-copper hover:underline" %>
-    </p>
-  </div>
+    </div>
+  <% end %>
   <!-- Actions -->
-  <div class="mt-6 flex gap-2">
+  <div class="flex flex-wrap gap-2 pt-4 border-t border-hamzis-brown/20">
     <%= link_to "Edit", edit_project_report_path(@report.project, @report),
-        class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+        class: "px-3 py-1.5 rounded-md bg-gradient-to-r from-hamzis-copper to-hamzis-brown text-white text-sm shadow-sm hover:brightness-95 transition" %>
     <% if @project %>
       <%= link_to "Back to Reports", project_reports_path(@project),
-          class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+          class: "px-3 py-1.5 rounded-md bg-hamzis-brown text-white text-sm hover:bg-hamzis-copper transition" %>
     <% else %>
       <%= link_to "Back to Reports", reports_path,
-          class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+          class: "px-3 py-1.5 rounded-md bg-hamzis-brown text-white text-sm hover:bg-hamzis-copper transition" %>
     <% end %>
     <% if policy(@report).submit? %>
       <%= button_to "Submit", submit_project_report_path(@report.project, @report),
           method: :patch,
           data: { turbo_stream: true, disable_with: "Submitting..." },
-          class: "px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-800 transition" %>
+          class: "px-3 py-1.5 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 transition" %>
     <% end %>
     <% if policy(@report).review? %>
       <%= button_to "Review", review_project_report_path(@report.project, @report),
           method: :patch,
           data: { turbo_stream: true, disable_with: "Reviewing..." },
-          class: "px-3 py-1 rounded bg-green-600 text-white hover:bg-green-800 transition" %>
+          class: "px-3 py-1.5 rounded-md bg-green-600 text-white text-sm hover:bg-green-700 transition" %>
     <% end %>
     <% if policy(@report).destroy? %>
       <%= button_to "Delete", "#",
-          class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition",
+          class: "px-3 py-1.5 rounded-md bg-red-600 text-white text-sm hover:bg-red-700 transition",
           form: {
             "data-action" => "click->confirm-delete#open",
             "data-confirm-delete-title-param" => "Delete Report?",

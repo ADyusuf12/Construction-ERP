@@ -1,0 +1,49 @@
+<section class="bg-gradient-to-br from-white/40 via-hamzis-copper/6 to-hamzis-brown/6 dark:from-black/30 dark:via-hamzis-brown/10 dark:to-hamzis-copper/12
+                border border-hamzis-brown/20 rounded-2xl shadow-lg p-6" aria-labelledby="stock-by-warehouse">
+  <h3 id="stock-by-warehouse" class="text-lg font-semibold text-hamzis-brown dark:text-white mb-4 underline">Stock By Warehouse</h3>
+  <% if (inventory_item.respond_to?(:stock_levels) && inventory_item.stock_levels.any?) || (inventory_item.respond_to?(:project_inventories) && inventory_item.project_inventories.any?) %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm text-left">
+        <thead>
+          <tr class="text-xs uppercase tracking-wide text-hamzis-brown/80 dark:text-hamzis-copper/80">
+            <th class="px-4 py-3">Warehouse / Project</th>
+            <th class="px-4 py-3">Quantity</th>
+            <th class="px-4 py-3">Location</th>
+            <th class="px-4 py-3">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-hamzis-brown/10">
+          <% if inventory_item.respond_to?(:stock_levels) && inventory_item.stock_levels.any? %>
+            <% inventory_item.stock_levels.each do |stock| %>
+              <tr class="hover:bg-white/50 dark:hover:bg-black/30 transition">
+                <td class="px-4 py-3"><%= stock.warehouse&.name || "—" %></td>
+                <td class="px-4 py-3 font-medium"><%= stock.quantity %> <span class="text-xs text-gray-500 ml-2 dark:text-hamzis-copper"><%= inventory_item.unit.presence || "—" %></span></td>
+                <td class="px-4 py-3 text-sm text-white-500"><%= stock.warehouse&.address.presence || stock.warehouse&.code.presence || "—" %></td>
+                <td class="px-4 py-3">
+                  <% if stock.quantity <= (inventory_item.reorder_threshold || 0) %>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">Low</span>
+                  <% else %>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800">OK</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          <% else %>
+            <% inventory_item.project_inventories.each do |pi| %>
+              <tr class="hover:bg-white/50 dark:hover:bg-black/30 transition">
+                <td class="px-4 py-3"><%= pi.project&.name || "—" %></td>
+                <td class="px-4 py-3 font-medium"><%= pi.quantity || "—" %> <span class="text-xs text-gray-500 ml-2"><%= inventory_item.unit.presence || "—" %></span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">Project stock</td>
+                <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">Project</span></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="text-center py-8">
+      <p class="text-sm text-gray-500">No stock records for this item.</p>
+    </div>
+  <% end %>
+</section>
