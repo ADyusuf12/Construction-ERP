@@ -188,4 +188,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Abdullahi Yusuf - adyusuf68@gmail.com
 
-Project Link: [https://github.com/ADyusuf12/hamzis_systems](https://github.com/ADyusuf12/hamzis_systems)
+Project Link: [http://hamzis-systems-staging.onrender.com/](http://hamzis-systems-staging.onrender.com/)
