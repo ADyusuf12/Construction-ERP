@@ -12,7 +12,7 @@ module Hr
     has_many :next_of_kins, class_name: "Hr::NextOfKin", foreign_key: "employee_id", dependent: :destroy
 
     accepts_nested_attributes_for :personal_detail, update_only: true, allow_destroy: true
-    validates_associated :personal_detail
+    accepts_nested_attributes_for :next_of_kins, allow_destroy: true, reject_if: :all_blank
 
     enum :status, { active: 0, on_leave: 1, terminated: 2 }, prefix: true
 
