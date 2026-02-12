@@ -57,5 +57,17 @@
         <%= employee.subordinates.count %> employees
       </div>
     <% end %>
+    <% if policy(employee).destroy? %>
+      <div class="md:col-span-2">
+        <%= button_to "Delete", "#",
+      class: "px-4 py-2 rounded bg-red-600 text-white hover:bg-red-800 transition w-full sm:w-auto",
+      form: {
+        "data-action" => "click->confirm-delete#open",
+        "data-confirm-delete-title-param" => "Delete Employee?",
+        "data-confirm-delete-message-param" => "Are you sure you want to delete the employee #{@employee.full_name}? This action cannot be undone.",
+        "data-confirm-delete-confirm-path-param" => hr_employee_path(@employee)
+            } %>
+      </div>
+    <% end %>
   </div>
 </div>

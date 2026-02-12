@@ -12,8 +12,16 @@ module Hr
     end
 
     def my_leaves
-      @leaves = current_user.employee.leaves.order(start_date: :desc)
-      authorize Hr::Leave, :my_leaves?
+      unless current_user&.employee
+        redirect_to dashboard_home_path, alert: "You are not linked to an employee record."
+        return
+      end
+
+      @leaves = policy_scope(Hr::Leave).where(employee: current_user.employee)
+
+      if params[:status].present? && Hr::Leave.statuses.key?(params[:status])
+        @leaves = @leaves.where(status: params[:status])
+      end
     end
 
     def show
