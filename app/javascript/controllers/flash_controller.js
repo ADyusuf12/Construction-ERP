@@ -5,15 +5,20 @@ export default class extends Controller {
 
   connect() {
     // Auto-dismiss after 5 seconds
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       this.dismiss()
     }, 5000)
   }
 
   dismiss() {
-    this.element.classList.add("opacity-0")
+    if (this.timeout) clearTimeout(this.timeout)
+
+    // Add slide-out and fade-out animation
+    this.element.classList.add("translate-x-full", "opacity-0")
+
+    // Wait for animation to finish before removing from DOM
     setTimeout(() => {
       this.element.remove()
-    }, 500) // wait for fade-out
+    }, 500)
   }
 }
