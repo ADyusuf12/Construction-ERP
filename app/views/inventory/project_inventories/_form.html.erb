@@ -1,24 +1,46 @@
 <%= form_with(model: [ :inventory, project_inventory ],
               url: project_inventory.persisted? ? inventory_project_inventory_path(project_inventory) : inventory_project_inventories_path,
               local: true,
-              class: "mb-6 flex gap-2") do |f| %>
+              class: "mb-8 bg-hamzis-white/20 dark:bg-hamzis-black/20 backdrop-blur-sm border border-hamzis-brown/20 rounded-2xl p-4 shadow-sm") do |f| %>
   <%= f.hidden_field :project_id, value: project_inventory.project_id if project_inventory.new_record? %>
-  <%= f.collection_select :inventory_item_id, InventoryItem.order(:name), :id, :name,
-        { prompt: "Select item" },
-        class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
-  <%= f.number_field :quantity_reserved, min: 0, step: 1,
-        class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper",
-        placeholder: "Qty" %>
-  <%= f.collection_select :warehouse_id, Warehouse.order(:name), :id, :name,
-        { prompt: "Select warehouse" },
-        class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
-  <%= f.text_field :purpose, placeholder: "Purpose (optional)",
-        class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
-  <% if project_inventory.persisted? %>
-    <%= f.collection_select :task_id, project_inventory.project.tasks, :id, :title,
-          { prompt: "Link to task (optional)" },
-          class: "px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
-  <% end %>
-  <%= f.submit project_inventory.persisted? ? "Update" : "Reserve",
-        class: "px-4 py-2 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition" %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 items-end">
+    <%# Item Selection %>
+    <div class="lg:col-span-2">
+      <%= f.label :inventory_item_id, "Resource", class: "block text-[10px] font-bold uppercase tracking-widest mb-1 text-hamzis-brown/60 dark:text-hamzis-copper/60" %>
+      <%= f.collection_select :inventory_item_id, InventoryItem.order(:name), :id, :name,
+            { prompt: "Select Item..." },
+            class: "w-full px-3 py-2 border border-hamzis-brown/20 rounded-xl bg-white/40 dark:bg-black/40 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
+    </div>
+    <%# Quantity %>
+    <div>
+      <%= f.label :quantity_reserved, "Amount", class: "block text-[10px] font-bold uppercase tracking-widest mb-1 text-hamzis-brown/60 dark:text-hamzis-copper/60" %>
+      <%= f.number_field :quantity_reserved, min: 0, step: 1, placeholder: "0",
+            class: "w-full px-3 py-2 border border-hamzis-brown/20 rounded-xl bg-white/40 dark:bg-black/40 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
+    </div>
+    <%# Warehouse %>
+    <div>
+      <%= f.label :warehouse_id, "Origin", class: "block text-[10px] font-bold uppercase tracking-widest mb-1 text-hamzis-brown/60 dark:text-hamzis-copper/60" %>
+      <%= f.collection_select :warehouse_id, Warehouse.order(:name), :id, :name,
+            { prompt: "Source..." },
+            class: "w-full px-3 py-2 border border-hamzis-brown/20 rounded-xl bg-white/40 dark:bg-black/40 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
+    </div>
+    <%# Purpose / Task Logic %>
+    <div class="<%= project_inventory.persisted? ? 'lg:col-span-1' : 'lg:col-span-1' %>">
+      <% if project_inventory.persisted? %>
+        <%= f.label :task_id, "Linked Task", class: "block text-[10px] font-bold uppercase tracking-widest mb-1 text-hamzis-brown/60 dark:text-hamzis-copper/60" %>
+        <%= f.collection_select :task_id, project_inventory.project.tasks, :id, :title,
+              { prompt: "Link Task..." },
+              class: "w-full px-3 py-2 border border-hamzis-brown/20 rounded-xl bg-white/40 dark:bg-black/40 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
+      <% else %>
+        <%= f.label :purpose, "Intended Use", class: "block text-[10px] font-bold uppercase tracking-widest mb-1 text-hamzis-brown/60 dark:text-hamzis-copper/60" %>
+        <%= f.text_field :purpose, placeholder: "e.g. Foundation",
+              class: "w-full px-3 py-2 border border-hamzis-brown/20 rounded-xl bg-white/40 dark:bg-black/40 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
+      <% end %>
+    </div>
+    <%# Submit Button %>
+    <div>
+      <%= f.submit project_inventory.persisted? ? "Update" : "Reserve",
+            class: "w-full px-4 py-2 rounded-xl bg-hamzis-copper text-white font-bold uppercase tracking-widest text-[11px] hover:bg-hamzis-black transition-all shadow-md active:scale-95 cursor-pointer" %>
+    </div>
+  </div>
 <% end %>

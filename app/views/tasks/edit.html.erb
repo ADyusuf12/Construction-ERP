@@ -1,11 +1,20 @@
-<% content_for :title, "Edit Task" %>
-<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
-  Editing Task: <%= @task.title %>
-</h1>
-<%= render "form", project: @project, task: @task %>
-<div class="mt-4 flex gap-2">
-  <%= link_to "Show Task", project_task_path(@project, @task),
-      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
-  <%= link_to "← Back to Tasks", project_tasks_path(@project),
-      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+<% content_for :title, "Update Assignment | Hamzis Systems" %>
+<div class="mb-8">
+  <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-2">
+    <%= link_to "Project Tasks", (@project ? project_tasks_path(@project) : tasks_path), class: "hover:text-hamzis-copper transition-colors" %>
+    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
+    <%= link_to @task.title, (@project ? project_task_path(@project, @task) : task_path(@task)), class: "hover:text-hamzis-copper transition-colors" %>
+    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
+    <span class="text-hamzis-copper">Workflow Update</span>
+  </nav>
+  <div class="flex items-center gap-3">
+    <div class="p-3 rounded-2xl bg-hamzis-brown text-white shadow-lg dark:bg-hamzis-copper/20 dark:text-hamzis-copper">
+      <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+    </div>
+    <div>
+      <h1 class="text-3xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper truncate max-w-md">Update Task</h1>
+      <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60">Modifying timelines and responsibilities for <%= @task.title %>.</p>
+    </div>
+  </div>
 </div>
+<%= render "form", project: @project, task: @task %>

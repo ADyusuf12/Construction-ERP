@@ -69,7 +69,6 @@ class Inventory::InventoryItemsController < ApplicationController
   def inventory_item_params
     params.require(:inventory_item).permit(
       :sku, :name, :unit, :unit_cost, :reorder_threshold, :description,
-      project_ids: []
     )
   end
 end

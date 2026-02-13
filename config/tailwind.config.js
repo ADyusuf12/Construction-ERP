@@ -15,9 +15,19 @@ module.exports = {
           black: "#212121",
           white: "#ffffff",
           copper: "#b87333",
-          textLight: "#1f2937", // dark gray for light mode text
-          textDark: "#f3f4f6",  // light gray for dark mode text
+          textLight: "#1f2937",
+          textDark: "#f3f4f6",
         },
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(-10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+
+      animation: {
+        "fade-in": "fadeIn 0.3s ease-out forwards",
       },
     },
   },
