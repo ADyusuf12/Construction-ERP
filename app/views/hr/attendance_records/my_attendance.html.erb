@@ -8,9 +8,9 @@
 <%# Personal Performance Gauges %>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
   <% [
-    { label: "Total Recorded Cycles", count: @attendance_records.total_count color: "copper" },
-    { label: "Validated Presence", count: @attendance_records.status_present.total_count color: "green-500" },
-    { label: "Missed Days", count: @attendance_records.status_absent.total_count color: "red-500" }
+    { label: "Total Recorded Cycles", count: @attendance_records.total_count, color: "copper" },
+    { label: "Validated Presence", count: @attendance_records.status_present.total_count, color: "green-500" },
+    { label: "Missed Days", count: @attendance_records.status_absent.total_count, color: "red-500" }
   ].each do |stat| %>
     <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/10 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden group">
       <div class="absolute top-0 left-0 w-1 h-full bg-hamzis-<%= stat[:color] %>"></div>
