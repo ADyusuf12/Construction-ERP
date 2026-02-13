@@ -1,22 +1,18 @@
-<% content_for :title, "Edit Expense" %>
-<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
-  Editing Expense: <%= @expense.description %>
-</h1>
-<%= render "form", expense: @expense, project: @expense.project %>
-<div class="mt-4 flex gap-2">
-  <% if @expense.project %>
-    <%= link_to "Show Expense",
-        project_project_expense_path(@expense.project, @expense),
-        class: "px-3 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition text-xs" %>
-    <%= link_to "← Back to Project",
-        project_path(@expense.project),
-        class: "px-3 py-1 rounded bg-hamzis-brown text-white hover:bg-hamzis-copper transition text-xs" %>
-  <% else %>
-    <%= link_to "Show Expense",
-        project_expense_path(@expense),
-        class: "px-3 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition text-xs" %>
-    <%= link_to "← Back to Expenses",
-        project_expenses_path,
-        class: "px-3 py-1 rounded bg-hamzis-brown text-white hover:bg-hamzis-copper transition text-xs" %>
-  <% end %>
+<% content_for :title, "Modify Expense | Hamzis Systems" %>
+<div class="mb-8">
+  <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-2">
+    <%= link_to "Financial History", project_expenses_path, class: "hover:text-hamzis-copper transition-colors" %>
+    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
+    <span class="text-hamzis-copper text-xs">Record Adjustment</span>
+  </nav>
+  <div class="flex items-center gap-3">
+    <div class="p-3 rounded-2xl bg-hamzis-brown text-white shadow-lg dark:bg-hamzis-copper/20 dark:text-hamzis-copper">
+      <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+    </div>
+    <div>
+      <h1 class="text-3xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper">Adjust Filing</h1>
+      <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Amending expense record: <%= @expense.description %>.</p>
+    </div>
+  </div>
 </div>
+<%= render "form", expense: @expense, project: @expense.project %>

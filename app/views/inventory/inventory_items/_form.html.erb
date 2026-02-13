@@ -1,50 +1,79 @@
-<%= form_with(model: [ :inventory, @inventory_item ], local: true, class: "space-y-4") do |f| %>
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-              border rounded-xl shadow-lg p-6 space-y-4 max-w-3xl">
-    <!-- SKU -->
-    <div>
-      <%= f.label :sku, "SKU", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= f.text_field :sku, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+<%= form_with(model: [ :inventory, @inventory_item ], local: true, class: "space-y-6 hr-form") do |f| %>
+  <%# Error Handling Block %>
+  <% if @inventory_item.errors.any? %>
+    <div class="p-4 mb-6 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 backdrop-blur-md">
+      <div class="flex items-center gap-2 mb-2">
+        <svg xmlns="http://www.w3.org" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+        <h3 class="font-bold uppercase tracking-widest text-xs">
+          <%= pluralize(@inventory_item.errors.count, "entry error") %> identified
+        </h3>
+      </div>
+      <ul class="list-disc ml-6 text-xs space-y-1 opacity-90">
+        <% @inventory_item.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
     </div>
-    <!-- Name -->
-    <div>
-      <%= f.label :name, "Name", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= f.text_field :name, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+  <% end %>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- LEFT: Technical Specifications -->
+    <div class="lg:col-span-2 space-y-6">
+      <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+        <div class="flex items-center gap-2 mb-6">
+          <div class="p-2 rounded-lg bg-hamzis-copper/10 text-hamzis-copper">
+            <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+          </div>
+          <h4 class="text-sm font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Item Specifications</h4>
+        </div>
+        <div class="space-y-5">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="sm:col-span-1">
+              <%= f.label :sku, "Stock Unit (SKU)", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+              <%= f.text_field :sku, placeholder: "SKU-000", class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm font-mono dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
+            </div>
+            <div class="sm:col-span-2">
+              <%= f.label :name, "Item Designation", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+              <%= f.text_field :name, placeholder: "e.g. Portland Cement Grade 42.5R", class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
+            </div>
+          </div>
+          <div>
+            <%= f.label :description, "Technical Description", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+            <%= f.text_area :description, rows: 8, placeholder: "Material grade, dimensions, or manufacturer specs...", class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- Unit -->
-    <div>
-      <%= f.label :unit, "Unit", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= f.text_field :unit, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-    </div>
-    <!-- Unit Cost -->
-    <div>
-      <%= f.label :unit_cost, "Unit Cost", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= f.number_field :unit_cost, step: 0.01, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-    </div>
-    <!-- Reorder Threshold -->
-    <div>
-      <%= f.label :reorder_threshold, "Reorder Threshold", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= f.number_field :reorder_threshold, step: 1, min: 0, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-    </div>
-    <!-- Description -->
-    <div>
-      <%= f.label :description, "Description", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= f.text_area :description, rows: 4, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-    </div>
-    <!-- Projects (optional) -->
-    <div>
-      <%= f.label :project_ids, "Assign to Projects (optional)", class: "block font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-      <%= f.collection_select :project_ids, Project.all, :id, :name,
-            { include_hidden: false, multiple: true },
-            class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper" %>
-      <p class="text-xs text-gray-500 mt-1">Hold Ctrl/Cmd to select multiple projects.</p>
-    </div>
-    <!-- Actions -->
-    <div class="flex gap-2">
-      <%= f.submit (@inventory_item.persisted? ? "Update Item" : "Create Item"),
-            class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
-      <%= link_to "Cancel", inventory_inventory_items_path,
-            class: "px-4 py-2 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
+    <!-- RIGHT: Procurement Metrics -->
+    <div class="lg:col-span-1 space-y-6">
+      <div class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10 border border-hamzis-copper/30 rounded-2xl p-6 shadow-2xl sticky top-6">
+        <h4 class="text-xs font-black uppercase tracking-[0.2em] text-hamzis-copper mb-6 border-b border-hamzis-copper/20 pb-4 text-center">Procurement Data</h4>
+        <div class="space-y-6">
+          <div>
+            <%= f.label :unit, "Unit of Measure", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-hamzis-copper/70" %>
+            <%= f.text_field :unit, placeholder: "Bags, Liters, Tons...", class: "w-full px-4 py-3 border border-hamzis-copper/30 rounded-xl bg-black/20 text-sm font-bold text-white dark:text-hamzis-copper outline-none text-center" %>
+          </div>
+          <div>
+            <%= f.label :unit_cost, "Standard Unit Cost", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-hamzis-copper/70" %>
+            <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-bold text-hamzis-copper">₦</span>
+              <%= f.number_field :unit_cost, step: 0.01, placeholder: "0.00", class: "w-full pl-10 pr-4 py-4 border border-hamzis-copper/30 rounded-xl bg-black/20 text-xl font-bold text-white dark:text-hamzis-copper outline-none transition" %>
+            </div>
+          </div>
+          <div>
+            <%= f.label :reorder_threshold, "Safety Stock Threshold", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-hamzis-copper/70" %>
+            <%= f.number_field :reorder_threshold, step: 1, min: 0, class: "w-full px-4 py-4 border border-hamzis-copper/30 rounded-xl bg-black/20 text-2xl font-black text-white dark:text-hamzis-copper text-center outline-none transition" %>
+          </div>
+          <div class="pt-4">
+            <%= f.submit (@inventory_item.persisted? ? "Update Catalog" : "Add to Catalog"),
+                  class: "w-full py-4 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[11px] hover:bg-white hover:text-hamzis-brown transition-all duration-300 active:scale-95 cursor-pointer shadow-lg" %>
+            <%= link_to "Cancel", inventory_inventory_items_path, class: "block w-full mt-4 text-center text-[10px] font-bold uppercase text-white/40 hover:text-red-400 transition" %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 <% end %>

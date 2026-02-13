@@ -1,67 +1,77 @@
-<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border rounded-xl p-5 shadow-sm">
-  <h4 class="text-sm font-semibold text-hamzis-brown dark:text-hamzis-copper mb-3">Personal Details</h4>
+<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+  <div class="flex items-center gap-2 mb-6">
+    <div class="p-2 rounded-lg bg-hamzis-copper/10 text-hamzis-copper">
+      <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      </svg>
+    </div>
+    <h4 class="text-sm font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Personal Details</h4>
+  </div>
   <%= f.fields_for :personal_detail do |pd| %>
-    <div class="space-y-3">
-      <div class="grid grid-cols-2 gap-3">
+    <div class="space-y-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <%= pd.label :first_name, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-          <%= pd.text_field :first_name, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+          <%= pd.label :first_name, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+          <%= pd.text_field :first_name, class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper transition outline-none" %>
         </div>
         <div>
-          <%= pd.label :last_name, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-          <%= pd.text_field :last_name, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+          <%= pd.label :last_name, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+          <%= pd.text_field :last_name, class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper transition outline-none" %>
         </div>
       </div>
-      <div class="grid grid-cols-2 gap-3">
+      <div class="grid grid-cols-2 gap-4">
         <div>
-          <%= pd.label :dob, "Date of birth", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-          <%= pd.date_field :dob, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+          <%= pd.label :dob, "Date of Birth", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+          <%= pd.date_field :dob, class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper transition outline-none" %>
         </div>
         <div>
-          <%= pd.label :gender, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
+          <%= pd.label :gender, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
           <%= pd.select :gender, options_for_select(@gender_options, pd.object.gender),
-                {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+                {}, class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper transition outline-none" %>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <%= pd.label :phone_number, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+          <%= pd.telephone_field :phone_number, class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper transition outline-none" %>
+        </div>
+        <div>
+          <%= pd.label :marital_status, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+          <%= pd.select :marital_status, options_for_select(@marital_options, pd.object.marital_status),
+                {}, class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper transition outline-none" %>
         </div>
       </div>
       <div>
-        <%= pd.label :phone_number, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-        <%= pd.telephone_field :phone_number, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+        <%= pd.label :address, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+        <%= pd.text_area :address, rows: 2, class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper transition outline-none" %>
       </div>
-      <div>
-        <%= pd.label :address, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-        <%= pd.text_area :address, rows: 2, class: "w-full px-3 py-2 border rounded bg-transparent" %>
-      </div>
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <%= pd.label :means_of_identification, "ID Type", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-          <%= pd.select :means_of_identification,
-                options_for_select(@id_options, pd.object.means_of_identification),
-                {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
+      <div class="pt-4 border-t border-hamzis-brown/10">
+        <p class="text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-copper mb-4">Identification & Banking</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          <div>
+            <%= pd.label :means_of_identification, "ID Type", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+            <%= pd.select :means_of_identification, options_for_select(@id_options, pd.object.means_of_identification),
+                  {}, class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper transition outline-none" %>
+          </div>
+          <div>
+            <%= pd.label :id_number, "ID Number", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+            <%= pd.text_field :id_number, class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper transition outline-none" %>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          <div>
+            <%= pd.label :bank_name, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+            <%= pd.text_field :bank_name, class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper transition outline-none" %>
+          </div>
+          <div>
+            <%= pd.label :account_number, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+            <%= pd.text_field :account_number, class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper transition outline-none" %>
+          </div>
         </div>
         <div>
-          <%= pd.label :id_number, "ID Number", class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-          <%= pd.text_field :id_number, class: "w-full px-3 py-2 border rounded bg-transparent" %>
+          <%= pd.label :account_name, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
+          <%= pd.text_field :account_name, class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper transition outline-none" %>
         </div>
-      </div>
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <%= pd.label :bank_name, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-          <%= pd.text_field :bank_name, class: "w-full px-3 py-2 border rounded bg-transparent" %>
-        </div>
-        <div>
-          <%= pd.label :account_number, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-          <%= pd.text_field :account_number, class: "w-full px-3 py-2 border rounded bg-transparent" %>
-        </div>
-      </div>
-      <div>
-        <%= pd.label :account_name, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-        <%= pd.text_field :account_name, class: "w-full px-3 py-2 border rounded bg-transparent" %>
-      </div>
-      <div>
-        <%= pd.label :marital_status, class: "block text-xs font-medium text-hamzis-brown dark:text-hamzis-copper" %>
-        <%= pd.select :marital_status,
-              options_for_select(@marital_options, pd.object.marital_status),
-              {}, class: "w-full px-3 py-2 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
       </div>
     </div>
   <% end %>

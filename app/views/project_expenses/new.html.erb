@@ -1,16 +1,25 @@
-<% content_for :title, "New Expense" %>
-<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
-  New Expense
-</h1>
-<%= render "form", expense: @expense, project: @project %>
-<div class="mt-4">
-  <% if @project %>
-    <%= link_to "← Back to Project",
-        project_path(@project),
-        class: "px-3 py-1 rounded bg-hamzis-brown text-white hover:bg-hamzis-copper transition" %>
-  <% else %>
-    <%= link_to "← Back to Expenses",
-        project_expenses_path,
-        class: "px-3 py-1 rounded bg-hamzis-brown text-white hover:bg-hamzis-copper transition" %>
-  <% end %>
+<% content_for :title, "File Project Expense | Hamzis Systems" %>
+<div class="mb-8">
+  <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-2">
+    <%= link_to "Operations", dashboard_home_path, class: "hover:text-hamzis-copper transition-colors" %>
+    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
+    <% if @project %>
+      <%= link_to @project.name, project_path(@project), class: "hover:text-hamzis-copper transition-colors" %>
+      <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
+    <% else %>
+      <%= link_to "Expenses", project_expenses_path, class: "hover:text-hamzis-copper transition-colors" %>
+      <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
+    <% end %>
+    <span class="text-hamzis-copper text-xs">Expense Filing</span>
+  </nav>
+  <div class="flex items-center gap-3">
+    <div class="p-3 rounded-2xl bg-hamzis-copper text-white shadow-lg shadow-hamzis-copper/20">
+      <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+    </div>
+    <div>
+      <h1 class="text-3xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper">Log Project Cost</h1>
+      <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Registering resource utilization for active operational projects.</p>
+    </div>
+  </div>
 </div>
+<%= render "form", expense: @expense, project: @project %>
