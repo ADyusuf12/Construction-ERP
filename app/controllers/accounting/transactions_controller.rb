@@ -4,11 +4,16 @@ module Accounting
     before_action :set_transaction, only: %i[show edit update destroy mark_paid]
 
     def index
+      authorize Accounting::Transaction
+
       @transactions = policy_scope(Accounting::Transaction.order(date: :desc))
       counts = Accounting::Transaction.summary_counts(policy_scope(Accounting::Transaction))
       @total_invoices = counts[:invoices]
       @total_receipts = counts[:receipts]
-      @outsanding = counts[:outstanding]
+      @outstanding = counts[:outstanding]
+
+      per_page = params.fetch(:per_page, 10).to_i
+      @transactions = @transactions.page(params[:page]).per(per_page)
     end
 
     def show

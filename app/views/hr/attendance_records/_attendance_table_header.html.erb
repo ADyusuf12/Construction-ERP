@@ -1,27 +1,27 @@
 <thead>
-  <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
+  <%# Tier 1: Primary Mapping %>
+  <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10 text-hamzis-copper uppercase text-[10px] font-black tracking-[0.2em]">
     <% if local_assigns[:show_employee] %>
-      <th class="px-4 py-3">Employee</th>
+      <th class="px-6 py-4 border-b border-hamzis-copper/20 rounded-tl-xl">Personnel</th>
     <% end %>
-    <th class="px-4 py-3">Project</th>
-    <th class="px-4 py-3">Date</th>
-    <th class="px-4 py-3">Status</th>
-    <!-- Time grouped header -->
-    <th colspan="2" class="px-4 py-3 text-center">Time</th>
+    <th class="px-6 py-4 border-b border-hamzis-copper/20">Site Assignment</th>
+    <th class="px-6 py-4 border-b border-hamzis-copper/20">Date Cycle</th>
+    <th class="px-6 py-4 border-b border-hamzis-copper/20">Registry Status</th>
+    <th colspan="2" class="px-6 py-4 border-b border-hamzis-copper/20 text-center bg-black/5">Time Tracking (24H)</th>
     <% if local_assigns[:show_actions] %>
-      <th class="px-4 py-3">Actions</th>
+      <th class="px-6 py-4 border-b border-hamzis-copper/20 text-right rounded-tr-xl">Actions</th>
     <% end %>
   </tr>
-  <tr class="bg-hamzis-brown/5 dark:bg-hamzis-copper/5 text-xs text-gray-700 dark:text-gray-300">
+  <%# Tier 2: Sub-Calibration %>
+  <tr class="bg-hamzis-brown/5 dark:bg-hamzis-copper/5 border-b border-hamzis-brown/10">
     <% if local_assigns[:show_employee] %>
       <th></th>
     <% end %>
     <th></th>
     <th></th>
     <th></th>
-    <!-- Sub-columns under Time -->
-    <th class="px-4 py-2 text-center">Check In</th>
-    <th class="px-4 py-2 text-center">Check Out</th>
+    <th class="px-6 py-2 text-[8px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40 text-center border-r border-hamzis-brown/5">In</th>
+    <th class="px-6 py-2 text-[8px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40 text-center">Out</th>
     <% if local_assigns[:show_actions] %>
       <th></th>
     <% end %>

@@ -7,6 +7,9 @@ module Accounting
     def index
       authorize Accounting::Salary
       @salaries = policy_scope(Accounting::Salary)
+
+      per_page = params.fetch(:per_page, 10).to_i
+      @salaries = @salaries.page(params[:page]).per(per_page)
     end
 
     # GET /accounting/salaries/:id

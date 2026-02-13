@@ -6,9 +6,13 @@ module Hr
     def index
       authorize Hr::Leave
       @leaves = policy_scope(Hr::Leave)
+
       if params[:status].present? && Hr::Leave.statuses.key?(params[:status])
         @leaves = @leaves.where(status: params[:status])
       end
+
+      per_page = params.fetch(:per_page, 10).to_i
+      @leaves = @leaves.page(params[:page]).per(per_page)
     end
 
     def my_leaves
@@ -22,6 +26,8 @@ module Hr
       if params[:status].present? && Hr::Leave.statuses.key?(params[:status])
         @leaves = @leaves.where(status: params[:status])
       end
+      per_page = params.fetch(:per_page, 10).to_i
+      @leaves = @leaves.page(params[:page]).per(per_page)
     end
 
     def show
