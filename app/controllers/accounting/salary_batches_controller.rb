@@ -7,6 +7,9 @@ module Accounting
     def index
       authorize Accounting::SalaryBatch
       @salary_batches = policy_scope(Accounting::SalaryBatch)
+
+      per_page = params.fetch(:per_page, 10).to_i
+      @salary_batches = @salary_batches.page(params[:page]).per(per_page)
     end
 
     # GET /accounting/salary_batches/:id

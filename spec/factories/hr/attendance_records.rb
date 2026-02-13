@@ -3,10 +3,9 @@ FactoryBot.define do
     association :employee, factory: :hr_employee
     association :project
 
-    date { Date.today }
+    sequence(:date) { |n| Date.today + n }  # ensures unique date per record
     status { :present }
 
-    # Default times for present/late records
     check_in_time  { Time.zone.parse("09:00") }
     check_out_time { Time.zone.parse("17:00") }
 

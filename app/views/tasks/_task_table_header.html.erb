@@ -1,15 +1,15 @@
 <thead>
-  <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
-    <th class="px-4 py-3">Title</th>
+  <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10 text-hamzis-copper uppercase text-[10px] font-black tracking-[0.2em]">
+    <th class="px-6 py-4 border-b border-hamzis-copper/20">Title</th>
     <% if local_assigns[:show_project] %>
-      <th class="px-4 py-3">Project</th>
+      <th class="px-6 py-4 border-b border-hamzis-copper/20 text-center">Project Site</th>
     <% elsif local_assigns[:show_details] %>
-      <th class="px-4 py-3">Details</th>
+      <th class="px-6 py-4 border-b border-hamzis-copper/20">Task Scope</th>
     <% end %>
-    <th class="px-4 py-3">Status</th>
-    <th class="px-4 py-3">Due Date</th>
-    <th class="px-4 py-3">Weight</th>
-    <th class="px-4 py-3">Assigned To</th>
-    <th class="px-4 py-3">Actions</th>
+    <th class="px-6 py-4 border-b border-hamzis-copper/20">Operational Status</th>
+    <th class="px-6 py-4 border-b border-hamzis-copper/20">Deadline</th>
+    <th class="px-6 py-4 border-b border-hamzis-copper/20 text-center">Weight</th>
+    <th class="px-6 py-4 border-b border-hamzis-copper/20">Assignment</th>
+    <th class="px-6 py-4 border-b border-hamzis-copper/20 text-right">Actions</th>
   </tr>
 </thead>

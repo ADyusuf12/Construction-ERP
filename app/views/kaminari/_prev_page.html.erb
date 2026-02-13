@@ -1,2 +1,6 @@
-<%= link_to raw(t 'views.pagination.previous'), url,
-    class: "px-3 py-1 mx-1 rounded bg-hamzis-brown text-white hover:bg-hamzis-copper transition-colors" %>
+<%# _prev_page.html.erb %>
+<span class="prev">
+  <%= link_to raw('<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M15 19l-7-7 7-7" /></svg>'),
+      url, rel: 'prev', remote: remote,
+      class: "flex items-center px-3 py-2 rounded-lg bg-hamzis-brown text-white hover:bg-hamzis-copper transition-all active:scale-95 shadow-md" %>
+</span>

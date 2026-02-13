@@ -1,25 +1,13 @@
-<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-            border border-hamzis-brown/20 rounded-xl shadow-lg p-6 mb-6">
-  <h2 class="text-xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-4">
-    Stock Movement Summary
-  </h2>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-    <div class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 rounded-lg p-4 text-center">
-      <p class="font-medium">Inbound</p>
-      <p class="text-lg font-bold"><%= @summary[:inbound] %></p>
-    </div>
-    <div class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 rounded-lg p-4 text-center">
-      <p class="font-medium">Outbound</p>
-      <p class="text-lg font-bold"><%= @summary[:outbound] %></p>
-    </div>
-    <div class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 rounded-lg p-4 text-center">
-      <p class="font-medium">Site Delivery</p>
-      <p class="text-lg font-bold"><%= @summary[:site_delivery] %></p>
-    </div>
-    <div class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 rounded-lg p-4 text-center">
-      <p class="font-medium">Adjustment</p>
-      <p class="text-lg font-bold"><%= @summary[:adjustment] %></p>
-    </div>
-  </div>
+<% content_for :title, "Logistics Manifest | Hamzis Systems" %>
+<div class="mb-8">
+  <h1 class="text-4xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper uppercase">Stock Movements</h1>
+  <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Real-time tracking of resource transit and inventory adjustments.</p>
 </div>
-<%= render "inventory/stock_movements/table", stock_movements: @stock_movements %>
+<%= render "inventory/stock_movements/summary", summary: @summary %>
+<div class="overflow-hidden bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-2xl p-6">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-sm font-black uppercase tracking-[0.2em] text-hamzis-brown dark:text-hamzis-copper">Movement Registry</h2>
+    <span class="text-[10px] font-bold text-hamzis-brown/40 uppercase tracking-widest"><%= pluralize(@stock_movements.count, "Active Log") %></span>
+  </div>
+  <%= render "inventory/stock_movements/table", stock_movements: @stock_movements %>
+</div>

@@ -1,26 +1,41 @@
-<tr id="<%= dom_id(item) %>" class="<%= row_class %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
-  <!-- SKU -->
-  <td class="px-4 py-3 font-mono text-xs"><%= item.sku.presence || "—" %></td>
-  <!-- Name -->
-  <td class="px-4 py-3 font-semibold">
-    <%= link_to item.name, inventory_inventory_item_path(item),
-                class: "hover:underline text-hamzis-brown dark:text-hamzis-copper" %>
+<tr id="<%= dom_id(item) %>" class="group hover:bg-white/50 dark:hover:bg-hamzis-copper/5 transition-all duration-300">
+  <td class="px-6 py-5">
+    <div class="flex flex-col">
+      <span class="text-[9px] font-mono font-bold text-hamzis-brown/40 dark:text-hamzis-copper/40 tracking-widest"><%= item.sku.presence || "NO-SKU" %></span>
+      <%= link_to item.name, inventory_inventory_item_path(item),
+                  class: "text-sm font-black text-hamzis-brown dark:text-white uppercase tracking-tight hover:text-hamzis-copper transition" %>
+    </div>
   </td>
-  <!-- Stock (use precomputed totals to avoid N+1) -->
-  <td class="px-4 py-3">
+  <td class="px-6 py-5">
     <% total = @inventory_totals[item.id] || item.total_quantity %>
-    <span class="font-medium"><%= total %></span>
-    <div class="text-xs text-gray-500"><%= item.unit.presence || "pcs" %></div>
-  </td>
-  <!-- Unit Cost -->
-  <td class="px-4 py-3"><%= number_to_currency(item.unit_cost, unit: "₦") %></td>
-  <!-- Actions -->
-  <td class="px-4 py-3 flex gap-2">
-    <%= link_to "View", inventory_inventory_item_path(item),
-      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition text-xs" %>
-    <% if policy([:inventory, item]).update? %>
-      <%= link_to "Edit", edit_inventory_inventory_item_path(item),
-        class: "px-3 py-1 rounded bg-gray-600 text-white hover:bg-gray-800 transition text-xs" %>
+    <% is_low = item.reorder_threshold.present? && total <= item.reorder_threshold %>
+    <div class="flex items-end gap-1">
+      <span class="text-xl font-black <%= is_low ? 'text-red-500' : 'text-hamzis-brown dark:text-white' %> leading-none">
+        <%= total %>
+      </span>
+      <span class="text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50 pb-0.5">
+        <%= item.unit.presence || "PCS" %>
+      </span>
+    </div>
+    <% if is_low %>
+      <div class="text-[8px] font-black uppercase text-red-500 tracking-[0.1em] mt-1">Below Threshold</div>
     <% end %>
+  </td>
+  <td class="px-6 py-5">
+    <div class="text-xs font-mono font-bold text-hamzis-brown dark:text-hamzis-copper">
+      <%= number_to_currency(item.unit_cost, unit: "₦") %>
+    </div>
+  </td>
+  <td class="px-6 py-5 text-right">
+    <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity justify-end">
+      <%= link_to inventory_inventory_item_path(item), title: "Asset Dossier", class: "p-2 rounded-lg bg-hamzis-copper text-white hover:scale-110 transition shadow-lg" do %>
+        <svg xmlns="http://www.w3.org" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+      <% end %>
+      <% if policy([:inventory, item]).update? %>
+        <%= link_to edit_inventory_inventory_item_path(item), title: "Update Asset", class: "p-2 rounded-lg bg-hamzis-brown text-white hover:scale-110 transition shadow-lg" do %>
+          <svg xmlns="http://www.w3.org" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+        <% end %>
+      <% end %>
+    </div>
   </td>
 </tr>

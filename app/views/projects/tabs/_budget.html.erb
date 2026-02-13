@@ -1,23 +1,71 @@
-<h3 class="text-xl font-bold mb-4">Budget Overview</h3>
-<div class="grid md:grid-cols-3 gap-6 mb-6">
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-    <p class="text-sm font-medium">Allocated Budget</p>
-    <p class="text-xl font-bold">₦<%= number_with_delimiter(number_with_precision(project.budget, precision: 2)) %></p>
+<div class="flex items-center justify-between mb-8">
+  <div class="flex items-center gap-3">
+    <div class="p-2.5 rounded-xl bg-hamzis-brown text-white dark:bg-hamzis-copper/20 dark:text-hamzis-copper shadow-lg">
+      <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <h3 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tighter">Fiscal Oversight</h3>
   </div>
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-    <p class="text-sm font-medium">Total Expenses</p>
-    <p class="text-xl font-bold">₦<%= number_with_delimiter(number_with_precision(project.total_expenses, precision: 2)) %></p>
-  </div>
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-    <p class="text-sm font-medium">Remaining Balance</p>
-    <p class="text-xl font-bold">₦<%= number_with_delimiter(number_with_precision(project.remaining_budget, precision: 2)) %></p>
+  <div class="text-right">
+    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-brown/40 dark:text-hamzis-copper/40">Financial Health</span>
+    <div class="flex items-center gap-1.5 justify-end">
+      <div class="w-2 h-2 rounded-full <%= project.budget_consumed_percentage > 90 ? 'bg-red-500 animate-pulse' : 'bg-green-500' %>"></div>
+      <span class="text-xs font-bold text-hamzis-brown dark:text-white uppercase"><%= project.budget_consumed_percentage > 90 ? 'Critical' : 'Stable' %></span>
+    </div>
   </div>
 </div>
-<div class="mb-6">
-  <p class="text-sm font-medium mb-2">Budget Consumption</p>
-  <div class="w-full bg-gray-200 rounded-full h-4">
-    <div class="bg-hamzis-copper h-4 rounded-full"
-         style="width: <%= project.budget_consumed_percentage %>%"></div>
-  </div>
-  <p class="mt-2 text-sm"><%= project.budget_consumed_percentage %>% of budget used</p>
+<%# Financial Gauge Cards %>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+  <% [
+    { label: "Authorized Allocation", value: project.budget, color: "hamzis-brown", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" },
+    { label: "Validated Expenditure", value: project.total_expenses, color: "red-500", icon: "M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" },
+    { label: "Operational Reserve", value: project.remaining_budget, color: "green-500", icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" }
+  ].each do |stat| %>
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/10 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden group">
+      <div class="absolute top-0 left-0 w-1 h-full bg-<%= stat[:color] %> opacity-60"></div>
+      <div class="flex items-start justify-between">
+        <div>
+          <p class="text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-2"><%= stat[:label] %></p>
+          <p class="text-2xl font-black text-hamzis-brown dark:text-white">
+            <span class="text-sm font-bold opacity-30">₦</span><%= number_with_delimiter(number_with_precision(stat[:value], precision: 2)) %>
+          </p>
+        </div>
+        <div class="text-hamzis-brown/20 dark:text-hamzis-copper/10 group-hover:text-hamzis-copper/30 transition-colors duration-500">
+          <svg xmlns="http://www.w3.org" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="<%= stat[:icon] %>" /></svg>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>
+              <%# Consumption Visualization %>
+              <div class="bg-hamzis-brown/5 dark:bg-hamzis-copper/5 rounded-2xl p-8 border border-hamzis-brown/10 dark:border-hamzis-copper/10">
+                <div class="flex items-end justify-between mb-4">
+                  <div>
+                    <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-hamzis-brown/60 dark:text-hamzis-copper/60">Capital Consumption Gauge</h4>
+                    <p class="text-sm font-bold text-hamzis-brown dark:text-white mt-1 italic">Resource burn rate across project lifecycle</p>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-3xl font-black text-hamzis-brown dark:text-hamzis-copper tracking-tighter"><%= project.budget_consumed_percentage %>%</span>
+                    <span class="block text-[8px] font-black uppercase tracking-widest text-hamzis-brown/40">Utilized</span>
+                  </div>
+                </div>
+                <%# Industrial Progress Bar %>
+                <div class="relative w-full h-4 bg-hamzis-brown/10 dark:bg-black/40 rounded-full overflow-hidden border border-white/5">
+                  <div class="h-full bg-gradient-to-r from-hamzis-brown to-hamzis-copper shadow-[0_0_15px_rgba(180,131,104,0.4)] transition-all duration-1000 ease-out relative"
+         style="width: <%= project.budget_consumed_percentage %>%">
+                    <%# Diagonal stripe overlay for industrial feel %>
+                    <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.2) 10px, rgba(255,255,255,0.2) 20px);"></div>
+                  </div>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-hamzis-copper"></div>
+                    <span class="text-[9px] font-bold uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50">Current Burn: <%= number_to_currency(project.total_expenses, unit: "₦") %></span>
+                  </div>
+                  <div class="flex items-center gap-2 justify-end">
+                    <div class="w-2 h-2 rounded-full bg-hamzis-brown/20"></div>
+                    <span class="text-[9px] font-bold uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50">Remaining Margin: <%= number_to_currency(project.remaining_budget, unit: "₦") %></span>
+                  </div>
+                </div>
+              </div>

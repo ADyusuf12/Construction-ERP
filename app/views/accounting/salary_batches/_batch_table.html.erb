@@ -1,30 +1,21 @@
-<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+<div class="overflow-hidden bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-2xl p-6">
   <% if salary_batches.any? %>
-    <table class="min-w-full text-sm text-left">
-      <thead>
-        <tr class="text-hamzis-brown dark:text-hamzis-copper border-b border-hamzis-brown/20">
-          <th class="px-4 py-2">Name</th>
-          <th class="px-4 py-2">Period</th>
-          <th class="px-4 py-2">Status</th>
-          <th class="px-4 py-2">Total Net Pay</th>
-          <th class="px-4 py-2">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%= render partial: "accounting/salary_batches/batch_row",
-                   collection: salary_batches,
-                   as: :batch %>
-      </tbody>
-    </table>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-left border-separate border-spacing-0">
+        <%= render "accounting/salary_batches/batch_table_header" %>
+        <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
+          <% salary_batches.each_with_index do |batch, index| %>
+            <%= render "accounting/salary_batches/batch_row",
+                       batch: batch,
+                       row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   <% else %>
-    <div class="text-center py-6">
-      <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No salary batches yet</p>
-      <p class="text-sm mt-2">Start by creating your first payroll batch.</p>
-      <div class="mt-4">
-        <%= link_to "➕ New Salary Batch", new_accounting_salary_batch_path,
-            class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
-      </div>
+    <div class="text-center py-20">
+      <h3 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tighter italic opacity-50">Zero Batch Records</h3>
+      <p class="text-[10px] text-white/30 mt-2 uppercase tracking-widest italic">Awaiting payroll aggregation protocol.</p>
     </div>
   <% end %>
 </div>
