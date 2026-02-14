@@ -36,7 +36,7 @@
           <div>
             <%= f.label :notes, "Audit Justification", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
             <%= f.text_area :notes, rows: 5, placeholder: "Provide technical or policy-based reasoning for this deduction...",
-                  class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
+                  class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-whit focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
           </div>
         </div>
       </div>
@@ -56,12 +56,12 @@
           <div>
             <%= f.label :deduction_type, "Policy Type", class: "block text-[9px] font-bold uppercase tracking-[0.2em] text-hamzis-copper/70 mb-1" %>
             <%= f.select :deduction_type, Accounting::Deduction.deduction_types.keys.map { |t| [t.humanize, t] }, {},
-                  { class: "w-full px-4 py-2 bg-black/20 border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-hamzis-copper outline-none transition" } %>
+                  { class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" } %>
           </div>
           <div class="pt-4">
-            <%= f.submit (@deduction.persisted? ? "Confirm Adjustment" : "Initialize Deduction"),
+            <%= f.submit (@deduction.persisted? ? "Confirm" : "Save Deduction"),
                   class: "w-full py-4 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-hamzis-brown transition-all duration-500 active:scale-95 cursor-pointer" %>
-            <%= link_to "Cancel Procedure", accounting_deductions_path,
+            <%= link_to "Cancel", accounting_deductions_path,
                   class: "block w-full mt-4 text-center text-[10px] font-bold uppercase tracking-widest text-white/40 hover:text-red-400 transition" %>
           </div>
         </div>

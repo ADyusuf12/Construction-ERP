@@ -1,93 +1,101 @@
-<%# app/views/shared/sidebar/_inventory.html.erb %>
 <% if user_signed_in? && (
       policy([:inventory, InventoryItem]).index? ||
       policy([:inventory, Warehouse]).index? ||
       policy([:inventory, ProjectInventory]).index? ||
       policy([:inventory, StockMovement]).index?
     ) %>
-<div class="space-y-3">
+<div class="space-y-4 py-2">
   <!-- Section Header -->
-  <span class="sidebar-label block px-3 py-1 text-xs font-semibold tracking-wider uppercase border-b border-hamzis-brown/30 text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
-    Inventory
-  </span>
-  <div class="ml-2 space-y-2">
-    <!-- Inventory Items -->
-    <button type="button"
-              class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20 hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown transition-all duration-300 shadow-sm"
-              onclick="document.getElementById('inventory-items-dropdown').classList.toggle('hidden')">
-      <span class="flex items-center">
-        <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h7l2-2h7v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+  <div class="px-3">
+    <span class="block text-[10px] font-black uppercase tracking-[0.3em] text-hamzis-brown/70 dark:text-white border-b border-hamzis-brown/10 dark:border-hamzis-copper/10 pb-1 mb-2">
+      Inventory
+    </span>
+  </div>
+  <div class="px-2 space-y-1">
+    <%# 1. Inventory Items Dropdown %>
+    <div class="group">
+      <button type="button"
+                class="flex justify-between items-center w-full px-3 py-2.5 rounded-xl border border-transparent hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/5 transition-all duration-300"
+                onclick="document.getElementById('inventory-items-dropdown').classList.toggle('hidden')">
+        <span class="flex items-center">
+          <svg class="w-4 h-4 mr-3 text-hamzis-brown/70 dark:text-hamzis-copper/70 group-hover:text-hamzis-copper transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h7l2-2h7v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+          </svg>
+          <span class="text-[11px] font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Items</span>
+        </span>
+        <svg class="w-3 h-3 text-hamzis-brown/30 dark:text-hamzis-copper/30 group-hover:text-hamzis-copper transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+          <path d="M19 9l-7 7-7-7" />
         </svg>
-        <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Items</span>
-      </span>
-      <svg class="w-4 h-4 transform transition-transform opacity-70" id="inventory-items-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-      </svg>
-    </button>
-    <div id="inventory-items-dropdown" class="ml-4 space-y-1 hidden">
-      <% if policy([:inventory, InventoryItem]).index? %>
-        <%= link_to inventory_inventory_items_path,
-              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(inventory_inventory_items_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">All Items</span>
+      </button>
+      <div id="inventory-items-dropdown" class="ml-9 mt-1 space-y-1 border-l-2 border-hamzis-brown/10 dark:border-hamzis-copper/10 hidden">
+        <% if policy([:inventory, InventoryItem]).index? %>
+          <%= link_to inventory_inventory_items_path,
+                class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
+                #{current_page?(inventory_inventory_items_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
+            All Items
+          <% end %>
         <% end %>
-      <% end %>
-      <% if policy([:inventory, InventoryItem]).create? %>
-        <%= link_to new_inventory_inventory_item_path,
-              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_inventory_inventory_item_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">New Item</span>
+        <% if policy([:inventory, InventoryItem]).create? %>
+          <%= link_to new_inventory_inventory_item_path,
+                class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
+                #{current_page?(new_inventory_inventory_item_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
+            New Item
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
     </div>
-    <!-- Warehouses -->
-    <button type="button"
-              class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20 hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown transition-all duration-300 shadow-sm"
-              onclick="document.getElementById('warehouses-dropdown').classList.toggle('hidden')">
-      <span class="flex items-center">
-        <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18v10H3z" />
+    <%# 2. Warehouses Dropdown %>
+    <div class="group">
+      <button type="button"
+                class="flex justify-between items-center w-full px-3 py-2.5 rounded-xl border border-transparent hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/5 transition-all duration-300"
+                onclick="document.getElementById('warehouses-dropdown').classList.toggle('hidden')">
+        <span class="flex items-center">
+          <svg class="w-4 h-4 mr-3 text-hamzis-brown/70 dark:text-hamzis-copper/70 group-hover:text-hamzis-copper transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18v10H3z" />
+          </svg>
+          <span class="text-[11px] font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Warehouses</span>
+        </span>
+        <svg class="w-3 h-3 text-hamzis-brown/30 dark:text-hamzis-copper/30 group-hover:text-hamzis-copper transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+          <path d="M19 9l-7 7-7-7" />
         </svg>
-        <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Warehouses</span>
-      </span>
-      <svg class="w-4 h-4 transform transition-transform opacity-70" id="warehouses-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-      </svg>
-    </button>
-    <div id="warehouses-dropdown" class="ml-4 space-y-1 hidden">
-      <% if policy([:inventory, Warehouse]).index? %>
-        <%= link_to inventory_warehouses_path,
-              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(inventory_warehouses_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">All Warehouses</span>
+      </button>
+      <div id="warehouses-dropdown" class="ml-9 mt-1 space-y-1 border-l-2 border-hamzis-brown/10 dark:border-hamzis-copper/10 hidden">
+        <% if policy([:inventory, Warehouse]).index? %>
+          <%= link_to inventory_warehouses_path,
+                class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
+                #{current_page?(inventory_warehouses_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
+            All Warehouses
+          <% end %>
         <% end %>
-      <% end %>
-      <% if policy([:inventory, Warehouse]).create? %>
-        <%= link_to new_inventory_warehouse_path,
-              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_inventory_warehouse_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">New Warehouse</span>
+        <% if policy([:inventory, Warehouse]).create? %>
+          <%= link_to new_inventory_warehouse_path,
+                class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
+                #{current_page?(new_inventory_warehouse_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
+            New Warehouse
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
     </div>
-    <!-- Project Reservations -->
-    <div class="ml-0">
+    <%# 3. Direct Links: Project Reservations & Stock Movements %>
+    <div class="pt-2 space-y-1">
       <% if policy([:inventory, ProjectInventory]).index? %>
         <%= link_to projects_path(anchor: "inventory"),
-              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(projects_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-          <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
+              class: "flex items-center px-3 py-2.5 rounded-xl border border-transparent transition-all duration-300
+              #{current_page?(projects_path) ? 'text-hamzis-copper bg-hamzis-copper/5' : 'text-hamzis-brown dark:text-hamzis-copper hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/5 hover:border-hamzis-brown/10'}" do %>
+          <svg class="w-4 h-4 mr-3 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18" />
           </svg>
-          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Project Reservations</span>
+          <span class="text-[11px] font-black uppercase tracking-widest leading-none">Project Reservations</span>
         <% end %>
       <% end %>
-    </div>
-    <!-- Stock Movements -->
-    <div class="ml-0">
       <% if policy([:inventory, StockMovement]).index? %>
         <%= link_to inventory_stock_movements_path,
-              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(inventory_stock_movements_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-          <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              class: "flex items-center px-3 py-2.5 rounded-xl border border-transparent transition-all duration-300
+              #{current_page?(inventory_stock_movements_path) ? 'text-hamzis-copper bg-hamzis-copper/5' : 'text-hamzis-brown dark:text-hamzis-copper hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/5 hover:border-hamzis-brown/10'}" do %>
+          <svg class="w-4 h-4 mr-3 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
-          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Stock Movements</span>
+          <span class="text-[11px] font-black uppercase tracking-widest leading-none">Stock Movements</span>
         <% end %>
       <% end %>
     </div>

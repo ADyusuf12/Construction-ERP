@@ -1,7 +1,7 @@
 <% content_for :title, "Update Salary | Hamzis Systems" %>
 <div class="mb-8">
   <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-2">
-    <%= link_to "Salary Master", accounting_salaries_path, class: "hover:text-hamzis-copper transition-colors" %>
+    <%= link_to "Salary Index", accounting_salaries_path, class: "hover:text-hamzis-copper transition-colors" %>
     <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
     <span class="text-hamzis-copper text-xs">Adjustment</span>
   </nav>
@@ -11,7 +11,7 @@
     </div>
     <div>
       <h1 class="text-3xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper">Modify Structure</h1>
-      <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Amending financial parameters for <%= @salary.employee.full_name %>.</p>
+      <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Amending salary parameters for <%= @salary.employee.full_name %>.</p>
     </div>
   </div>
 </div>

@@ -1,39 +1,41 @@
 <% if user_signed_in? && policy(Business::Client).index? %>
-  <div class="space-y-3">
+  <div class="space-y-4 py-2">
     <!-- Section Header -->
-    <span class="sidebar-label block px-3 py-1 text-xs font-semibold tracking-wider uppercase border-b border-hamzis-brown/30 text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
-      Business
-    </span>
-    <div class="ml-2 space-y-2">
-      <!-- Clients -->
-      <button type="button"
-              class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20 hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown transition-all duration-300 shadow-sm"
-              onclick="document.getElementById('clients-dropdown').classList.toggle('hidden')">
-        <span class="flex items-center">
-          <!-- Icon: users/clients -->
-          <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
-               viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M17 20h5v-2a4 4 0 00-4-4h-1m-6 6H2v-2a4 4 0 014-4h1m6-6a4 4 0 110-8 4 4 0 010 8zm6 4a4 4 0 11-8 0 4 4 0 018 0z" />
+    <div class="px-3">
+      <span class="block text-[10px] font-black uppercase tracking-[0.3em] text-hamzis-brown/40 dark:text-white border-b border-hamzis-brown/10 dark:border-hamzis-copper/10 pb-1 mb-2">
+        Business
+      </span>
+    </div>
+    <div class="px-2 space-y-1">
+      <%# Clients Dropdown %>
+      <div class="group">
+        <button type="button"
+                class="flex justify-between items-center w-full px-3 py-2.5 rounded-xl border border-transparent hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/5 transition-all duration-300"
+                onclick="document.getElementById('clients-dropdown').classList.toggle('hidden')">
+          <span class="flex items-center">
+            <svg class="w-4 h-4 mr-3 text-hamzis-brown/70 dark:text-hamzis-copper/70 group-hover:text-hamzis-copper transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1m-6 6H2v-2a4 4 0 014-4h1m6-6a4 4 0 110-8 4 4 0 010 8zm6 4a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <span class="text-[11px] font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Clients</span>
+          </span>
+          <svg class="w-3 h-3 text-hamzis-brown/30 dark:text-hamzis-copper/30 group-hover:text-hamzis-copper transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+            <path d="M19 9l-7 7-7-7" />
           </svg>
-          <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">Clients</span>
-        </span>
-        <svg class="w-4 h-4 transform transition-transform opacity-70" id="clients-chevron"
-             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div id="clients-dropdown" class="ml-4 space-y-1 hidden">
-        <%= link_to business_clients_path,
-            class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(business_clients_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">All Clients</span>
-        <% end %>
-        <% if policy(Business::Client).create? %>
-          <%= link_to new_business_client_path,
-              class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_business_client_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">New Client</span>
+        </button>
+        <div id="clients-dropdown" class="ml-9 mt-1 space-y-1 border-l-2 border-hamzis-brown/10 dark:border-hamzis-copper/10 hidden">
+          <%= link_to business_clients_path,
+                class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
+                #{current_page?(business_clients_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
+            All Clients
           <% end %>
-        <% end %>
+          <% if policy(Business::Client).create? %>
+            <%= link_to new_business_client_path,
+                  class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
+                  #{current_page?(new_business_client_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
+              New Client
+            <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
