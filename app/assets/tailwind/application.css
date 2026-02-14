@@ -1,15 +1,58 @@
 /* app/assets/tailwind/application.css */
 @import "tailwindcss";
 
-/* Enable class-based dark mode by mapping the `dark:` variant to a `.dark` ancestor */
+/* Enable class-based dark mode */
 @custom-variant dark (&:where(.dark *));
 
-/* Define Hamzis brand colors as theme tokens */
 @theme {
-  --color-hamzis-brown: #4e342e;
-  --color-hamzis-black: #212121;
-  --color-hamzis-white: #ffffff;
-  --color-hamzis-copper: #b87333;
-  --color-hamzis-textLight: #1f2937; /* dark gray for light mode text */
-  --color-hamzis-textDark: #f3f4f6;  /* light gray for dark mode text */
+  /* --- Hamzis Brand Colors --- */
+  --color-hamzis-brown: #2D1B17;
+  --color-hamzis-black: #111111;
+  --color-hamzis-white: #FAFAFA;
+  --color-hamzis-copper: #D97706;
+  --color-hamzis-textLight: #1A1A1A;
+  --color-hamzis-textDark: #F3F4F6;
+
+  --color-hamzis-brown-muted: #3D2B26;
+  --color-hamzis-copper-muted: #B45309;
+  --color-hamzis-black-soft: #1A1A1A;
+
+  /* Surface for Glassmorphism (using the new Copper HEX) */
+  --color-hamzis-surface: rgba(217, 119, 6, 0.08);
+
+  /* --- Custom Animations --- */
+  --animate-fade-in: fadeIn 0.3s ease-out forwards;
+
+  /* --- Keyframes --- */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* You can also add your custom scrollbar here instead of in the <head> */
+@layer base {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(217, 119, 6, 0.2);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    background: rgba(217, 119, 6, 0.5);
+  }
 }

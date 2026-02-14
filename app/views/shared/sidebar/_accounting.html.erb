@@ -4,148 +4,129 @@
       policy(Accounting::Salary).index? ||
       policy(Accounting::Deduction).index?
     ) %>
-<div class="space-y-3">
+<div class="space-y-4 py-2">
   <!-- Section Header -->
-  <span class="sidebar-label block px-3 py-1 text-xs font-semibold tracking-wider uppercase border-b border-hamzis-brown/30 text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
-    Accounting
-  </span>
-  <div class="ml-2 space-y-2">
-    <!-- Transactions -->
+  <div class="px-3">
+    <span class="block text-[10px] font-black uppercase tracking-[0.3em] text-hamzis-brown/40 dark:text-white border-b border-hamzis-brown/10 dark:border-hamzis-copper/10 pb-1 mb-2">
+      Accounting
+    </span>
+  </div>
+  <div class="px-2 space-y-1">
+    <%# 1. Transactions Dropdown %>
     <% if policy(Accounting::Transaction).index? %>
-      <button type="button"
-              class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20 hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown transition-all duration-300 shadow-sm"
-              onclick="document.getElementById('transactions-dropdown').classList.toggle('hidden')">
-        <span class="flex items-center">
-          <!-- Refined icon: credit card / ledger -->
-          <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
-               viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M3 7h18M3 11h18M3 15h10" />
+      <div class="group">
+        <button type="button"
+                class="flex justify-between items-center w-full px-3 py-2.5 rounded-xl border border-transparent hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/5 transition-all duration-300"
+                onclick="document.getElementById('transactions-dropdown').classList.toggle('hidden')">
+          <span class="flex items-center">
+            <svg class="w-4 h-4 mr-3 text-hamzis-brown/70 dark:text-hamzis-copper/70 group-hover:text-hamzis-copper transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 11h18M3 15h10" />
+            </svg>
+            <span class="text-[11px] font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Transactions</span>
+          </span>
+          <svg class="w-3 h-3 text-hamzis-brown/30 dark:text-hamzis-copper/30 group-hover:text-hamzis-copper transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+            <path d="M19 9l-7 7-7-7" />
           </svg>
-          <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
-            Transactions
-          </span>
-        </span>
-        <svg class="w-4 h-4 transform transition-transform opacity-70" id="transactions-chevron"
-             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div id="transactions-dropdown" class="ml-4 space-y-1 hidden">
-        <%= link_to accounting_transactions_path,
-      class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(accounting_transactions_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
+        </button>
+        <div id="transactions-dropdown" class="ml-9 mt-1 space-y-1 border-l-2 border-hamzis-brown/10 dark:border-hamzis-copper/10 hidden">
+          <%= link_to accounting_transactions_path,
+                class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
+                #{current_page?(accounting_transactions_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
             All Transactions
-          </span>
-        <% end %>
-        <% if policy(Accounting::Transaction).create? %>
-          <%= link_to new_accounting_transaction_path,
-        class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_accounting_transaction_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
-              New Transaction
-            </span>
           <% end %>
-        <% end %>
+          <% if policy(Accounting::Transaction).create? %>
+            <%= link_to new_accounting_transaction_path,
+                  class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
+                  #{current_page?(new_accounting_transaction_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
+              New Transaction
+            <% end %>
+          <% end %>
+        </div>
       </div>
     <% end %>
-    <!-- Expenses -->
-    <button type="button"
-        class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20 hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown transition-all duration-300 shadow-sm"
-        onclick="document.getElementById('expenses-dropdown').classList.toggle('hidden')">
-      <span class="flex items-center">
-        <!-- Icon: receipt / bill -->
-        <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
-         viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M9 17v-2h6v2H9zm-4 4h14a2 2 0 002-2V5a2 2 0 00-2-2H7l-2 2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    <%# 2. Expenses Dropdown %>
+    <div class="group">
+      <button type="button"
+              class="flex justify-between items-center w-full px-3 py-2.5 rounded-xl border border-transparent hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/5 transition-all duration-300"
+              onclick="document.getElementById('expenses-dropdown').classList.toggle('hidden')">
+        <span class="flex items-center">
+          <svg class="w-4 h-4 mr-3 text-hamzis-brown/70 dark:text-hamzis-copper/70 group-hover:text-hamzis-copper transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2h6v2H9zm-4 4h14a2 2 0 002-2V5a2 2 0 00-2-2H7l-2 2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span class="text-[11px] font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Expenses</span>
+        </span>
+        <svg class="w-3 h-3 text-hamzis-brown/30 dark:text-hamzis-copper/30 group-hover:text-hamzis-copper transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+          <path d="M19 9l-7 7-7-7" />
         </svg>
-        <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
-          Expenses
-        </span>
-      </span>
-      <svg class="w-4 h-4 transform transition-transform opacity-70" id="expenses-chevron"
-       xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-      </svg>
-    </button>
-    <div id="expenses-dropdown" class="ml-4 space-y-1 hidden">
-      <%= link_to project_expenses_path,
-      class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(project_expenses_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-        <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
+      </button>
+      <div id="expenses-dropdown" class="ml-9 mt-1 space-y-1 border-l-2 border-hamzis-brown/10 dark:border-hamzis-copper/10 hidden">
+        <%= link_to project_expenses_path,
+              class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
+              #{current_page?(project_expenses_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
           All Expenses
-        </span>
-      <% end %>
-      <%= link_to new_project_expense_path,
-      class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_project_expense_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-        <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
+        <% end %>
+        <%= link_to new_project_expense_path,
+              class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
+              #{current_page?(new_project_expense_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
           New Expense
-        </span>
+        <% end %>
+      </div>
+    </div>
+    <%# 3. Salary Batches Dropdown %>
+    <% if policy(Accounting::SalaryBatch).index? %>
+      <div class="group">
+        <button type="button"
+                class="flex justify-between items-center w-full px-3 py-2.5 rounded-xl border border-transparent hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/5 transition-all duration-300"
+                onclick="document.getElementById('salary-batches-dropdown').classList.toggle('hidden')">
+          <span class="flex items-center">
+            <svg class="w-4 h-4 mr-3 text-hamzis-brown/70 dark:text-hamzis-copper/70 group-hover:text-hamzis-copper transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l8 4-8 4-8-4 8-4zm0 8l8 4-8 4-8-4 8-4zm0 8l8 4-8 4-8-4 8-4z" />
+            </svg>
+            <span class="text-[11px] font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Salary Batches</span>
+          </span>
+          <svg class="w-3 h-3 text-hamzis-brown/30 dark:text-hamzis-copper/30 group-hover:text-hamzis-copper transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+            <path d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div id="salary-batches-dropdown" class="ml-9 mt-1 space-y-1 border-l-2 border-hamzis-brown/10 dark:border-hamzis-copper/10 hidden">
+          <%= link_to accounting_salary_batches_path,
+                class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
+                #{current_page?(accounting_salary_batches_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
+            All Batches
+          <% end %>
+          <% if policy(Accounting::SalaryBatch).create? %>
+            <%= link_to new_accounting_salary_batch_path,
+                  class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
+                  #{current_page?(new_accounting_salary_batch_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
+              New Batch
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    <%# 4. Direct Links: Salaries & Deductions %>
+    <div class="pt-2 space-y-1">
+      <% if policy(Accounting::Salary).index? %>
+        <%= link_to accounting_salaries_path,
+              class: "flex items-center px-3 py-2.5 rounded-xl border border-transparent transition-all duration-300
+              #{current_page?(accounting_salaries_path) ? 'text-hamzis-copper bg-hamzis-copper/5' : 'text-hamzis-brown dark:text-hamzis-copper hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/5 hover:border-hamzis-brown/10'}" do %>
+          <svg class="w-4 h-4 mr-3 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h10a2 2 0 002-2V6a2 2 0 00-2-2H4a2 2 0 00-2 2v6a2 2 0 002 2z" />
+          </svg>
+          <span class="text-[11px] font-black uppercase tracking-widest leading-none">Salaries</span>
+        <% end %>
+      <% end %>
+      <% if policy(Accounting::Deduction).index? %>
+        <%= link_to accounting_deductions_path,
+              class: "flex items-center px-3 py-2.5 rounded-xl border border-transparent transition-all duration-300
+              #{current_page?(accounting_deductions_path) ? 'text-hamzis-copper bg-hamzis-copper/5' : 'text-hamzis-brown dark:text-hamzis-copper hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/5 hover:border-hamzis-brown/10'}" do %>
+          <svg class="w-4 h-4 mr-3 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m9-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="text-[11px] font-black uppercase tracking-widest leading-none">Deductions</span>
+        <% end %>
       <% end %>
     </div>
-    <!-- Salary Batches -->
-    <% if policy(Accounting::SalaryBatch).index? %>
-      <button type="button"
-              class="flex justify-between items-center w-full px-3 py-2 rounded-lg bg-hamzis-brown/20 hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown transition-all duration-300 shadow-sm"
-              onclick="document.getElementById('salary-batches-dropdown').classList.toggle('hidden')">
-        <span class="flex items-center">
-          <!-- Refined icon: stacked layers -->
-          <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
-               viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 3l8 4-8 4-8-4 8-4zm0 8l8 4-8 4-8-4 8-4zm0 8l8 4-8 4-8-4 8-4z" />
-          </svg>
-          <span class="sidebar-label font-medium text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
-            Salary Batches
-          </span>
-        </span>
-        <svg class="w-4 h-4 transform transition-transform opacity-70" id="salary-batches-chevron"
-             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div id="salary-batches-dropdown" class="ml-4 space-y-1 hidden">
-        <%= link_to accounting_salary_batches_path,
-      class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(accounting_salary_batches_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-          <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
-            All Batches
-          </span>
-        <% end %>
-        <% if policy(Accounting::SalaryBatch).create? %>
-          <%= link_to new_accounting_salary_batch_path,
-        class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(new_accounting_salary_batch_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-            <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label">
-              New Batch
-            </span>
-          <% end %>
-        <% end %>
-      </div>
-    <% end %>
-    <!-- Salaries -->
-    <% if policy(Accounting::Salary).index? %>
-      <%= link_to accounting_salaries_path,
-          class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(accounting_salaries_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-        <!-- Refined icon: wallet/money -->
-        <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
-             viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 6h16M4 10h16M4 14h10a2 2 0 002-2V6a2 2 0 00-2-2H4a2 2 0 00-2 2v6a2 2 0 002 2z" />
-        </svg>
-        <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label"> Salaries </span>
-      <% end %>
-    <% end %>
-    <!-- Deductions -->
-    <% if policy(Accounting::Deduction).index? %>
-      <%= link_to accounting_deductions_path,
-          class: "flex items-center px-3 py-2 rounded-lg transition-all duration-300 #{current_page?(accounting_deductions_path) ? 'bg-gradient-to-r from-hamzis-copper to-hamzis-brown shadow-md' : 'hover:bg-gradient-to-r hover:from-hamzis-copper hover:to-hamzis-brown'}" do %>
-        <!-- Refined icon: minus circle -->
-        <svg class="w-5 h-5 mr-2 opacity-80" xmlns="http://www.w3.org/2000/svg" fill="none"
-             viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 9v6m9-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <span class="sidebar-label text-hamzis-textLight dark:text-hamzis-textDark" data-sidebar-target="label"> Deductions </span>
-      <% end %>
-    <% end %>
   </div>
 </div>
 <% end %>
