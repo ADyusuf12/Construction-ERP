@@ -33,7 +33,7 @@ class ProjectPolicy < ApplicationPolicy
         scope.where(client_id: user.client.id)
       elsif user.role_engineer? || user.role_qs?
         scope.joins(tasks: :assignments)
-             .where(assignments: { user_id: user.id })
+             .where(assignments: { employee_id: user.employee&.id })
              .distinct
       else
         scope.all

@@ -1,10 +1,10 @@
 class TaskPolicy < ApplicationPolicy
-  include ClientScopedPolicy # newly added
+  include ClientScopedPolicy
 
   def index?
     user.role_ceo? || user.role_admin? || user.role_hr? ||
     user.role_cto? || user.role_site_manager? || user.role_qs? || user.role_engineer? ||
-    user.role_client? # newly added
+    user.role_client?
   end
 
   def show?
@@ -24,22 +24,31 @@ class TaskPolicy < ApplicationPolicy
   end
 
   def mark_in_progress?
-    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr?
+    # REFACTORED: Allow the assigned personnel OR managers to update status
+    assigned_to_task? || user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr?
   end
 
   def mark_done?
-    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr?
+    assigned_to_task? || user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr?
   end
 
   class Scope < Scope
     def resolve
-      if user.role_client? && user.client.present? # newly added
+      if user.role_client? && user.client.present?
         scope.joins(:project).where(projects: { client_id: user.client.id })
       elsif user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr?
         scope.all
       else
-        scope.joins(:assignments).where(assignments: { user_id: user.id }).distinct
+        # REFACTORED: Filter by the current user's employee record
+        scope.joins(:assignments).where(assignments: { employee_id: user.employee&.id }).distinct
       end
     end
+  end
+
+  private
+
+  def assigned_to_task?
+    return false unless user.employee
+    record.assignments.exists?(employee_id: user.employee.id)
   end
 end

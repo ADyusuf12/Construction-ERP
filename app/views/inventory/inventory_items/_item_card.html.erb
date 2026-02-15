@@ -1,87 +1,63 @@
 <aside class="lg:col-span-1">
-  <div
-    class="bg-gradient-to-br from-hamzis-white/40 via-hamzis-copper/10 to-hamzis-brown/10
-           dark:from-hamzis-black/40 dark:via-hamzis-brown/20 dark:to-hamzis-copper/20
-           border border-hamzis-brown/30 rounded-2xl shadow-xl p-6 space-y-6">
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-xl p-8 space-y-8 relative overflow-hidden">
+    <!-- Brand Watermark Accent -->
+    <div class="absolute -top-4 -right-4 opacity-[0.03] dark:opacity-[0.05] pointer-events-none">
+      <svg class="w-32 h-32 text-hamzis-copper" fill="currentColor" viewBox="0 0 24 24"><path d="M3 7h4l2-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+    </div>
     <!-- Header -->
-    <div class="flex items-start gap-4">
-      <div class="flex-shrink-0">
-        <div class="w-14 h-14 rounded-lg bg-hamzis-brown/10 flex items-center justify-center">
-          <svg class="w-7 h-7 text-hamzis-brown" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7h18M3 12h18M3 17h18" />
-          </svg>
-        </div>
+    <div class="relative">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="px-2 py-0.5 rounded bg-hamzis-copper/10 border border-hamzis-copper/20 text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-copper">
+          SKU: <%= inventory_item.sku.presence || "PENDING" %>
+        </span>
       </div>
-      <div class="min-w-0">
-        <h2 id="item-name" class="text-2xl font-semibold text-hamzis-brown dark:text-hamzis-copper truncate">
-          <%= inventory_item.name %>
-        </h2>
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
-          <span class="font-medium">SKU:</span>
-          <span class="font-mono ml-1"><%= inventory_item.sku.presence || "—" %></span>
+      <h2 class="text-3xl font-black text-hamzis-brown dark:text-white uppercase tracking-tighter italic leading-none">
+        <%= inventory_item.name %>
+      </h2>
+    </div>
+    <!-- Primary Specs -->
+    <div class="grid grid-cols-2 gap-4 py-6 border-y border-hamzis-brown/10">
+      <div>
+        <p class="text-[9px] font-black uppercase tracking-widest text-hamzis-copper mb-1">Unit Type</p>
+        <p class="text-sm font-bold text-hamzis-brown dark:text-white"><%= inventory_item.unit.presence || "N/A" %></p>
+      </div>
+      <div>
+        <p class="text-[9px] font-black uppercase tracking-widest text-hamzis-copper mb-1">Valuation</p>
+        <p class="text-sm font-black text-hamzis-brown dark:text-white font-mono">
+          <%= number_to_currency(inventory_item.unit_cost, unit: "₦", precision: 0) %>
         </p>
       </div>
     </div>
-    <!-- Meta grid -->
-    <dl class="space-y-2 text-sm text-gray-700 dark:text-gray-200">
-      <div class="flex justify-between items-center">
-        <dt class="font-medium">Unit:</dt>
-        <dd class="text-gray-900 dark:text-gray-100"><%= inventory_item.unit.presence || "—" %></dd>
-      </div>
-      <div class="flex justify-between items-center">
-        <dt class="font-medium">Unit Cost:</dt>
-        <dd class="text-gray-900 dark:text-gray-100"><%= number_to_currency(inventory_item.unit_cost, unit: "₦") %></dd>
-      </div>
-      <div class="flex justify-between items-center">
-        <dt class="font-medium">Reorder Threshold:</dt>
-        <dd class="text-gray-900 dark:text-gray-100"><%= inventory_item.reorder_threshold || "—" %></dd>
-      </div>
-      <div class="flex justify-between items-center">
-        <dt class="font-medium">Location:</dt>
-        <dd class="text-gray-500"><%= inventory_item.default_location || "—" %></dd>
+    <!-- Technical Details -->
+    <dl class="space-y-4">
+      <div class="flex justify-between items-end border-b border-hamzis-brown/5 pb-2">
+        <dt class="text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50">Reorder Level</dt>
+        <dd class="text-xs font-black text-hamzis-brown dark:text-white"><%= inventory_item.reorder_threshold || "0" %> Units</dd>
       </div>
     </dl>
-    <!-- Description -->
+    <!-- Visual Description -->
     <% if inventory_item.description.present? %>
-      <div class="text-sm text-gray-700 dark:text-hamzis-copper leading-relaxed">
-        <%= simple_format(inventory_item.description) %>
+      <div class="text-[11px] text-hamzis-brown/70 dark:text-hamzis-textDark/70 leading-relaxed italic border-l-2 border-hamzis-copper/30 pl-4">
+        <%= inventory_item.description %>
       </div>
     <% end %>
-    <!-- Stock summary -->
-    <div class="flex gap-3 items-center">
-      <div class="flex-1 grid grid-cols-2 gap-3">
-        <div class="rounded-lg bg-white/60 dark:bg-black/40 p-3 border border-hamzis-brown/10">
-          <div class="text-xs text-gray-500">Total Stock</div>
-          <div class="mt-1 text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper"><%= inventory_item.total_quantity %></div>
-        </div>
-        <div class="rounded-lg bg-white/60 dark:bg-black/40 p-3 border border-hamzis-brown/10">
-          <div class="text-xs text-gray-500">Available</div>
-          <div class="mt-1 text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper"><%= inventory_item.available_quantity %></div>
-        </div>
+    <!-- Stock Pulse Cards -->
+    <div class="grid grid-cols-2 gap-3">
+      <div class="bg-white/40 dark:bg-black/20 border border-hamzis-brown/10 rounded-xl p-4">
+        <p class="text-[9px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">Total</p>
+        <p class="text-2xl font-black text-hamzis-brown dark:text-hamzis-copper tabular-nums"><%= inventory_item.total_quantity %></p>
       </div>
-      <div class="flex-shrink-0">
-        <div class="text-xs text-gray-500">Unit</div>
-        <div class="mt-1 text-sm font-medium text-gray-700 dark:text-hamzis-copper"><%= inventory_item.unit.presence || "—" %></div>
+      <div class="bg-white/40 dark:bg-black/20 border border-hamzis-brown/10 rounded-xl p-4">
+        <p class="text-[9px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">Available</p>
+        <p class="text-2xl font-black text-hamzis-brown dark:text-white tabular-nums"><%= inventory_item.available_quantity %></p>
       </div>
     </div>
-    <!-- Actions -->
-    <div class="mt-4 flex flex-wrap gap-2" role="toolbar" aria-label="Item actions">
-      <% if policy([ :inventory, inventory_item ]).update? %>
-        <%= link_to "Edit", edit_inventory_inventory_item_path(inventory_item),
-            class: "inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-gradient-to-r from-hamzis-copper to-hamzis-brown text-white text-sm shadow-sm hover:brightness-95 transition" %>
+    <!-- Action Toolbar -->
+    <div class="flex flex-col gap-2 pt-4">
+      <%= link_to edit_inventory_inventory_item_path(inventory_item), class: "w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-hamzis-copper text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-hamzis-black transition-all active:scale-95" do %>
+        Modify Item
       <% end %>
-      <%= link_to "Back to Items", inventory_inventory_items_path,
-          class: "inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-hamzis-brown text-white text-sm hover:bg-hamzis-copper transition" %>
-      <% if policy([ :inventory, inventory_item ]).destroy? %>
-        <%= button_to "Delete", "#",
-          class: "inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-red-600 text-white text-sm hover:bg-red-700 transition",
-          form: {
-            "data-action" => "click->confirm-delete#open",
-            "data-confirm-delete-title-param" => "Delete Inventory Item?",
-            "data-confirm-delete-message-param" => "Are you sure you want to delete '#{inventory_item.name}'? This action cannot be undone.",
-            "data-confirm-delete-confirm-path-param" => inventory_inventory_item_path(inventory_item)
-          } %>
-      <% end %>
+      <%= link_to "Return to Items", inventory_inventory_items_path, class: "w-full text-center py-3 text-[10px] font-black uppercase tracking-widest text-hamzis-brown/50 hover:text-hamzis-copper transition" %>
     </div>
   </div>
 </aside>

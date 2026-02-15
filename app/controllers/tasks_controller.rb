@@ -5,7 +5,7 @@ class TasksController < ApplicationController
 
   # GET /tasks (global index)
   def index
-    @tasks = policy_scope(Task.includes(:project, users: { employee: :personal_detail }))
+    @tasks = policy_scope(Task.includes(:project, employees: :personal_detail))
   end
 
   # GET /projects/:project_id/tasks/:id
@@ -13,7 +13,6 @@ class TasksController < ApplicationController
     authorize @task
   end
 
-  # GET /projects/:project_id/tasks/new OR /tasks/new
   def new
     if params[:project_id]
       @project = Project.find(params[:project_id])
@@ -24,7 +23,6 @@ class TasksController < ApplicationController
     authorize @task
   end
 
-  # POST /projects/:project_id/tasks OR /tasks
   def create
     if params[:project_id]
       @project = Project.find(params[:project_id])
@@ -41,7 +39,6 @@ class TasksController < ApplicationController
     end
   end
 
-  # PATCH/PUT /projects/:project_id/tasks/:id
   def update
     authorize @task
     if @task.update(task_params)
@@ -51,7 +48,6 @@ class TasksController < ApplicationController
     end
   end
 
-  # DELETE /projects/:project_id/tasks/:id
   def destroy
     authorize @task
     @task.destroy
@@ -99,6 +95,6 @@ class TasksController < ApplicationController
     end
 
     def task_params
-      params.require(:task).permit(:title, :details, :status, :due_date, :weight, :project_id, user_ids: [])
+      params.require(:task).permit(:title, :details, :status, :due_date, :weight, :project_id, employee_ids: [])
     end
 end

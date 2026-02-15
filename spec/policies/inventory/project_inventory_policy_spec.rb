@@ -67,7 +67,7 @@ RSpec.describe Inventory::ProjectInventoryPolicy do
 
     before do
       task = create(:task, project: project)
-      create(:assignment, task: task, user: user)
+      create(:assignment, task: task, employee: user.employee)
     end
 
     it "permits create/update and allows destroy for project member" do
@@ -95,7 +95,7 @@ RSpec.describe Inventory::ProjectInventoryPolicy do
       project_b = create(:project)
 
       task_a = create(:task, project: project_a)
-      create(:assignment, task: task_a, user: user)
+      create(:assignment, task: task_a, employee: user.employee)
 
       warehouse_a = create(:warehouse)
       warehouse_b = create(:warehouse)

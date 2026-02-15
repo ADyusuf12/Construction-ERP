@@ -26,7 +26,7 @@ module Inventory
       def resolve
         if user.role_engineer? || user.role_qs?
           project_ids = Project.joins(tasks: :assignments)
-                                .where(assignments: { user_id: user.id })
+                                .where(assignments: { employee_id: user.employee&.id })
                                 .distinct
                                 .pluck(:id)
           scope.joins(:project_inventories)

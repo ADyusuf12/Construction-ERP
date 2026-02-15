@@ -10,7 +10,7 @@ class ReportsController < ApplicationController
       @project = Project.find(params[:project_id])
       @reports = policy_scope(@project.reports)
     else
-      @reports = policy_scope(Report.includes(:project, :user))
+      @reports = policy_scope(Report.includes(:project, :employee))
     end
   end
 
@@ -44,7 +44,7 @@ class ReportsController < ApplicationController
       @report = Report.new(report_params)
       @report.project = Project.find(report_params[:project_id])
     end
-    @report.user = current_user
+    @report.employee = current_user.employee
     authorize @report
 
     if @report.save

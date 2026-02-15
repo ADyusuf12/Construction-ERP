@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_08_213136) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_14_215320) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -80,9 +80,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_08_213136) do
     t.bigint "task_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
+    t.bigint "employee_id"
+    t.index [ "employee_id" ], name: "index_assignments_on_employee_id"
     t.index [ "task_id" ], name: "index_assignments_on_task_id"
-    t.index [ "user_id" ], name: "index_assignments_on_user_id"
   end
 
   create_table "business_clients", force: :cascade do |t|
@@ -251,7 +251,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_08_213136) do
 
   create_table "reports", force: :cascade do |t|
     t.bigint "project_id", null: false
-    t.bigint "user_id", null: false
     t.date "report_date", null: false
     t.integer "report_type", default: 0, null: false
     t.integer "status", default: 0, null: false
@@ -260,8 +259,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_08_213136) do
     t.text "next_steps"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "employee_id"
+    t.index [ "employee_id" ], name: "index_reports_on_employee_id"
     t.index [ "project_id" ], name: "index_reports_on_project_id"
-    t.index [ "user_id" ], name: "index_reports_on_user_id"
   end
 
   create_table "solid_queue_blocked_executions", force: :cascade do |t|
@@ -483,8 +483,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_08_213136) do
   add_foreign_key "accounting_salaries", "hr_employees", column: "employee_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "assignments", "hr_employees", column: "employee_id"
   add_foreign_key "assignments", "tasks"
-  add_foreign_key "assignments", "users"
   add_foreign_key "business_clients", "users"
   add_foreign_key "hr_attendance_records", "hr_employees", column: "employee_id"
   add_foreign_key "hr_attendance_records", "projects"
@@ -503,8 +503,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_08_213136) do
   add_foreign_key "project_inventories", "warehouses"
   add_foreign_key "projects", "business_clients", column: "client_id"
   add_foreign_key "projects", "users"
+  add_foreign_key "reports", "hr_employees", column: "employee_id"
   add_foreign_key "reports", "projects"
-  add_foreign_key "reports", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

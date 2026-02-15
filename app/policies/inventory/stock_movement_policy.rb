@@ -46,7 +46,7 @@ module Inventory
       return false unless item.present?
 
       project_ids = Project.joins(tasks: :assignments)
-                           .where(assignments: { user_id: user.id })
+                           .where(assignments: { employee_id: user.employee&.id })
                            .distinct
                            .pluck(:id)
 
@@ -59,7 +59,7 @@ module Inventory
 
         if user.role_engineer? || user.role_qs?
           project_ids = Project.joins(tasks: :assignments)
-                               .where(assignments: { user_id: user.id })
+                               .where(assignments: { employee_id: user.employee&.id })
                                .distinct
                                .pluck(:id)
 

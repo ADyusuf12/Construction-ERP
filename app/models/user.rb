@@ -8,12 +8,10 @@ class User < ApplicationRecord
   }, prefix: true
 
   has_one :employee, class_name: "Hr::Employee", dependent: :destroy
+  delegate :tasks, :reports, :leaves, to: :employee, allow_nil: true
   has_one :client, class_name: "Business::Client", dependent: :destroy
   has_many :projects, dependent: :destroy
-  has_many :assignments, dependent: :destroy
-  has_many :tasks, through: :assignments
-  has_many :reports, dependent: :destroy
-  has_many :leaves, through: :employee, class_name: "Hr::Leave"
+
 
   validate :staff_users_must_have_employee
   validate :client_users_must_have_client

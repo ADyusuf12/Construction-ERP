@@ -1,39 +1,46 @@
-<h3 class="text-xl font-bold mb-4">Projects</h3>
-<% if current_user.role_client? %>
-  <!-- Simplified view for client users -->
-  <div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-              border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
-    <% if client.projects.any? %>
-      <table class="min-w-full text-sm text-left border-collapse">
-        <thead>
-          <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
-            <th class="px-4 py-3">Name</th>
-            <th class="px-4 py-3">Status</th>
-            <th class="px-4 py-3">Deadline</th>
-            <th class="px-4 py-3">Progress</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-hamzis-brown/20">
-          <% client.projects.each_with_index do |project, index| %>
-            <tr id="<%= dom_id(project) %>" class="<%= index.even? ? 'bg-hamzis-brown/5 dark:bg-hamzis-copper/5' : '' %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
-              <td class="px-4 py-3 font-semibold"><%= project.name %></td>
-              <td class="px-4 py-3"><%= project.status.humanize %></td>
-              <td class="px-4 py-3"><%= project.deadline&.strftime("%b %d, %Y") %></td>
-              <td class="px-4 py-3">
-                <div class="w-full bg-hamzis-brown/20 rounded-full h-2">
-                  <div class="bg-hamzis-copper h-2 rounded-full" style="width: <%= project.progress %>%"></div>
-                </div>
-                <span class="text-xs text-hamzis-brown dark:text-hamzis-copper ml-2"><%= project.progress %>%</span>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% else %>
-      <p class="text-center py-6 text-sm text-hamzis-brown dark:text-hamzis-copper">No projects yet</p>
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <h3 class="text-sm font-black text-hamzis-brown dark:text-white uppercase tracking-widest italic">Active Engagements</h3>
+    <% unless current_user.role_client? %>
+      <%= link_to "➕ New Project", new_project_path(client_id: client.id), class: "text-[9px] font-black uppercase text-hamzis-copper hover:underline" %>
     <% end %>
   </div>
-<% else %>
-  <!-- Full table with actions for internal staff -->
-  <%= render "projects/projects_table", projects: client.projects %>
-<% end %>
+  <% if client.projects.any? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <% client.projects.each do |project| %>
+        <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl p-6 hover:border-hamzis-copper/50 transition-all group">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <p class="text-[8px] font-black text-hamzis-copper uppercase tracking-widest mb-1">Project Site</p>
+              <h4 class="text-lg font-black text-hamzis-brown dark:text-white uppercase tracking-tighter italic">
+                <%= project.name %>
+              </h4>
+            </div>
+            <span class="px-2 py-0.5 rounded-full border border-hamzis-brown/20 text-[8px] font-black uppercase text-hamzis-brown/50 dark:text-white/50">
+              <%= project.status.humanize %>
+            </span>
+          </div>
+          <div class="space-y-2">
+            <div class="flex justify-between text-[9px] font-black uppercase tracking-tighter text-hamzis-brown/60 dark:text-white/60">
+              <span>Construction Progress</span>
+              <span class="font-mono text-hamzis-copper"><%= project.progress %>%</span>
+            </div>
+            <div class="w-full bg-hamzis-brown/10 dark:bg-white/5 rounded-full h-1.5 overflow-hidden">
+              <div class="bg-hamzis-copper h-full rounded-full transition-all duration-1000" style="width: <%= project.progress %>%"></div>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-hamzis-brown/5 flex justify-between items-center">
+            <div class="font-mono text-[10px] text-hamzis-brown/40 dark:text-white/40">
+              Target: <%= project.deadline&.strftime("%d.%m.%Y") || "TBD" %>
+            </div>
+            <%= link_to "View Portal", project_path(project), class: "text-[10px] font-black uppercase tracking-widest text-hamzis-brown dark:text-white hover:text-hamzis-copper transition-colors" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="py-20 text-center border-2 border-dashed border-hamzis-brown/10 rounded-3xl">
+      <p class="text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-brown/30">No Active Projects Found</p>
+    </div>
+  <% end %>
+</div>
