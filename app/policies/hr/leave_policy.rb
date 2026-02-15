@@ -10,7 +10,7 @@ module Hr
 
     def show?
       if user.role_engineer? || user.role_qs? || user.role_storekeeper? || user.role_accountant?
-        record.employee.user_id == user.id
+        record.employee_id == user.employee&.id
       else
         index?
       end
@@ -22,7 +22,7 @@ module Hr
 
     def approve?
       (user.role_hr? || user.role_ceo? || user.role_admin?) &&
-        record.employee.user_id != user.id
+        record.employee_id != user.employee&.id
     end
 
     def reject?
@@ -30,7 +30,7 @@ module Hr
     end
 
     def cancel?
-      record.employee.user_id == user.id
+      record.employee_id == user.employee&.id
     end
 
     def dashboard?

@@ -23,7 +23,7 @@ module Inventory
       return false unless project_id.present?
 
       Project.joins(tasks: :assignments)
-             .where(id: project_id, assignments: { user_id: user.id })
+             .where(id: project_id, assignments: { employee_id: user.employee&.id })
              .exists?
     end
 
@@ -33,7 +33,7 @@ module Inventory
           scope.joins(:project).where(projects: { client_id: user.client.id })
         elsif user.role_engineer? || user.role_qs?
           project_ids = Project.joins(tasks: :assignments)
-                               .where(assignments: { user_id: user.id })
+                               .where(assignments: { employee_id: user.employee&.id })
                                .distinct
                                .pluck(:id)
           scope.where(project_id: project_ids)

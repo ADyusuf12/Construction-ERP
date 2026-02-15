@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :report do
     association :project
-    association :user
+    association :employee, factory: :hr_employee
 
     report_date     { Date.today }
     report_type     { :daily }

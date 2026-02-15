@@ -12,7 +12,7 @@ module Hr
       user.role_ceo? || user.role_admin? ||
       user.role_hr? || user.role_cto? ||
       user.role_site_manager? ||
-      record.employee.user_id == user.id
+      record.employee_id == user.employee&.id
     end
 
     def create?

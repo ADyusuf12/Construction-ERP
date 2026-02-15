@@ -7,11 +7,11 @@ FactoryBot.define do
     due_date { 1.week.from_now }
     weight  { 5 }
 
-    # with assigned users
-    trait :with_user do
+    # with assigned employees
+    trait :with_employee do
       after(:create) do |task|
-        user = create(:user)
-        create(:assignment, task: task, user: user)
+        employee = create(:hr_employee)
+        create(:assignment, task: task, employee: employee)
       end
     end
   end

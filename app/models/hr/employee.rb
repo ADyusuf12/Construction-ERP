@@ -5,7 +5,9 @@ module Hr
     belongs_to :manager, class_name: "Hr::Employee", optional: true
     has_many :subordinates, class_name: "Hr::Employee", foreign_key: "manager_id", dependent: :nullify
     has_many :leaves, class_name: "Hr::Leave", foreign_key: "employee_id", dependent: :destroy
-    has_many :leave_approvals, class_name: "Hr::Leave", foreign_key: "manager_id", dependent: :nullify
+    has_many :assignments, dependent: :destroy
+    has_many :tasks, through: :assignments
+    has_many :reports, class_name: "Report", foreign_key: "employee_id", dependent: :nullify
     has_one :personal_detail, class_name: "Hr::PersonalDetail", dependent: :destroy, inverse_of: :employee
     has_many :salaries, class_name: "Accounting::Salary", foreign_key: "employee_id", dependent: :destroy
     has_many :attendance_records, class_name: "Hr::AttendanceRecord", foreign_key: "employee_id", dependent: :destroy

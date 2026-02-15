@@ -38,7 +38,7 @@ class ProjectExpensePolicy < ApplicationPolicy
         scope.all
       else
         scope.joins(project: { tasks: :assignments })
-             .where(assignments: { user_id: user.id })
+             .where(assignments: { employee_id: user.employee&.id })
              .distinct
       end
     end
