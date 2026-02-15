@@ -1,63 +1,97 @@
-<div class="space-y-8">
-  <!-- Overview cards -->
-  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-    <div class="bg-white shadow rounded-lg p-4">
-      <h3 class="text-xs font-medium text-gray-500">Total Items</h3>
-      <p class="mt-1 text-xl font-semibold text-gray-900">
-        <%= @inventory_items.count %>
+<% content_for :title, "#{@warehouse.name} | Logistics Hub" %>
+<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-2xl p-8 mb-8 relative overflow-hidden animate-fade-in">
+  <div class="absolute top-0 left-0 w-full h-1 bg-hamzis-copper opacity-40"></div>
+  <div class="flex flex-col md:flex-row justify-between items-start gap-6">
+    <div class="flex-1">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="px-2 py-0.5 rounded bg-hamzis-copper/10 border border-hamzis-copper/20 text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-copper">
+          Hub Code: <%= @warehouse.code.presence || "N/A" %>
+        </span>
+        <span class="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50">
+          <span class="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></span>
+          Operational
+        </span>
+      </div>
+      <h2 class="text-3xl font-black text-hamzis-brown dark:text-white uppercase tracking-tighter italic mb-4">
+        <%= @warehouse.name %>
+      </h2>
+      <p class="text-sm text-hamzis-brown/70 dark:text-white/70 leading-relaxed max-w-2xl italic border-l-2 border-hamzis-copper/30 pl-4">
+        <%= @warehouse.address.presence || "No physical address registered for this site." %>
       </p>
     </div>
-    <div class="bg-white shadow rounded-lg p-4">
-      <h3 class="text-xs font-medium text-gray-500">Total Stock Value</h3>
-      <p class="mt-1 text-xl font-semibold text-gray-900">
+    <div class="flex flex-wrap md:flex-nowrap gap-3">
+      <%= link_to edit_inventory_warehouse_path(@warehouse),
+          class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-hamzis-copper text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-hamzis-black transition-all active:scale-95" do %>
+        Update Hub
+      <% end %>
+      <%= link_to inventory_warehouses_path,
+          class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-hamzis-brown/10 text-hamzis-brown dark:text-white border border-hamzis-brown/20 text-[10px] font-black uppercase tracking-widest hover:bg-hamzis-brown hover:text-white transition-all" do %>
+        Warehouse Directory
+      <% end %>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-10 pt-8 border-t border-hamzis-brown/10">
+    <div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-copper mb-2">Total SKU Count</p>
+      <p class="text-2xl font-black text-hamzis-brown dark:text-white font-mono tracking-tighter">
+        <%= @inventory_items.count %> <span class="text-[10px] font-bold opacity-40">ITEMS</span>
+      </p>
+    </div>
+    <div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-copper mb-2">Valuation (On-Hand)</p>
+      <p class="text-2xl font-black text-hamzis-brown dark:text-white font-mono tracking-tighter text-green-600/90">
         <%= number_to_currency(@warehouse.total_stock_value, unit: "₦") %>
       </p>
     </div>
+    <div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-copper mb-2">Deployment Activity</p>
+      <p class="text-sm font-bold text-hamzis-brown dark:text-white uppercase tracking-tight">
+        <%= @recent_movements.count %> <span class="opacity-60 italic">Movements logged recently</span>
+      </p>
+    </div>
   </div>
-  <!-- Inventory items table -->
-  <div>
-    <h2 class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper mb-4">
-      Inventory Items Stored
-    </h2>
-    <%= render "inventory/inventory_items/inventory_table",
-               inventory_items: @inventory_items,
-               inventory_totals: @inventory_totals %>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="lg:col-span-2 space-y-6">
+    <div class="flex items-center justify-between">
+      <h2 class="text-sm font-black text-hamzis-brown dark:text-white uppercase tracking-widest">
+        Active Stock Levels
+      </h2>
+    </div>
+    <div class="overflow-hidden bg-hamzis-white/20 dark:bg-hamzis-black/20 backdrop-blur-sm border border-hamzis-brown/10 rounded-2xl">
+      <%= render "inventory/inventory_items/inventory_table",
+                 inventory_items: @inventory_items,
+                 inventory_totals: @inventory_totals %>
+    </div>
   </div>
-  <!-- Recent stock movements -->
-  <div>
-    <h2 class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper mb-4">
-      Recent Stock Movements
+  <div class="space-y-6">
+    <h2 class="text-sm font-black text-hamzis-brown dark:text-white uppercase tracking-widest">
+      Recent Movements
     </h2>
-    <div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-                border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+    <div class="space-y-4">
       <% if @recent_movements.any? %>
-        <table class="min-w-full text-sm text-left border-collapse">
-          <thead>
-            <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
-              <th class="px-4 py-3">Date</th>
-              <th class="px-4 py-3">Type</th>
-              <th class="px-4 py-3">Item</th>
-              <th class="px-4 py-3">Quantity</th>
-              <th class="px-4 py-3">Project</th>
-              <th class="px-4 py-3">Performed By</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-hamzis-brown/20">
-            <% @recent_movements.each_with_index do |movement, index| %>
-              <tr class="<%= index.even? ? 'bg-hamzis-brown/5 dark:bg-hamzis-copper/5' : '' %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
-                <td class="px-4 py-3"><%= l(movement.created_at, format: :short) %></td>
-                <td class="px-4 py-3"><%= movement.movement_type.capitalize %></td>
-                <td class="px-4 py-3"><%= movement.inventory_item.name %></td>
-                <td class="px-4 py-3"><%= movement.quantity %></td>
-                <td class="px-4 py-3"><%= movement.project&.name || "—" %></td>
-                <td class="px-4 py-3"><%= movement.performed_by&.full_name || "—" %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+        <% @recent_movements.each do |movement| %>
+          <div class="p-4 rounded-xl border border-hamzis-brown/10 bg-hamzis-white/30 dark:bg-hamzis-black/30 hover:border-hamzis-copper/40 transition-all group">
+            <div class="flex justify-between items-start mb-2">
+              <span class="text-[8px] font-black px-1.5 py-0.5 rounded border <%= movement.movement_type == 'inbound' ? 'bg-green-500/10 text-green-600 border-green-500/20' : 'bg-red-500/10 text-red border-red-500/20' %> uppercase">
+                <%= movement.movement_type %>
+              </span>
+              <span class="text-[9px] font-mono text-hamzis-brown/40 dark:text-white/40"><%= l(movement.created_at, format: :short) %></span>
+            </div>
+            <p class="text-xs font-black text-hamzis-brown dark:text-white uppercase tracking-tight truncate">
+              <%= movement.inventory_item.name %>
+            </p>
+            <div class="mt-2 flex items-center justify-between border-t border-hamzis-brown/5 pt-2">
+              <span class="text-xs font-mono font-black text-hamzis-copper">QTY: <%= movement.quantity %></span>
+              <span class="text-[9px] font-bold text-hamzis-brown/50 dark:text-white/40 italic">
+                By: <%= movement.performed_by&.full_name&.split&.first || "System" %>
+              </span>
+            </div>
+          </div>
+        <% end %>
       <% else %>
-        <div class="text-center py-6">
-          <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No recent movements</p>
+        <div class="py-10 text-center border-2 border-dashed border-hamzis-brown/10 rounded-2xl">
+          <p class="text-[10px] font-black uppercase text-hamzis-brown/30 tracking-widest text-center">No Movements Logged</p>
         </div>
       <% end %>
     </div>

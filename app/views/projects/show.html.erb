@@ -1,50 +1,56 @@
-<% content_for :title, @project.name %>
+<% content_for :title, "#{@project.name} | Site Deployment" %>
+<%# Core Site Specifications Card %>
 <%= render "info_card", project: @project %>
-<div class="border-b border-hamzis-brown/20 mb-6">
-  <nav class="flex gap-6 text-sm font-medium">
+<!-- Operational Navigation -->
+<div class="border-b border-hamzis-brown/10 dark:border-hamzis-copper/10 mb-8 overflow-x-auto custom-scrollbar">
+  <nav class="flex flex-nowrap md:flex-wrap gap-2 pb-px min-w-max">
+    <%# Navigation Buttons - Unified with Dashboard Style %>
     <button data-tab="tasks"
-            class="tab-link px-3 py-2 rounded-t bg-hamzis-copper text-white">
-      Tasks
+            class="tab-link px-6 py-3 rounded-t-xl bg-hamzis-copper text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-lg transition-all duration-300 cursor-pointer active:scale-95">
+      Task Queue
     </button>
     <button data-tab="expenses"
-            class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-      Expenses
+            class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/10 hover:text-hamzis-brown dark:hover:text-hamzis-copper transition-all duration-300 cursor-pointer">
+      Site Expenses
     </button>
     <button data-tab="budget"
-            class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-      Budget
+            class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/10 hover:text-hamzis-brown dark:hover:text-hamzis-copper transition-all duration-300 cursor-pointer">
+      Budget Analysis
     </button>
     <button data-tab="reports"
-            class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-      Reports
+            class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/10 hover:text-hamzis-brown dark:hover:text-hamzis-copper transition-all duration-300 cursor-pointer">
+      Daily Reports
     </button>
     <button data-tab="inventory"
-            class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+            class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/10 hover:text-hamzis-brown dark:hover:text-hamzis-copper transition-all duration-300 cursor-pointer">
       Inventory
     </button>
     <button data-tab="files"
-        class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-      Files
+            class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/10 hover:text-hamzis-brown dark:hover:text-hamzis-copper transition-all duration-300 cursor-pointer">
+      Documentation
     </button>
   </nav>
 </div>
-<div id="tasks-tab" class="tab-content">
-  <%= render "projects/tabs/tasks", project: @project %>
-</div>
-<div id="expenses-tab" class="tab-content hidden">
-  <%= render "projects/tabs/expenses", project: @project %>
-</div>
-<div id="budget-tab" class="tab-content hidden">
-  <%= render "projects/tabs/budget", project: @project %>
-</div>
-<div id="reports-tab" class="tab-content hidden">
-  <%= render "projects/tabs/reports", project: @project %>
-</div>
-<div id="inventory-tab" class="tab-content hidden">
-  <%= render "projects/tabs/inventory", project: @project %>
-</div>
-<div id="files-tab" class="tab-content hidden">
-  <%= render "projects/tabs/files", project: @project %>
+<!-- Tab Content Areas with Entrance Animations -->
+<div id="project-tab-content-container">
+  <div id="tasks-tab" class="tab-content animate-fade-in">
+    <%= render "projects/tabs/tasks", project: @project %>
+  </div>
+  <div id="expenses-tab" class="tab-content hidden animate-fade-in">
+    <%= render "projects/tabs/expenses", project: @project %>
+  </div>
+  <div id="budget-tab" class="tab-content hidden animate-fade-in">
+    <%= render "projects/tabs/budget", project: @project %>
+  </div>
+  <div id="reports-tab" class="tab-content hidden animate-fade-in">
+    <%= render "projects/tabs/reports", project: @project %>
+  </div>
+  <div id="inventory-tab" class="tab-content hidden animate-fade-in">
+    <%= render "projects/tabs/inventory", project: @project %>
+  </div>
+  <div id="files-tab" class="tab-content hidden animate-fade-in">
+    <%= render "projects/tabs/files", project: @project %>
+  </div>
 </div>
 <script nonce="<%= content_security_policy_nonce %>">
   (() => {
@@ -52,15 +58,27 @@
     const contents = document.querySelectorAll(".tab-content");
 
     links.forEach(link => {
-      link.addEventListener("click", () => {
-        // reset all tabs
-        links.forEach(l => l.classList.remove("bg-hamzis-copper", "text-white"));
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        // Reset navigation styles
+        links.forEach(l => {
+          l.classList.remove("bg-hamzis-copper", "text-white", "shadow-lg");
+          l.classList.add("text-hamzis-brown/60", "dark:text-hamzis-copper/60");
+        });
+
+        // Hide all contents
         contents.forEach(c => c.classList.add("hidden"));
 
-        // activate clicked tab
-        link.classList.add("bg-hamzis-copper", "text-white");
+        // Activate current selection
+        link.classList.add("bg-hamzis-copper", "text-white", "shadow-lg");
+        link.classList.remove("text-hamzis-brown/60", "dark:text-hamzis-copper/60");
+
         const tabId = link.getAttribute("data-tab") + "-tab";
-        document.getElementById(tabId).classList.remove("hidden");
+        const activeTab = document.getElementById(tabId);
+        if (activeTab) {
+          activeTab.classList.remove("hidden");
+        }
       });
     });
   })();

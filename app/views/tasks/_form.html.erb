@@ -1,4 +1,6 @@
-<%= form_with(model: @task, url: (@project ? project_tasks_path(@project) : tasks_path), local: true, class: "space-y-6 hr-form") do |form| %>
+<%= form_with(model: [@project, @task],
+              local: true,
+              class: "space-y-6 hr-form") do |form| %>
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- LEFT: Task Definition -->
     <div class="lg:col-span-2 space-y-6">
@@ -45,7 +47,7 @@
           <% Hr::Employee.status_active.each do |emp| %>
             <% if emp.user.present? %>
               <label class="flex items-center space-x-3 p-3 rounded-xl border border-hamzis-brown/10 bg-white/40 dark:bg-black/20 hover:border-hamzis-copper transition cursor-pointer group">
-                <%= check_box_tag "task[user_ids][]", emp.user.id, form.object.user_ids.include?(emp.user.id),
+                <%= check_box_tag "task[employee_ids][]", emp.id, form.object.employee_ids.include?(emp.id),
                   class: "w-4 h-4 rounded border-hamzis-brown/30 text-hamzis-copper focus:ring-hamzis-copper" %>
                 <div class="flex flex-col">
                   <span class="text-xs font-bold text-gray-900 dark:text-hamzis-copper group-hover:text-hamzis-brown"><%= emp.full_name %></span>

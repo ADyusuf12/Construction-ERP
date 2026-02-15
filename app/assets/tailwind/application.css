@@ -35,6 +35,16 @@
       transform: translateY(0);
     }
   }
+
+  @keyframes progress-stripe {
+    from {
+      background-position: 1rem 0;
+    }
+
+    to {
+      background-position: 0 0;
+    }
+  }
 }
 
 /* You can also add your custom scrollbar here instead of in the <head> */

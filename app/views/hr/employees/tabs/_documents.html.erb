@@ -1,40 +1,63 @@
-<div class="bg-gradient-to-br from-hamzis-white/40 via-hamzis-copper/10 to-hamzis-brown/10
-            dark:from-hamzis-black/40 dark:via-hamzis-brown/20 dark:to-hamzis-copper/20
-            border border-hamzis-brown/30 rounded-2xl shadow-xl p-8 space-y-8">
-  <!-- Header -->
-  <h4 class="text-base font-semibold text-hamzis-brown dark:text-hamzis-copper flex items-center gap-2">
-    <svg class="w-5 h-5 text-hamzis-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 4h16v16H4z"/>
-    </svg>
-    Documents
-  </h4>
+<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-xl p-8 animate-fade-in">
+  <div class="flex items-center justify-between mb-8 pb-4 border-b border-hamzis-brown/10">
+    <div class="flex items-center gap-3">
+      <div class="p-2.5 rounded-xl bg-hamzis-copper/10 text-hamzis-copper">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+      </div>
+      <h4 class="text-[11px] font-black uppercase tracking-[0.2em] text-hamzis-brown dark:text-hamzis-copper">Personnel Documentation Vault</h4>
+    </div>
+    <span class="text-[9px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40 italic">
+      <%= employee.employee_files.count if employee.respond_to?(:employee_files) %> Secured Assets
+    </span>
+  </div>
   <% if employee.respond_to?(:employee_files) && employee.employee_files.any? %>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <% employee.employee_files.each do |ef| %>
-        <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20
-                    rounded-xl p-5 shadow-md flex flex-col space-y-3">
-          <span class="text-sm font-semibold text-hamzis-copper"><%= ef.title %></span>
-          <% if ef.file.attached? %>
-            <% if ef.file.image? %>
-              <%= image_tag ef.file.variant(resize_to_limit: [400, 250]),
-                    class: "rounded-lg shadow-sm" %>
+        <div class="group bg-white/40 dark:bg-black/20 border border-hamzis-brown/10 rounded-2xl p-5 shadow-sm hover:border-hamzis-copper hover:shadow-lg transition-all duration-300">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex-1 min-w-0">
+              <p class="text-[9px] font-black uppercase tracking-widest text-hamzis-copper mb-1">Document Title</p>
+              <h5 class="text-xs font-black text-hamzis-brown dark:text-white uppercase truncate"><%= ef.title %></h5>
+            </div>
+            <%# File Type Icon Icon %>
+            <div class="text-hamzis-brown/20 dark:text-hamzis-copper/20 group-hover:text-hamzis-copper transition-colors">
+              <% if ef.file.attached? && ef.file.image? %>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              <% else %>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+              <% end %>
+            </div>
+          </div>
+          <div class="aspect-video mb-4 rounded-xl overflow-hidden bg-hamzis-brown/5 dark:bg-white/5 flex items-center justify-center border border-hamzis-brown/5">
+            <% if ef.file.attached? %>
+              <% if ef.file.image? %>
+                <%= image_tag ef.file.variant(resize_to_limit: [400, 250]), class: "object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" %>
+              <% else %>
+                <div class="text-center p-4">
+                  <p class="text-[10px] font-mono text-hamzis-brown/60 dark:text-hamzis-copper/60 break-all"><%= ef.file.filename.to_s %></p>
+                  <p class="text-[9px] font-black uppercase text-hamzis-copper/40 mt-1"><%= number_to_human_size(ef.file.byte_size) %></p>
+                </div>
+              <% end %>
             <% else %>
-              <p class="text-sm text-gray-700 dark:text-gray-300">
-                <%= ef.file.filename.to_s %>
-              </p>
+              <span class="text-[10px] font-black uppercase text-hamzis-brown/20 tracking-widest">Missing Asset</span>
             <% end %>
-            <%= link_to "Download",
-                  rails_blob_path(ef.file, disposition: "attachment"),
-                  class: "inline-block px-3 py-1 rounded bg-hamzis-copper text-white text-xs hover:bg-hamzis-black transition",
-                  target: "_blank", rel: "noopener" %>
-          <% else %>
-            <p class="text-sm text-gray-500">No file attached.</p>
+          </div>
+          <% if ef.file.attached? %>
+            <%= link_to rails_blob_path(ef.file, disposition: "attachment"),
+                class: "flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-hamzis-brown/10 text-hamzis-brown dark:text-hamzis-copper border border-hamzis-brown/20 text-[10px] font-black uppercase tracking-widest hover:bg-hamzis-copper hover:text-white transition-all shadow-sm",
+                target: "_blank", rel: "noopener" do %>
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Download Asset
+            <% end %>
           <% end %>
         </div>
       <% end %>
     </div>
   <% else %>
-    <p class="text-sm text-gray-500">No documents available.</p>
+    <div class="py-16 text-center border-2 border-dashed border-hamzis-brown/10 rounded-2xl">
+      <p class="text-[10px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40 italic">No authenticated documents found for this record</p>
+    </div>
   <% end %>
 </div>

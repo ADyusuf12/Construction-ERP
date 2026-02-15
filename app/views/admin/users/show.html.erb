@@ -78,9 +78,9 @@
     <h3 class="text-sm font-semibold text-hamzis-brown dark:text-hamzis-copper mb-3">System Summary</h3>
     <ul class="space-y-2">
       <li>Projects owned: <span class="font-semibold"><%= @user.projects.count %></span></li>
-      <li>Tasks assigned: <span class="font-semibold"><%= @user.tasks.count %></span></li>
-      <li>Reports submitted: <span class="font-semibold"><%= @user.reports.count %></span></li>
-      <li>Leaves taken: <span class="font-semibold"><%= @user.leaves.count %></span></li>
+      <li>Tasks assigned: <span class="font-semibold"><%= @user.employee&.tasks&.count.to_i %></span></li>
+      <li>Reports submitted: <span class="font-semibold"><%= @user.employee&.reports&.count.to_i %></span></li>
+      <li>Leaves taken: <span class="font-semibold"><%= @user.employee&.leaves&.count.to_i %></span></li>
     </ul>
   </div>
 </div>

@@ -1,31 +1,61 @@
 <% if policy_scope(Task).any? %>
-  <div id="tasks-tab" class="tab-content hidden">
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-                border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
-      <h2 class="text-xl font-bold mb-4 text-hamzis-brown dark:text-hamzis-copper">Recent Tasks</h2>
+  <div id="tasks-tab" class="tab-content hidden animate-fade-in">
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-xl p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tight">Recent Tasks</h2>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">
+          Operational Queue
+        </span>
+      </div>
       <% if @tasks.any? %>
-        <table class="min-w-full text-sm text-left border-collapse">
-          <thead>
-            <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
-              <th class="px-4 py-3">Title</th>
-              <th class="px-4 py-3">Status</th>
-              <th class="px-4 py-3">Due Date</th>
-              <th class="px-4 py-3">Project</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-hamzis-brown/20">
-            <% @tasks.each_with_index do |task, index| %>
-              <tr id="<%= dom_id(task) %>" class="<%= index.even? ? 'bg-hamzis-brown/5 dark:bg-hamzis-copper/5' : '' %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
-                <td class="px-4 py-3 font-semibold"><%= task.title %></td>
-                <td class="px-4 py-3"><%= task.status.humanize %></td>
-                <td class="px-4 py-3"><%= task.due_date&.strftime("%b %d, %Y") %></td>
-                <td class="px-4 py-3"><%= task.project.name %></td>
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="min-w-full border-separate border-spacing-0 text-left">
+            <thead>
+              <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10">
+                <% ["Title", "Status", "Due Date", "Project Context"].each do |head| %>
+                  <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-copper border-b border-hamzis-copper/10 text-left">
+                    <%= head %>
+                  </th>
+                <% end %>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+            </thead>
+            <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
+              <% @tasks.each do |task| %>
+                <tr id="dash_<%= dom_id(task) %>" class="group hover:bg-white/40 dark:hover:bg-hamzis-copper/5 transition-all duration-300">
+                  <td class="px-4 py-4">
+                    <div class="text-xs font-black text-hamzis-brown dark:text-hamzis-textDark uppercase tracking-tight"><%= task.title %></div>
+                  </td>
+                  <td class="px-4 py-4">
+                    <div class="flex items-center gap-2">
+                      <%# Status Dot for quick visual scanning %>
+                      <span class="h-1.5 w-1.5 rounded-full <%= task.status_done? ? 'bg-green-500' : 'bg-hamzis-copper' %>"></span>
+                      <span class="text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/70 dark:text-hamzis-copper">
+                        <%= task.status.humanize %>
+                      </span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4">
+                    <div class="text-[10px] font-mono text-hamzis-brown dark:text-hamzis-copper/80">
+                      <%= task.due_date&.strftime("%d.%m.%y") || "--.--.--" %>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4">
+                    <div class="flex items-center gap-2">
+                      <div class="w-1 h-3 bg-hamzis-copper/30 rounded-full"></div>
+                      <div class="text-[10px] font-bold text-hamzis-brown/60 dark:text-hamzis-textDark/60 uppercase truncate max-w-[150px]">
+                        <%= task.project.name %>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       <% else %>
-        <p class="text-center py-6 text-sm text-hamzis-brown dark:text-hamzis-copper">No tasks available</p>
+        <div class="py-12 text-center border-2 border-dashed border-hamzis-brown/10 rounded-xl">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">No pending tasks in your queue</p>
+        </div>
       <% end %>
     </div>
   </div>

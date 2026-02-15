@@ -38,11 +38,15 @@
   </td>
   <!-- Assigned Personnel -->
   <td class="px-6 py-4">
-    <div class="text-[10px] font-bold text-hamzis-brown/70 dark:text-hamzis-copper/90 uppercase">
-      <% if task.users.any? %>
-        <%= task.users.map { |u| u.employee&.full_name || u.email }.join(", ") %>
+    <div class="flex flex-wrap gap-1.5">
+      <% if task.employees.any? %>
+        <% task.employees.each do |employee| %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded bg-hamzis-brown/5 dark:bg-hamzis-copper/10 text-[9px] font-black uppercase tracking-tight text-hamzis-brown dark:text-hamzis-copper border border-hamzis-brown/10">
+            <%= employee.personal_detail&.first_name&.first %> <%= employee.personal_detail&.last_name %>
+          </span>
+        <% end %>
       <% else %>
-        <span class="text-red-500/40 tracking-widest italic opacity-50">Unassigned</span>
+        <span class="text-[9px] font-bold uppercase tracking-widest text-red-500/40 italic">Unassigned</span>
       <% end %>
     </div>
   </td>

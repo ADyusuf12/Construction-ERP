@@ -1,8 +1,42 @@
-<div class="grid lg:grid-cols-3 gap-6">
-  <%= render partial: "inventory/inventory_items/item_card", locals: { inventory_item: @inventory_item } %>
-  <div class="lg:col-span-2 space-y-6">
-    <%= render partial: "inventory/inventory_items/stock_by_warehouse", locals: { inventory_item: @inventory_item } %>
-    <%= render partial: "inventory/inventory_items/stock_movements", locals: { inventory_item: @inventory_item, stock_movements: @stock_movements } %>
+<% content_for :title, "#{@inventory_item.name} | Inventory Asset" %>
+<div class="relative min-h-screen pb-12 animate-fade-in">
+  <!-- Section Header: Breadcrumbs & Title -->
+  <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div>
+      <div class="flex items-center gap-2 mb-2">
+        <%= link_to "Inventory", inventory_inventory_items_path, class: "text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-copper hover:text-hamzis-brown dark:hover:text-white transition" %>
+        <span class="text-hamzis-brown/20 dark:text-hamzis-copper/20">/</span>
+        <span class="text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-brown/40 dark:text-hamzis-copper/40">Asset Detail</span>
+      </div>
+      <h1 class="text-4xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper uppercase italic">
+        Stock Specification
+      </h1>
+    </div>
+    <div class="flex items-center gap-3">
+      <% if policy([ :inventory, @inventory_item ]).update? %>
+        <%= link_to edit_inventory_inventory_item_path(@inventory_item),
+            class: "px-6 py-3 rounded-xl bg-hamzis-brown/10 text-hamzis-brown dark:text-hamzis-copper border border-hamzis-brown/20 font-black uppercase tracking-widest text-[11px] hover:bg-hamzis-copper hover:text-white transition-all active:scale-95 shadow-md" do %>
+          Modify Asset
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <!-- Main Operational Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+    <!-- Column 1: Technical Spec Card (Sticky for easy reference while scrolling movements) -->
+    <div class="lg:sticky lg:top-8">
+      <%= render partial: "inventory/inventory_items/item_card", locals: { inventory_item: @inventory_item } %>
+    </div>
+    <!-- Column 2: Distribution & Ledger -->
+    <div class="lg:col-span-2 space-y-8">
+      <%# Stock Distribution Table %>
+      <%= render partial: "inventory/inventory_items/stock_by_warehouse", locals: { inventory_item: @inventory_item } %>
+      <%# Movement Ledger Table %>
+      <%= render partial: "inventory/inventory_items/stock_movements", locals: { inventory_item: @inventory_item, stock_movements: @stock_movements } %>
+      <%# Dynamic Form Entry Frame %>
+      <turbo-frame id="stock_movement_form" class="block w-full empty:hidden bg-hamzis-white/50 dark:bg-hamzis-black/50 border border-dashed border-hamzis-copper/30 rounded-2xl p-6 transition-all duration-500">
+        <!-- Movements will load here via Turbo -->
+      </turbo-frame>
+    </div>
   </div>
 </div>
-<turbo-frame id="stock_movement_form" class="hidden"></turbo-frame>

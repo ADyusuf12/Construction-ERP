@@ -1,33 +1,66 @@
 <% if policy_scope(Hr::Employee).any? %>
-  <div id="hr-tab" class="tab-content hidden">
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-                border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
-      <h2 class="text-xl font-bold mb-4 text-hamzis-brown dark:text-hamzis-copper">Leave History</h2>
+  <div id="hr-tab" class="tab-content hidden animate-fade-in">
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-xl p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tight">Leave History</h2>
+        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-hamzis-brown/40 dark:text-hamzis-copper/40">
+          Personnel Attendance
+        </span>
+      </div>
       <% if @leaves.any? %>
-        <table class="min-w-full text-sm text-left border-collapse">
-          <thead>
-            <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
-              <th class="px-4 py-3">Reason</th>
-              <th class="px-4 py-3">Start Date</th>
-              <th class="px-4 py-3">End Date</th>
-              <th class="px-4 py-3">Duration</th>
-              <th class="px-4 py-3">Status</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-hamzis-brown/20">
-            <% @leaves.each_with_index do |leave, index| %>
-              <tr id="<%= dom_id(leave) %>" class="<%= index.even? ? 'bg-hamzis-brown/5 dark:bg-hamzis-copper/5' : '' %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
-                <td class="px-4 py-3 font-semibold"><%= leave.reason %></td>
-                <td class="px-4 py-3"><%= leave.start_date.strftime("%b %d, %Y") %></td>
-                <td class="px-4 py-3"><%= leave.end_date.strftime("%b %d, %Y") %></td>
-                <td class="px-4 py-3"><%= leave.duration %> days</td>
-                <td class="px-4 py-3"><%= leave.status.humanize %></td>
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="min-w-full border-separate border-spacing-0 text-left">
+            <thead>
+              <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10">
+                <% ["Reason", "Timeline", "End Date", "Duration", "Status"].each do |head| %>
+                  <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-copper border-b border-hamzis-copper/10 text-left">
+                    <%= head %>
+                  </th>
+                <% end %>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+            </thead>
+            <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
+              <% @leaves.each do |leave| %>
+                <tr id="dash_<%= dom_id(leave) %>" class="group hover:bg-white/40 dark:hover:bg-hamzis-copper/5 transition-all duration-300">
+                  <td class="px-4 py-4">
+                    <div class="flex items-center gap-3">
+                      <svg xmlns="http://www.w3.org" class="h-4 w-4 text-hamzis-copper/60 group-hover:text-hamzis-copper transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <div class="text-xs font-black text-hamzis-brown dark:text-hamzis-textDark uppercase tracking-tight truncate max-w-[180px]">
+                        <%= leave.reason %>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4">
+                    <div class="text-[10px] font-mono text-hamzis-brown/80 dark:text-hamzis-copper/80">
+                      <%= leave.start_date.strftime("%d.%m.%y") %>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4">
+                    <div class="text-[10px] font-mono text-hamzis-brown/80 dark:text-hamzis-copper/80">
+                      <%= leave.end_date.strftime("%d.%m.%y") %>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4">
+                    <div class="text-xs font-black text-hamzis-brown dark:text-white uppercase">
+                      <%= leave.duration %> <span class="text-[9px] opacity-60">Days</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4">
+                    <span class="inline-flex px-2 py-0.5 rounded border border-hamzis-brown/10 bg-hamzis-brown/5 dark:border-hamzis-copper/20 dark:bg-hamzis-copper/5 text-[9px] font-black uppercase tracking-widest text-hamzis-brown/70 dark:text-hamzis-copper">
+                      <%= leave.status.humanize %>
+                    </span>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       <% else %>
-        <p class="text-center py-6 text-sm text-hamzis-brown dark:text-hamzis-copper">No leave records available</p>
+        <div class="py-12 text-center border-2 border-dashed border-hamzis-brown/10 rounded-xl">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">No leave records registered</p>
+        </div>
       <% end %>
     </div>
   </div>
