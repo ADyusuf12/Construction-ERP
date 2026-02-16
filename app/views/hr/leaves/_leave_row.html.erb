@@ -1,54 +1,77 @@
-<tr id="<%= dom_id(leave) %>" class="<%= row_class %> group hover:bg-white/40 dark:hover:bg-hamzis-black/40 transition-all duration-300">
-  <% if local_assigns[:show_employee] %>
+<tr id="<%= dom_id(leave) %>" class="<%= local_assigns[:row_class] %> group hover:bg-white/40 dark:hover:bg-hamzis-black/40 transition-all duration-300">
+    <% if local_assigns[:show_employee] %>
     <td class="px-6 py-4">
-      <span class="text-sm font-black text-hamzis-brown dark:text-white uppercase tracking-tight">
-        <%= leave.employee.full_name %>
-      </span>
+        <span class="text-sm font-black text-hamzis-brown dark:text-white uppercase tracking-tight">
+            <%= leave.employee.full_name %>
+        </span>
     </td>
-  <% end %>
-  <td class="px-6 py-4">
-    <div class="flex flex-col">
-      <span class="text-[11px] font-mono font-bold text-hamzis-brown dark:text-hamzis-copper">
-        <%= leave.start_date.strftime("%d.%m.%Y") %> — <%= leave.end_date.strftime("%d.%m.%Y") %>
-      </span>
-      <span class="text-[9px] uppercase font-black text-hamzis-brown/40 dark:text-hamzis-copper/40 tracking-widest">
-        <%= (leave.end_date - leave.start_date).to_i + 1 %> Operational Days
-      </span>
-    </div>
-  </td>
-  <td class="px-6 py-4">
-    <p class="text-[10px] font-bold uppercase tracking-wide text-hamzis-brown/70 dark:text-hamzis-copper/70 leading-relaxed italic">
-      "<%= truncate(leave.reason, length: 50) %>"
-    </p>
-  </td>
-  <td class="px-6 py-4">
-    <% status_style = case
-       when leave.status_approved? then 'text-green-500 bg-green-500/10 border-green-500/20'
-       when leave.status_rejected? then 'text-red-500 bg-red-500/10 border-red-500/20'
-       when leave.status_pending? then 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20'
-       else 'text-gray-500 bg-gray-500/10 border-gray-500/20'
-       end
+    <% end %>
+
+    <td class="px-6 py-4">
+        <div class="flex flex-col">
+            <span class="text-[11px] font-mono font-bold text-hamzis-brown dark:text-hamzis-copper">
+                <%= leave.start_date.strftime("%d.%m.%Y") %> — <%= leave.end_date.strftime("%d.%m.%Y") %>
+            </span>
+            <span class="text-[9px] uppercase font-black text-hamzis-brown/40 dark:text-hamzis-copper/40 tracking-widest">
+                <%= (leave.end_date - leave.start_date).to_i + 1 %> Operational Days
+            </span>
+        </div>
+    </td>
+
+    <td class="px-6 py-4">
+        <p class="text-[10px] font-bold uppercase tracking-wide text-hamzis-brown/70 dark:text-hamzis-copper/70 leading-relaxed italic">
+            "<%= truncate(leave.reason, length: 50) %>"
+        </p>
+    </td>
+
+    <td class="px-6 py-4">
+        <% status_style = case
+        when leave.status_approved? then 'text-green-500 bg-green-500/10 border-green-500/20'
+        when leave.status_rejected? then 'text-red-500 bg-red-500/10 border-red-500/20'
+        when leave.status_pending? then 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20'
+        else 'text-gray-500 bg-gray-500/10 border-gray-500/20'
+        end
     %>
-    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border text-[9px] font-black uppercase tracking-[0.15em] <%= status_style %>">
-      <div class="w-1 h-1 rounded-full bg-current <%= 'animate-pulse' if leave.status_pending? %>"></div>
-      <%= leave.status.humanize %>
-    </span>
-  </td>
-  <td class="px-6 py-4">
-    <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-      <%= link_to hr_leave_path(leave), class: "p-2 rounded-lg bg-hamzis-copper text-white hover:scale-110 transition shadow-lg", title: "Review Dossier" do %>
-        <svg xmlns="http://www.w3.org" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-      <% end %>
-      <% if policy(leave).approve? %>
-        <%= button_to approve_hr_leave_path(leave), method: :patch, class: "p-2 rounded-lg bg-green-600 text-white hover:scale-110 transition shadow-lg", title: "Authorize" do %>
-          <svg xmlns="http://www.w3.org" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" /></svg>
-        <% end %>
-      <% end %>
-      <% if policy(leave).cancel? %>
-        <%= button_to cancel_hr_leave_path(leave), method: :patch, class: "p-2 rounded-lg bg-red-600 text-white hover:scale-110 transition shadow-lg", title: "Void Request" do %>
-          <svg xmlns="http://www.w3.org" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M6 18L18 6M6 6l12 12" /></svg>
-        <% end %>
-      <% end %>
-    </div>
-  </td>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border text-[9px] font-black uppercase tracking-[0.15em] <%= status_style %>">
+            <div class="w-1 h-1 rounded-full bg-current <%= 'animate-pulse' if leave.status_pending? %>"></div>
+            <%= leave.status.humanize %>
+        </span>
+    </td>
+
+    <td class="px-6 py-4 text-right">
+        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <%= link_to hr_leave_path(leave), class: "p-2 rounded-lg bg-hamzis-copper text-white hover:scale-110 transition shadow-lg", title: "Review Dossier" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            <% end %>
+
+            <% if leave.status_pending? %>
+            <% if policy(leave).approve? %>
+            <%= button_to approve_hr_leave_path(leave), method: :patch, class: "p-2 rounded-lg bg-green-600 text-white hover:scale-110 transition shadow-lg", title: "Authorize" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path d="M5 13l4 4L19 7" />
+            </svg>
+            <% end %>
+            <% end %>
+
+            <% if policy(leave).destroy? %>
+            <%= button_to "#",
+              class: "p-2 rounded-lg bg-red-600 text-white hover:scale-110 transition shadow-lg cursor-pointer",
+              title: "Purge Request",
+              form: {
+                "data-action" => "click->confirm-delete#open",
+                "data-confirm-delete-title-param" => "Delete Registry Entry?",
+                "data-confirm-delete-message-param" => "Remove leave request for #{leave.employee.full_name}?",
+                "data-confirm-delete-confirm-path-param" => hr_leave_path(leave)
+              } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+            <% end %>
+            <% end %>
+            <% end %>
+        </div>
+    </td>
 </tr>

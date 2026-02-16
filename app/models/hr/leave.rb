@@ -7,20 +7,23 @@ module Hr
 
     validates :start_date, :end_date, :reason, presence: true
     validate :end_date_after_start_date
+    validate :has_sufficient_balance, on: :create
 
-    # Convenience method: number of days requested
+    # Number of days requested
     def duration
       return 0 if start_date.blank? || end_date.blank?
       (end_date - start_date).to_i + 1
     end
 
-    # Apply leave balance deduction when approved
-    def apply_leave_balance!
-      return unless status_approved?
-      employee.decrement!(:leave_balance, duration)
-    end
-
     private
+
+    def has_sufficient_balance
+      return if employee.blank? || start_date.blank? || end_date.blank?
+
+      if employee.leave_balance < duration
+        errors.add(:base, "Requested duration (#{duration} days) exceeds your current balance of #{employee.leave_balance} days.")
+      end
+    end
 
     def end_date_after_start_date
       return if end_date.blank? || start_date.blank?

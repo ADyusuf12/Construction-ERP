@@ -9,11 +9,31 @@ export default class extends Controller {
 
   open(event) {
     event.preventDefault()
-    const { title, message, confirmPath } = event.params
-    this.modalTarget.classList.remove("hidden")
-    this.modalTarget.querySelector("#modal-title").textContent = title
-    this.modalTarget.querySelector("p").textContent = message
-    this.modalTarget.querySelector("form").action = confirmPath
+
+    // 1. Extract params
+    const { title, message, confirmPath, confirmMethod = "delete" } = event.params
+
+    const modal = this.modalTarget
+    const form = modal.querySelector("form")
+    const methodInput = form.querySelector("input[name='_method']")
+
+    // 2. Update UI text
+    modal.querySelector("#modal-title").textContent = title
+    modal.querySelector("p").textContent = message
+
+    // 3. Configure Form action and method
+    form.action = confirmPath
+    if (methodInput) {
+      methodInput.value = confirmMethod
+    }
+
+    // 4. AUTO-CLOSE: Hide modal immediately when the form is submitted
+    form.addEventListener("submit", () => {
+      this.close()
+    }, { once: true })
+
+    // 5. Show modal and add listeners
+    modal.classList.remove("hidden")
     document.addEventListener("keyup", this.boundHandleKeyUp)
   }
 
@@ -23,8 +43,10 @@ export default class extends Controller {
   }
 
   handleKeyUp(event) {
-    if (event.key === "Escape") {
-      this.close()
-    }
+    if (event.key === "Escape") this.close()
+  }
+
+  disconnect() {
+    document.removeEventListener("keyup", this.boundHandleKeyUp)
   }
 }

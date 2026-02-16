@@ -1,13 +1,15 @@
 <% content_for :title, "Site Operations | Hamzis Systems" %>
 <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-  <div>
-    <h1 class="text-4xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper uppercase">Project Registry</h1>
-    <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Architectural and operational oversight of active site deployments.</p>
-  </div>
-  <%= link_to new_project_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-hamzis-brown transition-all duration-500 active:scale-95" do %>
-    <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" /></svg>
-    Initialize Site
-  <% end %>
+    <div>
+        <h1 class="text-4xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper uppercase">Project Registry</h1>
+        <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Architectural and operational oversight of active site deployments.</p>
+    </div>
+    <%= link_to new_project_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-hamzis-brown transition-all duration-500 active:scale-95" do %>
+    <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
+    </svg>
+    New Project
+    <% end %>
 </div>
 <%= render "projects_summary", projects: @projects %>
 <%= render "projects_table", projects: @projects %>

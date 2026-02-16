@@ -1,0 +1,6 @@
+<%# 1. Remove the row from the table registry entirely %>
+<%= turbo_stream.remove dom_id(@leave) %>
+<%# 2. Update Flashes for instant feedback %>
+<%= turbo_stream.replace "flash" do %>
+  <%= render "shared/flash" %>
+<% end %>
