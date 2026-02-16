@@ -1,0 +1,60 @@
+<section class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-lg p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-2">
+      <div class="h-4 w-1 bg-hamzis-copper rounded-full"></div>
+      <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-hamzis-brown dark:text-hamzis-copper">Recent Movements</h3>
+    </div>
+    <%= link_to new_inventory_inventory_item_stock_movement_path(inventory_item),
+        class: "flex items-center gap-2 px-4 py-2 rounded-lg bg-hamzis-copper text-white text-[9px] font-black uppercase tracking-widest shadow-md hover:bg-hamzis-black transition-all active:scale-95 cursor-pointer" do %>
+      Record Movement
+    <% end %>
+  </div>
+  <% if stock_movements.any? %>
+    <div class="overflow-x-auto custom-scrollbar">
+      <%# Added text-left to the table itself %>
+      <table class="min-w-full border-separate border-spacing-0 text-left">
+        <thead>
+          <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10">
+            <% ["Timestamp", "Operation", "Net Qty", "Personnel"].each do |head| %>
+              <%# Explicit text-left for headers %>
+              <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-copper border-b border-hamzis-copper/10 text-left">
+                <%= head %>
+              </th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
+          <% stock_movements.each do |m| %>
+            <tr class="group hover:bg-white/40 dark:hover:bg-hamzis-copper/5 transition-all <%= 'opacity-40' if m.cancelled? %>">
+              <%# Timestamp %>
+              <td class="px-4 py-4 font-mono text-[10px] text-hamzis-brown/60 dark:text-hamzis-copper/60 text-left">
+                <%= l(m.created_at, format: :short) %>
+              </td>
+              <%# Operation %>
+              <td class="px-4 py-4 text-left">
+                <div class="text-xs font-black text-hamzis-brown dark:text-white uppercase tracking-tight">
+                  <%= m.movement_type.to_s.humanize %>
+                </div>
+                <div class="text-[9px] font-bold text-hamzis-copper/70 uppercase tracking-widest">
+                  <%= m.cancelled? ? "(VOIDED)" : "(CONFIRMED)" %>
+                </div>
+              </td>
+              <%# Net Qty %>
+              <td class="px-4 py-4 font-mono text-xs font-bold text-hamzis-brown dark:text-white text-left">
+                <%= m.quantity %>
+              </td>
+              <%# Personnel %>
+              <td class="px-4 py-4 text-[10px] font-bold text-hamzis-brown/60 dark:text-hamzis-textDark/60 uppercase text-left">
+                <%= m.employee&.full_name || "System" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="py-12 text-center border-2 border-dashed border-hamzis-brown/10 rounded-xl">
+      <p class="text-[10px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">No movements recorded yet</p>
+    </div>
+  <% end %>
+</section>

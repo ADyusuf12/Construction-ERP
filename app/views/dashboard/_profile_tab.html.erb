@@ -1,41 +1,61 @@
 <div id="profile-tab" class="tab-content">
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-              border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
-    <h2 class="text-xl font-bold mb-4 text-hamzis-brown dark:text-hamzis-copper">Profile</h2>
-    <div class="grid md:grid-cols-2 gap-6">
-      <!-- User Info -->
-      <div class="bg-hamzis-copper dark:bg-gray-800 rounded-xl shadow p-4">
-        <p class="text-sm text-white dark:text-gray-300">
-          <span class="font-medium  text-black dark:text-hamzis-copper">Email:</span> <%= current_user.email %>
-        </p>
-        <p class="text-sm text-white dark:text-gray-300 mt-2">
-          <span class="font-medium  text-black dark:text-hamzis-copper">Role:</span> <%= current_user.role.upcase %>
-        </p>
+  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-xl p-8">
+    <!-- Tab Header -->
+    <div class="flex items-center gap-3 mb-8 pb-4 border-b border-hamzis-brown/10">
+      <div class="p-2.5 rounded-xl bg-hamzis-copper/10 text-hamzis-copper">
+        <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
       </div>
-      <!-- Employee Info -->
+      <h2 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tight">Personnel Profile</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Account Credentials Card -->
+      <div class="bg-white/40 dark:bg-black/20 border border-hamzis-brown/10 rounded-2xl p-6 shadow-sm">
+        <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-brown/40 dark:text-hamzis-copper/40 mb-4">Account Credentials</h4>
+        <div class="space-y-4">
+          <div>
+            <p class="text-[9px] font-bold uppercase tracking-widest text-hamzis-copper mb-1">Email Address</p>
+            <p class="text-sm font-bold text-hamzis-brown dark:text-white"><%= current_user.email %></p>
+          </div>
+          <div>
+            <p class="text-[9px] font-bold uppercase tracking-widest text-hamzis-copper mb-1">System Role</p>
+            <span class="inline-flex px-2 py-0.5 rounded bg-hamzis-brown/10 text-hamzis-brown dark:text-hamzis-copper text-[10px] font-black uppercase tracking-tighter">
+              <%= current_user.role.upcase %>
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- Professional Records Card -->
       <% if @employee %>
-        <div class="bg-hamzis-copper dark:bg-gray-800 rounded-xl shadow p-4 space-y-2">
-          <p class="text-sm text-white dark:text-gray-300">
-            <span class="font-medium  text-black dark:text-hamzis-copper ">Hamzis ID:</span> <%= @employee.hamzis_id %>
-          </p>
-          <p class="text-sm text-white dark:text-gray-300">
-            <span class="font-medium  text-black dark:text-hamzis-copper ">Department:</span> <%= @employee.department || "N/A" %>
-          </p>
-          <p class="text-sm text-white dark:text-gray-300">
-            <span class="font-medium  text-black dark:text-hamzis-copper">Position:</span> <%= @employee.position_title.upcase || "N/A" %>
-          </p>
-          <p class="text-sm text-white dark:text-gray-300">
-            <span class="font-medium  text-black dark:text-hamzis-copper">Leave Balance:</span> <%= @employee.leave_balance %> days
-          </p>
-          <p class="text-sm text-white dark:text-gray-300">
-            <span class="font-medium  text-black dark:text-hamzis-copper">Performance Score:</span> <%= @employee.performance_score || "N/A" %>
-          </p>
+        <div class="bg-white/40 dark:bg-black/20 border border-hamzis-brown/10 rounded-2xl p-6 shadow-sm">
+          <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-brown/40 dark:text-hamzis-copper/40 mb-4">HR Records</h4>
+          <div class="grid grid-cols-2 gap-y-4 gap-x-2">
+            <div>
+              <p class="text-[9px] font-bold uppercase tracking-widest text-hamzis-copper mb-1">Staff ID</p>
+              <p class="text-sm font-black text-hamzis-brown dark:text-white font-mono"><%= @employee.hamzis_id %></p>
+            </div>
+            <div>
+              <p class="text-[9px] font-bold uppercase tracking-widest text-hamzis-copper mb-1">Department</p>
+              <p class="text-sm font-bold text-hamzis-brown dark:text-white"><%= @employee.department || "N/A" %></p>
+            </div>
+            <div class="col-span-2">
+              <p class="text-[9px] font-bold uppercase tracking-widest text-hamzis-copper mb-1">Designation</p>
+              <p class="text-sm font-bold text-hamzis-brown dark:text-white uppercase tracking-tight"><%= @employee.position_title || "N/A" %></p>
+            </div>
+            <div>
+              <p class="text-[9px] font-bold uppercase tracking-widest text-hamzis-copper mb-1">Leave Balance</p>
+              <p class="text-sm font-bold text-hamzis-brown dark:text-white"><%= @employee.leave_balance %> <span class="text-[10px] opacity-60">Days Left</span></p>
+            </div>
+            <div>
+              <p class="text-[9px] font-bold uppercase tracking-widest text-hamzis-copper mb-1">Performance</p>
+              <p class="text-sm font-bold text-hamzis-brown dark:text-white"><%= @employee.performance_score || "N/A" %></p>
+            </div>
+          </div>
         </div>
       <% else %>
-        <div class="bg-hamzis-copper dark:bg-gray-800 rounded-xl shadow p-4">
-          <p class="text-sm text-gray-500 dark:text-gray-400">
-            No HR record linked to your account.
-          </p>
+        <div class="flex flex-col items-center justify-center p-8 border-2 border-dashed border-hamzis-brown/10 rounded-2xl bg-hamzis-brown/5">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">No HR record linked to your account</p>
         </div>
       <% end %>
     </div>

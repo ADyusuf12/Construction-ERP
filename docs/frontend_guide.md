@@ -1,900 +1,547 @@
-# Frontend Guide
+# User Guide - Hamzis Systems
 
-This document provides a comprehensive overview of the frontend architecture, styling approach, component structure, and development guidelines for the Hamzis Systems application.
+This guide helps you understand how to use the Hamzis Systems application. Whether you're a manager, employee, or administrator, this guide will walk you through the key features and workflows.
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Technology Stack](#technology-stack)
-- [Directory Structure](#directory-structure)
-- [Styling & Design](#styling--design)
-- [Layout & Components](#layout--components)
-- [JavaScript Controllers](#javascript-controllers)
-- [Forms & Interactivity](#forms--interactivity)
-- [Best Practices](#best-practices)
+- [Getting Started](#getting-started)
+- [Dashboard Overview](#dashboard-overview)
+- [Managing Projects](#managing-projects)
+- [Working with Tasks](#working-with-tasks)
+- [Creating Reports](#creating-reports)
+- [HR & Leave Management](#hr--leave-management)
+- [Inventory & Stock](#inventory--stock)
+- [Accounting & Payroll](#accounting--payroll)
+- [Managing Clients](#managing-clients)
+- [Common Tasks](#common-tasks)
 
 ---
 
-## Overview
+## Getting Started
 
-The Hamzis Systems frontend is built with modern, interactive technologies that prioritize user experience while maintaining clean, maintainable code. The application uses server-side rendering with Hotwire for dynamic updates, eliminating the need for a separate SPA framework.
+### Logging In
 
-### Key Principles
+1. Navigate to the application URL
+2. Enter your email and password
+3. Click "Sign In"
+4. You'll be redirected to the main dashboard
 
-- **Server-First Rendering:** HTML is rendered server-side, reducing JavaScript complexity
-- **Progressive Enhancement:** Interactivity is layered on top of semantic HTML
-- **Responsive Design:** Mobile-first approach using Tailwind CSS
-- **Dark Mode Support:** Full light/dark theme toggle throughout the application
-- **Accessibility:** Semantic HTML, ARIA labels, and keyboard navigation support
+### Navigation Sidebar
 
----
+The sidebar on the left contains all main navigation options:
 
-## Technology Stack
+- **Dashboard** - Your main overview page
+- **Projects** - View and manage all projects
+- **Tasks** - Track tasks across projects
+- **Reports** - Submit and review project reports
+- **Inventory** - Manage stock and warehouse operations
+- **Accounting** - Handle transactions and payroll
+- **HR** - Employee and leave management
 
-### Core Technologies
+### Dark Mode
 
-- **HTML/ERB:** Rails view templates with embedded Ruby for dynamic content
-- **Tailwind CSS:** Utility-first CSS framework for rapid UI development
-- **Hotwire:**
-  - **Turbo:** Fast navigation and form submissions via AJAX
-  - **Stimulus:** Lightweight JavaScript framework for controller logic
-- **JavaScript:** Vanilla JS with Stimulus controllers for interactivity
-- **Rails Asset Pipeline:** CSS/JS bundling and minification
-
-### Version Information
-
-- Rails 8.0.4 with CSS/JS bundling via Importmap
-- Tailwind CSS 3.x via the `tailwindcss-rails` gem
-- Hotwire (Turbo & Stimulus) included by default in Rails 8
+Click the theme toggle in the footer to switch between light and dark mode. Your preference is saved for future visits.
 
 ---
 
-## Directory Structure
+## Dashboard Overview
 
-### Views Organization
+The dashboard shows you an at-a-glance view of your work:
 
-```
-app/views/
-├── layouts/
-│   ├── application.html.erb    # Main application layout with sidebar and footer
-│   └── mailer.html.erb         # Email template layout
-├── shared/
-│   ├── _sidebar.html.erb       # Main navigation sidebar
-│   ├── sidebar/
-│   │   ├── _operations.html.erb    # Project/Task/Report navigation
-│   │   ├── _accounting.html.erb    # Accounting module navigation
-│   │   ├── _hr.html.erb            # HR module navigation
-│   │   └── _inventory.html.erb     # Inventory module navigation
-│   ├── _flash.html.erb         # Flash message alerts
-│   ├── _auth_links.html.erb    # Authentication links
-│   └── _confirm_delete_modal.html.erb # Reusable delete confirmation
-├── dashboard/
-│   └── home/
-│       └── index.html.erb      # Main dashboard overview
-├── projects/
-│   ├── index.html.erb          # Projects list
-│   ├── show.html.erb           # Project detail view
-│   ├── new.html.erb            # New project form
-│   ├── edit.html.erb           # Edit project form
-│   ├── _form.html.erb          # Shared project form partial
-│   ├── _projects_table.html.erb # Projects table component
-│   ├── _projects_summary.html.erb # KPI summary card
-│   └── tabs/
-│       ├── _tasks_tab.html.erb # Nested tasks tab
-│       ├── _reports_tab.html.erb # Project reports tab
-│       ├── _expenses_tab.html.erb # Project expenses tab
-│       └── _inventory_tab.html.erb # Project inventory tab
-├── tasks/
-│   ├── index.html.erb          # All tasks view
-│   ├── show.html.erb           # Task detail
-│   ├── new.html.erb            # New task form
-│   ├── edit.html.erb           # Edit task form
-│   ├── _form.html.erb          # Shared task form
-│   ├── _task_row.html.erb      # Table row component
-│   ├── _task_table_header.html.erb # Table header
-│   └── _dashboard_summary.html.erb # Task metrics
-├── reports/
-│   ├── index.html.erb          # Reports list
-│   ├── show.html.erb           # Report detail
-│   ├── new.html.erb            # New report form
-│   ├── edit.html.erb           # Edit report form
-│   ├── _form.html.erb          # Shared report form
-│   ├── _report.html.erb        # Report card component
-│   ├── _report_row.html.erb    # Table row component
-│   ├── _reports_table.html.erb # Reports table
-│   ├── _dashboard_summary.html.erb # Reports summary
-│   ├── submit.turbo_stream.erb # Turbo Stream: submit report
-│   └── review.turbo_stream.erb # Turbo Stream: review report
-├── project_expenses/
-│   ├── index.html.erb          # Project expenses list
-│   ├── _form.html.erb          # Expense form
-│   └── _expense_row.html.erb   # Table row component
-├── accounting/
-│   ├── transactions/
-│   │   ├── index.html.erb      # Transactions list
-│   │   ├── show.html.erb       # Transaction detail
-│   │   ├── _form.html.erb      # Transaction form
-│   │   └── _transaction_row.html.erb
-│   ├── salary_batches/
-│   │   ├── index.html.erb      # Salary batches list
-│   │   ├── show.html.erb       # Batch detail with salaries
-│   │   ├── _form.html.erb      # Create batch form
-│   │   └── _batch_card.html.erb
-│   ├── salaries/
-│   │   ├── index.html.erb      # All salaries view
-│   │   ├── show.html.erb       # Individual salary
-│   │   ├── _form.html.erb      # Salary form
-│   │   ├── _salary_row.html.erb # Table row
-│   │   └── mark_paid.turbo_stream.erb # Mark as paid
-│   └── deductions/
-│       ├── _form.html.erb      # Deduction form
-│       └── _deduction_row.html.erb
-├── hr/
-│   ├── employees/
-│   │   ├── index.html.erb      # Employee directory
-│   │   ├── show.html.erb       # Employee profile
-│   │   ├── edit.html.erb       # Edit employee
-│   │   ├── _form.html.erb      # Employee form
-│   │   ├── _employee_row.html.erb # Table row
-│   │   └── personal_details/
-│   │       ├── show.html.erb   # Personal details view
-│   │       └── _form.html.erb  # Personal details form
-│   └── leaves/
-│       ├── index.html.erb      # All leaves (admin view)
-│       ├── my_leaves.html.erb  # Employee's leaves
-│       ├── show.html.erb       # Leave detail
-│       ├── new.html.erb        # New leave request
-│       ├── edit.html.erb       # Edit leave request
-│       ├── _form.html.erb      # Leave form
-│       ├── _leave_row.html.erb # Table row
-│       ├── approve.turbo_stream.erb # Approve action
-│       ├── reject.turbo_stream.erb  # Reject action
-│       └── cancel.turbo_stream.erb  # Cancel action
-├── inventory/
-│   ├── inventory_items/
-│   │   ├── index.html.erb      # Inventory master list
-│   │   ├── show.html.erb       # Item detail with stock levels
-│   │   ├── new.html.erb        # New item form
-│   │   ├── edit.html.erb       # Edit item
-│   │   ├── _form.html.erb      # Item form
-│   │   ├── _inventory_table.html.erb # Items table
-│   │   ├── _inventory_row.html.erb # Table row
-│   │   └── _summary.html.erb   # Item KPI card
-│   ├── stock_movements/
-│   │   ├── index.html.erb      # Stock movements list
-│   │   ├── new.html.erb        # New movement form
-│   │   ├── edit.html.erb       # Edit movement
-│   │   └── _form.html.erb      # Movement form
-│   ├── warehouses/
-│   │   ├── index.html.erb      # Warehouse list
-│   │   ├── show.html.erb       # Warehouse detail
-│   │   ├── new.html.erb        # New warehouse form
-│   │   ├── edit.html.erb       # Edit warehouse
-│   │   └── _form.html.erb      # Warehouse form
-│   └── project_inventories/
-│       └── _form.html.erb      # Project inventory allocation form
-├── devise/                      # Authentication views (customized)
-│   ├── sessions/
-│   │   └── new.html.erb        # Login page
-│   ├── passwords/
-│   │   ├── new.html.erb        # Forgot password
-│   │   └── edit.html.erb       # Reset password
-│   └── shared/
-│       ├── _links.html.erb     # Auth links
-│       └── _error_messages.html.erb # Form errors
-└── pwa/
-    └── manifest.json.erb       # PWA manifest
-```
+### What You'll See
 
-### Assets Organization
+- **Recent Projects** - Projects you're assigned to
+- **Pending Tasks** - Tasks awaiting your attention
+- **Recent Reports** - Latest reports submitted
+- **Quick Stats** - Overview numbers for quick reference
 
-```
-app/assets/
-├── stylesheets/
-│   └── application.css         # Main stylesheet (imports Tailwind)
-├── tailwind/
-│   └── application.css         # Tailwind CSS layer definitions
-└── images/                      # Static images and icons
+### Using the Dashboard
 
-app/javascript/
-├── application.js              # Entry point
-├── controllers/
-│   ├── application.js          # Base Stimulus controller
-│   ├── confirm_delete_controller.js
-│   ├── flash_controller.js
-│   ├── sidebar_controller.js
-│   └── project_files_controller.js
-└── index.js                     # Stimulus boot
-```
+1. Click on any project or task from the dashboard to go directly to its details
+2. Use the sidebar to navigate to specific modules
+3. The sidebar highlights your current location
 
 ---
 
-## Styling & Design
+## Managing Projects
 
-### Tailwind CSS Configuration
+Projects are the main work units in Hamzis Systems. Each project contains tasks, reports, expenses, and inventory allocations.
 
-The application uses a custom Hamzis Systems color palette with Tailwind CSS:
+### Viewing Projects
 
-```javascript
-// config/tailwind.config.js
-colors: {
-  hamzis: {
-    brown: "#4e342e",      // Primary brown
-    black: "#212121",      // Deep black
-    white: "#ffffff",      // White
-    copper: "#b87333",     // Copper accent
-    textLight: "#1f2937",  // Light mode text
-    textDark: "#f3f4f6",   // Dark mode text
-  }
-}
-```
+1. Click **Projects** in the sidebar
+2. You'll see a list of all projects
+3. Click on any project name to view details
+4. Use filters to find specific projects
 
-### Color Usage
+### Project Details Page
 
-- **Background:** `bg-hamzis-white` (light) / `bg-hamzis-black` (dark)
-- **Primary:** `bg-hamzis-brown` for major elements
-- **Accent:** `bg-hamzis-copper` for CTAs and highlights
-- **Text:** Dynamic with `dark:` variant for theme switching
-- **Borders/Overlays:** `border-hamzis-brown/20` for subtle divisions
+The project show page displays:
 
-### Common Classes
+- **Project Info** - Name, description, status, deadline
+- **Budget** - Total budget and remaining amount
+- **Progress** - Calculated from task completion
+- **Tabs** - Switch between:
+  - Tasks - All tasks in this project
+  - Reports - Project reports
+  - Expenses - Project expenses
+  - Inventory - Allocated inventory
 
-```erb
-<!-- Cards/Containers -->
-<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+### Creating a New Project
 
-<!-- Buttons -->
-<button class="px-4 py-2 rounded bg-hamzis-copper text-hamzis-white
-               hover:bg-hamzis-black transition-colors">
+1. Click **Projects** in sidebar
+2. Click **New Project**
+3. Fill in:
+   - **Name** - Project title
+   - **Description** - What the project is about
+   - **Location** - Physical location
+   - **Address** - Full address
+   - **Deadline** - When it should be completed
+   - **Budget** - Total budget amount
+   - **Client** - Which client (if applicable)
+4. Click **Create Project**
 
-<!-- Gradients -->
-<div class="bg-gradient-to-r from-hamzis-copper to-hamzis-brown">
+### Project Status
 
-<!-- Dark Mode Support -->
-<div class="text-hamzis-brown dark:text-hamzis-copper
-            bg-hamzis-white dark:bg-hamzis-black">
-```
+Projects can have two statuses:
 
-### Glass-morphism & Transparency
-
-The design extensively uses CSS backdrop filters for a modern glass-morphic effect:
-
-```css
-backdrop-blur-md      /* Blur behind element */
-bg-hamzis-white/30    /* 30% opacity white with blur */
-dark:bg-hamzis-black/40  /* 40% opacity dark background */
-```
-
-### Responsive Design
-
-Breakpoints used throughout:
-
-- `sm:` - Small (640px)
-- `md:` - Medium (768px)
-- `lg:` - Large (1024px)
-- `xl:` - Extra large (1280px)
-
-Example:
-
-```erb
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-```
+- **Ongoing** - Project is currently active
+- **Completed** - Project is finished
 
 ---
 
-## Layout & Components
+## Working with Tasks
 
-### Main Application Layout
+Tasks are individual pieces of work within projects. They help track progress and assign responsibility.
 
-The main layout (`layouts/application.html.erb`) consists of:
+### Viewing Tasks
 
-1. **Sidebar Navigation** - Collapsible left sidebar with module-specific nav
-2. **Main Content** - Flex-based center column with padding
-3. **Footer** - Fixed bottom with copyright and theme toggle
+You can view tasks in two ways:
 
-```erb
-<body class="flex">
-  <%= render 'shared/sidebar' if user_signed_in? %>
-  <div class="flex-1 flex flex-col">
-    <main class="px-6 py-6 flex-1">
-      <%= render "shared/flash" %>
-      <%= yield %>
-    </main>
-    <%= render 'shared/footer' %>
-  </div>
-</body>
-```
+1. **Global View** - Click **Tasks** in sidebar to see all tasks
+2. **Project View** - Go to a project and click the Tasks tab
 
-### Sidebar Navigation
+### Task Status
 
-**File:** `shared/_sidebar.html.erb`
+Tasks progress through these statuses:
 
-The sidebar features:
+- **Pending** - Task hasn't started
+- **In Progress** - Someone is working on it
+- **Done** - Task is completed
 
-- Hamzis Systems logo with toggle
-- Collapsible navigation using Stimulus
-- Module-specific nav sections (Operations, Accounting, HR, Inventory)
-- Active page highlighting
-- Responsive hide on mobile
+### Creating a New Task
 
-**Features:**
+1. Navigate to the project where the task belongs
+2. Click **New Task** within the project
+3. Fill in:
+   - **Title** - Short task name
+   - **Details** - Full description (optional)
+   - **Due Date** - When it should be done
+   - **Weight** - Importance/size (higher = more important)
+   - **Assign To** - Select team members
+4. Click **Create Task**
 
-- Dynamic active state: `bg-gradient-to-r from-hamzis-copper to-hamzis-brown`
-- Icon-based navigation for compact display
-- Module sections render conditionally based on user role/permissions
+### Working with Tasks
 
-**Module Sub-Navigation:**
+**Starting a Task:**
 
-- `shared/sidebar/_operations.html.erb` - Projects, Tasks, Reports
-- `shared/sidebar/_accounting.html.erb` - Transactions, Salaries, Deductions
-- `shared/sidebar/_hr.html.erb` - Employees, Leaves, Personal Details
-- `shared/sidebar/_inventory.html.erb` - Items, Warehouses, Stock Movements
+1. Open the task details
+2. Click **Start Task** to change status to "In Progress"
 
-### Reusable Components
+**Completing a Task:**
 
-#### Flash Messages
+1. Open the task details
+2. Click **Complete Task** to mark as done
+3. Progress is automatically calculated for the parent project
 
-**File:** `shared/_flash.html.erb`
+### Task Assignments
 
-Displays alert/notice messages with auto-dismiss via Stimulus controller:
+Tasks can be assigned to multiple people:
 
-```erb
-<div class="alert" data-controller="flash">
-  <% if notice %>
-    <div class="bg-green-100 text-green-800 p-4 rounded">
-      <%= notice %>
-    </div>
-  <% end %>
-</div>
-```
-
-#### Confirm Delete Modal
-
-**File:** `shared/_confirm_delete_modal.html.erb`
-
-Reusable modal for delete confirmations. Triggered by Stimulus controller.
-
-#### Tables & Lists
-
-Common table structure for listing resources:
-
-```erb
-<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30
-            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
-  <table class="min-w-full text-sm">
-    <%= render "header_partial" %>
-    <tbody class="divide-y divide-hamzis-brown/20">
-      <% items.each_with_index do |item, index| %>
-        <%= render "item_row", item: item,
-            row_class: index.even? ? "bg-hamzis-brown/5" : "" %>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-```
-
-#### KPI Cards
-
-Summary cards displayed on dashboard and list pages:
-
-```erb
-<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 p-4 rounded-xl text-center">
-  <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">
-    <%= label %>
-  </p>
-  <p class="text-xl font-bold"><%= count %></p>
-</div>
-```
-
-#### Forms
-
-Form partials follow a consistent pattern:
-
-```erb
-<%= form_with(model: resource, local: true) do |form| %>
-  <%= render "shared/error_messages", object: form.object %>
-
-  <div class="space-y-6">
-    <!-- Form fields -->
-    <div class="form-group">
-      <%= form.label :field_name %>
-      <%= form.text_field :field_name,
-          class: "w-full px-3 py-2 border border-hamzis-brown/20
-                   rounded-lg dark:bg-hamzis-black/30" %>
-    </div>
-
-    <!-- Submit button -->
-    <div class="flex gap-3">
-      <%= form.submit "Save",
-          class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white" %>
-      <%= link_to "Cancel", resource, class: "px-4 py-2" %>
-    </div>
-  </div>
-<% end %>
-```
+1. When creating/editing a task, use the "Assign To" field
+2. Select one or more team members
+3. All assigned users can update the task status
 
 ---
 
-## JavaScript Controllers
+## Creating Reports
 
-### Stimulus Controllers Overview
+Reports document project progress. They help stakeholders stay informed about what's happening.
 
-Stimulus is a lightweight framework for adding JavaScript behavior to HTML. Controllers are located in `app/javascript/controllers/`.
+### Report Types
 
-### Core Controllers
+- **Daily Report** - What happened today
+- **Weekly Report** - Summary for the week
 
-#### 1. Application Controller
+### Report Workflow
 
-**File:** `app/javascript/controllers/application.js`
-
-Base controller extended by all others:
-
-```javascript
-import { Controller } from "@hotwired/stimulus";
-
-export default class extends Controller {
-  static values = {};
-  static targets = [];
-}
+```
+Draft → Submitted → Reviewed
 ```
 
-#### 2. Sidebar Controller
+1. **Draft** - You're working on it (saved but not visible to others)
+2. **Submitted** - Ready for manager review
+3. **Reviewed** - Manager has reviewed and approved
 
-**File:** `app/javascript/controllers/sidebar_controller.js`
+### Creating a New Report
 
-Handles sidebar collapse/expand functionality:
+1. Go to the project you want to report on
+2. Click the **Reports** tab
+3. Click **New Report**
+4. Fill in:
+   - **Report Date** - Date of the report
+   - **Progress Summary** - What was accomplished
+   - **Issues** - Any problems encountered
+   - **Next Steps** - What's planned next
+5. Click **Create Report**
 
-```javascript
-export default class extends ApplicationController {
-  toggle() {
-    // Toggle sidebar visibility
-    // Update label visibility on collapse
-    // Animate transition
-  }
-}
-```
+### Submitting a Report
 
-**Usage:**
+1. Open a draft report
+2. Click **Submit for Review**
+3. Your manager will be notified to review it
 
-```erb
-<aside data-controller="sidebar">
-  <button data-action="sidebar#toggle">Toggle</button>
-  <span data-sidebar-target="label">Menu Label</span>
-</aside>
-```
+### Reviewing Reports (Managers)
 
-#### 3. Confirm Delete Controller
-
-**File:** `app/javascript/controllers/confirm_delete_controller.js`
-
-Intercepts delete links and shows confirmation modal:
-
-```javascript
-export default class extends ApplicationController {
-  static targets = ["modal"];
-
-  confirm(e) {
-    e.preventDefault();
-    // Show modal with event details
-    // Proceed to deletion on confirmation
-  }
-}
-```
-
-**Usage:**
-
-```erb
-<%= link_to "Delete", resource, method: :delete,
-    data: { action: "confirm-delete#confirm" } %>
-```
-
-#### 4. Flash Controller
-
-**File:** `app/javascript/controllers/flash_controller.js`
-
-Auto-dismisses flash messages after a timeout:
-
-```javascript
-export default class extends ApplicationController {
-  connect() {
-    setTimeout(() => {
-      this.element.remove();
-    }, 4000);
-  }
-}
-```
-
-#### 5. Project Files Controller
-
-**File:** `app/javascript/controllers/project_files_controller.js`
-
-Handles dynamic file attachment form fields:
-
-```javascript
-export default class extends ApplicationController {
-  addFile() {
-    // Add new file input field
-  }
-
-  removeFile(e) {
-    // Mark file for deletion
-  }
-}
-```
-
-### Creating New Controllers
-
-```bash
-rails generate stimulus sidebar
-```
-
-This creates `app/javascript/controllers/sidebar_controller.js`:
-
-```javascript
-import { Controller } from "@hotwired/stimulus";
-
-export default class extends ApplicationController {
-  static values = {
-    // Reactive values that update DOM
-  };
-
-  static targets = [
-    // Elements to reference in JS
-  ];
-
-  // Lifecycle hooks
-  connect() {
-    // Called when controller connects
-  }
-
-  // Methods triggered by data-action
-  methodName() {
-    // Implementation
-  }
-}
-```
-
-### Connecting Controllers to HTML
-
-```erb
-<!-- Define controller -->
-<div data-controller="sidebar">
-  <!-- Define action (element:event -> controller#method) -->
-  <button data-action="click->sidebar#toggle">Toggle</button>
-
-  <!-- Define targets for JS reference -->
-  <span data-sidebar-target="label">Label</span>
-
-  <!-- Define values for reactive data -->
-  <div data-sidebar-value-isOpen="true"></div>
-</div>
-```
+1. Go to the submitted report
+2. Review the content
+3. Click **Review Report**
+4. Add any comments if needed
 
 ---
 
-## Forms & Interactivity
+## HR & Leave Management
 
-### Form Partials Pattern
+### Employee Profile
 
-Forms are structured as reusable partials with consistent styling:
+Your profile contains your personal and employment information:
 
-```erb
-<%= form_with(model: @project, local: true) do |form| %>
-  <% if @project.errors.any? %>
-    <div class="bg-red-50 border border-red-200 rounded p-4 mb-6">
-      <h2 class="font-bold text-red-800"><%= @project.errors.count %> errors</h2>
-      <ul class="mt-2 text-sm text-red-700">
-        <% @project.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+- **Employment Details** - Department, position, hire date
+- **Personal Details** - Name, contact, banking info
+- **Leave Balance** - Available leave days
 
-  <div class="space-y-6">
-    <div>
-      <%= form.label :name %>
-      <%= form.text_field :name, required: true,
-          class: "w-full px-3 py-2 border border-hamzis-brown/20
-                   rounded-lg dark:bg-hamzis-black/30 focus:outline-none
-                   focus:border-hamzis-copper" %>
-    </div>
+### Requesting Leave
 
-    <div>
-      <%= form.label :description %>
-      <%= form.text_area :description, rows: 4, required: true,
-          class: "w-full px-3 py-2 border border-hamzis-brown/20
-                   rounded-lg dark:bg-hamzis-black/30" %>
-    </div>
+1. Click **HR** in the sidebar
+2. Click **Leaves**
+3. Click **New Leave Request**
+4. Fill in:
+   - **Start Date** - When your leave begins
+   - **End Date** - When you return
+   - **Reason** - Brief explanation
+5. Click **Submit Leave Request**
 
-    <div class="flex gap-3">
-      <%= form.submit "Save Project",
-          class: "px-4 py-2 bg-hamzis-copper text-hamzis-white rounded
-                   hover:bg-hamzis-black transition" %>
-      <%= link_to "Cancel", projects_path,
-          class: "px-4 py-2 border border-hamzis-brown/20 rounded
-                   hover:bg-hamzis-brown/5" %>
-    </div>
-  </div>
-<% end %>
-```
+### Leave Status
 
-### Turbo Streams
+Leave requests go through:
 
-Turbo Streams provide real-time updates without full page reloads.
+- **Pending** - Waiting for manager approval
+- **Approved** - Manager said yes
+- **Rejected** - Manager said no
+- **Cancelled** - You cancelled the request
 
-**Example: Submit Report with Turbo Stream**
+### Checking Leave Balance
 
-`reports/submit.turbo_stream.erb`:
+Your available leave balance is shown:
 
-```erb
-<%= turbo_stream.update "report-<%= @report.id %>", render(
-  @report, status_badge: "submitted"
-) %>
-<%= turbo_stream.replace "flash", render("shared/flash") %>
-```
+- On your employee profile page
+- When creating a new leave request
 
-Usage in controller:
+### Viewing Attendance
 
-```ruby
-def submit
-  @report = Report.find(params[:id])
-  authorize @report
-  @report.update(status: :submitted)
-
-  respond_to do |format|
-    format.turbo_stream
-    format.html { redirect_to @report, notice: "Report submitted" }
-  end
-end
-```
-
-### Nested Forms
-
-For complex forms with associations (e.g., Project with Files):
-
-```erb
-<%= form_with(model: @project, local: true) do |form| %>
-  <!-- Project fields -->
-  <div>
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-
-  <!-- Nested attributes for files -->
-  <div data-controller="project-files">
-    <h3>Attachments</h3>
-
-    <%= form.fields_for :project_files do |files_form| %>
-      <div class="file-field">
-        <%= files_form.file_field :file %>
-        <%= files_form.hidden_field :_destroy %>
-        <%= button_tag "Remove", type: "button",
-            data: { action: "project-files#removeFile" } %>
-      </div>
-    <% end %>
-
-    <%= button_tag "Add File", type: "button",
-        data: { action: "project-files#addFile" } %>
-  </div>
-
-  <%= form.submit "Save" %>
-<% end %>
-```
+1. Go to **HR** → **Attendance**
+2. See your daily attendance records
+3. Shows: Present, Absent, Late, On Leave
 
 ---
 
-## Best Practices
+## Inventory & Stock
 
-### 1. DRY Principle - Use Partials
+The inventory system tracks materials and equipment across warehouses.
 
-Break complex views into reusable partials:
+### Key Concepts
 
-```erb
-<!-- Instead of duplication, render partials -->
-<%= render "shared/table_header", columns: ["Name", "Status"] %>
-<%= render "items/item_row", item: @item %>
-```
+**Warehouse** - A physical location where items are stored (Main Warehouse, Site Storage, etc.)
 
-### 2. Naming Conventions
+**Inventory Item** - A type of product (Cement 50kg, Steel Rod 12mm, etc.)
 
-- **Partials:** `_name.html.erb`
-- **Controllers:** `name_controller.js`
-- **Modules/Namespaces:** Organize in subdirectories
+**Stock Level** - How much of an item is in each warehouse
 
-### 3. Accessibility
+**Stock Movement** - Record of items coming in or going out
 
-- Use semantic HTML: `<button>`, `<nav>`, `<main>`, `<aside>`
-- Include `aria-label` for icon buttons
-- Ensure keyboard navigation (tab order)
-- Use form labels correctly
+**Project Allocation** - Reserving items for a specific project
 
-```erb
-<!-- Good -->
-<button aria-label="Toggle sidebar" data-action="sidebar#toggle">
-  <svg><!-- icon --></svg>
-</button>
+### Viewing Inventory
 
-<!-- Avoid -->
-<div onclick="toggle()">Menu</div>
-```
+1. Click **Inventory** in the sidebar
+2. Click **Items** to see all products
+3. Each item shows:
+   - SKU code
+   - Current stock
+   - Status (In Stock / Low Stock / Out of Stock)
+   - Unit cost
 
-### 4. Responsive Images
+### Stock Status Indicators
 
-```erb
-<img src="<%= image_path 'logo.svg' %>"
-     alt="Hamzis Systems logo"
-     class="w-7 h-7 text-hamzis-copper">
-```
+- 🟢 **In Stock** - Plenty available (above reorder level)
+- 🟡 **Low Stock** - Running low, consider reordering
+- 🔴 **Out of Stock** - None available
 
-### 5. Styling Guidelines
+### Recording Stock Movements
 
-- Use utility classes over custom CSS
-- Leverage Tailwind's responsive modifiers (`sm:`, `md:`, `lg:`)
-- Apply dark mode with `dark:` prefix
-- Use semantic color names (hamzis-brown, hamzis-copper)
+**Receiving Items (Inbound):**
 
-```erb
-<!-- Good -->
-<div class="text-hamzis-brown dark:text-hamzis-copper md:text-lg">
+1. Go to an inventory item
+2. Click **New Movement**
+3. Select **Inbound**
+4. Enter:
+   - Destination Warehouse - Where items go
+   - Quantity - How many received
+   - Reference - PO or supplier info
+5. Save
 
-<!-- Avoid -->
-<div style="color: #4e342e; font-size: 16px;">
-```
+**Issuing Items (Outbound):**
 
-### 6. Form Validation
+1. Go to an inventory item
+2. Click **New Movement**
+3. Select **Outbound**
+4. Enter:
+   - Source Warehouse - Where items come from
+   - Quantity - How many issued
+   - Project - Which project gets these items
+5. Save
 
-Display validation errors inline:
+**Site Delivery:**
 
-```erb
-<div class="mb-4">
-  <%= form.label :email %>
-  <%= form.email_field :email, class: "w-full px-3 py-2 rounded
-      border #{@user.errors.include?(:email) ? 'border-red-500' : 'border-hamzis-brown/20'}" %>
-  <% if @user.errors.include?(:email) %>
-    <p class="text-red-600 text-sm mt-1">
-      <%= @user.errors.full_message_for(:email).first %>
-    </p>
-  <% end %>
-</div>
-```
+For items delivered directly to project sites (doesn't reduce warehouse stock):
 
-### 7. Data Attributes for Testing
+1. Create movement as "Site Delivery"
+2. Select the project
+3. Quantity is reserved for that project
 
-Use `data-testid` for testing selectors:
+### Allocating Inventory to Projects
 
-```erb
-<button data-testid="submit-button" data-action="form#submit">
-  Submit
-</button>
-```
+Reserve items for a project:
 
-### 8. Performance Optimization
+1. Go to the project page
+2. Click **Inventory** tab
+3. Click **Add Inventory**
+4. Select:
+   - Item to allocate
+   - Quantity needed
+   - Purpose (what it's for)
+   - Task (if specific)
+5. Save
 
-- **Lazy Load Images:** Use `loading="lazy"` attribute
-- **Minimize CSS:** Tailwind only includes used classes in production
-- **Cache Headers:** Static assets have far-future cache headers
-- **Turbo Streams:** Use for real-time updates without full reloads
+The item is now reserved and unavailable for other projects.
 
-### 9. Error Handling
+### Cancelling Movements
 
-Display user-friendly error messages:
+Made a mistake? You can cancel movements:
 
-```erb
-<% if object.errors.any? %>
-  <div class="bg-red-50 border border-red-300 rounded p-4">
-    <h3 class="font-bold text-red-900">
-      <%= pluralize(object.errors.count, "error") %> prevented saving:
-    </h3>
-    <ul class="mt-3 text-sm text-red-700">
-      <% object.errors.full_messages.each do |message| %>
-        <li>• <%= message %></li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
-```
+1. Open the movement
+2. Click **Cancel**
+3. Enter reason
+4. Confirm
 
-### 10. Theme Toggle Implementation
-
-The application includes a theme toggle in the footer. Implementation uses localStorage to persist user preference:
-
-```javascript
-const root = document.documentElement;
-const storageKey = "hamzis-theme";
-
-function applyTheme(dark) {
-  root.classList.toggle("dark", dark);
-  localStorage.setItem(storageKey, dark ? "dark" : "light");
-}
-
-// On page load
-const saved = localStorage.getItem(storageKey);
-const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-const initialDark = saved === "dark" || (!saved && prefersDark);
-applyTheme(initialDark);
-```
+This reverses all stock changes and deletes any linked expenses.
 
 ---
 
-## CSS Classes Reference
+## Accounting & Payroll
 
-### Layout & Spacing
+### Transactions
 
-```
-px-*, py-*, p-*         - Padding
-mx-*, my-*, m-*         - Margin
-w-*, h-*                - Width, Height
-gap-*, space-*          - Spacing between items
-flex, flex-col          - Flexbox layouts
-grid, grid-cols-*       - Grid layouts
-```
+Track income and expenses:
 
-### Colors
+1. Go to **Accounting** → **Transactions**
+2. View all financial records
+3. Types:
+   - **Invoice** - Money coming in
+   - **Receipt** - Money going out
 
-```
-text-hamzis-brown       - Brown text
-text-hamzis-copper      - Copper text
-bg-hamzis-white         - White background
-bg-hamzis-black         - Black background
-dark:text-hamzis-copper - Copper text in dark mode
-border-hamzis-brown/20  - Brown border at 20% opacity
-```
+### Salary Processing
 
-### Responsive
+**Salary Batches** group employee payments for a period (e.g., "January 2026").
 
-```
-sm:, md:, lg:, xl:       - Breakpoint prefixes
-```
+**For Employees:**
+- Your salary details are in your profile
+- You receive salary slips via email after payroll
+- Each slip shows: Base pay, allowances, deductions, net pay
 
-### Effects
+**For Accountants:**
+1. Create a salary batch
+2. Add employees and their pay details
+3. Add deductions (tax, pension, etc.)
+4. Mark batch as processed
+5. Mark as paid after payment
 
-```
-rounded-lg              - Border radius
-shadow-lg               - Drop shadow
-backdrop-blur-md        - Blur background
-transition-colors       - Smooth color transitions
-hover:, focus:          - State modifiers
-```
+### Deductions
+
+Common deduction types:
+- Tax - Income tax
+- Pension - Retirement contribution
+- Health Insurance - Medical coverage
+- Loan - Repayment deductions
+- Other - Miscellaneous
 
 ---
 
-## Troubleshooting
+## Managing Clients
 
-### Theme Not Switching
+Clients represent external companies you work with.
 
-- Check if `dark` class is being applied to `<html>` root
-- Verify localStorage is not disabled
-- Clear browser cache and try again
+### Adding a Client
 
-### Styles Not Applying
+1. Go to **Business** → **Clients**
+2. Click **New Client**
+3. Enter:
+   - Name - Company name
+   - Email - Contact email
+   - Phone - Contact number
+   - Address - Company address
+4. Save
 
-- Ensure class names are in `content:` paths in `tailwind.config.js`
-- Check for typos in Hamzis color names (`hamzis-brown`, not `brown`)
-- Rebuild Tailwind: `./bin/dev`
+### Linking Clients to Projects
 
-### JavaScript Not Working
-
-- Verify Stimulus controller is properly registered
-- Check `data-controller` and `data-action` attributes match controller name
-- Open browser console for JavaScript errors
-- Ensure controller methods exist and are public
-
-### Form Validation Issues
-
-- Check model validations match form fields
-- Verify error messages are displayed using `object.errors`
-- Ensure form is using `form_with` with correct model binding
+When creating or editing a project, select which client it's for.
 
 ---
 
-## Resources
+## Common Tasks
 
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [Hotwire Documentation](https://hotwired.dev/)
-- [Stimulus Handbook](https://stimulus.hotwired.dev/)
-- [Rails View Templates](https://guides.rubyonrails.org/layouts_and_rendering.html)
-- [ERB Documentation](https://ruby-doc.org/stdlib/libdoc/erb/rdoc/ERB.html)
+### Task 1: Complete a Daily Report
 
-- **[Project Reporting System Guide](./project_reporting_guide.md)**: Details the UI and workflow for creating and reviewing project reports.
+1. Go to your project
+2. Click **Reports** tab
+3. Click **New Report**
+4. Enter today's date
+5. Write your progress summary
+6. Note any issues
+7. Add next steps
+8. Click **Create Report**
+9. Click **Submit for Review**
+
+### Task 2: Request Time Off
+
+1. Go to **HR** → **Leaves**
+2. Click **New Leave Request**
+3. Select start and end dates
+4. Write reason
+5. Submit
+6. Wait for manager approval
+
+### Task 3: Allocate Materials to Project
+
+1. Go to project page
+2. Click **Inventory** tab
+3. Click **Add Inventory**
+4. Select the item needed
+5. Enter quantity
+6. Add purpose/notes
+7. Save
+
+### Task 4: Record Received Stock
+
+1. Go to **Inventory** → **Items**
+2. Find the item
+3. Click **New Movement**
+4. Select **Inbound**
+5. Choose warehouse
+6. Enter quantity
+7. Add reference (PO number)
+8. Save
+
+### Task 5: Mark Task Complete
+
+1. Find the task (global or in project)
+2. Open task details
+3. Click **Complete Task**
+4. Project progress updates automatically
+
+---
+
+## Keyboard Shortcuts
+
+| Action | Shortcut |
+|--------|----------|
+| Search | Press `/` |
+| Go to Dashboard | Press `g` then `d` |
+| Go to Projects | Press `g` then `p` |
+
+---
+
+## Getting Help
+
+### If You Need Help
+
+1. **Check this guide** - Search for your task above
+2. **Ask your manager** - They can show you the workflow
+3. **Contact IT** - For technical issues
+
+### Common Error Messages
+
+| Error | What to Do |
+|-------|------------|
+| "Not authorized" | You don't have permission. Ask admin. |
+| "Item out of stock" | Can't allocate. Check available quantity. |
+| "Leave balance insufficient" | Not enough leave days. Check balance. |
+| "Project deadline passed" | Deadline has passed but status is ongoing |
+
+---
+
+## Tips for Success
+
+### Daily Workflow
+
+1. **Morning:** Check dashboard for pending tasks
+2. **During Work:** Update task status as you progress
+3. **End of Day:** Submit daily report
+4. **Regularly:** Check for feedback on submitted reports
+
+### Best Practices
+
+- **Keep reports detailed** - Helps track progress accurately
+- **Update task status promptly** - Shows real-time progress
+- **Plan ahead** - Set realistic deadlines
+- **Communicate** - Use reports to share blockers early
+- **Check inventory** - Before allocating materials
+
+### Avoiding Common Mistakes
+
+- ❌ Don't forget to submit reports
+- ❌ Don't mark tasks done without actually completing them
+- ❌ Don't request more leave than you have
+- ❌ Don't allocate more inventory than available
+
+---
+
+## Quick Reference
+
+### Where to Find Things
+
+| What you need | Where to look |
+|--------------|---------------|
+| Your tasks | Dashboard → Tasks, or Projects → Specific Project |
+| Project reports | Projects → Specific Project → Reports tab |
+| Leave balance | HR → Your profile |
+| Available materials | Inventory → Items |
+| Your salary info | HR → Your profile, or Accounting → Salaries |
+| Team performance | Reports → Filter by status |
+
+### Icons Explained
+
+| Icon | Meaning |
+|------|---------|
+| 🟢 | In stock / Active |
+| 🟡 | Low stock / Pending |
+| 🔴 | Out of stock / Issue |
+| ✅ | Complete / Approved |
+| ⏳ | In progress / Pending |
+| 👤 | User / Person |
+| 📦 | Inventory item |
+| 🏢 | Project / Warehouse |
+
+---
+
+_This guide is for all users of Hamzis Systems. For technical documentation, see the full [Architecture Guide](architecture.md) or [API Endpoints](endpoints.md)._

@@ -52,7 +52,7 @@ RSpec.describe Inventory::StockMovementPolicy, type: :policy do
       it "allows engineer when movement is for a project the user belongs to" do
         project = create(:project)
         task = create(:task, project: project)
-        create(:assignment, task: task, user: engineer)
+        create(:assignment, task: task, employee: engineer.employee)
 
         warehouse = create(:warehouse)
         ensure_stock(item: inventory_item, warehouse: warehouse, quantity: 10)
@@ -68,7 +68,7 @@ RSpec.describe Inventory::StockMovementPolicy, type: :policy do
       it "denies QS (not in InventoryItemPolicy#create?) even if assigned" do
         project = create(:project)
         task = create(:task, project: project)
-        create(:assignment, task: task, user: qs)
+        create(:assignment, task: task, employee: qs.employee)
 
         warehouse = create(:warehouse)
         ensure_stock(item: inventory_item, warehouse: warehouse, quantity: 10)
@@ -150,7 +150,7 @@ RSpec.describe Inventory::StockMovementPolicy, type: :policy do
 
       before do
         task = create(:task, project: project_a)
-        create(:assignment, task: task, user: engineer)
+        create(:assignment, task: task, employee: engineer.employee)
       end
 
       it "returns only movements tied to the user's projects" do
@@ -165,7 +165,7 @@ RSpec.describe Inventory::StockMovementPolicy, type: :policy do
 
       before do
         task = create(:task, project: project_b)
-        create(:assignment, task: task, user: qs)
+        create(:assignment, task: task, employee: qs.employee)
       end
 
       it "returns only movements tied to the user's projects" do

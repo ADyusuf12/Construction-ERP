@@ -1,34 +1,27 @@
-<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+<div class="overflow-hidden bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-2xl">
   <% if inventory_items.any? %>
-    <table class="min-w-full text-sm text-left border-collapse">
-      <thead>
-        <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
-          <th class="px-4 py-3">SKU</th>
-          <th class="px-4 py-3">Name</th>
-          <th class="px-4 py-3">Stock</th>
-          <th class="px-4 py-3">Unit Cost</th>
-          <th class="px-4 py-3">Actions</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-hamzis-brown/20">
-        <% inventory_items.each_with_index do |item, index| %>
-          <%= render "inventory/inventory_items/inventory_row",
-                     item: item,
-                     row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
-        <% end %>
-      </tbody>
-    </table>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-left border-separate border-spacing-0">
+        <thead>
+          <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10">
+            <% ["SKU / Designation", "Stock Level", "Valuation (Unit)", "Actions"].each do |head| %>
+              <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-copper border-b border-hamzis-copper/20">
+                <%= head %>
+              </th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
+          <% inventory_items.each_with_index do |item, index| %>
+            <%= render "inventory/inventory_items/inventory_row", item: item %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   <% else %>
-    <div class="text-center py-6">
-      <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No inventory items yet</p>
-      <p class="text-sm mt-2">Create your first inventory item to get started.</p>
-      <div class="mt-4">
-        <% if policy([:inventory, InventoryItem.new]).create? %>
-          <%= link_to "➕ New Item", new_inventory_inventory_item_path,
-              class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
-        <% end %>
-      </div>
+    <div class="text-center py-20 bg-black/5">
+      <h3 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tighter italic">Logistics Ledger Empty</h3>
+      <p class="text-sm text-hamzis-brown/50 dark:text-hamzis-copper/50 italic mt-1">No items currently registered in the inventory network.</p>
     </div>
   <% end %>
 </div>

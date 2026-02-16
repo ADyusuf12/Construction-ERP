@@ -1,31 +1,30 @@
-<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+<div class="overflow-hidden bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-2xl">
   <% if employees.any? %>
-    <table class="min-w-full text-sm text-left border-collapse">
-      <thead>
-        <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
-          <th class="px-4 py-3">Hamzis ID</th>
-          <th class="px-4 py-3">Department</th>
-          <th class="px-4 py-3">Position</th>
-          <th class="px-4 py-3">Hire Date</th>
-          <th class="px-4 py-3">Status</th>
-          <th class="px-4 py-3">Actions</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-hamzis-brown/20">
-        <% employees.each_with_index do |employee, index| %>
-          <%= render "hr/employees/employee_row", employee: employee, row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
-        <% end %>
-      </tbody>
-    </table>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-left border-separate border-spacing-0">
+        <thead>
+          <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10">
+            <% ["Hamzis ID", "Department", "Position Title", "Deployment Date", "Status", "Actions"].each do |head| %>
+              <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-copper border-b border-hamzis-copper/20">
+                <%= head %>
+              </th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
+          <% employees.each do |employee| %>
+            <%= render "hr/employees/employee_row", employee: employee %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   <% else %>
-    <div class="text-center py-6">
-      <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No employees yet</p>
-      <p class="text-sm mt-2">Start by creating your first employee record.</p>
-      <div class="mt-4">
-        <%= link_to "➕ New Employee", new_hr_employee_path,
-            class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+    <div class="text-center py-20 bg-black/5">
+      <div class="inline-flex p-4 rounded-full bg-hamzis-copper/10 text-hamzis-copper mb-4">
+        <svg xmlns="http://www.w3.org" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
       </div>
+      <h3 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tighter">Zero Records Located</h3>
+      <p class="text-sm text-hamzis-brown/50 dark:text-hamzis-copper/50 italic mt-1">The resource database is currently vacant.</p>
     </div>
   <% end %>
 </div>

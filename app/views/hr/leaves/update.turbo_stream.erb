@@ -1,0 +1,18 @@
+<%# 1. Update the Row in the Registry Table %>
+<%= turbo_stream.replace dom_id(@leave) do %>
+  <%
+    # Determine context to render the row correctly
+    is_my_leaves = request.referrer&.include?("my_leaves")
+
+    # Simple logic for row zebra-striping or styling if needed
+    row_class = @leave.id.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : ""
+  %>
+  <%= render "hr/leaves/leave_row",
+             leave: @leave,
+             show_employee: !is_my_leaves,
+             row_class: row_class %>
+<% end %>
+<%# 2. Update Flashes %>
+<%= turbo_stream.replace "flash" do %>
+  <%= render "shared/flash" %>
+<% end %>

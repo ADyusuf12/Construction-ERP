@@ -1,0 +1,13 @@
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+  <% [
+    { label: "Total System Users", count: users.count, color: "copper" },
+    { label: "Personnel Linked", count: users.select { |u| u.employee.present? }.count, color: "green-500" },
+    { label: "Client Access", count: users.select { |u| u.client.present? }.count, color: "blue-500" }
+  ].each do |stat| %>
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/10 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden group">
+      <div class="absolute top-0 left-0 w-1 h-full bg-hamzis-<%= stat[:color] %>"></div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-1"><%= stat[:label] %></p>
+      <p class="text-3xl font-black text-hamzis-brown dark:text-white"><%= stat[:count] %></p>
+    </div>
+  <% end %>
+</div>

@@ -1,32 +1,21 @@
-<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-xl p-6">
   <% if reports.any? %>
-    <table class="min-w-full text-sm text-left border-collapse">
-      <thead>
-        <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
-          <th class="px-4 py-3">Date</th>
-          <th class="px-4 py-3">Type</th>
-          <th class="px-4 py-3">Status</th>
-          <th class="px-4 py-3">Author</th>
-          <% if show_project %>
-            <th class="px-4 py-3">Project</th>
-          <% end %>
-          <th class="px-4 py-3">Summary</th>
-          <th class="px-4 py-3">Actions</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-hamzis-brown/20">
+    <table class="min-w-full text-sm text-left border-separate border-spacing-0">
+      <%# Modular Header Call %>
+      <%= render "reports/report_table_header", show_project: show_project %>
+      <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
         <% reports.each_with_index do |report, index| %>
           <%= render "reports/report_row",
                      report: report,
-                     row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "",
-                     show_project: show_project %>
+                     show_project: show_project,
+                     row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
         <% end %>
       </tbody>
     </table>
   <% else %>
-    <div class="text-center py-6">
-      <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No reports yet</p>
+    <div class="text-center py-12 border border-dashed border-hamzis-brown/20 rounded-xl">
+      <p class="text-lg font-black uppercase tracking-tighter text-hamzis-brown dark:text-hamzis-copper text-opacity-50">Zero Intelligence Logs</p>
+      <p class="text-[10px] text-hamzis-brown/40 dark:text-white/20 mt-2 uppercase tracking-widest italic">Awaiting site field data synchronization.</p>
     </div>
   <% end %>
 </div>

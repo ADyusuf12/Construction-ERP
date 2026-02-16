@@ -5,24 +5,30 @@ module Hr
     belongs_to :manager, class_name: "Hr::Employee", optional: true
     has_many :subordinates, class_name: "Hr::Employee", foreign_key: "manager_id", dependent: :nullify
     has_many :leaves, class_name: "Hr::Leave", foreign_key: "employee_id", dependent: :destroy
-    has_many :leave_approvals, class_name: "Hr::Leave", foreign_key: "manager_id", dependent: :nullify
+    has_many :assignments, dependent: :destroy
+    has_many :tasks, through: :assignments
+    has_many :reports, class_name: "Report", foreign_key: "employee_id", dependent: :nullify
     has_one :personal_detail, class_name: "Hr::PersonalDetail", dependent: :destroy, inverse_of: :employee
     has_many :salaries, class_name: "Accounting::Salary", foreign_key: "employee_id", dependent: :destroy
     has_many :attendance_records, class_name: "Hr::AttendanceRecord", foreign_key: "employee_id", dependent: :destroy
     has_many :next_of_kins, class_name: "Hr::NextOfKin", foreign_key: "employee_id", dependent: :destroy
 
+    delegate :email, to: :user, prefix: true, allow_nil: true
+
     accepts_nested_attributes_for :personal_detail, update_only: true, allow_destroy: true
-    validates_associated :personal_detail
+    accepts_nested_attributes_for :next_of_kins, allow_destroy: true, reject_if: :all_blank
 
     enum :status, { active: 0, on_leave: 1, terminated: 2 }, prefix: true
 
     validates :hamzis_id, presence: true, uniqueness: true
     validates :department, presence: true
     validates :position_title, presence: true
+    validates :leave_balance, numericality: { greater_than_or_equal_to: 0 }
 
     validate :user_role_and_email_valid, if: -> { user.present? }
 
     before_validation :generate_hamzis_id, on: :create
+    before_validation :set_default_leave_balance, on: :create
 
     def full_name
       if personal_detail.present?
@@ -33,6 +39,10 @@ module Hr
     end
 
     private
+
+    def set_default_leave_balance
+      self.leave_balance ||= 20
+    end
 
     def generate_hamzis_id
       return if hamzis_id.present?

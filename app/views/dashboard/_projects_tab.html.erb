@@ -1,44 +1,64 @@
 <% if policy_scope(Project).any? %>
-  <div id="projects-tab" class="tab-content hidden">
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-                border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
-      <h2 class="text-xl font-bold mb-4 text-hamzis-brown dark:text-hamzis-copper">Projects</h2>
+  <div id="projects-tab" class="tab-content hidden animate-fade-in">
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-xl p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tight">Active Sites</h2>
+        <%= link_to projects_path, class: "text-[10px] font-bold uppercase tracking-widest text-hamzis-copper hover:text-hamzis-brown dark:hover:text-white transition-all flex items-center gap-2" do %>
+          View Registry
+          <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+        <% end %>
+      </div>
       <% if @projects.any? %>
-        <table class="min-w-full text-sm text-left border-collapse">
-          <thead>
-            <tr class="bg-hamzis-brown/10 dark:bg-hamzis-copper/10 text-hamzis-brown dark:text-hamzis-copper uppercase text-xs tracking-wide">
-              <th class="px-4 py-3">Name</th>
-              <th class="px-4 py-3">Status</th>
-              <th class="px-4 py-3">Deadline</th>
-              <th class="px-4 py-3">Progress</th>
-              <th class="px-4 py-3">Budget</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-hamzis-brown/20">
-            <% @projects.each_with_index do |project, index| %>
-              <tr id="<%= dom_id(project) %>" class="<%= index.even? ? 'bg-hamzis-brown/5 dark:bg-hamzis-copper/5' : '' %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
-                <td class="px-4 py-3 font-semibold"><%= project.name %></td>
-                <td class="px-4 py-3"><%= project.status.humanize %></td>
-                <td class="px-4 py-3"><%= project.deadline&.strftime("%b %d, %Y") %></td>
-                <td class="px-4 py-3">
-                  <div class="w-full bg-hamzis-brown/20 rounded-full h-2">
-                    <div class="bg-hamzis-copper h-2 rounded-full" style="width: <%= project.progress %>%"></div>
-                  </div>
-                  <span class="text-xs text-hamzis-brown dark:text-hamzis-copper ml-2"><%= project.progress %>%</span>
-                </td>
-                <td class="px-4 py-3">
-                  <% if project.budget.present? %>
-                    <span class="text-xs"><%= number_to_currency(project.budget, unit: "₦", precision: 0) %></span>
-                  <% else %>
-                    <span class="text-xs text-gray-500">N/A</span>
-                  <% end %>
-                </td>
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="min-w-full border-separate border-spacing-0 text-left">
+            <thead>
+              <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10">
+                <% ["Project", "Phase", "Deadline", "Completion", "Budget"].each do |head| %>
+                  <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-copper border-b border-hamzis-copper/10 text-left">
+                    <%= head %>
+                  </th>
+                <% end %>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+            </thead>
+            <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
+              <% @projects.each do |project| %>
+                <tr id="dash_<%= dom_id(project) %>" class="group hover:bg-white/40 dark:hover:bg-hamzis-copper/5 transition-all duration-300">
+                  <td class="px-4 py-4">
+                    <div class="text-xs font-black text-hamzis-brown dark:text-white uppercase tracking-tight"><%= project.name %></div>
+                  </td>
+                  <td class="px-4 py-4">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded border border-hamzis-copper/20 bg-hamzis-copper/5 text-[9px] font-black uppercase tracking-widest text-hamzis-copper">
+                      <%= project.status.humanize %>
+                    </span>
+                  </td>
+                  <td class="px-4 py-4">
+                    <div class="text-[10px] font-mono text-hamzis-brown dark:text-hamzis-copper opacity-80">
+                      <%= project.deadline&.strftime("%d.%m.%y") || "--.--.--" %>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4">
+                    <div class="flex items-center gap-3">
+                      <div class="flex-1 h-1 bg-hamzis-brown/10 dark:bg-white/5 rounded-full overflow-hidden min-w-[60px]">
+                        <div class="h-full bg-hamzis-copper transition-all duration-1000 shadow-[0_0_8px_rgba(217,119,6,0.4)]"
+                             style="width: <%= project.progress %>%"></div>
+                      </div>
+                      <span class="text-[9px] font-black text-hamzis-brown dark:text-hamzis-copper"><%= project.progress %>%</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4">
+                    <div class="text-[10px] font-bold text-hamzis-brown dark:text-white font-mono">
+                      <%= project.budget.present? ? number_to_currency(project.budget, unit: "₦", precision: 0) : "---" %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       <% else %>
-        <p class="text-center py-6 text-sm text-hamzis-brown dark:text-hamzis-copper">No projects available</p>
+        <div class="py-12 text-center border-2 border-dashed border-hamzis-brown/10 rounded-xl">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">No projects currently tracked</p>
+        </div>
       <% end %>
     </div>
   </div>

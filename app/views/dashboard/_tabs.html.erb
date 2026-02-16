@@ -1,44 +1,44 @@
-<div class="border-b border-hamzis-brown/20 mb-6">
-  <nav class="flex flex-wrap gap-4 text-sm font-medium">
-    <!-- Profile tab always visible -->
+<div class="border-b border-hamzis-brown/10 dark:border-hamzis-copper/10 mb-8 overflow-x-auto custom-scrollbar">
+  <nav class="flex flex-nowrap md:flex-wrap gap-2 pb-px min-w-max">
+    <!-- Profile Tab (Always Visible) -->
     <button data-tab="profile"
-            class="tab-link px-4 py-2 rounded-t bg-hamzis-copper text-white">
+            class="tab-link px-6 py-3 rounded-t-xl bg-hamzis-copper text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-lg transition-all duration-300 cursor-pointer active:scale-95">
       Profile
     </button>
     <% if policy_scope(Project).any? %>
       <button data-tab="projects"
-              class="tab-link px-4 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+              class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/10 hover:text-hamzis-brown dark:hover:text-hamzis-copper transition-all duration-300 cursor-pointer">
         Projects
       </button>
     <% end %>
     <% if policy_scope(Task).any? %>
       <button data-tab="tasks"
-              class="tab-link px-4 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+              class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/10 hover:text-hamzis-brown dark:hover:text-hamzis-copper transition-all duration-300 cursor-pointer">
         Tasks
       </button>
     <% end %>
     <% if policy_scope(Report).any? %>
       <button data-tab="reports"
-              class="tab-link px-4 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+              class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/10 hover:text-hamzis-brown dark:hover:text-hamzis-copper transition-all duration-300 cursor-pointer">
         Reports
       </button>
     <% end %>
     <% if policy_scope(Accounting::Transaction).any? %>
       <button data-tab="transactions"
-              class="tab-link px-4 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-        Transactions
+              class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/10 hover:text-hamzis-brown dark:hover:text-hamzis-copper transition-all duration-300 cursor-pointer">
+        Ledger
       </button>
     <% end %>
     <% if policy_scope(ProjectExpense).any? %>
       <button data-tab="expenses"
-              class="tab-link px-4 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
+              class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/10 hover:text-hamzis-brown dark:hover:text-hamzis-copper transition-all duration-300 cursor-pointer">
         Expenses
       </button>
     <% end %>
     <% if policy_scope(Hr::Employee).any? %>
       <button data-tab="hr"
-              class="tab-link px-4 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-        HR
+              class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/10 hover:text-hamzis-brown dark:hover:text-hamzis-copper transition-all duration-300 cursor-pointer">
+        HR Records
       </button>
     <% end %>
   </nav>

@@ -1,13 +1,17 @@
-<h2 class="text-2xl font-bold mb-6">Transactions</h2>
-<!-- Dashboard Summary -->
-<%= render "accounting/transactions/transactions_summary", project: nil, transactions: @transactions %>
-<!-- New Transaction Button -->
-<div class="mb-6 flex justify-end">
-  <%= link_to "➕ New Transaction", new_accounting_transaction_path,
-      class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+<% content_for :title, "Financial Ledger | Hamzis Systems" %>
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+  <div>
+    <h1 class="text-4xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper uppercase">Global Ledger</h1>
+    <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Centralized transaction monitoring and fiscal reconciliation.</p>
+  </div>
+  <%= link_to new_accounting_transaction_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-hamzis-brown transition-all duration-500 active:scale-95 shadow-hamzis-copper/20" do %>
+    <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M12 4v16m8-8H4" /></svg>
+    Post Transaction
+  <% end %>
 </div>
-<!-- Transactions Table -->
-<%= render "accounting/transactions/transactions_table",
-           project: nil,
-           transactions: @transactions,
-           show_project: true %>
+<%= render "accounting/transactions/transactions_summary", transactions: @transactions %>
+<%= render "accounting/transactions/transactions_table", transactions: @transactions %>
+<div class="mt-10 py-6 border-t border-hamzis-brown/5 dark:border-hamzis-copper/10 flex flex-col items-center gap-3">
+  <p class="text-[9px] font-black uppercase tracking-[0.3em] text-hamzis-brown/30 dark:text-hamzis-copper/30 italic mb-2">Audit Transmission Finalized</p>
+  <%= paginate @transactions if defined?(paginate) %>
+</div>

@@ -18,7 +18,7 @@ module Hr
       end
 
       # Regular employees can view their own record
-      record.employee.user_id == user.id
+      record.employee_id == user.employee&.id
     end
 
     def create?
@@ -35,7 +35,7 @@ module Hr
       end
 
       # Employees can update their own record
-      record.employee.user_id == user.id
+      record.employee_id == user.employee&.id
     end
 
     def destroy?

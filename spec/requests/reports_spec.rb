@@ -2,8 +2,9 @@ require "rails_helper"
 
 RSpec.describe "Reports", type: :request do
   let(:project) { create(:project) }
-  let(:user)    { create(:user, :ceo) }
-  let(:report)  { create(:report, project: project, user: user) }
+  let(:employee) { create(:employee) }
+  let(:user)    { create(:user, :ceo, employee: employee) }
+  let(:report)  { create(:report, project: project, employee: employee) }
 
   before { sign_in user } # Devise helper
 
@@ -51,7 +52,7 @@ RSpec.describe "Reports", type: :request do
 
   describe "PATCH /projects/:project_id/reports/:id/submit" do
     it "submits a draft report" do
-      draft_report = create(:report, project: project, user: user, status: :draft)
+      draft_report = create(:report, project: project, employee: user.employee, status: :draft)
 
       patch submit_project_report_path(project, draft_report)
 
@@ -62,7 +63,7 @@ RSpec.describe "Reports", type: :request do
 
   describe "PATCH /projects/:project_id/reports/:id/review" do
     it "reviews a submitted report" do
-      submitted_report = create(:report, project: project, user: user, status: :submitted)
+      submitted_report = create(:report, project: project, employee: user.employee, status: :submitted)
 
       patch review_project_report_path(project, submitted_report)
 
@@ -73,7 +74,7 @@ RSpec.describe "Reports", type: :request do
 
   describe "DELETE /projects/:project_id/reports/:id" do
     it "deletes a report" do
-      report_to_delete = create(:report, project: project, user: user)
+      report_to_delete = create(:report, project: project, employee: employee)
 
       expect {
         delete project_report_path(project, report_to_delete)

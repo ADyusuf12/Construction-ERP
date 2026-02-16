@@ -93,7 +93,7 @@ RSpec.describe Inventory::InventoryItemPolicy do
 
       project = create(:project)
       task = create(:task, project: project)
-      create(:assignment, task: task, user: user)
+      create(:assignment, task: task, employee: user.employee)
 
       linked_item = create(:inventory_item)
       warehouse = create(:warehouse)

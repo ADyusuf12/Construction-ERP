@@ -1,38 +1,45 @@
-<h2 class="text-2xl font-bold mb-6">
-  My Attendance
-</h2>
-<!-- Dashboard Summary -->
-<div class="grid md:grid-cols-3 gap-6 mb-8">
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
-    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Total Records</p>
-    <p class="text-2xl font-bold"><%= @attendance_records.count %></p>
-  </div>
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
-    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Present</p>
-    <p class="text-2xl font-bold"><%= @attendance_records.status_present.count %></p>
-  </div>
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-              border border-hamzis-brown/20 rounded-xl shadow-lg p-6 text-center">
-    <p class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper">Absent</p>
-    <p class="text-2xl font-bold"><%= @attendance_records.status_absent.count %></p>
+<% content_for :title, "Personal Attendance Dossier | Hamzis Systems" %>
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+  <div>
+    <h1 class="text-4xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper uppercase">My Presence Log</h1>
+    <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Personal operational history and site deployment record.</p>
   </div>
 </div>
-<!-- Filters row -->
-<div class="mb-4 flex items-center gap-4">
-  <%= form_with url: my_attendance_hr_attendance_records_path, method: :get, local: true, class: "flex gap-2" do |f| %>
-    <%= f.select :status, Hr::AttendanceRecord.statuses.keys.map { |s| [s.titleize, s] }, {prompt: "Filter By Status"},
-          class: "w-full px-5 py-1 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-    <%= f.date_field :date, class: "w-full px-5 py-1 border rounded bg-transparent text-gray-900 dark:text-hamzis-copper focus:ring-hamzis-copper focus:border-hamzis-copper" %>
-    <%= f.submit "Filter", class: "px-5 py-1 rounded bg-hamzis-copper text-white hover:bg-hamzis-black transition text-sm" %>
+<%# Personal Performance Gauges %>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+  <% [
+    { label: "Total Recorded Cycles", count: @attendance_records.total_count, color: "copper" },
+    { label: "Validated Presence", count: @attendance_records.status_present.total_count, color: "green-500" },
+    { label: "Missed Days", count: @attendance_records.status_absent.total_count, color: "red-500" }
+  ].each do |stat| %>
+    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/10 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden group">
+      <div class="absolute top-0 left-0 w-1 h-full bg-hamzis-<%= stat[:color] %>"></div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-1"><%= stat[:label] %></p>
+      <p class="text-3xl font-black text-hamzis-brown dark:text-white"><%= stat[:count] %></p>
+    </div>
   <% end %>
-  <%= link_to "Reset", my_attendance_hr_attendance_records_path, class: "px-5 py-1 rounded bg-gray-300 text-gray-900 hover:bg-gray-400 transition text-sm" %>
 </div>
-<!-- Attendance Table -->
+<%# Filter Console %>
+<div class="mb-6 bg-hamzis-brown/5 dark:bg-hamzis-copper/5 p-4 rounded-2xl border border-hamzis-brown/10">
+  <%= form_with url: my_attendance_hr_attendance_records_path, method: :get, local: true, class: "flex flex-col md:flex-row items-center gap-4" do |f| %>
+    <div class="flex-1 w-full">
+      <%= f.select :status, Hr::AttendanceRecord.statuses.keys.map { |s| [s.titleize, s] }, {prompt: "Filter By Status"},
+            class: "w-full px-4 py-2 bg-white/50 dark:bg-black/20 border border-hamzis-brown/20 rounded-xl text-xs uppercase font-bold tracking-widest dark:text-hamzis-copper focus:ring-1 focus:ring-hamzis-copper outline-none transition cursor-pointer" %>
+    </div>
+    <div class="flex-1 w-full">
+      <%= f.date_field :date, class: "w-full px-4 py-2 bg-white/50 dark:bg-black/20 border border-hamzis-brown/20 rounded-xl text-xs font-bold dark:text-hamzis-copper focus:ring-1 focus:ring-hamzis-copper outline-none transition" %>
+    </div>
+    <div class="flex gap-2 w-full md:w-auto">
+      <%= f.submit "Query Logs", class: "flex-1 px-6 py-2 rounded-xl bg-hamzis-brown text-white font-bold uppercase tracking-widest text-[10px] hover:bg-hamzis-copper transition cursor-pointer" %>
+      <%= link_to "Clear", my_attendance_hr_attendance_records_path, class: "px-6 py-2 rounded-xl bg-hamzis-white/50 dark:bg-white/10 text-hamzis-brown dark:text-white/40 font-bold uppercase tracking-widest text-[10px] hover:text-red-500 transition" %>
+    </div>
+  <% end %>
+</div>
+<%# Modular Attendance Table - Personalized Context %>
 <%= render "hr/attendance_records/attendance_table",
            attendance_records: @attendance_records,
            show_employee: false,
            show_actions: false %>
-<!-- Pagination controls -->
-<div class="mt-6 flex justify-center"> <%= paginate @attendance_records, params: request.query_parameters %> </div>
+<div class="mt-8 flex justify-center">
+  <%= paginate @attendance_records, params: request.query_parameters %>
+</div>

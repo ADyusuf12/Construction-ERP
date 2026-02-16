@@ -1,0 +1,11 @@
+<thead>
+  <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10 text-hamzis-copper uppercase text-[10px] font-black tracking-[0.2em]">
+    <% if local_assigns[:show_employee] %>
+      <th class="px-6 py-4 border-b border-hamzis-copper/20 rounded-tl-xl">Personnel</th>
+    <% end %>
+    <th class="px-6 py-4 border-b border-hamzis-copper/20 <%= 'rounded-tl-xl' unless local_assigns[:show_employee] %>">Duration Cycle</th>
+    <th class="px-6 py-4 border-b border-hamzis-copper/20">Reason / Narrative</th>
+    <th class="px-6 py-4 border-b border-hamzis-copper/20">Auth Status</th>
+    <th class="px-6 py-4 border-b border-hamzis-copper/20 text-right rounded-tr-xl">Actions</th>
+  </tr>
+</thead>

@@ -75,7 +75,7 @@ RSpec.describe "Inventory::ProjectInventories", type: :request do
     context "when signed in as engineer assigned to the project" do
       before do
         task = create(:task, project: project)
-        create(:assignment, task: task, user: engineer)
+        create(:assignment, task: task, employee: engineer.employee)
         sign_in engineer
       end
 
@@ -118,7 +118,7 @@ RSpec.describe "Inventory::ProjectInventories", type: :request do
     context "when signed in as engineer assigned to the project" do
       before do
         task = create(:task, project: project)
-        create(:assignment, task: task, user: engineer)
+        create(:assignment, task: task, employee: engineer.employee)
         sign_in engineer
       end
 
@@ -202,7 +202,7 @@ RSpec.describe "Inventory::ProjectInventories", type: :request do
     context "when signed in as engineer who belongs to the project" do
       before do
         task = create(:task, project: project)
-        create(:assignment, task: task, user: engineer)
+        create(:assignment, task: task, employee: engineer.employee)
         sign_in engineer
       end
 

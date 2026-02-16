@@ -38,7 +38,7 @@ module Hr
           scope.all
         else
           # non‑administrative roles only see their own employee record
-          scope.where(user_id: user.id)
+          scope.where(id: user.employee&.id)
         end
       end
     end

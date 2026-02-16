@@ -1,49 +1,95 @@
-<div class="flex min-h-screen bg-gradient-to-br from-hamzis-white via-hamzis-copper/10 to-hamzis-brown/20 dark:from-hamzis-black dark:via-hamzis-brown/30 dark:to-hamzis-copper/20">
-  <!-- Left brand panel -->
-  <div class="hidden md:flex md:w-1/2 items-center justify-center p-12">
-    <div class="text-center space-y-6">
-      <!-- Logo + tagline -->
-      <img src="<%= asset_path('hamzis-logo.svg') %>" alt="Hamzis Logo"
-           class="mx-auto w-40 h-40 object-contain opacity-90" />
-      <h1 class="text-4xl font-extrabold text-hamzis-brown dark:text-hamzis-copper mt-6">Hamzis Systems</h1>
-      <p class="text-lg text-hamzis-brown/70 dark:text-hamzis-copper/70">Crafting Homes For Clients' Comfort</p>
+<div class="flex-1 flex flex-col items-center justify-center w-full min-h-screen py-12
+            bg-gradient-to-br from-hamzis-white via-hamzis-copper/5 to-hamzis-brown/20
+            dark:from-hamzis-black dark:via-hamzis-brown/10 dark:to-hamzis-copper/20 relative overflow-hidden">
+
+  <div class="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none"
+       style="background-image: radial-gradient(#b87333 0.5px, transparent 0.5px); background-size: 30px 30px;"></div>
+
+  <div class="flex w-full max-w-6xl items-center justify-center px-6 relative z-10">
+
+    <div class="hidden md:flex md:w-1/2 flex-col items-center justify-center p-12 border-r border-hamzis-brown/10">
+      <div class="text-center space-y-8 animate-fade-in">
+        <div class="relative inline-block">
+          <img src="<%= asset_path('hamzis-logo.svg') %>" alt="Hamzis Logo"
+               class="mx-auto w-48 h-48 object-contain opacity-80 grayscale brightness-50 dark:brightness-100" />
+          <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-12 h-[2px] bg-hamzis-copper"></div>
+        </div>
+
+        <div class="space-y-2">
+          <h1 class="text-5xl font-black text-hamzis-brown dark:text-white uppercase tracking-tighter italic">
+            Hamzis <span class="text-hamzis-copper">Systems</span>
+          </h1>
+          <p class="text-[10px] font-black uppercase tracking-[0.6em] text-hamzis-brown/60 dark:text-white/40">
+            Crafting Homes for Clients' Comfort
+          </p>
+        </div>
+      </div>
     </div>
-  </div>
-  <!-- Right login form -->
-  <div class="flex w-full md:w-1/2 items-center justify-center p-8">
-    <div class="w-full max-w-md bg-hamzis-white/40 dark:bg-hamzis-black/40 backdrop-blur-md rounded-2xl shadow-xl p-10">
-      <h2 class="text-2xl font-bold text-center mb-2 text-hamzis-brown dark:text-hamzis-copper">Welcome Back</h2>
-      <p class="text-center text-sm text-hamzis-brown/70 dark:text-hamzis-copper/70 mb-6">Log in to continue</p>
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-        <div class="mb-5">
-          <%= f.label :email, "Email Address", class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-          <%= f.email_field :email, autofocus: true, autocomplete: "email",
-                class: "w-full px-4 py-3 rounded-lg border border-hamzis-brown/30
-                        bg-transparent text-gray-900 dark:text-hamzis-copper
-                        focus:ring-2 focus:ring-hamzis-copper focus:border-hamzis-copper transition" %>
+
+    <div class="flex w-full md:w-1/2 items-center justify-center md:pl-12">
+      <div class="w-full max-w-md bg-hamzis-white/40 dark:bg-hamzis-black/60 backdrop-blur-2xl rounded-3xl shadow-2xl p-10 border border-hamzis-brown/20 relative">
+
+        <div class="md:hidden text-center mb-10">
+          <img src="<%= asset_path('hamzis-logo.svg') %>" alt="Hamzis Logo" class="mx-auto w-16 h-16 object-contain mb-4 opacity-80" />
+          <h2 class="text-2xl font-black text-hamzis-brown dark:text-white uppercase tracking-tighter italic">Hamzis</h2>
         </div>
-        <div class="mb-5">
-          <%= f.label :password, "Password", class: "block text-sm font-medium mb-1 text-hamzis-brown dark:text-hamzis-copper" %>
-          <%= f.password_field :password, autocomplete: "current-password",
-                class: "w-full px-4 py-3 rounded-lg border border-hamzis-brown/30
-                        bg-transparent text-gray-900 dark:text-hamzis-copper
-                        focus:ring-2 focus:ring-hamzis-copper focus:border-hamzis-copper transition" %>
+
+        <div class="mb-10 text-center md:text-left">
+          <h2 class="text-[10px] font-black uppercase tracking-[0.4em] text-hamzis-copper mb-2">Access Portal</h2>
+          <h3 class="text-2xl font-black text-hamzis-brown dark:text-white uppercase tracking-tighter italic">Welcome Back</h3>
         </div>
-        <% if devise_mapping.rememberable? %>
-          <div class="flex items-center mb-5">
-            <%= f.check_box :remember_me, class: "mr-2 rounded border-hamzis-brown/30 text-hamzis-copper focus:ring-hamzis-copper" %>
-            <%= f.label :remember_me, "Remember me", class: "text-sm text-hamzis-brown dark:text-hamzis-copper" %>
+
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <div class="space-y-6">
+
+            <div>
+              <%= f.label :email, "Email", class: "block text-[9px] font-black uppercase tracking-widest text-hamzis-brown/60 dark:text-white/40 mb-2 ml-1" %>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "architect@hamzis.com",
+                  class: "w-full px-5 py-4 rounded-xl border border-hamzis-brown/20 bg-hamzis-white/50 dark:bg-white/5 text-sm font-bold text-hamzis-brown dark:text-white placeholder:text-hamzis-brown/30 focus:ring-2 focus:ring-hamzis-copper/50 focus:border-hamzis-copper transition-all outline-none font-mono" %>
+            </div>
+
+            <div data-controller="password-visibility">
+              <div class="flex justify-between items-end mb-2 ml-1">
+                <%= f.label :password, "Password", class: "text-[9px] font-black uppercase tracking-widest text-hamzis-brown/60 dark:text-white/40" %>
+              </div>
+              <div class="relative">
+                <%= f.password_field :password, autocomplete: "current-password", placeholder: "••••••••",
+                    data: { password_visibility_target: "input" },
+                    class: "w-full px-5 py-4 pr-14 rounded-xl border border-hamzis-brown/20 bg-hamzis-white/50 dark:bg-white/5 text-sm font-bold text-hamzis-brown dark:text-white placeholder:text-hamzis-brown/30 focus:ring-2 focus:ring-hamzis-copper/50 focus:border-hamzis-copper transition-all outline-none font-mono" %>
+
+                <button type="button" data-action="password-visibility#toggle"
+                        class="absolute right-4 top-1/2 -translate-y-1/2 text-hamzis-brown/40 dark:text-white/20 hover:text-hamzis-copper transition-colors">
+                  <span data-password-visibility-target="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between px-1">
+              <% if devise_mapping.rememberable? %>
+                <label class="flex items-center group cursor-pointer">
+                  <%= f.check_box :remember_me, class: "w-4 h-4 rounded border-hamzis-brown/30 text-hamzis-copper focus:ring-hamzis-copper bg-transparent transition" %>
+                  <span class="ml-3 text-[10px] font-black uppercase tracking-widest text-hamzis-brown/60 dark:text-white/40 group-hover:text-hamzis-copper transition-colors">Remember Me</span>
+                </label>
+              <% end %>
+            </div>
+
+            <div class="pt-4">
+              <%= f.submit "Authorize",
+                  class: "w-full py-4 rounded-xl bg-hamzis-copper text-white text-[11px] font-black uppercase tracking-[0.2em] shadow-xl shadow-hamzis-copper/20 hover:bg-hamzis-black hover:shadow-none transition-all active:scale-95 cursor-pointer" %>
+            </div>
           </div>
         <% end %>
-        <div class="mb-6">
-          <%= f.submit "Log in",
-                class: "w-full px-4 py-3 rounded-lg bg-hamzis-copper text-hamzis-white
-                        hover:bg-hamzis-black hover:text-hamzis-white
-                        transition-colors font-semibold shadow-md" %>
+
+        <div class="mt-10 text-center border-t border-hamzis-brown/10 pt-6">
+          <div class="inline-flex gap-4 text-[9px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-white/40">
+            <%= render "devise/shared/links" %>
+          </div>
         </div>
-      <% end %>
-      <div class="text-center text-sm text-hamzis-brown/70 dark:text-hamzis-copper/70">
-        <%= render "devise/shared/links" %>
       </div>
     </div>
   </div>

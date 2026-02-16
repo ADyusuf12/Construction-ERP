@@ -9,11 +9,8 @@ module Hr
     end
 
     def show?
-      if user.role_engineer? || user.role_qs? || user.role_storekeeper? || user.role_accountant?
-        record.employee.user_id == user.id
-      else
-        index?
-      end
+      return true if index?
+      record.employee_id == user.employee&.id
     end
 
     def create?
@@ -22,15 +19,27 @@ module Hr
 
     def approve?
       (user.role_hr? || user.role_ceo? || user.role_admin?) &&
-        record.employee.user_id != user.id
+        record.employee_id != user.employee&.id
     end
 
     def reject?
       approve?
     end
 
-    def cancel?
-      record.employee.user_id == user.id
+    def destroy?
+      # An employee can delete their own request IF it hasn't been acted upon yet
+      own_record = record.employee_id == user.employee&.id
+      is_pending = record.status_pending?
+
+      # HR/Admin can delete any pending request
+      can_manage = user.role_hr? || user.role_ceo? || user.role_admin?
+
+      is_pending && (own_record || can_manage)
+    end
+
+    def edit?
+      # Only allow editing if it's still pending
+      record.status_pending? && (record.employee_id == user.employee&.id || approve?)
     end
 
     def dashboard?
@@ -41,6 +50,8 @@ module Hr
       def resolve
         if user.role_hr? || user.role_ceo? || user.role_admin?
           scope.all
+        elsif user.employee.present?
+          scope.where(employee_id: user.employee.id)
         else
           scope.none
         end

@@ -1,26 +1,45 @@
-<tr id="<%= dom_id(employee) %>" class="<%= row_class %> hover:bg-hamzis-white/40 dark:hover:bg-hamzis-black/40 transition">
-  <!-- Hamzis ID -->
-  <td class="px-4 py-3 font-semibold"><%= employee.hamzis_id %></td>
-  <!-- Department -->
-  <td class="px-4 py-3"><%= employee.department %></td>
-  <!-- Position -->
-  <td class="px-4 py-3"><%= employee.position_title %></td>
-  <!-- Hire Date -->
-  <td class="px-4 py-3"><%= employee.hire_date&.strftime("%b %d, %Y") %></td>
-  <!-- Status -->
-  <td class="px-4 py-3">
-    <span class="px-3 py-1 rounded-full text-xs font-medium
-      <%= employee.status_active? ? 'bg-green-100 text-green-700' :
-          employee.status_on_leave? ? 'bg-yellow-100 text-yellow-700' :
-          'bg-red-100 text-red-700' %>">
-      <%= employee.status.humanize %>
+<tr id="<%= dom_id(employee) %>" class="group hover:bg-white/50 dark:hover:bg-hamzis-copper/5 transition-all duration-300">
+  <td class="px-6 py-4">
+    <span class="text-sm font-black text-hamzis-brown dark:text-white tracking-tight">
+      <%= employee.hamzis_id %>
     </span>
   </td>
-  <!-- Actions -->
-  <td class="px-4 py-3 flex gap-2">
-    <%= link_to "View", hr_employee_path(employee),
-      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition text-xs" %>
-    <%= link_to "Edit", edit_hr_employee_path(employee),
-      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition text-xs" %>
+  <td class="px-6 py-4">
+    <span class="text-[11px] font-bold uppercase tracking-widest text-hamzis-brown/70 dark:text-hamzis-copper/70">
+      <%= employee.department %>
+    </span>
+  </td>
+  <td class="px-6 py-4">
+    <div class="text-sm font-medium text-hamzis-brown dark:text-hamzis-copper/90">
+      <%= employee.position_title %>
+    </div>
+  </td>
+  <td class="px-6 py-4">
+    <span class="text-xs font-mono text-hamzis-brown/90 dark:text-hamzis-copper/90">
+      <%= employee.hire_date&.strftime("%Y.%m.%d") %>
+    </span>
+  </td>
+  <td class="px-6 py-4">
+    <%
+      status_classes = case employee.status
+        when 'active' then 'bg-green-500/10 text-green-500 border-green-500/20'
+        when 'on_leave' then 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20'
+        else 'bg-red-500/10 text-red-500 border-red-500/20'
+      end
+    %>
+    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-[9px] font-black uppercase tracking-[0.15em] <%= status_classes %> shadow-sm">
+      <div class="w-1 h-1 rounded-full bg-current animate-pulse"></div>
+      <%= employee.status.humanize %>
+    </div>
+  </td>
+  <td class="px-6 py-4">
+    <div class="flex items-center gap-3 opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+      <%= link_to hr_employee_path(employee), title: "Full Dossier", class: "p-2 rounded-lg bg-hamzis-copper text-white hover:bg-hamzis-black transition shadow-md" do %>
+        <svg xmlns="http://www.w3.org" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+      <% end %>
+      <%= link_to edit_hr_employee_path(employee), title: "Amend Record", class: "p-2 rounded-lg bg-hamzis-brown text-white hover:bg-hamzis-copper transition shadow-md" do %>
+        <svg xmlns="http://www.w3.org" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+      <% end %>
+    </div>
   </td>
 </tr>

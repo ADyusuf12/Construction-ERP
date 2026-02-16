@@ -20,4 +20,7 @@ FactoryBot.define do
       end
     end
   end
+
+  # alias so tests can call `create(:employee)`
+  factory :employee, parent: :hr_employee
 end

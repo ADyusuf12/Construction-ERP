@@ -1,76 +1,56 @@
 require "rails_helper"
 
-RSpec.describe ReportPolicy do
+RSpec.describe TaskPolicy do
   let(:project) { create(:project) }
-  let(:author)  { create(:user) }
-  let(:report)  { create(:report, project: project, user: author, status: :draft) }
+  let(:task)    { create(:task, project: project) }
 
   describe "CEO" do
-    let(:user)   { create(:user, :ceo) }
-    let(:policy) { described_class.new(user, report) }
+    let(:user) { create(:user, :ceo) }
+    let!(:employee) { create(:hr_employee, user: user) }
+    let(:policy) { described_class.new(user, task) }
 
-    it "allows broad actions but not update/submit on non-authored draft" do
+    it "allows all actions" do
       expect(policy.index?).to eq true
       expect(policy.show?).to eq true
       expect(policy.create?).to eq true
-      expect(policy.update?).to eq false   # not the author
-      expect(policy.destroy?).to eq true
-      expect(policy.submit?).to eq false   # not the author
-      expect(policy.review?).to eq false
-    end
-
-    it "allows review when submitted" do
-      submitted_report = create(:report, project: project, user: author, status: :submitted)
-      expect(described_class.new(user, submitted_report).review?).to eq true
-    end
-  end
-
-  describe "Manager" do
-    let(:user)   { create(:user, :site_manager) }
-    let(:policy) { described_class.new(user, report) }
-
-    it "allows index, show, create but not update/destroy/submit on non-authored draft" do
-      expect(policy.index?).to eq true
-      expect(policy.show?).to eq true
-      expect(policy.create?).to eq true
-      expect(policy.update?).to eq false
-      expect(policy.destroy?).to eq false
-      expect(policy.submit?).to eq false
-      expect(policy.review?).to eq false
-    end
-
-    it "allows review when submitted" do
-      submitted_report = create(:report, project: project, user: author, status: :submitted)
-      expect(described_class.new(user, submitted_report).review?).to eq true
-    end
-  end
-
-  describe "Author" do
-    let(:policy) { described_class.new(author, report) }
-
-    it "can update and submit draft" do
       expect(policy.update?).to eq true
-      expect(policy.submit?).to eq true
-    end
-
-    it "cannot destroy or review" do
-      expect(policy.destroy?).to eq false
-      expect(policy.review?).to eq false
+      expect(policy.destroy?).to eq true
+      expect(policy.mark_in_progress?).to eq true
+      expect(policy.mark_done?).to eq true
     end
   end
 
-  describe "Engineer (non-author)" do
-    let(:user)   { create(:user, :engineer) }
-    let(:policy) { described_class.new(user, report) }
+  describe "Engineer (Assigned)" do
+    let(:user) { create(:user, :engineer) }
+    let!(:employee) { create(:hr_employee, user: user) }
+    let(:policy) { described_class.new(user, task) }
 
-    it "cannot view or manage non-authored report" do
-      expect(policy.index?).to eq false
-      expect(policy.show?).to eq false
+    before do
+      create(:assignment, task: task, employee: employee)
+    end
+
+    it "allows viewing and updating status when assigned" do
+      expect(policy.show?).to eq true
+      expect(policy.mark_in_progress?).to eq true
+      expect(policy.mark_done?).to eq true
+    end
+
+    it "denies administrative management" do
       expect(policy.create?).to eq false
       expect(policy.update?).to eq false
       expect(policy.destroy?).to eq false
-      expect(policy.submit?).to eq false
-      expect(policy.review?).to eq false
+    end
+  end
+
+  describe "Engineer (Unassigned)" do
+    let(:user) { create(:user, :engineer) }
+    let!(:employee) { create(:hr_employee, user: user) }
+    let(:policy) { described_class.new(user, task) }
+
+    it "allows viewing but denies status updates" do
+      expect(policy.show?).to eq true
+      expect(policy.mark_in_progress?).to eq false
+      expect(policy.mark_done?).to eq false
     end
   end
 end

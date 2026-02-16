@@ -1,18 +1,20 @@
-<h2 class="text-2xl font-bold mb-6">All Tasks</h2>
-<!-- Dashboard Summary -->
-<%= render "tasks/dashboard_summary", tasks: @tasks %>
-<!-- New Task Button -->
-<div class="mb-6 flex justify-end">
-  <%= link_to "➕ New Task", new_task_path,
-      class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+<% content_for :title, "Operational Directives | Hamzis Systems" %>
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+  <div>
+    <h1 class="text-4xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper uppercase">Directive Ledger</h1>
+    <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Global operational tracking across all active construction sites.</p>
+  </div>
+  <%= link_to new_task_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-hamzis-brown transition-all duration-500 active:scale-95 shadow-hamzis-copper/20" do %>
+    <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M12 4v16m8-8H4" /></svg>
+    Issue Directive
+  <% end %>
 </div>
-<!-- Task Table -->
-<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-            border border-hamzis-brown/20 rounded-xl shadow-lg p-6">
+<%= render "tasks/dashboard_summary", tasks: @tasks %>
+<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-2xl p-6">
   <% if @tasks.any? %>
-    <table class="min-w-full text-sm text-left border-collapse">
+    <table class="min-w-full text-sm text-left border-separate border-spacing-0">
       <%= render "tasks/task_table_header", show_project: true %>
-      <tbody class="divide-y divide-hamzis-brown/20">
+      <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
         <% @tasks.each_with_index do |task, index| %>
           <%= render "tasks/task_row",
                      task: task,
@@ -22,13 +24,13 @@
       </tbody>
     </table>
   <% else %>
-    <div class="text-center py-6">
-      <p class="text-lg font-semibold text-hamzis-brown dark:text-hamzis-copper">No tasks yet</p>
-      <p class="text-sm mt-2">Start by creating your first task.</p>
-      <div class="mt-4">
-        <%= link_to "➕ New Task", new_task_path,
-            class: "px-4 py-2 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
+    <div class="text-center py-12">
+      <div class="inline-flex p-4 rounded-full bg-hamzis-copper/10 text-hamzis-copper mb-4">
+        <svg xmlns="http://www.w3.org" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
       </div>
+      <p class="text-lg font-black uppercase tracking-tighter text-hamzis-brown dark:text-hamzis-copper">Zero Directives Found</p>
+      <p class="text-xs text-hamzis-brown/50 dark:text-hamzis-copper/50 italic mt-1 mb-6">No tasks have been initialized in the global registry.</p>
+      <%= link_to "➕ Initialize First Task", new_task_path, class: "px-6 py-2 rounded-xl bg-hamzis-copper text-white font-bold uppercase tracking-widest text-[10px] hover:bg-hamzis-black transition shadow-lg" %>
     </div>
   <% end %>
 </div>

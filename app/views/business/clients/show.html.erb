@@ -1,21 +1,19 @@
-<% content_for :title, @client.name %>
+<% content_for :title, "Client: #{@client.name} | Stakeholder Portal" %>
 <%= render "business/clients/info_card", client: @client %>
-<div class="border-b border-hamzis-brown/20 mb-6">
-  <nav class="flex gap-6 text-sm font-medium">
-    <button data-tab="projects"
-            class="tab-link px-3 py-2 rounded-t bg-hamzis-copper text-white">
-      Projects
-    </button>
-    <button data-tab="details"
-            class="tab-link px-3 py-2 rounded-t hover:bg-hamzis-copper hover:text-white">
-      Details
-    </button>
-  </nav>
+<div class="flex gap-8 mb-8 border-b border-hamzis-brown/10 dark:border-white/10 overflow-x-auto custom-scrollbar">
+  <button data-tab="projects"
+          class="tab-link pb-4 text-[10px] font-black uppercase tracking-[0.2em] transition-all border-b-2 border-hamzis-copper text-hamzis-copper">
+    Project Portfolio
+  </button>
+  <button data-tab="details"
+          class="tab-link pb-4 text-[10px] font-black uppercase tracking-[0.2em] transition-all border-b-2 border-transparent text-hamzis-brown/50 dark:text-white/40 hover:text-hamzis-copper">
+    Entity Details
+  </button>
 </div>
-<div id="projects-tab" class="tab-content">
+<div id="projects-tab" class="tab-content animate-fade-in">
   <%= render "business/clients/tabs/projects", client: @client %>
 </div>
-<div id="details-tab" class="tab-content hidden">
+<div id="details-tab" class="tab-content hidden animate-fade-in">
   <%= render "business/clients/tabs/details", client: @client %>
 </div>
 <script nonce="<%= content_security_policy_nonce %>">
@@ -25,10 +23,17 @@
 
     links.forEach(link => {
       link.addEventListener("click", () => {
-        links.forEach(l => l.classList.remove("bg-hamzis-copper", "text-white"));
+        // Reset classes
+        links.forEach(l => {
+          l.classList.remove("border-hamzis-copper", "text-hamzis-copper");
+          l.classList.add("border-transparent", "text-hamzis-brown/50", "dark:text-white/40");
+        });
         contents.forEach(c => c.classList.add("hidden"));
 
-        link.classList.add("bg-hamzis-copper", "text-white");
+        // Activate clicked
+        link.classList.add("border-hamzis-copper", "text-hamzis-copper");
+        link.classList.remove("border-transparent", "text-hamzis-brown/50", "dark:text-white/40");
+
         const tabId = link.getAttribute("data-tab") + "-tab";
         document.getElementById(tabId).classList.remove("hidden");
       });
