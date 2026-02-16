@@ -13,6 +13,8 @@ module Hr
     has_many :attendance_records, class_name: "Hr::AttendanceRecord", foreign_key: "employee_id", dependent: :destroy
     has_many :next_of_kins, class_name: "Hr::NextOfKin", foreign_key: "employee_id", dependent: :destroy
 
+    delegate :email, to: :user, prefix: true, allow_nil: true
+
     accepts_nested_attributes_for :personal_detail, update_only: true, allow_destroy: true
     accepts_nested_attributes_for :next_of_kins, allow_destroy: true, reject_if: :all_blank
 
@@ -21,10 +23,12 @@ module Hr
     validates :hamzis_id, presence: true, uniqueness: true
     validates :department, presence: true
     validates :position_title, presence: true
+    validates :leave_balance, numericality: { greater_than_or_equal_to: 0 }
 
     validate :user_role_and_email_valid, if: -> { user.present? }
 
     before_validation :generate_hamzis_id, on: :create
+    before_validation :set_default_leave_balance, on: :create
 
     def full_name
       if personal_detail.present?
@@ -35,6 +39,10 @@ module Hr
     end
 
     private
+
+    def set_default_leave_balance
+      self.leave_balance ||= 20
+    end
 
     def generate_hamzis_id
       return if hamzis_id.present?

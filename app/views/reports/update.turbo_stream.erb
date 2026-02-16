@@ -1,0 +1,27 @@
+<%# 1. Update the Row in the Registry Table %>
+<%= turbo_stream.replace dom_id(@report) do %>
+  <%# Maintain Zebra Striping Logic %>
+  <% collection = @project.present? ? @project.reports.order(:created_at) : @report.project.reports.order(:created_at) %>
+  <% index = collection.pluck(:id).index(@report.id) || 0 %>
+  <%= render "reports/report_row",
+             report: @report,
+             show_project: @project.blank?,
+             row_class: (index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "") %>
+<% end %>
+<%# 2. Update the Status Badge on the Show Page (if user is looking at it) %>
+<%= turbo_stream.replace "report_status" do %>
+  <% status_style = case
+       when @report.status_draft? then 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20'
+       when @report.status_submitted? then 'text-hamzis-copper bg-hamzis-copper/10 border-hamzis-copper/20'
+       else 'text-green-500 bg-green-500/10 border-green-500/20'
+       end
+  %>
+  <span id="report_status" class="inline-flex items-center gap-1.5 px-3 py-1 rounded border text-[10px] font-black uppercase tracking-[0.15em] <%= status_style %> transition-all duration-500">
+    <div class="w-1.5 h-1.5 rounded-full bg-current <%= 'animate-pulse' if @report.status_submitted? %>"></div>
+    <%= @report.status.humanize %>
+  </span>
+<% end %>
+<%# 3. Push Global Flash Notifications %>
+<%= turbo_stream.replace "flash" do %>
+  <%= render "shared/flash" %>
+<% end %>

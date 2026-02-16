@@ -1,23 +1,25 @@
 <div class="flex items-center justify-between mb-6">
-  <h3 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tighter">Site Directives</h3>
-  <%= link_to new_project_task_path(project), class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[10px] shadow-lg hover:bg-white hover:text-hamzis-brown transition-all duration-500 active:scale-95 shadow-hamzis-copper/20" do %>
-    <svg xmlns="http://www.w3.org" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M12 4v16m8-8H4" /></svg>
-    Issue Directive
-  <% end %>
+    <h3 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tighter">Site Directives</h3>
+    <%= link_to new_project_task_path(project), class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[10px] shadow-lg hover:bg-white hover:text-hamzis-brown transition-all duration-500 active:scale-95 shadow-hamzis-copper/20" do %>
+    <svg xmlns="http://www.w3.org" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+        <path d="M12 4v16m8-8H4" />
+    </svg>
+    New Task
+    <% end %>
 </div>
 <%# Site-Specific Weight Metrics %>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-  <% [
+    <% [
     { label: "Total Site Weight", value: project.tasks.sum(:weight), color: "copper" },
     { label: "Pending Load", value: project.tasks.status_pending.sum(:weight), color: "yellow-500" },
     { label: "Resolved Weight", value: project.tasks.status_done.sum(:weight), color: "green-500" }
   ].each do |stat| %>
     <div class="bg-hamzis-white/30 dark:bg-hamzis-black/90 border border-hamzis-brown/90 rounded-2xl p-5 backdrop-blur-md shadow-xl relative overflow-hidden group">
-      <div class="absolute top-0 left-0 w-1 h-full bg-hamzis-<%= stat[:color] %>"></div>
-      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-1"><%= stat[:label] %></p>
-      <p class="text-2xl font-black text-hamzis-brown dark:text-white"><%= stat[:value] %></p>
+        <div class="absolute top-0 left-0 w-1 h-full bg-hamzis-<%= stat[:color] %>"></div>
+        <p class="text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-1"><%= stat[:label] %></p>
+        <p class="text-2xl font-black text-hamzis-brown dark:text-white"><%= stat[:value] %></p>
     </div>
-  <% end %>
+    <% end %>
 </div>
 <%# Render the modular table with Site Context %>
 <%= render "tasks/tasks_table",

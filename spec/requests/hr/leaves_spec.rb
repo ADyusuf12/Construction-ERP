@@ -125,20 +125,4 @@ RSpec.describe "Hr::Leaves", type: :request do
       expect(leave.reload.status).to eq("pending")
     end
   end
-
-  describe "PATCH /hr/leaves/:id/cancel" do
-    it "allows owner to cancel" do
-      sign_in hr_user
-      patch cancel_hr_leave_path(leave)
-      expect(response).to redirect_to(my_leaves_hr_leaves_path)
-      expect(leave.reload.status).to eq("cancelled")
-    end
-
-    it "denies other employee" do
-      sign_in engineer
-      patch cancel_hr_leave_path(leave)
-      expect(response).to redirect_to(dashboard_home_path).or redirect_to(my_leaves_hr_leaves_path)
-      expect(leave.reload.status).to eq("pending")
-    end
-  end
 end
