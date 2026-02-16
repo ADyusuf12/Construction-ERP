@@ -86,7 +86,7 @@ class ReportsController < ApplicationController
 
   def render_report_update(message, type = :notice)
     respond_to do |format|
-      format.html { redirect_to [@project, @report], type => message }
+      format.html { redirect_to [ @project, @report ], type => message }
       format.turbo_stream do
         flash.now[type] = message
         render "reports/update"
