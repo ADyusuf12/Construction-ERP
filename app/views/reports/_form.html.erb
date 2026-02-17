@@ -1,163 +1,86 @@
 <%= form_with(model: (@project ? [@project, report] : report), local: true, class: "space-y-6 hr-form") do |form| %>
-<<<<<<< Updated upstream
-
-<%# --- ERROR REPORTING BLOCK --- %>
-<% if report.errors.any? %>
-<div class="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 backdrop-blur-md animate-in fade-in slide-in-from-top-4 duration-500">
-    <div class="flex items-center gap-2 mb-3">
+  <%# --- ERROR REPORTING BLOCK --- %>
+  <% if report.errors.any? %>
+    <div class="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 backdrop-blur-md animate-in fade-in slide-in-from-top-4 duration-500">
+      <div class="flex items-center gap-2 mb-3">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
         </svg>
         <h3 class="font-black uppercase tracking-widest text-[10px]">
-            <%= pluralize(report.errors.count, "validation constraint") %> breached
+          <%= pluralize(report.errors.count, "validation constraint") %> breached
         </h3>
-    </div>
-    <ul class="list-disc ml-7 text-[11px] font-bold uppercase tracking-tight space-y-1 opacity-90">
+      </div>
+      <ul class="list-disc ml-7 text-[11px] font-bold uppercase tracking-tight space-y-1 opacity-90">
         <% report.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+          <li><%= msg %></li>
         <% end %>
-    </ul>
-</div>
-<% end %>
-
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <div class="lg:col-span-2 space-y-6">
-        <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-            <div class="flex items-center gap-2 mb-6">
-                <div class="p-2 rounded-lg bg-hamzis-copper/10 text-hamzis-copper">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                </div>
-                <h4 class="text-sm font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Executive Summary</h4>
-            </div>
-
-            <div class="space-y-5">
-                <% unless @project %>
-                <div>
-                    <%= form.label :project_id, "Target Project Site", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-                    <%= form.collection_select :project_id, Project.all, :id, :name, { prompt: "Select Project Site" },
-                    class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
-                </div>
-                <% end %>
-
-                <div>
-                    <%= form.label :progress_summary, "Operational Progress Details", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-                    <%= form.text_area :progress_summary, rows: 6, placeholder: "Summarize key milestones achieved during this period...",
-                  class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm text-red-600">
-                <%= form.label :issues, "Bottlenecks & Site Constraints", class: "block text-[10px] font-bold uppercase tracking-wider mb-2" %>
-                <%= form.text_area :issues, rows: 4, placeholder: "List any delays, supply issues, or site constraints...",
-                class: "w-full px-4 py-2.5 border border-red-500/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-red-500 outline-none transition" %>
-            </div>
-
-            <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-                <%= form.label :next_steps, "Projected Operational Actions", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-                <%= form.text_area :next_steps, rows: 4, placeholder: "What is the primary focus for the next period?",
-                class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
-            </div>
-        </div>
+      </ul>
     </div>
-
-    <div class="lg:col-span-1 space-y-6">
-        <div class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10 border border-hamzis-copper/30 rounded-2xl p-6 shadow-2xl sticky top-6">
-            <h4 class="text-xs font-black uppercase tracking-[0.2em] text-hamzis-copper mb-6 border-b border-hamzis-copper/20 pb-4 text-center">Filing Protocols</h4>
-
-            <div class="space-y-6">
-                <div>
-                    <%= form.label :report_date, "Observation Date", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-hamzis-copper/70" %>
-                    <%= form.date_field :report_date, class: "w-full px-4 py-3 border border-hamzis-copper/30 rounded-xl bg-black/20 text-sm font-bold text-white dark:text-hamzis-copper outline-none transition" %>
-                </div>
-
-                <div>
-                    <%= form.label :report_type, "Classification", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-hamzis-copper/70" %>
-                    <%= form.select :report_type, Report.report_types.keys.map { |t| [t.titleize, t] }, {},
-                  class: "w-full px-4 py-3 border border-hamzis-copper/30 rounded-xl bg-black/20 text-sm font-bold text-white dark:text-hamzis-copper outline-none transition" %>
-                </div>
-
-                <div>
-                    <%= form.label :status, "Administrative Status", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-hamzis-copper/70" %>
-                    <%= form.select :status, Report.statuses.keys.map { |s| [s.titleize, s] }, {},
-                  class: "w-full px-4 py-3 border border-hamzis-copper/30 rounded-xl bg-black/20 text-sm font-bold text-white dark:text-hamzis-copper outline-none transition" %>
-                </div>
-
-                <div class="pt-6">
-                    <%= form.submit "Transmit Final Report", class: "w-full py-4 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-hamzis-brown transition-all duration-300 active:scale-95 cursor-pointer" %>
-                    <%= link_to "Discard Submission", (@project ? project_reports_path(@project) : reports_path),
-=======
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <!-- LEFT: Narrative Content -->
+  <% end %>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <div class="lg:col-span-2 space-y-6">
-        <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-            <div class="flex items-center gap-2 mb-6">
-                <div class="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
-                    <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                </div>
-                <h4 class="text-sm font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary">Executive Summary</h4>
-            </div>
-            <div class="space-y-5">
-                <% unless @project %>
-                <div>
-                    <%= form.label :project_id, "Target Project", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
-                    <%= form.collection_select :project_id, Project.all, :id, :name, { prompt: "Select Project Site" },
+      <div class="bg-white/30 dark:bg-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+        <div class="flex items-center gap-2 mb-6">
+          <div class="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          </div>
+          <h4 class="text-sm font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary">Executive Summary</h4>
+        </div>
+        <div class="space-y-5">
+          <% unless @project %>
+            <div>
+              <%= form.label :project_id, "Target Project Site", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+              <%= form.collection_select :project_id, Project.all, :id, :name, { prompt: "Select Project Site" },
                     class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition" %>
-                </div>
-                <% end %>
-                <div>
-                    <%= form.label :progress_summary, "Operational Progress", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
-                    <%= form.text_area :progress_summary, rows: 6, placeholder: "Summarize key milestones achieved during this period...",
+            </div>
+          <% end %>
+          <div>
+            <%= form.label :progress_summary, "Operational Progress Details", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+            <%= form.text_area :progress_summary, rows: 6, placeholder: "Summarize key milestones achieved during this period...",
                   class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition" %>
-                </div>
-            </div>
+          </div>
         </div>
-        <!-- Detail Blocks -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-                <%= form.label :issues, "Bottlenecks & Constraints", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-red-600 dark:text-red-400" %>
-                <%= form.text_area :issues, rows: 4, placeholder: "List any delays, supply issues, or site constraints...",
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white/30 dark:bg-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm text-red-600">
+          <%= form.label :issues, "Bottlenecks & Site Constraints", class: "block text-[10px] font-bold uppercase tracking-wider mb-2" %>
+          <%= form.text_area :issues, rows: 4, placeholder: "List any delays, supply issues, or site constraints...",
                 class: "w-full px-4 py-2.5 border border-red-500/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-red-500 outline-none transition" %>
-            </div>
-            <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-                <%= form.label :next_steps, "Projected Actions", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-brand-secondary/70 dark:text-brand-primary/70" %>
-                <%= form.text_area :next_steps, rows: 4, placeholder: "What is the primary focus for the next period?",
+        </div>
+        <div class="bg-white/30 dark:bg-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+          <%= form.label :next_steps, "Projected Operational Actions", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-brand-secondary/70 dark:text-brand-primary/70" %>
+          <%= form.text_area :next_steps, rows: 4, placeholder: "What is the primary focus for the next period?",
                 class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition" %>
-            </div>
         </div>
+      </div>
     </div>
-    <!-- RIGHT: Report Metadata -->
     <div class="lg:col-span-1 space-y-6">
-        <div class="bg-brand-secondary/90 dark:bg-brand-primary/10 border border-brand-primary/30 rounded-2xl p-6 shadow-2xl sticky top-6">
-            <h4 class="text-xs font-black uppercase tracking-[0.2em] text-brand-primary mb-6 border-b border-brand-primary/20 pb-4 text-center">Filing Details</h4>
-            <div class="space-y-6">
-                <div>
-                    <%= form.label :report_date, "Submission Date", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-brand-primary/70" %>
-                    <%= form.date_field :report_date, class: "w-full px-4 py-3 border border-brand-primary/30 rounded-xl bg-black/20 text-sm font-bold text-white dark:text-brand-primary outline-none transition" %>
-                </div>
-                <div>
-                    <%= form.label :report_type, class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-brand-primary/70" %>
-                    <%= form.select :report_type, Report.report_types.keys.map { |t| [t.titleize, t] }, {},
+      <div class="bg-brand-secondary/90 dark:bg-brand-primary/10 border border-brand-primary/30 rounded-2xl p-6 shadow-2xl sticky top-6">
+        <h4 class="text-xs font-black uppercase tracking-[0.2em] text-brand-primary mb-6 border-b border-brand-primary/20 pb-4 text-center">Filing Protocols</h4>
+        <div class="space-y-6">
+          <div>
+            <%= form.label :report_date, "Observation Date", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-brand-primary/70" %>
+            <%= form.date_field :report_date, class: "w-full px-4 py-3 border border-brand-primary/30 rounded-xl bg-black/20 text-sm font-bold text-white dark:text-brand-primary outline-none transition" %>
+          </div>
+          <div>
+            <%= form.label :report_type, "Classification", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-brand-primary/70" %>
+            <%= form.select :report_type, Report.report_types.keys.map { |t| [t.titleize, t] }, {},
                   class: "w-full px-4 py-3 border border-brand-primary/30 rounded-xl bg-black/20 text-sm font-bold text-white dark:text-brand-primary outline-none transition" %>
-                </div>
-                <div>
-                    <%= form.label :status, "Review Status", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-brand-primary/70" %>
-                    <%= form.select :status, Report.statuses.keys.map { |s| [s.titleize, s] }, {},
+          </div>
+          <div>
+            <%= form.label :status, "Administrative Status", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-brand-primary/70" %>
+            <%= form.select :status, Report.statuses.keys.map { |s| [s.titleize, s] }, {},
                   class: "w-full px-4 py-3 border border-brand-primary/30 rounded-xl bg-black/20 text-sm font-bold text-white dark:text-brand-primary outline-none transition" %>
-                </div>
-                <div class="pt-6">
-                    <%= form.submit "File Report", class: "w-full py-4 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-brand-secondary transition-all duration-300 active:scale-95 cursor-pointer" %>
-                    <%= link_to "Discard Draft", (@project ? project_reports_path(@project) : reports_path),
->>>>>>> Stashed changes
+          </div>
+          <div class="pt-6">
+            <%= form.submit "Transmit Final Report", class: "w-full py-4 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-brand-secondary transition-all duration-300 active:scale-95 cursor-pointer" %>
+            <%= link_to "Discard Submission", (@project ? project_reports_path(@project) : reports_path),
                   class: "block w-full mt-4 text-center text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-red-400 transition" %>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 <% end %>

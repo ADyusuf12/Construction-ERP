@@ -52,7 +52,7 @@ RSpec.describe "Admin::Users", type: :request do
         expect {
           post admin_users_path, params: {
             user: {
-              email: "newuser@hamzis.com",
+              email: "newuser@example.com",
               password: "password",
               role: "engineer"
             }
@@ -66,7 +66,7 @@ RSpec.describe "Admin::Users", type: :request do
     context "as non-admin" do
       it "is not authorized" do
         sign_in engineer
-        post admin_users_path, params: { user: { email: "bad@hamzis.com", password: "password" } }
+        post admin_users_path, params: { user: { email: "bad@example.com", password: "password" } }
         expect(response).to redirect_to(dashboard_home_path).or redirect_to(root_path)
       end
     end
@@ -76,16 +76,16 @@ RSpec.describe "Admin::Users", type: :request do
     context "as Admin" do
       it "updates the user" do
         sign_in admin
-        patch admin_user_path(user), params: { user: { email: "updated@hamzis.com" } }
+        patch admin_user_path(user), params: { user: { email: "updated@example.com" } }
         expect(response).to redirect_to(admin_users_path)
-        expect(user.reload.email).to eq("updated@hamzis.com")
+        expect(user.reload.email).to eq("updated@example.com")
       end
     end
 
     context "as non-admin" do
       it "is not authorized" do
         sign_in engineer
-        patch admin_user_path(user), params: { user: { email: "updated@hamzis.com" } }
+        patch admin_user_path(user), params: { user: { email: "updated@example.com" } }
         expect(response).to redirect_to(dashboard_home_path).or redirect_to(root_path)
       end
     end

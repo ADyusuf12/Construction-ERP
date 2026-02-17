@@ -1,6 +1,6 @@
 # Database Schema Overview
 
-This document provides a comprehensive overview of the database schema for the Hamzis Systems application. The schema is defined in `db/schema.rb`.
+This document provides a comprehensive overview of the database schema for the Earmark Systems application. The schema is defined in `db/schema.rb`.
 
 ## Table of Contents
 

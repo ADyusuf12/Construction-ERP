@@ -1,6 +1,6 @@
-# Contributing to Hamzis Systems
+# Contributing to Earmark Systems
 
-First off, thank you for considering contributing to Hamzis Systems! Your help is invaluable in making this project better.
+First off, thank you for considering contributing to Earmark Systems! Your help is invaluable in making this project better.
 
 This document provides guidelines for contributing to the project. Please read it carefully to ensure a smooth and effective contribution process.
 
@@ -28,11 +28,6 @@ We use a three‑tier branching model:
    git pull
    git checkout -b feature/short-description
    ```
-
-### Reporting Bugs
-
-- **Ensure the bug was not already reported** by searching on GitHub under [Issues](https://github.com/your-username/hamzis_systems/issues).
-- If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/your-username/hamzis_systems/issues/new). Be sure to include a **title and clear description**, as much relevant information as possible, and a **code sample** or an **executable test case** demonstrating the expected behavior that is not occurring.
 
 ### Suggesting Enhancements
 

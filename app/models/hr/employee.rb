@@ -4,14 +4,14 @@ module Hr
     belongs_to :manager, class_name: "Hr::Employee", optional: true
 
     has_many :subordinates, class_name: "Hr::Employee", foreign_key: "manager_id", dependent: :nullify
-    has_many :leaves, class_name: "Hr::Leave", foreign_key: "staff_id", dependent: :destroy
+    has_many :leaves, class_name: "Hr::Leave", dependent: :destroy
     has_many :assignments, dependent: :destroy
     has_many :tasks, through: :assignments
-    has_many :reports, class_name: "Report", foreign_key: "staff_id", dependent: :nullify
+    has_many :reports, class_name: "Report", dependent: :nullify
     has_one :personal_detail, class_name: "Hr::PersonalDetail", dependent: :destroy, inverse_of: :employee
-    has_many :salaries, class_name: "Accounting::Salary", foreign_key: "staff_id", dependent: :destroy
-    has_many :attendance_records, class_name: "Hr::AttendanceRecord", foreign_key: "staff_id", dependent: :destroy
-    has_many :next_of_kins, class_name: "Hr::NextOfKin", foreign_key: "staff_id", dependent: :destroy
+    has_many :salaries, class_name: "Accounting::Salary", dependent: :destroy
+    has_many :attendance_records, class_name: "Hr::AttendanceRecord",  dependent: :destroy
+    has_many :next_of_kins, class_name: "Hr::NextOfKin", dependent: :destroy
 
     accepts_nested_attributes_for :personal_detail, update_only: true, allow_destroy: true
     accepts_nested_attributes_for :next_of_kins, allow_destroy: true, reject_if: :all_blank

@@ -6,11 +6,7 @@
              task: @task,
              show_project: params[:project_id].blank?,
              show_details: params[:project_id].present?,
-<<<<<<< Updated upstream
-             row_class: (index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "") %>
-=======
-             row_class: index.even? ? "bg-brand-secondary/5 dark:bg-brand-primary/5" : "" %>
->>>>>>> Stashed changes
+             row_class: (index.even? ? "bg-brand-secondary/5 dark:bg-brand-primary/5" : "") %>
 <% end %>
 <%= turbo_stream.replace "project_progress" do %>
   <%= render "projects/progress_bar", project: @task.project %>

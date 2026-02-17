@@ -1,6 +1,6 @@
-# User Guide - Hamzis Systems
+# User Guide - Earmark Systems
 
-This guide helps you understand how to use the Hamzis Systems application. Whether you're a manager, employee, or administrator, this guide will walk you through the key features and workflows.
+This guide helps you understand how to use the Earmark Systems application. Whether you're a manager, employee, or administrator, this guide will walk you through the key features and workflows.
 
 ## Table of Contents
 
@@ -65,7 +65,7 @@ The dashboard shows you an at-a-glance view of your work:
 
 ## Managing Projects
 
-Projects are the main work units in Hamzis Systems. Each project contains tasks, reports, expenses, and inventory allocations.
+Projects are the main work units in Earmark Systems. Each project contains tasks, reports, expenses, and inventory allocations.
 
 ### Viewing Projects
 
@@ -365,11 +365,13 @@ Track income and expenses:
 **Salary Batches** group employee payments for a period (e.g., "January 2026").
 
 **For Employees:**
+
 - Your salary details are in your profile
 - You receive salary slips via email after payroll
 - Each slip shows: Base pay, allowances, deductions, net pay
 
 **For Accountants:**
+
 1. Create a salary batch
 2. Add employees and their pay details
 3. Add deductions (tax, pension, etc.)
@@ -379,6 +381,7 @@ Track income and expenses:
 ### Deductions
 
 Common deduction types:
+
 - Tax - Income tax
 - Pension - Retirement contribution
 - Health Insurance - Medical coverage
@@ -463,11 +466,11 @@ When creating or editing a project, select which client it's for.
 
 ## Keyboard Shortcuts
 
-| Action | Shortcut |
-|--------|----------|
-| Search | Press `/` |
+| Action          | Shortcut           |
+| --------------- | ------------------ |
+| Search          | Press `/`          |
 | Go to Dashboard | Press `g` then `d` |
-| Go to Projects | Press `g` then `p` |
+| Go to Projects  | Press `g` then `p` |
 
 ---
 
@@ -481,12 +484,12 @@ When creating or editing a project, select which client it's for.
 
 ### Common Error Messages
 
-| Error | What to Do |
-|-------|------------|
-| "Not authorized" | You don't have permission. Ask admin. |
-| "Item out of stock" | Can't allocate. Check available quantity. |
-| "Leave balance insufficient" | Not enough leave days. Check balance. |
-| "Project deadline passed" | Deadline has passed but status is ongoing |
+| Error                        | What to Do                                |
+| ---------------------------- | ----------------------------------------- |
+| "Not authorized"             | You don't have permission. Ask admin.     |
+| "Item out of stock"          | Can't allocate. Check available quantity. |
+| "Leave balance insufficient" | Not enough leave days. Check balance.     |
+| "Project deadline passed"    | Deadline has passed but status is ongoing |
 
 ---
 
@@ -520,28 +523,28 @@ When creating or editing a project, select which client it's for.
 
 ### Where to Find Things
 
-| What you need | Where to look |
-|--------------|---------------|
-| Your tasks | Dashboard → Tasks, or Projects → Specific Project |
-| Project reports | Projects → Specific Project → Reports tab |
-| Leave balance | HR → Your profile |
-| Available materials | Inventory → Items |
-| Your salary info | HR → Your profile, or Accounting → Salaries |
-| Team performance | Reports → Filter by status |
+| What you need       | Where to look                                     |
+| ------------------- | ------------------------------------------------- |
+| Your tasks          | Dashboard → Tasks, or Projects → Specific Project |
+| Project reports     | Projects → Specific Project → Reports tab         |
+| Leave balance       | HR → Your profile                                 |
+| Available materials | Inventory → Items                                 |
+| Your salary info    | HR → Your profile, or Accounting → Salaries       |
+| Team performance    | Reports → Filter by status                        |
 
 ### Icons Explained
 
-| Icon | Meaning |
-|------|---------|
-| 🟢 | In stock / Active |
-| 🟡 | Low stock / Pending |
-| 🔴 | Out of stock / Issue |
-| ✅ | Complete / Approved |
-| ⏳ | In progress / Pending |
-| 👤 | User / Person |
-| 📦 | Inventory item |
-| 🏢 | Project / Warehouse |
+| Icon | Meaning               |
+| ---- | --------------------- |
+| 🟢   | In stock / Active     |
+| 🟡   | Low stock / Pending   |
+| 🔴   | Out of stock / Issue  |
+| ✅   | Complete / Approved   |
+| ⏳   | In progress / Pending |
+| 👤   | User / Person         |
+| 📦   | Inventory item        |
+| 🏢   | Project / Warehouse   |
 
 ---
 
-_This guide is for all users of Hamzis Systems. For technical documentation, see the full [Architecture Guide](architecture.md) or [API Endpoints](endpoints.md)._
+_This guide is for all users of Earmark Systems. For technical documentation, see the full [Architecture Guide](architecture.md) or [API Endpoints](endpoints.md)._

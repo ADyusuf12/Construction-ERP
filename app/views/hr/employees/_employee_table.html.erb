@@ -1,32 +1,32 @@
 <div class="overflow-hidden bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl">
-    <% if employees.any? %>
+  <% if employees.any? %>
     <div class="overflow-x-auto">
-        <table class="min-w-full text-left border-separate border-spacing-0">
-            <thead>
-                <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
-                    <% ["Hamzis ID", "Department", "Position Title", "Deployment Date", "Status", "Actions"].each do |head| %>
-                    <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20">
-                        <%= head %>
-                    </th>
-                    <% end %>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
-                <% employees.each do |employee| %>
-                <%= render "hr/employees/employee_row", employee: employee %>
-                <% end %>
-            </tbody>
-        </table>
+      <table class="min-w-full text-left border-separate border-spacing-0">
+        <thead>
+          <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
+            <% ["Staff ID", "Department", "Position Title", "Deployment Date", "Status", "Actions"].each do |head| %>
+              <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20">
+                <%= head %>
+              </th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
+          <% employees.each do |employee| %>
+            <%= render "hr/employees/employee_row", employee: employee %>
+          <% end %>
+        </tbody>
+      </table>
     </div>
-    <% else %>
+  <% else %>
     <div class="text-center py-20 bg-black/5">
-        <div class="inline-flex p-4 rounded-full bg-brand-primary/10 text-brand-primary mb-4">
-            <svg xmlns="http://www.w3.org" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-        </div>
-        <h3 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tighter">Zero Records Located</h3>
-        <p class="text-sm text-brand-secondary/50 dark:text-brand-primary/50 italic mt-1">The resource database is currently vacant.</p>
+      <div class="inline-flex p-4 rounded-full bg-brand-primary/10 text-brand-primary mb-4">
+        <svg xmlns="http://www.w3.org" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+      </div>
+      <h3 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tighter">Zero Records Located</h3>
+      <p class="text-sm text-brand-secondary/50 dark:text-brand-primary/50 italic mt-1">The resource database is currently vacant.</p>
     </div>
-    <% end %>
+  <% end %>
 </div>

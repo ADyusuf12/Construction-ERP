@@ -5,7 +5,7 @@ Bundler.require(*Rails.groups)
 
 Dotenv.load(".env.#{ENV["RAILS_ENV"] || Rails.env}") if defined?(Dotenv)
 
-module HamzisSystems
+module EarmarkSystems
   class Application < Rails::Application
     config.load_defaults 8.0
     config.autoload_lib(ignore: %w[assets tasks])

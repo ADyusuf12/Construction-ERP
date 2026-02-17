@@ -1,12 +1,12 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
-    <% [
+  <% [
     { label: "Total Deductions", count: deductions.count, color: "copper" },
     { label: "Aggregate Value", count: number_to_currency(deductions.sum(:amount), unit: "₦"), color: "red-500" }
   ].each do |stat| %>
     <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/10 rounded-2xl p-5 backdrop-blur-md shadow-xl relative overflow-hidden group">
-        <div class="absolute top-0 left-0 w-1 h-full bg-hamzis-<%= stat[:color] %>"></div>
-        <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-secondary/50 dark:text-brand-primary/50 mb-1"><%= stat[:label] %></p>
-        <p class="text-3xl font-black text-brand-secondary dark:text-white truncate"><%= stat[:count] %></p>
+      <div class="absolute top-0 left-0 w-1 h-full bg-brand-<%= stat[:color] %>"></div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-secondary/50 dark:text-brand-primary/50 mb-1"><%= stat[:label] %></p>
+      <p class="text-3xl font-black text-brand-secondary dark:text-white truncate"><%= stat[:count] %></p>
     </div>
-    <% end %>
+  <% end %>
 </div>
