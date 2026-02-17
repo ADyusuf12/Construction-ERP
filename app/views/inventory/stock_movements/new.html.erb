@@ -1,26 +1,26 @@
-<% content_for :title, "Stock Logistics | Hamzis Systems" %>
+<% content_for :title, "Stock Logistics | Earmark Systems" %>
 <div class="mb-8">
-    <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50 mb-2">
-        <%= link_to "Inventory", inventory_inventory_items_path, class: "hover:text-brand-primary transition-colors" %>
-        <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
-        </svg>
-        <%= link_to @inventory_item.name, inventory_inventory_item_path(@inventory_item), class: "hover:text-brand-primary transition-colors" %>
-        <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
-        </svg>
-        <span class="text-brand-primary text-xs">Execute Movement</span>
-    </nav>
-    <div class="flex items-center gap-3">
-        <div class="p-3 rounded-2xl bg-brand-primary text-white shadow-lg shadow-brand-primary/20">
-            <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-            </svg>
-        </div>
-        <div>
-            <h1 class="text-3xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary">Logistics Manifest</h1>
-            <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic">Tracking movement for: <%= @inventory_item.name %></p>
-        </div>
+  <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50 mb-2">
+    <%= link_to "Inventory", inventory_inventory_items_path, class: "hover:text-brand-primary transition-colors" %>
+    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+    </svg>
+    <%= link_to @inventory_item.name, inventory_inventory_item_path(@inventory_item), class: "hover:text-brand-primary transition-colors" %>
+    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+    </svg>
+    <span class="text-brand-primary text-xs">Execute Movement</span>
+  </nav>
+  <div class="flex items-center gap-3">
+    <div class="p-3 rounded-2xl bg-brand-primary text-white shadow-lg shadow-brand-primary/20">
+      <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+      </svg>
     </div>
+    <div>
+      <h1 class="text-3xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary">Logistics Manifest</h1>
+      <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic">Tracking movement for: <%= @inventory_item.name %></p>
+    </div>
+  </div>
 </div>
 <%= render "form", stock_movement: @stock_movement, inventory_item: @inventory_item %>

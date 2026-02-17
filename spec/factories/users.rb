@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :user do
-    sequence(:email) { |n| "user#{n}@hamzis.com" }
+    sequence(:email) { |n| "user#{n}@example.com" }
     password { "password" }
 
     # Superuser admin — no employee association

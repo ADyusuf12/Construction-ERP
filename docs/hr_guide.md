@@ -1,6 +1,6 @@
 # HR Module Guide
 
-This guide provides comprehensive documentation for the Human Resources (HR) module, which manages employees, organizational structure, and personal information for the Hamzis Systems application.
+This guide provides comprehensive documentation for the Human Resources (HR) module, which manages employees, organizational structure, and personal information for the Earmark Systems application.
 
 ## Table of Contents
 
@@ -40,7 +40,7 @@ The HR module manages all human resources operations within the organization, in
 
 An **Employee** is a person employed by the organization. Each employee has:
 
-- **Hamzis ID:** Unique employee identifier (required)
+- **Staff ID:** Unique employee identifier (required)
 - **Department:** Employee's department (optional)
 - **Position Title:** Job title or role (optional)
 - **Hire Date:** When employed (optional)
@@ -248,7 +248,7 @@ end
 
 1. Navigate to `/hr/employees/new`
 2. Enter employee details:
-   - **Hamzis ID** (required, unique) - Employee number
+   - **Staff ID** (required, unique) - Employee number
    - **Department** (optional) - Department name
    - **Position Title** (optional) - Job title
    - **Hire Date** (optional) - Start date
@@ -529,7 +529,7 @@ DELETE /hr/leaves/:id
 
 ### Employee Data Management
 
-1. **Unique IDs:** Ensure Hamzis IDs are unique and meaningful
+1. **Unique IDs:** Ensure Staff IDs are unique and meaningful
 2. **Current Information:** Keep personal details updated
 3. **Hire Dates:** Record accurate employment start dates
 4. **Status Tracking:** Update status promptly when employment changes
@@ -574,7 +574,7 @@ DELETE /hr/leaves/:id
 ### Onboarding a New Employee
 
 1. Create employee record:
-   - Enter Hamzis ID
+   - Enter Staff ID
    - Set department and position
    - Assign manager
    - Set hire date

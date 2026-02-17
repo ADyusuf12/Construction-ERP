@@ -1,65 +1,65 @@
 <aside class="lg:col-span-1">
-    <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-xl p-8 space-y-8 relative overflow-hidden">
-        <!-- Brand Watermark Accent -->
-        <div class="absolute -top-4 -right-4 opacity-[0.03] dark:opacity-[0.05] pointer-events-none">
-            <svg class="w-32 h-32 text-brand-primary" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M3 7h4l2-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-            </svg>
-        </div>
-        <!-- Header -->
-        <div class="relative">
-            <div class="flex items-center gap-2 mb-2">
-                <span class="px-2 py-0.5 rounded bg-brand-primary/10 border border-brand-primary/20 text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary">
-                    SKU: <%= inventory_item.sku.presence || "PENDING" %>
-                </span>
-            </div>
-            <h2 class="text-3xl font-black text-brand-secondary dark:text-white uppercase tracking-tighter italic leading-none">
-                <%= inventory_item.name %>
-            </h2>
-        </div>
-        <!-- Primary Specs -->
-        <div class="grid grid-cols-2 gap-4 py-6 border-y border-brand-secondary/10">
-            <div>
-                <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Unit Type</p>
-                <p class="text-sm font-bold text-brand-secondary dark:text-white"><%= inventory_item.unit.presence || "N/A" %></p>
-            </div>
-            <div>
-                <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Valuation</p>
-                <p class="text-sm font-black text-brand-secondary dark:text-white font-mono">
-                    <%= number_to_currency(inventory_item.unit_cost, unit: "₦", precision: 0) %>
-                </p>
-            </div>
-        </div>
-        <!-- Technical Details -->
-        <dl class="space-y-4">
-            <div class="flex justify-between items-end border-b border-brand-secondary/5 pb-2">
-                <dt class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50">Reorder Level</dt>
-                <dd class="text-xs font-black text-brand-secondary dark:text-white"><%= inventory_item.reorder_threshold || "0" %> Units</dd>
-            </div>
-        </dl>
-        <!-- Visual Description -->
-        <% if inventory_item.description.present? %>
-        <div class="text-[11px] text-brand-secondary/70 dark:text-hamzis-textDark/70 leading-relaxed italic border-l-2 border-brand-primary/30 pl-4">
-            <%= inventory_item.description %>
-        </div>
-        <% end %>
-        <!-- Stock Pulse Cards -->
-        <div class="grid grid-cols-2 gap-3">
-            <div class="bg-white/40 dark:bg-black/20 border border-brand-secondary/10 rounded-xl p-4">
-                <p class="text-[9px] font-black uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">Total</p>
-                <p class="text-2xl font-black text-brand-secondary dark:text-brand-primary tabular-nums"><%= inventory_item.total_quantity %></p>
-            </div>
-            <div class="bg-white/40 dark:bg-black/20 border border-brand-secondary/10 rounded-xl p-4">
-                <p class="text-[9px] font-black uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">Available</p>
-                <p class="text-2xl font-black text-brand-secondary dark:text-white tabular-nums"><%= inventory_item.available_quantity %></p>
-            </div>
-        </div>
-        <!-- Action Toolbar -->
-        <div class="flex flex-col gap-2 pt-4">
-            <%= link_to edit_inventory_inventory_item_path(inventory_item), class: "w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-brand-primary text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-brand-black transition-all active:scale-95" do %>
-            Modify Item
-            <% end %>
-            <%= link_to "Return to Items", inventory_inventory_items_path, class: "w-full text-center py-3 text-[10px] font-black uppercase tracking-widest text-brand-secondary/50 hover:text-brand-primary transition" %>
-        </div>
+  <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-xl p-8 space-y-8 relative overflow-hidden">
+    <!-- Brand Watermark Accent -->
+    <div class="absolute -top-4 -right-4 opacity-[0.03] dark:opacity-[0.05] pointer-events-none">
+      <svg class="w-32 h-32 text-brand-primary" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M3 7h4l2-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+      </svg>
     </div>
+    <!-- Header -->
+    <div class="relative">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="px-2 py-0.5 rounded bg-brand-primary/10 border border-brand-primary/20 text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary">
+          SKU: <%= inventory_item.sku.presence || "PENDING" %>
+        </span>
+      </div>
+      <h2 class="text-3xl font-black text-brand-secondary dark:text-white uppercase tracking-tighter italic leading-none">
+        <%= inventory_item.name %>
+      </h2>
+    </div>
+    <!-- Primary Specs -->
+    <div class="grid grid-cols-2 gap-4 py-6 border-y border-brand-secondary/10">
+      <div>
+        <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Unit Type</p>
+        <p class="text-sm font-bold text-brand-secondary dark:text-white"><%= inventory_item.unit.presence || "N/A" %></p>
+      </div>
+      <div>
+        <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Valuation</p>
+        <p class="text-sm font-black text-brand-secondary dark:text-white font-mono">
+          <%= number_to_currency(inventory_item.unit_cost, unit: "₦", precision: 0) %>
+        </p>
+      </div>
+    </div>
+    <!-- Technical Details -->
+    <dl class="space-y-4">
+      <div class="flex justify-between items-end border-b border-brand-secondary/5 pb-2">
+        <dt class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50">Reorder Level</dt>
+        <dd class="text-xs font-black text-brand-secondary dark:text-white"><%= inventory_item.reorder_threshold || "0" %> Units</dd>
+      </div>
+    </dl>
+    <!-- Visual Description -->
+    <% if inventory_item.description.present? %>
+      <div class="text-[11px] text-brand-secondary/70 dark:text-brand-text-dark/70 leading-relaxed italic border-l-2 border-brand-primary/30 pl-4">
+        <%= inventory_item.description %>
+      </div>
+    <% end %>
+    <!-- Stock Pulse Cards -->
+    <div class="grid grid-cols-2 gap-3">
+      <div class="bg-white/40 dark:bg-black/20 border border-brand-secondary/10 rounded-xl p-4">
+        <p class="text-[9px] font-black uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">Total</p>
+        <p class="text-2xl font-black text-brand-secondary dark:text-brand-primary tabular-nums"><%= inventory_item.total_quantity %></p>
+      </div>
+      <div class="bg-white/40 dark:bg-black/20 border border-brand-secondary/10 rounded-xl p-4">
+        <p class="text-[9px] font-black uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">Available</p>
+        <p class="text-2xl font-black text-brand-secondary dark:text-white tabular-nums"><%= inventory_item.available_quantity %></p>
+      </div>
+    </div>
+    <!-- Action Toolbar -->
+    <div class="flex flex-col gap-2 pt-4">
+      <%= link_to edit_inventory_inventory_item_path(inventory_item), class: "w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-brand-primary text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-brand-black transition-all active:scale-95" do %>
+        Modify Item
+      <% end %>
+      <%= link_to "Return to Items", inventory_inventory_items_path, class: "w-full text-center py-3 text-[10px] font-black uppercase tracking-widest text-brand-secondary/50 hover:text-brand-primary transition" %>
+    </div>
+  </div>
 </aside>

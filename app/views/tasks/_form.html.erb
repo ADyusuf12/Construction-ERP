@@ -1,201 +1,110 @@
 <%= form_with(model: [@project, @task],
               local: true,
               class: "space-y-6 hr-form") do |form| %>
-<<<<<<< Updated upstream
-
-<%# --- ERROR REPORTING BLOCK --- %>
-<% if @task.errors.any? %>
-<div class="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 backdrop-blur-md animate-in fade-in slide-in-from-top-4 duration-500">
-    <div class="flex items-center gap-2 mb-3">
+  <%# --- ERROR REPORTING BLOCK --- %>
+  <% if @task.errors.any? %>
+    <div class="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 backdrop-blur-md animate-in fade-in slide-in-from-top-4 duration-500">
+      <div class="flex items-center gap-2 mb-3">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
         </svg>
         <h3 class="font-black uppercase tracking-widest text-[10px]">
-            <%= pluralize(@task.errors.count, "deployment constraint") %> breached
+          <%= pluralize(@task.errors.count, "deployment constraint") %> breached
         </h3>
-    </div>
-    <ul class="list-disc ml-7 text-[11px] font-bold uppercase tracking-tight space-y-1 opacity-90">
+      </div>
+      <ul class="list-disc ml-7 text-[11px] font-bold uppercase tracking-tight space-y-1 opacity-90">
         <% @task.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+          <li><%= msg %></li>
         <% end %>
-    </ul>
-</div>
-<% end %>
-
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <div class="lg:col-span-2 space-y-6">
-        <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-            <div class="flex items-center gap-2 mb-6">
-                <div class="p-2 rounded-lg bg-hamzis-copper/10 text-hamzis-copper">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01m-.01 4h.01" />
-                    </svg>
-                </div>
-                <h4 class="text-sm font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Task Assignment</h4>
-            </div>
-            <div class="space-y-5">
-                <% unless @project %>
-                <div>
-                    <%= form.label :project_id, "Project Site Location", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-                    <%= form.collection_select :project_id, Project.all, :id, :name, { prompt: "Select Destination Project" },
-                    class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
-                </div>
-                <% end %>
-                <div>
-                    <%= form.label :title, "Task Identifier", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-                    <%= form.text_field :title, placeholder: "e.g., Foundation Pouring - Section A",
-                  class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
-                </div>
-                <div>
-                    <%= form.label :details, "Execution Instructions", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-                    <%= form.text_area :details, rows: 5, placeholder: "Provide technical details or specific requirements...",
-                  class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm text-hamzis-brown dark:text-hamzis-copper">
-            <div class="flex items-center gap-2 mb-4 text-hamzis-brown dark:text-hamzis-copper">
-                <div class="p-2 rounded-lg bg-hamzis-copper/10 text-hamzis-copper">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                </div>
-                <h4 class="text-sm font-black uppercase tracking-widest ">Responsible Personnel</h4>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                <% Hr::Employee.status_active.each do |emp| %>
-                <% if emp.user.present? %>
-                <label class="flex items-center space-x-3 p-3 rounded-xl border border-hamzis-brown/10 bg-white/40 dark:bg-black/20 hover:border-hamzis-copper transition cursor-pointer group">
-                    <%= check_box_tag "task[employee_ids][]", emp.id, form.object.employee_ids.include?(emp.id),
-                  class: "w-4 h-4 rounded border-hamzis-brown/30 text-hamzis-copper focus:ring-hamzis-copper" %>
-                    <div class="flex flex-col">
-                        <span class="text-xs font-bold text-gray-900 dark:text-hamzis-copper group-hover:text-hamzis-brown"><%= emp.full_name %></span>
-                        <span class="text-[9px] uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50"><%= emp.position_title %></span>
-                    </div>
-                </label>
-                <% end %>
-                <% end %>
-            </div>
-        </div>
+      </ul>
     </div>
-
-    <div class="lg:col-span-1 space-y-6">
-        <div class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10 border border-hamzis-copper/30 rounded-2xl p-6 shadow-2xl sticky top-6">
-            <h4 class="text-xs font-black uppercase tracking-[0.2em] text-hamzis-copper mb-6 border-b border-hamzis-copper/20 pb-4 text-center">Deployment Protocol</h4>
-            <div class="space-y-6">
-                <div>
-                    <%= form.label :status, "Current Workflow Status", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-hamzis-copper/70" %>
-                    <%= form.select :status, Task.statuses.keys.map { |s| [s.titleize, s] }, {},
-                  class: "w-full px-4 py-3 border border-hamzis-copper/30 rounded-xl bg-black/20 text-sm font-bold text-white dark:text-hamzis-copper outline-none" %>
-                </div>
-                <div>
-                    <%= form.label :due_date, "Mandatory Deadline", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-hamzis-copper/70" %>
-                    <%= form.date_field :due_date, class: "w-full px-4 py-3 border border-hamzis-copper/30 rounded-xl bg-black/20 text-sm font-bold text-white dark:text-hamzis-copper outline-none" %>
-                </div>
-                <div>
-                    <%= form.label :weight, "Strategic Impact Weight", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-white/70 dark:text-hamzis-copper/70" %>
-                    <div class="flex items-center gap-4">
-                        <%= form.number_field :weight, value: @task.weight || 1, min: 1,
-                    class: "w-20 px-3 py-3 border border-hamzis-copper/30 rounded-xl bg-black/20 text-xl font-black text-white dark:text-hamzis-copper text-center outline-none" %>
-                        <div class="flex-1 text-[9px] leading-tight text-white/50 dark:text-hamzis-copper/50 italic">
-=======
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <!-- LEFT: Task Definition -->
+  <% end %>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <div class="lg:col-span-2 space-y-6">
-        <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-            <div class="flex items-center gap-2 mb-6">
-                <div class="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
-                    <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01m-.01 4h.01" />
-                    </svg>
-                </div>
-                <h4 class="text-sm font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary">Task Assignment</h4>
-            </div>
-            <div class="space-y-5">
-                <% unless @project %>
-                <div>
-                    <%= form.label :project_id, "Project Site", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
-                    <%= form.collection_select :project_id, Project.all, :id, :name, { prompt: "Select Destination Project" },
+      <div class="bg-white/30 dark:bg-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+        <div class="flex items-center gap-2 mb-6">
+          <div class="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01m-.01 4h.01" />
+            </svg>
+          </div>
+          <h4 class="text-sm font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary">Task Assignment</h4>
+        </div>
+        <div class="space-y-5">
+          <% unless @project %>
+            <div>
+              <%= form.label :project_id, "Project Site Location", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+              <%= form.collection_select :project_id, Project.all, :id, :name, { prompt: "Select Destination Project" },
                     class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition" %>
-                </div>
-                <% end %>
-                <div>
-                    <%= form.label :title, "Task Identifier", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
-                    <%= form.text_field :title, placeholder: "e.g., Foundation Pouring - Section A",
-                  class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition" %>
-                </div>
-                <div>
-                    <%= form.label :details, "Execution Instructions", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
-                    <%= form.text_area :details, rows: 5, placeholder: "Provide technical details or specific requirements...",
-                  class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition" %>
-                </div>
             </div>
+          <% end %>
+          <div>
+            <%= form.label :title, "Task Identifier", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+            <%= form.text_field :title, placeholder: "e.g., Foundation Pouring - Section A",
+                  class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition" %>
+          </div>
+          <div>
+            <%= form.label :details, "Execution Instructions", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+            <%= form.text_area :details, rows: 5, placeholder: "Provide technical details or specific requirements...",
+                  class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition" %>
+          </div>
         </div>
-        <!-- Personnel Card -->
-        <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-            <div class="flex items-center gap-2 mb-4">
-                <div class="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
-                    <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                </div>
-                <h4 class="text-sm font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary">Responsible Personnel</h4>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                <% Hr::Employee.status_active.each do |emp| %>
-                <% if emp.user.present? %>
-                <label class="flex items-center space-x-3 p-3 rounded-xl border border-brand-secondary/10 bg-white/40 dark:bg-black/20 hover:border-brand-primary transition cursor-pointer group">
-                    <%= check_box_tag "task[employee_ids][]", emp.id, form.object.employee_ids.include?(emp.id),
+      </div>
+      <div class="bg-white/30 dark:bg-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm text-brand-secondary dark:text-brand-primary">
+        <div class="flex items-center gap-2 mb-4 text-brand-secondary dark:text-brand-primary">
+          <div class="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </div>
+          <h4 class="text-sm font-black uppercase tracking-widest ">Responsible Personnel</h4>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+          <% Hr::Employee.status_active.each do |emp| %>
+            <% if emp.user.present? %>
+              <label class="flex items-center space-x-3 p-3 rounded-xl border border-brand-secondary/10 bg-white/40 dark:bg-black/20 hover:border-brand-primary transition cursor-pointer group">
+                <%= check_box_tag "task[employee_ids][]", emp.id, form.object.employee_ids.include?(emp.id),
                   class: "w-4 h-4 rounded border-brand-secondary/30 text-brand-primary focus:ring-brand-primary" %>
-                    <div class="flex flex-col">
-                        <span class="text-xs font-bold text-gray-900 dark:text-brand-primary group-hover:text-brand-secondary"><%= emp.full_name %></span>
-                        <span class="text-[9px] uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50"><%= emp.position_title %></span>
-                    </div>
-                </label>
-                <% end %>
-                <% end %>
-            </div>
+                <div class="flex flex-col">
+                  <span class="text-xs font-bold text-gray-900 dark:text-brand-primary group-hover:text-brand-secondary"><%= emp.full_name %></span>
+                  <span class="text-[9px] uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50"><%= emp.position_title %></span>
+                </div>
+              </label>
+            <% end %>
+          <% end %>
         </div>
+      </div>
     </div>
-    <!-- RIGHT: Timeline & Priority -->
     <div class="lg:col-span-1 space-y-6">
-        <div class="bg-brand-secondary/90 dark:bg-brand-primary/10 border border-brand-primary/30 rounded-2xl p-6 shadow-2xl sticky top-6">
-            <h4 class="text-xs font-black uppercase tracking-[0.2em] text-brand-primary mb-6 border-b border-brand-primary/20 pb-4">Schedule & Impact</h4>
-            <div class="space-y-6">
-                <div>
-                    <%= form.label :status, class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-brand-primary/70" %>
-                    <%= form.select :status, Task.statuses.keys.map { |s| [s.titleize, s] }, {},
+      <div class="bg-brand-secondary/90 dark:bg-brand-primary/10 border border-brand-primary/30 rounded-2xl p-6 shadow-2xl sticky top-6">
+        <h4 class="text-xs font-black uppercase tracking-[0.2em] text-brand-primary mb-6 border-b border-brand-primary/20 pb-4 text-center">Deployment Protocol</h4>
+        <div class="space-y-6">
+          <div>
+            <%= form.label :status, "Current Workflow Status", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-brand-primary/70" %>
+            <%= form.select :status, Task.statuses.keys.map { |s| [s.titleize, s] }, {},
                   class: "w-full px-4 py-3 border border-brand-primary/30 rounded-xl bg-black/20 text-sm font-bold text-white dark:text-brand-primary outline-none" %>
-                </div>
-                <div>
-                    <%= form.label :due_date, "Delivery Deadline", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-brand-primary/70" %>
-                    <%= form.date_field :due_date, class: "w-full px-4 py-3 border border-brand-primary/30 rounded-xl bg-black/20 text-sm font-bold text-white dark:text-brand-primary outline-none" %>
-                </div>
-                <div>
-                    <%= form.label :weight, "Impact Weight", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-white/70 dark:text-brand-primary/70" %>
-                    <div class="flex items-center gap-4">
-                        <%= form.number_field :weight, value: @task.weight || 1, min: 1,
+          </div>
+          <div>
+            <%= form.label :due_date, "Mandatory Deadline", class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-brand-primary/70" %>
+            <%= form.date_field :due_date, class: "w-full px-4 py-3 border border-brand-primary/30 rounded-xl bg-black/20 text-sm font-bold text-white dark:text-brand-primary outline-none" %>
+          </div>
+          <div>
+            <%= form.label :weight, "Strategic Impact Weight", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-white/70 dark:text-brand-primary/70" %>
+            <div class="flex items-center gap-4">
+              <%= form.number_field :weight, value: @task.weight || 1, min: 1,
                     class: "w-20 px-3 py-3 border border-brand-primary/30 rounded-xl bg-black/20 text-xl font-black text-white dark:text-brand-primary text-center outline-none" %>
-                        <div class="flex-1 text-[9px] leading-tight text-white/50 dark:text-brand-primary/50 italic">
->>>>>>> Stashed changes
-                            Higher weight increases task priority in project metrics.
-                        </div>
-                    </div>
-                </div>
-<<<<<<< Updated upstream
-                <div class="pt-6 border-t border-hamzis-copper/20">
-                    <%= form.submit "Deploy Task", class: "w-full py-4 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-hamzis-brown transition-all duration-300 active:scale-95 cursor-pointer" %>
-                    <%= link_to "Abort Assignment", (@project ? project_tasks_path(@project) : tasks_path),
-=======
-                <div class="pt-6">
-                    <%= form.submit "Deploy Task", class: "w-full py-4 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-brand-secondary transition-all duration-300 active:scale-95 cursor-pointer" %>
-                    <%= link_to "Cancel", (@project ? project_tasks_path(@project) : tasks_path),
->>>>>>> Stashed changes
-                  class: "block w-full mt-4 text-center text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-red-400 transition" %>
-                </div>
+              <div class="flex-1 text-[9px] leading-tight text-white/50 dark:text-brand-primary/50 italic">
+                Higher weight increases task priority in project metrics.
+              </div>
             </div>
+          </div>
+          <div class="pt-6 border-t border-brand-primary/20">
+            <%= form.submit "Deploy Task", class: "w-full py-4 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-brand-secondary transition-all duration-300 active:scale-95 cursor-pointer" %>
+            <%= link_to "Abort Assignment", (@project ? project_tasks_path(@project) : tasks_path),
+                  class: "block w-full mt-4 text-center text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-red-400 transition" %>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 <% end %>

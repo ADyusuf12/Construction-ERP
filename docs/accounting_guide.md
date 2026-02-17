@@ -1,6 +1,6 @@
 # Accounting Module Guide
 
-This guide provides comprehensive documentation for the Accounting module, which handles financial transactions, salary management, and deductions for the Hamzis Systems application.
+This guide provides comprehensive documentation for the Accounting module, which handles financial transactions, salary management, and deductions for the Earmark Systems application.
 
 ## Table of Contents
 

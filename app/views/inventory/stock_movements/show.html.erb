@@ -1,40 +1,40 @@
-<% content_for :title, "Movement Log: #{@stock_movement.reference.presence || @stock_movement.id} | Hamzis Logistics" %>
+<% content_for :title, "Movement Log: #{@stock_movement.reference.presence || @stock_movement.id} | Logistics" %>
 <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl p-8 mb-10 relative overflow-hidden animate-fade-in">
-    <% movement_color = @stock_movement.movement_type == 'in' ? 'bg-green-500' : 'bg-brand-primary' %>
-    <div class="absolute top-0 left-0 w-full h-1 <%= movement_color %> opacity-40"></div>
-    <div class="flex flex-col md:flex-row justify-between items-start gap-6">
-        <div class="flex-1">
-            <div class="flex items-center gap-3 mb-2">
-                <span class="px-2 py-0.5 rounded bg-brand-secondary/10 border border-brand-secondary/20 text-[9px] font-black uppercase tracking-[0.2em] text-brand-secondary dark:text-brand-primary">
-                    Log ID #<%= @stock_movement.id %>
-                </span>
-                <span class="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50">
-                    <span class="h-1.5 w-1.5 rounded-full <%= movement_color %>"></span>
-                    <%= @stock_movement.movement_type.humanize %> Bound
-                </span>
-            </div>
-            <h2 class="text-3xl font-black text-brand-secondary dark:text-white uppercase tracking-tighter italic mb-4">
-                <%= @stock_movement.inventory_item&.name || "Unknown Component" %>
-            </h2>
-            <% if @stock_movement.notes.present? %>
-            <div class="text-sm text-brand-secondary/70 dark:text-white/70 leading-relaxed max-w-2xl italic border-l-2 border-brand-primary/30 pl-4">
-                <%= simple_format(@stock_movement.notes) %>
-            </div>
-            <% end %>
+  <% movement_color = @stock_movement.movement_type == 'in' ? 'bg-green-500' : 'bg-brand-primary' %>
+  <div class="absolute top-0 left-0 w-full h-1 <%= movement_color %> opacity-40"></div>
+  <div class="flex flex-col md:flex-row justify-between items-start gap-6">
+    <div class="flex-1">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="px-2 py-0.5 rounded bg-brand-secondary/10 border border-brand-secondary/20 text-[9px] font-black uppercase tracking-[0.2em] text-brand-secondary dark:text-brand-primary">
+          Log ID #<%= @stock_movement.id %>
+        </span>
+        <span class="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50">
+          <span class="h-1.5 w-1.5 rounded-full <%= movement_color %>"></span>
+          <%= @stock_movement.movement_type.humanize %> Bound
+        </span>
+      </div>
+      <h2 class="text-3xl font-black text-brand-secondary dark:text-white uppercase tracking-tighter italic mb-4">
+        <%= @stock_movement.inventory_item&.name || "Unknown Component" %>
+      </h2>
+      <% if @stock_movement.notes.present? %>
+        <div class="text-sm text-brand-secondary/70 dark:text-white/70 leading-relaxed max-w-2xl italic border-l-2 border-brand-primary/30 pl-4">
+          <%= simple_format(@stock_movement.notes) %>
         </div>
-        <div class="flex flex-wrap md:flex-nowrap gap-3">
-            <% if policy([:inventory, @stock_movement]).update? %>
-            <%= link_to edit_inventory_inventory_item_stock_movement_path(@stock_movement.inventory_item, @stock_movement),
+      <% end %>
+    </div>
+    <div class="flex flex-wrap md:flex-nowrap gap-3">
+      <% if policy([:inventory, @stock_movement]).update? %>
+        <%= link_to edit_inventory_inventory_item_stock_movement_path(@stock_movement.inventory_item, @stock_movement),
             class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-primary text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-brand-black transition-all active:scale-95" do %>
-            Modify Log
-            <% end %>
-            <% end %>
-            <%= link_to inventory_inventory_item_stock_movements_path(@stock_movement.inventory_item),
+          Modify Log
+        <% end %>
+      <% end %>
+      <%= link_to inventory_inventory_item_stock_movements_path(@stock_movement.inventory_item),
           class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-secondary/10 text-brand-secondary dark:text-white border border-brand-secondary/20 text-[10px] font-black uppercase tracking-widest hover:bg-brand-secondary hover:text-white transition-all" do %>
-            Item History
-            <% end %>
-            <% if policy([:inventory, @stock_movement]).destroy? %>
-            <%= button_to "#",
+        Item History
+      <% end %>
+      <% if policy([:inventory, @stock_movement]).destroy? %>
+        <%= button_to "#",
             class: "p-2.5 rounded-xl bg-red-500/10 text-red-600 border border-red-500/20 hover:bg-red-600 hover:text-white transition-all cursor-pointer",
             form: {
               "data-action" => "click->confirm-delete#open",
@@ -42,64 +42,64 @@
               "data-confirm-delete-message-param" => "This will void the stock adjustment for '#{@stock_movement.inventory_item&.name}'. Proceed?" ,
               "data-confirm-delete-confirm-path-param" => inventory_inventory_item_stock_movement_path(@stock_movement.inventory_item, @stock_movement)
             } do %>
-            <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-            <% end %>
-            <% end %>
-        </div>
+          <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        <% end %>
+      <% end %>
     </div>
-    <div class="mt-10 p-6 rounded-2xl bg-brand-secondary/5 dark:bg-white/5 border border-brand-secondary/10 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div class="text-center md:text-left">
-            <p class="text-[8px] font-black uppercase tracking-widest text-brand-primary mb-1">Source Origin</p>
-            <p class="text-sm font-bold text-brand-secondary dark:text-white uppercase">
-                <%= @stock_movement.source_warehouse&.name || "External Supply" %>
-            </p>
-        </div>
-        <div class="flex-1 flex items-center gap-4 px-4">
-            <div class="h-[1px] flex-1 bg-brand-secondary/20 dark:bg-white/20 relative">
-                <div class="absolute inset-y-0 left-0 bg-brand-primary animate-pulse" style="width: 100%"></div>
-            </div>
-            <div class="text-[10px] font-mono font-black text-brand-primary whitespace-nowrap px-3 py-1 rounded-full border border-brand-primary/30 bg-brand-primary/5">
-                <%= @stock_movement.quantity %> <%= @stock_movement.inventory_item&.unit %>
-            </div>
-            <div class="h-[1px] flex-1 bg-brand-secondary/20 dark:bg-white/20"></div>
-        </div>
-        <div class="text-center md:text-right">
-            <p class="text-[8px] font-black uppercase tracking-widest text-brand-primary mb-1">Destination Site</p>
-            <p class="text-sm font-bold text-brand-secondary dark:text-white uppercase">
-                <%= @stock_movement.project&.name || @stock_movement.destination_warehouse&.name || "Inventory Adjustment" %>
-            </p>
-        </div>
+  </div>
+  <div class="mt-10 p-6 rounded-2xl bg-brand-secondary/5 dark:bg-white/5 border border-brand-secondary/10 flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="text-center md:text-left">
+      <p class="text-[8px] font-black uppercase tracking-widest text-brand-primary mb-1">Source Origin</p>
+      <p class="text-sm font-bold text-brand-secondary dark:text-white uppercase">
+        <%= @stock_movement.source_warehouse&.name || "External Supply" %>
+      </p>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-8 pt-8 border-t border-brand-secondary/10">
-        <div>
-            <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Timestamp</p>
-            <p class="text-sm font-black text-brand-secondary dark:text-white font-mono tracking-tighter">
-                <%= @stock_movement.created_at.strftime("%d.%m.%Y @ %H:%M") %>
-            </p>
-        </div>
-        <div>
-            <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Voucher Reference</p>
-            <p class="text-sm font-bold text-brand-secondary dark:text-white uppercase tracking-tight">
-                <%= @stock_movement.reference.presence || "No Ref Provided" %>
-            </p>
-        </div>
-        <div>
-            <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Authored By</p>
-            <div class="flex items-center gap-2">
-                <div class="h-5 w-5 rounded bg-brand-primary/10 flex items-center justify-center text-[8px] font-black text-brand-primary">
-                    <%= @stock_movement.employee&.full_name&.first&.upcase || "S" %>
-                </div>
-                <span class="text-[11px] font-bold text-brand-secondary dark:text-white uppercase tracking-tight">
-                    <%= @stock_movement.employee&.full_name || "System" %>
-                </span>
-            </div>
-        </div>
-        <div>
-            <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Movement Type</p>
-            <span class="text-[10px] font-black text-brand-secondary dark:text-white uppercase tracking-widest italic opacity-60"><%= @stock_movement.movement_type %>
-            </span>
-        </div>
+    <div class="flex-1 flex items-center gap-4 px-4">
+      <div class="h-[1px] flex-1 bg-brand-secondary/20 dark:bg-white/20 relative">
+        <div class="absolute inset-y-0 left-0 bg-brand-primary animate-pulse" style="width: 100%"></div>
+      </div>
+      <div class="text-[10px] font-mono font-black text-brand-primary whitespace-nowrap px-3 py-1 rounded-full border border-brand-primary/30 bg-brand-primary/5">
+        <%= @stock_movement.quantity %> <%= @stock_movement.inventory_item&.unit %>
+      </div>
+      <div class="h-[1px] flex-1 bg-brand-secondary/20 dark:bg-white/20"></div>
     </div>
+    <div class="text-center md:text-right">
+      <p class="text-[8px] font-black uppercase tracking-widest text-brand-primary mb-1">Destination Site</p>
+      <p class="text-sm font-bold text-brand-secondary dark:text-white uppercase">
+        <%= @stock_movement.project&.name || @stock_movement.destination_warehouse&.name || "Inventory Adjustment" %>
+      </p>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-8 pt-8 border-t border-brand-secondary/10">
+    <div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Timestamp</p>
+      <p class="text-sm font-black text-brand-secondary dark:text-white font-mono tracking-tighter">
+        <%= @stock_movement.created_at.strftime("%d.%m.%Y @ %H:%M") %>
+      </p>
+    </div>
+    <div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Voucher Reference</p>
+      <p class="text-sm font-bold text-brand-secondary dark:text-white uppercase tracking-tight">
+        <%= @stock_movement.reference.presence || "No Ref Provided" %>
+      </p>
+    </div>
+    <div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Authored By</p>
+      <div class="flex items-center gap-2">
+        <div class="h-5 w-5 rounded bg-brand-primary/10 flex items-center justify-center text-[8px] font-black text-brand-primary">
+          <%= @stock_movement.employee&.full_name&.first&.upcase || "S" %>
+        </div>
+        <span class="text-[11px] font-bold text-brand-secondary dark:text-white uppercase tracking-tight">
+          <%= @stock_movement.employee&.full_name || "System" %>
+        </span>
+      </div>
+    </div>
+    <div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Movement Type</p>
+      <span class="text-[10px] font-black text-brand-secondary dark:text-white uppercase tracking-widest italic opacity-60"><%= @stock_movement.movement_type %>
+      </span>
+    </div>
+  </div>
 </div>

@@ -1,40 +1,40 @@
-<% content_for :title, "Operational Directives | Hamzis Systems" %>
+<% content_for :title, "Operational Directives | Earmark Systems" %>
 <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-    <div>
-        <h1 class="text-4xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary uppercase">Directive Ledger</h1>
-        <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic">Global operational tracking across all active construction sites.</p>
-    </div>
-    <%= link_to new_task_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-brand-secondary transition-all duration-500 active:scale-95 shadow-brand-primary/20" do %>
+  <div>
+    <h1 class="text-4xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary uppercase">Directive Ledger</h1>
+    <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic">Global operational tracking across all active construction sites.</p>
+  </div>
+  <%= link_to new_task_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-brand-secondary transition-all duration-500 active:scale-95 shadow-brand-primary/20" do %>
     <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-        <path d="M12 4v16m8-8H4" />
+      <path d="M12 4v16m8-8H4" />
     </svg>
     Issue Directive
-    <% end %>
+  <% end %>
 </div>
 <%= render "tasks/dashboard_summary", tasks: @tasks %>
 <div class="overflow-x-auto bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl p-6">
-    <% if @tasks.any? %>
+  <% if @tasks.any? %>
     <table class="min-w-full text-sm text-left border-separate border-spacing-0">
-        <%= render "tasks/task_table_header", show_project: true %>
-        <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
-            <% @tasks.each_with_index do |task, index| %>
-            <%= render "tasks/task_row",
+      <%= render "tasks/task_table_header", show_project: true %>
+      <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
+        <% @tasks.each_with_index do |task, index| %>
+          <%= render "tasks/task_row",
                      task: task,
                      show_project: true,
                      row_class: index.even? ? "bg-brand-secondary/5 dark:bg-brand-primary/5" : "" %>
-            <% end %>
-        </tbody>
+        <% end %>
+      </tbody>
     </table>
-    <% else %>
+  <% else %>
     <div class="text-center py-12">
-        <div class="inline-flex p-4 rounded-full bg-brand-primary/10 text-brand-primary mb-4">
-            <svg xmlns="http://www.w3.org" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-        </div>
-        <p class="text-lg font-black uppercase tracking-tighter text-brand-secondary dark:text-brand-primary">Zero Directives Found</p>
-        <p class="text-xs text-brand-secondary/50 dark:text-brand-primary/50 italic mt-1 mb-6">No tasks have been initialized in the global registry.</p>
-        <%= link_to "➕ Initialize First Task", new_task_path, class: "px-6 py-2 rounded-xl bg-brand-primary text-white font-bold uppercase tracking-widest text-[10px] hover:bg-brand-black transition shadow-lg" %>
+      <div class="inline-flex p-4 rounded-full bg-brand-primary/10 text-brand-primary mb-4">
+        <svg xmlns="http://www.w3.org" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+      </div>
+      <p class="text-lg font-black uppercase tracking-tighter text-brand-secondary dark:text-brand-primary">Zero Directives Found</p>
+      <p class="text-xs text-brand-secondary/50 dark:text-brand-primary/50 italic mt-1 mb-6">No tasks have been initialized in the global registry.</p>
+      <%= link_to "➕ Initialize First Task", new_task_path, class: "px-6 py-2 rounded-xl bg-brand-primary text-white font-bold uppercase tracking-widest text-[10px] hover:bg-brand-black transition shadow-lg" %>
     </div>
-    <% end %>
+  <% end %>
 </div>

@@ -1,70 +1,70 @@
 <div class="relative min-h-screen space-y-8 overflow-hidden pb-12">
-    <!-- Brand Watermark Layer -->
-    <div class="absolute inset-0 z-0 pointer-events-none select-none flex items-center justify-center overflow-hidden">
-        <img src="<%= asset_path('hamzis-logo.svg') %>" alt="" class="w-3/4 h-3/4 object-contain opacity-[0.03] dark:opacity-[0.05]" />
-    </div>
-    <!-- Main Content Layer -->
-    <div class="relative z-10 container mx-auto px-4 sm:px-6">
-        <!-- Page Header (Operational Title & Date) -->
-        <%= render "dashboard/header" %>
-        <!-- KPI Summary Row (High-level data points) -->
-        <div class="mb-10">
-            <%= render "dashboard/kpi_row",
+  <!-- Brand Watermark Layer -->
+  <div class="absolute inset-0 z-0 pointer-events-none select-none flex items-center justify-center overflow-hidden">
+    <img src="<%= asset_path('company-logo.svg') %>" alt="" class="w-3/4 h-3/4 object-contain opacity-[0.03] dark:opacity-[0.05]" />
+  </div>
+  <!-- Main Content Layer -->
+  <div class="relative z-10 container mx-auto px-4 sm:px-6">
+    <!-- Page Header (Operational Title & Date) -->
+    <%= render "dashboard/header" %>
+    <!-- KPI Summary Row (High-level data points) -->
+    <div class="mb-10">
+      <%= render "dashboard/kpi_row",
           projects: @projects,
           tasks: @tasks,
           reports: @reports,
           transactions: @transactions,
           expenses: @expenses %>
-        </div>
-        <!-- Navigation Tabs -->
-        <div class="mb-6">
-            <%= render "dashboard/tabs" %>
-        </div>
-        <!-- Dynamic Tab Content Sections -->
-        <div id="dashboard-content-container" class="transition-all duration-500">
-            <%= render "dashboard/profile_tab", employee: @employee %>
-            <%= render "dashboard/projects_tab", projects: @projects %>
-            <%= render "dashboard/tasks_tab", tasks: @tasks %>
-            <%= render "dashboard/reports_tab", reports: @reports %>
-            <%= render "dashboard/transactions_tab", transactions: @transactions %>
-            <%= render "dashboard/expenses_tab", expenses: @expenses %>
-            <%= render "dashboard/hr_tab", employee: @employee, leaves: @leaves %>
-        </div>
-        <%# Tab Logic - Improved for smooth transitions %>
-        <script nonce="<%= content_security_policy_nonce %>">
-            (() => {
-                const links = document.querySelectorAll(".tab-link");
-                const contents = document.querySelectorAll(".tab-content");
-
-                links.forEach(link => {
-                    link.addEventListener("click", (e) => {
-                        e.preventDefault();
-                        const targetId = link.getAttribute("data-tab") + "-tab";
-
-                        // Update Tab Link Styles
-                        links.forEach(l => {
-                            l.classList.remove("bg-brand-primary", "text-white", "shadow-lg");
-                            l.classList.add("text-brand-secondary/60", "dark:text-brand-primary/60");
-                        });
-
-                        link.classList.add("bg-brand-primary", "text-white", "shadow-lg");
-                        link.classList.remove("text-brand-secondary/60", "dark:text-brand-primary/60");
-
-                        // Update Content Visibility
-                        contents.forEach(c => {
-                            c.classList.add("hidden");
-                            c.classList.remove("animate-in", "fade-in", "slide-in-from-bottom-2");
-                        });
-
-                        const activeTab = document.getElementById(targetId);
-                        if (activeTab) {
-                            activeTab.classList.remove("hidden");
-                            // Adding a subtle entry animation
-                            activeTab.classList.add("animate-in", "fade-in", "duration-500", "slide-in-from-bottom-2");
-                        }
-                    });
-                });
-            })();
-        </script>
     </div>
+    <!-- Navigation Tabs -->
+    <div class="mb-6">
+      <%= render "dashboard/tabs" %>
+    </div>
+    <!-- Dynamic Tab Content Sections -->
+    <div id="dashboard-content-container" class="transition-all duration-500">
+      <%= render "dashboard/profile_tab", employee: @employee %>
+      <%= render "dashboard/projects_tab", projects: @projects %>
+      <%= render "dashboard/tasks_tab", tasks: @tasks %>
+      <%= render "dashboard/reports_tab", reports: @reports %>
+      <%= render "dashboard/transactions_tab", transactions: @transactions %>
+      <%= render "dashboard/expenses_tab", expenses: @expenses %>
+      <%= render "dashboard/hr_tab", employee: @employee, leaves: @leaves %>
+    </div>
+    <%# Tab Logic - Improved for smooth transitions %>
+    <script nonce="<%= content_security_policy_nonce %>">
+      (() => {
+          const links = document.querySelectorAll(".tab-link");
+          const contents = document.querySelectorAll(".tab-content");
+
+          links.forEach(link => {
+              link.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  const targetId = link.getAttribute("data-tab") + "-tab";
+
+                  // Update Tab Link Styles
+                  links.forEach(l => {
+                      l.classList.remove("bg-brand-primary", "text-white", "shadow-lg");
+                      l.classList.add("text-brand-secondary/60", "dark:text-brand-primary/60");
+                  });
+
+                  link.classList.add("bg-brand-primary", "text-white", "shadow-lg");
+                  link.classList.remove("text-brand-secondary/60", "dark:text-brand-primary/60");
+
+                  // Update Content Visibility
+                  contents.forEach(c => {
+                      c.classList.add("hidden");
+                      c.classList.remove("animate-in", "fade-in", "slide-in-from-bottom-2");
+                  });
+
+                  const activeTab = document.getElementById(targetId);
+                  if (activeTab) {
+                      activeTab.classList.remove("hidden");
+                      // Adding a subtle entry animation
+                      activeTab.classList.add("animate-in", "fade-in", "duration-500", "slide-in-from-bottom-2");
+                  }
+              });
+          });
+      })();
+    </script>
+  </div>
 </div>

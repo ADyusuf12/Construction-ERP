@@ -1,98 +1,40 @@
-<<<<<<< Updated upstream
-<div class="flex-1 flex flex-col items-center justify-center w-full min-h-screen py-12
-            bg-gradient-to-br from-hamzis-white via-hamzis-copper/5 to-hamzis-brown/20
-            dark:from-hamzis-black dark:via-hamzis-brown/10 dark:to-hamzis-copper/20 relative overflow-hidden">
-  <div class="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none"
-       style="background-image: radial-gradient(#b87333 0.5px, transparent 0.5px); background-size: 30px 30px;"></div>
-  <div class="flex w-full max-w-6xl items-center justify-center px-6 relative z-10">
-    <div class="hidden md:flex md:w-1/2 flex-col items-center justify-center p-12 border-r border-hamzis-brown/10">
-      <div class="text-center space-y-8 animate-fade-in">
-        <div class="relative inline-block">
-          <img src="<%= asset_path('hamzis-logo.svg') %>" alt="Hamzis Logo"
-               class="mx-auto w-48 h-48 object-contain opacity-80 grayscale brightness-50 dark:brightness-100" />
-          <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-12 h-[2px] bg-hamzis-copper"></div>
-        </div>
-        <div class="space-y-2">
-          <h1 class="text-5xl font-black text-hamzis-brown dark:text-white uppercase tracking-tighter italic">
-            Hamzis <span class="text-hamzis-copper">Systems</span>
-          </h1>
-          <p class="text-[10px] font-black uppercase tracking-[0.6em] text-hamzis-brown/60 dark:text-white/40">
-            Secure Credential Recovery
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="flex w-full md:w-1/2 items-center justify-center md:pl-12">
-      <div class="w-full max-w-md bg-hamzis-white/40 dark:bg-hamzis-black/60 backdrop-blur-2xl rounded-3xl shadow-2xl p-10 border border-hamzis-brown/20 relative">
-        <div class="mb-10 text-center md:text-left">
-          <h2 class="text-[10px] font-black uppercase tracking-[0.4em] text-hamzis-copper mb-2">Security Protocol</h2>
-          <h3 class="text-2xl font-black text-hamzis-brown dark:text-white uppercase tracking-tighter italic">Reset Password</h3>
-          <p class="text-[11px] text-hamzis-brown/50 dark:text-white/40 mt-2 font-medium">Verify your registered email to receive recovery protocols.</p>
-        </div>
-        <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-          <% if resource.errors.any? %>
-            <div class="mb-6 p-4 rounded-xl bg-red-500/5 border border-red-500/20 text-red-600 text-[10px] font-bold uppercase tracking-widest">
-              <%= render "devise/shared/error_messages", resource: resource %>
-            </div>
-          <% end %>
-          <div class="space-y-8">
-            <div>
-              <%= f.label :email, "Registry Email", class: "block text-[9px] font-black uppercase tracking-widest text-hamzis-brown/60 dark:text-white/40 mb-2 ml-1" %>
-              <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "architect@hamzis.com", required: true,
-                  class: "w-full px-5 py-4 rounded-xl border border-hamzis-brown/20 bg-hamzis-white/50 dark:bg-white/5 text-sm font-bold text-hamzis-brown dark:text-white placeholder:text-hamzis-brown/30 focus:ring-2 focus:ring-hamzis-copper/50 focus:border-hamzis-copper transition-all outline-none font-mono" %>
-            </div>
-            <div class="pt-2">
-              <%= f.submit "Reset",
-                  class: "w-full py-4 rounded-xl bg-hamzis-copper text-white text-[11px] font-black uppercase tracking-[0.2em] shadow-xl shadow-hamzis-copper/20 hover:bg-hamzis-black hover:shadow-none transition-all active:scale-95 cursor-pointer" %>
-            </div>
-          </div>
-        <% end %>
-        <div class="mt-10 text-center border-t border-hamzis-brown/10 pt-6">
-          <div class="inline-flex gap-4 text-[9px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-white/40">
-            <%= render "devise/shared/links" %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-=======
+  
 <div class="flex-1 flex flex-col items-center justify-center w-full min-h-0 py-12
             bg-gradient-to-br from-brand-white via-brand-primary/10 to-brand-secondary/20
             dark:from-brand-black dark:via-brand-secondary/30 dark:to-brand-primary/20">
-    <div class="flex w-full max-w-6xl items-center justify-center px-4">
-        <div class="hidden md:flex md:w-1/2 items-center justify-center p-12">
-            <div class="text-center space-y-6">
-                <img src="<%= asset_path('hamzis-logo.svg') %>" alt="Hamzis Logo" class="mx-auto w-40 h-40 object-contain opacity-90" />
-                <h1 class="text-4xl font-extrabold text-brand-secondary dark:text-brand-primary">Hamzis Systems</h1>
-                <p class="text-lg text-brand-secondary/70 dark:text-brand-primary/70">Reset your password securely</p>
-            </div>
-        </div>
-        <div class="flex w-full md:w-1/2 items-center justify-center">
-            <div class="w-full max-w-md bg-brand-white/40 dark:bg-brand-black/40 backdrop-blur-md rounded-2xl shadow-xl p-8 sm:p-10 border border-white/20">
-                <div class="md:hidden text-center mb-6">
-                    <img src="<%= asset_path('hamzis-logo.svg') %>" alt="Hamzis Logo" class="mx-auto w-16 h-16 object-contain mb-2" />
-                    <h2 class="text-xl font-bold text-brand-secondary dark:text-brand-primary">Hamzis Systems</h2>
-                </div>
-                <h2 class="text-2xl font-bold text-center mb-1 text-brand-secondary dark:text-brand-primary hidden md:block">Forgot Password?</h2>
-                <p class="text-center text-sm text-brand-secondary/70 dark:text-brand-primary/70 mb-6">Enter your email to receive instructions</p>
-                <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-                <% if resource.errors.any? %>
-                <div class="mb-4 p-3 rounded bg-red-500/10 border border-red-500/50 text-red-600 text-xs">
-                    <%= render "devise/shared/error_messages", resource: resource %>
-                </div>
-                <% end %>
-                <div class="mb-6">
-                    <%= f.label :email, "Email Address", class: "block text-sm font-medium mb-1 text-brand-secondary dark:text-brand-primary" %>
-                    <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true,
-                  class: "w-full px-4 py-3 rounded-lg border border-brand-secondary/30 bg-white/50 dark:bg-black/20 text-gray-900 dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition" %>
-                </div>
-                <div class="mb-6">
-                    <%= f.submit "Send reset instructions", class: "w-full px-4 py-3 rounded-lg bg-brand-primary text-brand-white hover:bg-brand-black transition-all font-semibold shadow-md active:scale-95 cursor-pointer" %>
-                </div>
-                <% end %>
-                <div class="text-center text-sm text-brand-secondary/70 dark:text-brand-primary/70"><%= render "devise/shared/links" %></div>
-            </div>
-        </div>
+  <div class="flex w-full max-w-6xl items-center justify-center px-4">
+    <div class="hidden md:flex md:w-1/2 items-center justify-center p-12">
+      <div class="text-center space-y-6">
+        <img src="<%= asset_path('company-logo.svg') %>" alt="Logo" class="mx-auto w-40 h-40 object-contain opacity-90" />
+        <h1 class="text-4xl font-extrabold text-brand-secondary dark:text-brand-primary">Earmark Systems</h1>
+        <p class="text-lg text-brand-secondary/70 dark:text-brand-primary/70">Reset your password securely</p>
+      </div>
     </div>
->>>>>>> Stashed changes
+    <div class="flex w-full md:w-1/2 items-center justify-center">
+      <div class="w-full max-w-md bg-brand-white/40 dark:bg-brand-black/40 backdrop-blur-md rounded-2xl shadow-xl p-8 sm:p-10 border border-white/20">
+        <div class="md:hidden text-center mb-6">
+          <img src="<%= asset_path('company-logo.svg') %>" alt="Logo" class="mx-auto w-16 h-16 object-contain mb-2" />
+          <h2 class="text-xl font-bold text-brand-secondary dark:text-brand-primary">Earmark Systems</h2>
+        </div>
+        <h2 class="text-2xl font-bold text-center mb-1 text-brand-secondary dark:text-brand-primary hidden md:block">Forgot Password?</h2>
+        <p class="text-center text-sm text-brand-secondary/70 dark:text-brand-primary/70 mb-6">Enter your email to receive instructions</p>
+        <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+          <% if resource.errors.any? %>
+            <div class="mb-4 p-3 rounded bg-red-500/10 border border-red-500/50 text-red-600 text-xs">
+              <%= render "devise/shared/error_messages", resource: resource %>
+            </div>
+          <% end %>
+          <div class="mb-6">
+            <%= f.label :email, "Email Address", class: "block text-sm font-medium mb-1 text-brand-secondary dark:text-brand-primary" %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true,
+                  class: "w-full px-4 py-3 rounded-lg border border-brand-secondary/30 bg-white/50 dark:bg-black/20 text-gray-900 dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition" %>
+          </div>
+          <div class="mb-6">
+            <%= f.submit "Send reset instructions", class: "w-full px-4 py-3 rounded-lg bg-brand-primary text-brand-white hover:bg-brand-black transition-all font-semibold shadow-md active:scale-95 cursor-pointer" %>
+          </div>
+        <% end %>
+        <div class="text-center text-sm text-brand-secondary/70 dark:text-brand-primary/70"><%= render "devise/shared/links" %></div>
+      </div>
+    </div>
+  </div>
 </div>

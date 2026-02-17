@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :business_client, class: "Business::Client" do
     sequence(:name) { |n| "Test Client #{n}" }
-    sequence(:email) { |n| "client#{n}@hamzis.com" }
+    sequence(:email) { |n| "client#{n}@example.com" }
 
     association :user, factory: [ :user, :client ]
 

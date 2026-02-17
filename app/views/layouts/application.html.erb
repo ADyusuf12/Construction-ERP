@@ -2,7 +2,7 @@
 <html class="h-full">
   <head>
     <title>Earmark Systems</title>
-    <link rel="icon" type="image/svg+xml" href="<%= asset_path('hamzis-logo.svg') %>">
+    <link rel="icon" type="image/svg+xml" href="<%= asset_path('company-logo.svg') %>">
     <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -48,7 +48,7 @@
                      border-t border-brand-secondary/20 px-6 py-3 shrink-0 z-10">
         <div class="flex items-center justify-between">
           <p class="text-[10px] sm:text-xs opacity-60 font-bold uppercase tracking-widest italic">
-            © <%= Time.current.year %> Hamzis Systems — Infrastructure ERP
+            © <%= Time.current.year %> Earmark Systems — Infrastructure ERP
           </p>
           <button id="theme-toggle" class="px-3 py-1 rounded bg-brand-primary text-brand-white hover:bg-brand-black transition-colors">
             <span id="theme-icon" class="text-xs">🌙</span>
@@ -59,7 +59,7 @@
     <script nonce="<%= content_security_policy_nonce %>">
       (() => {
           const root = document.documentElement;
-          const storageKey = "hamzis-theme";
+          const storageKey = "brand-theme";
           const icon = document.getElementById("theme-icon");
 
           function applyTheme(dark) {

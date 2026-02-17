@@ -1,6 +1,6 @@
 # Security Policy
 
-The Hamzis Systems team takes security seriously. We appreciate your efforts to responsibly disclose your findings, and we will make every effort to acknowledge your contributions.
+The Earmark Systems team takes security seriously. We appreciate your efforts to responsibly disclose your findings, and we will make every effort to acknowledge your contributions.
 
 ## Reporting a Vulnerability
 
@@ -37,4 +37,4 @@ While we strive to make the application as secure as possible, we also recommend
 - **Secure Your Environment:** Follow security best practices for your servers, databases, and other infrastructure.
 - **Use Strong Passwords and Secrets:** Never commit sensitive information like database passwords or secret keys to your repository. Use Rails credentials or environment variables.
 
-Thank you for helping keep Hamzis Systems secure.
+Thank you for helping keep Earmark Systems secure.
