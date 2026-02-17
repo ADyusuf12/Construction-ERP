@@ -1,82 +1,82 @@
 <%= form_with(model: [ :inventory, @inventory_item, @stock_movement ], local: true,
               data: { controller: "stock-movement" },
               class: "space-y-6 hr-form") do |f| %>
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- LEFT: Strategy & Logic -->
     <div class="lg:col-span-2 space-y-6">
-      <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-        <h4 class="text-sm font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper mb-6">Logistics Strategy</h4>
-        <div class="space-y-6">
-          <!-- Step 1: Type Selection -->
-          <div class="p-4 rounded-xl bg-hamzis-copper/5 border border-hamzis-copper/20">
-            <%= f.label :movement_type, "1. Define Movement Path", class: "block text-[10px] font-bold uppercase tracking-widest mb-2 text-hamzis-copper" %>
-            <%= f.select :movement_type, StockMovement.movement_types.keys.map { |t| [t.humanize, t] }, { prompt: "Select Type..." },
+        <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+            <h4 class="text-sm font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary mb-6">Logistics Strategy</h4>
+            <div class="space-y-6">
+                <!-- Step 1: Type Selection -->
+                <div class="p-4 rounded-xl bg-brand-primary/5 border border-brand-primary/20">
+                    <%= f.label :movement_type, "1. Define Movement Path", class: "block text-[10px] font-bold uppercase tracking-widest mb-2 text-brand-primary" %>
+                    <%= f.select :movement_type, StockMovement.movement_types.keys.map { |t| [t.humanize, t] }, { prompt: "Select Type..." },
                   data: { stock_movement_target: "type", action: "change->stock-movement#updateFields" },
-                  class: "w-full px-4 py-3 border border-hamzis-copper/30 rounded-xl bg-white/50 dark:bg-black/20 text-sm font-bold dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition-all" %>
-          </div>
-          <!-- Step 2: Conditional Logistics Fields -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="field-wrapper hidden" data-stock-movement-target="source">
-              <%= f.label :source_warehouse_id, "Source Warehouse", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-              <%= f.collection_select :source_warehouse_id, Warehouse.all, :id, :name, { prompt: "Departure" },
-                    class: "w-full px-4 py-3 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
+                  class: "w-full px-4 py-3 border border-brand-primary/30 rounded-xl bg-white/50 dark:bg-black/20 text-sm font-bold dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition-all" %>
+                </div>
+                <!-- Step 2: Conditional Logistics Fields -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="field-wrapper hidden" data-stock-movement-target="source">
+                        <%= f.label :source_warehouse_id, "Source Warehouse", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+                        <%= f.collection_select :source_warehouse_id, Warehouse.all, :id, :name, { prompt: "Departure" },
+                    class: "w-full px-4 py-3 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition" %>
+                    </div>
+                    <div class="field-wrapper hidden" data-stock-movement-target="destination">
+                        <%= f.label :destination_warehouse_id, "Destination Warehouse", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+                        <%= f.collection_select :destination_warehouse_id, Warehouse.all, :id, :name, { prompt: "Arrival" },
+                    class: "w-full px-4 py-3 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition" %>
+                    </div>
+                </div>
+                <div class="field-wrapper hidden" data-stock-movement-target="project">
+                    <%= f.label :project_id, "Receiving Site (Project)", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+                    <%= f.collection_select :project_id, Project.order(:name), :id, :name, { prompt: "Link to Project Site" },
+                  class: "w-full px-4 py-3 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition" %>
+                </div>
             </div>
-            <div class="field-wrapper hidden" data-stock-movement-target="destination">
-              <%= f.label :destination_warehouse_id, "Destination Warehouse", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-              <%= f.collection_select :destination_warehouse_id, Warehouse.all, :id, :name, { prompt: "Arrival" },
-                    class: "w-full px-4 py-3 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
+        </div>
+        <!-- Reference Section -->
+        <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+            <h4 class="text-sm font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary mb-6">Manifest Reference</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <%= f.label :reference, class: "block text-[10px] font-bold uppercase tracking-wider mb-1" %>
+                    <%= f.text_field :reference, placeholder: "PO / Ref #", class: "w-full px-4 py-3 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary outline-none transition" %>
+                </div>
+                <div>
+                    <%= f.label :task_id, "Linked Task", class: "block text-[10px] font-bold uppercase tracking-wider mb-1" %>
+                    <%= f.collection_select :task_id, Task.order(:title), :id, :title, { prompt: "None" }, class: "w-full px-4 py-3 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary outline-none transition" %>
+                </div>
             </div>
-          </div>
-          <div class="field-wrapper hidden" data-stock-movement-target="project">
-            <%= f.label :project_id, "Receiving Site (Project)", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-            <%= f.collection_select :project_id, Project.order(:name), :id, :name, { prompt: "Link to Project Site" },
-                  class: "w-full px-4 py-3 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
-          </div>
+            <%= f.text_area :notes, rows: 2, placeholder: "Transaction notes...", class: "w-full px-4 py-3 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary outline-none transition" %>
         </div>
-      </div>
-      <!-- Reference Section -->
-      <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-        <h4 class="text-sm font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper mb-6">Manifest Reference</h4>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-          <div>
-            <%= f.label :reference, class: "block text-[10px] font-bold uppercase tracking-wider mb-1" %>
-            <%= f.text_field :reference, placeholder: "PO / Ref #", class: "w-full px-4 py-3 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper outline-none transition" %>
-          </div>
-          <div>
-            <%= f.label :task_id, "Linked Task", class: "block text-[10px] font-bold uppercase tracking-wider mb-1" %>
-            <%= f.collection_select :task_id, Task.order(:title), :id, :title, { prompt: "None" }, class: "w-full px-4 py-3 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper outline-none transition" %>
-          </div>
-        </div>
-        <%= f.text_area :notes, rows: 2, placeholder: "Transaction notes...", class: "w-full px-4 py-3 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper outline-none transition" %>
-      </div>
     </div>
     <!-- RIGHT: Financial Manifest -->
     <div class="lg:col-span-1">
-      <div class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10 border border-hamzis-copper/30 rounded-2xl p-6 shadow-2xl sticky top-6">
-        <h4 class="text-xs font-black uppercase tracking-[0.2em] text-hamzis-copper mb-6 border-b border-hamzis-copper/20 pb-4 text-center">Execution Metrics</h4>
-        <div class="space-y-6">
-          <div>
-            <%= f.label :quantity, class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-hamzis-copper/70 text-center" %>
-            <%= f.number_field :quantity, step: 1, min: 1,
+        <div class="bg-brand-secondary/90 dark:bg-brand-primary/10 border border-brand-primary/30 rounded-2xl p-6 shadow-2xl sticky top-6">
+            <h4 class="text-xs font-black uppercase tracking-[0.2em] text-brand-primary mb-6 border-b border-brand-primary/20 pb-4 text-center">Execution Metrics</h4>
+            <div class="space-y-6">
+                <div>
+                    <%= f.label :quantity, class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-brand-primary/70 text-center" %>
+                    <%= f.number_field :quantity, step: 1, min: 1,
                   data: { stock_movement_target: "quantity", action: "input->stock-movement#calculate" },
-                  class: "w-full px-4 py-4 border border-hamzis-copper/30 rounded-xl bg-black/20 text-3xl font-black text-white dark:text-hamzis-copper text-center focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
-          </div>
-          <div>
-            <%= f.label :unit_cost, class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-hamzis-copper/70 text-center" %>
-            <%= f.number_field :unit_cost, step: 0.01, min: 0,
+                  class: "w-full px-4 py-4 border border-brand-primary/30 rounded-xl bg-black/20 text-3xl font-black text-white dark:text-brand-primary text-center focus:ring-2 focus:ring-brand-primary outline-none transition" %>
+                </div>
+                <div>
+                    <%= f.label :unit_cost, class: "block text-[10px] font-bold uppercase tracking-wider mb-2 text-white/70 dark:text-brand-primary/70 text-center" %>
+                    <%= f.number_field :unit_cost, step: 0.01, min: 0,
                   data: { stock_movement_target: "cost", action: "input->stock-movement#calculate" },
-                  class: "w-full px-4 py-4 border border-hamzis-copper/30 rounded-xl bg-black/20 text-2xl font-bold text-white dark:text-hamzis-copper text-center focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
-          </div>
-          <div class="p-6 rounded-2xl bg-white/5 border border-white/10 text-center shadow-inner">
-            <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-hamzis-copper mb-2">Inventory Valuation</p>
-            <p class="text-3xl font-black text-white" data-stock-movement-target="total">₦ 0.00</p>
-          </div>
-          <div class="pt-4">
-            <%= f.submit (@stock_movement.persisted? ? "Modify Manifest" : "Execute Entry"),
-                  class: "w-full py-5 rounded-2xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-xs hover:bg-white hover:text-hamzis-brown transition-all duration-500 active:scale-95 cursor-pointer shadow-xl" %>
-          </div>
+                  class: "w-full px-4 py-4 border border-brand-primary/30 rounded-xl bg-black/20 text-2xl font-bold text-white dark:text-brand-primary text-center focus:ring-2 focus:ring-brand-primary outline-none transition" %>
+                </div>
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 text-center shadow-inner">
+                    <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-primary mb-2">Inventory Valuation</p>
+                    <p class="text-3xl font-black text-white" data-stock-movement-target="total">₦ 0.00</p>
+                </div>
+                <div class="pt-4">
+                    <%= f.submit (@stock_movement.persisted? ? "Modify Manifest" : "Execute Entry"),
+                  class: "w-full py-5 rounded-2xl bg-brand-primary text-white font-black uppercase tracking-widest text-xs hover:bg-white hover:text-brand-secondary transition-all duration-500 active:scale-95 cursor-pointer shadow-xl" %>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 <% end %>

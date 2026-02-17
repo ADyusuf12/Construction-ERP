@@ -1,108 +1,108 @@
 <% content_for :title, "#{@employee.full_name} | Personnel File" %>
 <div class="animate-fade-in space-y-8">
-  <!-- Personnel Header (The "ID Badge" View) -->
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-2xl p-8 relative overflow-hidden">
-    <!-- ID Watermark -->
-    <div class="absolute top-4 right-8 text-6xl font-black text-hamzis-brown/5 dark:text-hamzis-copper/5 pointer-events-none select-none">
-      <%= @employee.hamzis_id %>
-    </div>
-    <div class="flex flex-col md:flex-row items-center gap-8 relative z-10">
-      <!-- Avatar Placeholder (Square Industrial Style) -->
-      <div class="w-32 h-32 rounded-2xl bg-hamzis-copper text-white flex items-center justify-center text-4xl font-black shadow-xl border-4 border-white/10">
-        <%= @employee.personal_detail&.first_name&.first %><%= @employee.personal_detail&.last_name&.first %>
-      </div>
-      <div class="flex-1 text-center md:text-left">
-        <div class="flex flex-wrap justify-center md:justify-start items-center gap-3 mb-2">
-          <span class="px-3 py-1 rounded-lg bg-hamzis-brown/90 text-hamzis-copper text-[9px] font-black uppercase tracking-[0.2em] shadow-md">
-            Staff ID: <%= @employee.hamzis_id %>
-          </span>
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-hamzis-copper/20 bg-hamzis-copper/5 text-[9px] font-black uppercase tracking-widest text-hamzis-copper">
-            <span class="h-1.5 w-1.5 rounded-full <%= @employee.status_active? ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-red-500' %>"></span>
-            <%= @employee.status.humanize %>
-          </span>
+    <!-- Personnel Header (The "ID Badge" View) -->
+    <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl p-8 relative overflow-hidden">
+        <!-- ID Watermark -->
+        <div class="absolute top-4 right-8 text-6xl font-black text-brand-secondary/5 dark:text-brand-primary/5 pointer-events-none select-none">
+            <%= @employee.staff_id %>
         </div>
-        <h1 class="text-4xl font-black text-hamzis-brown dark:text-white uppercase tracking-tighter italic">
-          <%= @employee.full_name %>
-        </h1>
-        <p class="text-sm font-bold text-hamzis-copper uppercase tracking-[0.15em] mt-1">
-          <%= @employee.position_title %> <span class="mx-2 text-hamzis-brown/20">|</span> <%= @employee.department %>
-        </p>
-      </div>
-      <!-- Quick Stats Block -->
-      <div class="flex gap-4 border-l border-hamzis-brown/10 pl-8 hidden lg:flex">
-        <div class="text-center">
-          <p class="text-[9px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">Performance</p>
-          <p class="text-2xl font-black text-hamzis-brown dark:text-white"><%= @employee.performance_score || "N/A" %></p>
+        <div class="flex flex-col md:flex-row items-center gap-8 relative z-10">
+            <!-- Avatar Placeholder (Square Industrial Style) -->
+            <div class="w-32 h-32 rounded-2xl bg-brand-primary text-white flex items-center justify-center text-4xl font-black shadow-xl border-4 border-white/10">
+                <%= @employee.personal_detail&.first_name&.first %><%= @employee.personal_detail&.last_name&.first %>
+            </div>
+            <div class="flex-1 text-center md:text-left">
+                <div class="flex flex-wrap justify-center md:justify-start items-center gap-3 mb-2">
+                    <span class="px-3 py-1 rounded-lg bg-brand-secondary/90 text-brand-primary text-[9px] font-black uppercase tracking-[0.2em] shadow-md">
+                        Staff ID: <%= @employee.staff_id %>
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-brand-primary/20 bg-brand-primary/5 text-[9px] font-black uppercase tracking-widest text-brand-primary">
+                        <span class="h-1.5 w-1.5 rounded-full <%= @employee.status_active? ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-red-500' %>"></span>
+                        <%= @employee.status.humanize %>
+                    </span>
+                </div>
+                <h1 class="text-4xl font-black text-brand-secondary dark:text-white uppercase tracking-tighter italic">
+                    <%= @employee.full_name %>
+                </h1>
+                <p class="text-sm font-bold text-brand-primary uppercase tracking-[0.15em] mt-1">
+                    <%= @employee.position_title %> <span class="mx-2 text-brand-secondary/20">|</span> <%= @employee.department %>
+                </p>
+            </div>
+            <!-- Quick Stats Block -->
+            <div class="flex gap-4 border-l border-brand-secondary/10 pl-8 hidden lg:flex">
+                <div class="text-center">
+                    <p class="text-[9px] font-black uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">Performance</p>
+                    <p class="text-2xl font-black text-brand-secondary dark:text-white"><%= @employee.performance_score || "N/A" %></p>
+                </div>
+                <div class="text-center">
+                    <p class="text-[9px] font-black uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">Leave Bal.</p>
+                    <p class="text-2xl font-black text-brand-secondary dark:text-white"><%= @employee.leave_balance %></p>
+                </div>
+            </div>
         </div>
-        <div class="text-center">
-          <p class="text-[9px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">Leave Bal.</p>
-          <p class="text-2xl font-black text-hamzis-brown dark:text-white"><%= @employee.leave_balance %></p>
+        <!-- Header Actions -->
+        <div class="mt-8 pt-6 border-t border-brand-secondary/10 flex flex-wrap gap-3">
+            <%= link_to edit_hr_employee_path(@employee), class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-primary text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-brand-black transition-all active:scale-95" do %>
+            Update Personnel File
+            <% end %>
+            <%= link_to hr_employees_path, class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-secondary/10 text-brand-secondary dark:text-brand-primary border border-brand-secondary/20 text-[10px] font-black uppercase tracking-widest hover:bg-brand-secondary hover:text-white transition-all" do %>
+            Return to Directory
+            <% end %>
         </div>
-      </div>
     </div>
-    <!-- Header Actions -->
-    <div class="mt-8 pt-6 border-t border-hamzis-brown/10 flex flex-wrap gap-3">
-      <%= link_to edit_hr_employee_path(@employee), class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-hamzis-copper text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-hamzis-black transition-all active:scale-95" do %>
-        Update Personnel File
-      <% end %>
-      <%= link_to hr_employees_path, class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-hamzis-brown/10 text-hamzis-brown dark:text-hamzis-copper border border-hamzis-brown/20 text-[10px] font-black uppercase tracking-widest hover:bg-hamzis-brown hover:text-white transition-all" do %>
-        Return to Directory
-      <% end %>
+    <!-- Tabbed Interface (Unified Navigation Style) -->
+    <div class="border-b border-brand-secondary/10 dark:border-brand-primary/10 mb-8 overflow-x-auto custom-scrollbar">
+        <nav class="flex flex-nowrap md:flex-wrap gap-2 pb-px min-w-max">
+            <button data-tab="employment" class="tab-link px-6 py-3 rounded-t-xl bg-brand-primary text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-lg transition-all cursor-pointer">
+                Employment
+            </button>
+            <button data-tab="personal" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 transition-all cursor-pointer">
+                Personal Details
+            </button>
+            <button data-tab="history" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 transition-all cursor-pointer">
+                History
+            </button>
+            <button data-tab="documents" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 transition-all cursor-pointer">
+                Documents
+            </button>
+        </nav>
     </div>
-  </div>
-  <!-- Tabbed Interface (Unified Navigation Style) -->
-  <div class="border-b border-hamzis-brown/10 dark:border-hamzis-copper/10 mb-8 overflow-x-auto custom-scrollbar">
-    <nav class="flex flex-nowrap md:flex-wrap gap-2 pb-px min-w-max">
-      <button data-tab="employment" class="tab-link px-6 py-3 rounded-t-xl bg-hamzis-copper text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-lg transition-all cursor-pointer">
-        Employment
-      </button>
-      <button data-tab="personal" class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 transition-all cursor-pointer">
-        Personal Details
-      </button>
-      <button data-tab="history" class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 transition-all cursor-pointer">
-        History
-      </button>
-      <button data-tab="documents" class="tab-link px-6 py-3 rounded-t-xl text-hamzis-brown/60 dark:text-hamzis-copper/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-hamzis-brown/5 transition-all cursor-pointer">
-        Documents
-      </button>
-    </nav>
-  </div>
-  <!-- Tab Contents -->
-  <div id="employee-tabs-container">
-    <div id="employment-tab" class="tab-content animate-fade-in">
-      <%= render "hr/employees/tabs/employment", employee: @employee %>
+    <!-- Tab Contents -->
+    <div id="employee-tabs-container">
+        <div id="employment-tab" class="tab-content animate-fade-in">
+            <%= render "hr/employees/tabs/employment", employee: @employee %>
+        </div>
+        <div id="personal-tab" class="tab-content hidden animate-fade-in">
+            <%= render "hr/employees/tabs/personal", employee: @employee %>
+        </div>
+        <div id="history-tab" class="tab-content hidden animate-fade-in">
+            <%= render "hr/employees/tabs/history", employee: @employee %>
+        </div>
+        <div id="documents-tab" class="tab-content hidden animate-fade-in">
+            <%= render "hr/employees/tabs/documents", employee: @employee %>
+        </div>
     </div>
-    <div id="personal-tab" class="tab-content hidden animate-fade-in">
-      <%= render "hr/employees/tabs/personal", employee: @employee %>
-    </div>
-    <div id="history-tab" class="tab-content hidden animate-fade-in">
-      <%= render "hr/employees/tabs/history", employee: @employee %>
-    </div>
-    <div id="documents-tab" class="tab-content hidden animate-fade-in">
-      <%= render "hr/employees/tabs/documents", employee: @employee %>
-    </div>
-  </div>
 </div>
 <script nonce="<%= content_security_policy_nonce %>">
-  // Reuse your unified Tab JS logic here
-  (() => {
-    const links = document.querySelectorAll(".tab-link");
-    const contents = document.querySelectorAll(".tab-content");
+    // Reuse your unified Tab JS logic here
+    (() => {
+        const links = document.querySelectorAll(".tab-link");
+        const contents = document.querySelectorAll(".tab-content");
 
-    links.forEach(link => {
-      link.addEventListener("click", () => {
-        links.forEach(l => {
-          l.classList.remove("bg-hamzis-copper", "text-white", "shadow-lg");
-          l.classList.add("text-hamzis-brown/60", "dark:text-hamzis-copper/60");
+        links.forEach(link => {
+            link.addEventListener("click", () => {
+                links.forEach(l => {
+                    l.classList.remove("bg-brand-primary", "text-white", "shadow-lg");
+                    l.classList.add("text-brand-secondary/60", "dark:text-brand-primary/60");
+                });
+                contents.forEach(c => c.classList.add("hidden"));
+
+                link.classList.add("bg-brand-primary", "text-white", "shadow-lg");
+                link.classList.remove("text-brand-secondary/60", "dark:text-brand-primary/60");
+
+                const tabId = link.getAttribute("data-tab") + "-tab";
+                document.getElementById(tabId).classList.remove("hidden");
+            });
         });
-        contents.forEach(c => c.classList.add("hidden"));
-
-        link.classList.add("bg-hamzis-copper", "text-white", "shadow-lg");
-        link.classList.remove("text-hamzis-brown/60", "dark:text-hamzis-copper/60");
-
-        const tabId = link.getAttribute("data-tab") + "-tab";
-        document.getElementById(tabId).classList.remove("hidden");
-      });
-    });
-  })();
+    })();
 </script>

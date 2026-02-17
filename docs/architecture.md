@@ -48,7 +48,7 @@ Here is a breakdown of the key directories and their purposes:
 
 ### Human Resources (HR) Module
 
-- **`Hr::Employee`**: Represents an employee with hierarchical support via `manager_id` for organizational structure and approval workflows. Auto-generates unique `hamzis_id` based on hire date.
+- **`Hr::Employee`**: Represents an employee with hierarchical support via `manager_id` for organizational structure and approval workflows. Auto-generates unique `staff_id` based on hire date.
 - **`Hr::Leave`**: Manages leave/time-off requests with complete workflow: employee requests, manager approval/rejection, and cancellation. Automatically deducts leave balance when approved.
 - **`Hr::PersonalDetail`**: Stores extended personal and banking information for employees. Validates bank details are present and employee is at least 18 years old.
 - **`Hr::AttendanceRecord`**: Tracks employee attendance on projects with check-in/check-out times and status (present/absent/late/on_leave). Unique constraint per employee per day.

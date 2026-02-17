@@ -118,7 +118,7 @@ class Hr::Employee < ApplicationRecord
   has_one :personal_detail, class_name: 'Hr::PersonalDetail'
   has_many :salaries, class_name: 'Accounting::Salary'
 
-  validates :hamzis_id, presence: true, uniqueness: true
+  validates :staff_id, presence: true, uniqueness: true
   validates :status, presence: true
 
   def full_name
@@ -141,7 +141,7 @@ end
 
 **Key Attributes:**
 
-- `hamzis_id: string` - Unique employee ID
+- `staff_id: string` - Unique employee ID
 - `department: string` - Department assignment
 - `position_title: string` - Job title
 - `hire_date: date` - Employment start date
@@ -420,7 +420,7 @@ GET /hr/employees
 
 ```
 POST /hr/employees
-Parameters: hamzis_id, department, position_title, hire_date, status, leave_balance, performance_score, manager_id, user_id
+Parameters: staff_id, department, position_title, hire_date, status, leave_balance, performance_score, manager_id, user_id
 ```
 
 **Show Employee:**

@@ -12,7 +12,7 @@ class User < ApplicationRecord
   has_one :client, class_name: "Business::Client", dependent: :destroy
   has_many :projects, dependent: :destroy
 
-
+  # Validations
   validate :staff_users_must_have_employee
   validate :client_users_must_have_client
 
@@ -29,13 +29,19 @@ class User < ApplicationRecord
   private
 
   def staff_users_must_have_employee
-    staff_roles = %w[ceo cto qs site_manager engineer storekeeper hr accountant]
-    if role.in?(staff_roles) && employee.nil? && persisted?
+    staff_roles = %w[ceo cto qs site_manager engineer storekeeper hr accountant admin]
+
+    return if new_record?
+
+    if role.in?(staff_roles) && employee.nil?
       errors.add(:employee, "must be linked for staff users")
     end
   end
 
   def client_users_must_have_client
+    # We skip this check on the very first save
+    return if new_record?
+
     if role == "client" && client.nil?
       errors.add(:client, "must be linked for client users")
     end

@@ -1,13 +1,13 @@
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-  <% [
+    <% [
     { label: "Invoice Pipeline", count: Accounting::Transaction.invoice_count, color: "copper" },
     { label: "Revenue Receipts", count: Accounting::Transaction.receipt_count, color: "green-500" },
     { label: "Outstanding", count: Accounting::Transaction.outstanding, color: "red-500" }
   ].each do |stat| %>
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/10 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden group">
-      <div class="absolute top-0 left-0 w-1 h-full bg-hamzis-<%= stat[:color] %>"></div>
-      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-1"><%= stat[:label] %></p>
-      <p class="text-2xl font-black text-hamzis-brown dark:text-white truncate"><%= stat[:count] %></p>
+    <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/10 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-1 h-full bg-hamzis-<%= stat[:color] %>"></div>
+        <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-secondary/50 dark:text-brand-primary/50 mb-1"><%= stat[:label] %></p>
+        <p class="text-2xl font-black text-brand-secondary dark:text-white truncate"><%= stat[:count] %></p>
     </div>
-  <% end %>
+    <% end %>
 </div>

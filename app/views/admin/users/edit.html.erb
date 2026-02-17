@@ -1,33 +1,37 @@
 <div class="mb-8">
-  <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-2">
-    <%= link_to "Security Center", dashboard_home_path, class: "hover:text-hamzis-copper transition-colors" %>
-    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
-    <%= link_to "User Registry", admin_users_path, class: "hover:text-hamzis-copper transition-colors" %>
-    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
-    <span class="text-hamzis-copper text-xs">Credential Modification</span>
-  </nav>
-  <div class="flex items-center gap-3">
-    <div class="p-3 rounded-2xl bg-hamzis-brown text-white shadow-lg dark:bg-hamzis-copper/20 dark:text-hamzis-copper">
-      <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-      </svg>
+    <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50 mb-2">
+        <%= link_to "Security Center", dashboard_home_path, class: "hover:text-brand-primary transition-colors" %>
+        <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+        </svg>
+        <%= link_to "User Registry", admin_users_path, class: "hover:text-brand-primary transition-colors" %>
+        <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-brand-primary text-xs">Credential Modification</span>
+    </nav>
+    <div class="flex items-center gap-3">
+        <div class="p-3 rounded-2xl bg-brand-secondary text-white shadow-lg dark:bg-brand-primary/20 dark:text-brand-primary">
+            <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+        </div>
+        <div>
+            <h1 class="text-3xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary">Edit Credentials</h1>
+            <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic">
+                Amending access parameters for <span class="font-bold text-brand-secondary dark:text-brand-primary"><%= @user.email %></span>.
+            </p>
+        </div>
     </div>
-    <div>
-      <h1 class="text-3xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper">Edit Credentials</h1>
-      <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">
-        Amending access parameters for <span class="font-bold text-hamzis-brown dark:text-hamzis-copper"><%= @user.email %></span>.
-      </p>
-    </div>
-  </div>
 </div>
 <div class="mb-6 p-4 rounded-xl border border-yellow-500/20 bg-yellow-500/5 backdrop-blur-sm">
-  <div class="flex items-center gap-3 text-yellow-600 dark:text-yellow-500">
-    <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-    </svg>
-    <p class="text-[10px] font-black uppercase tracking-widest">Security Warning: Modification of clearance levels may disrupt active session tokens.</p>
-  </div>
+    <div class="flex items-center gap-3 text-yellow-600 dark:text-yellow-500">
+        <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <p class="text-[10px] font-black uppercase tracking-widest">Security Warning: Modification of clearance levels may disrupt active session tokens.</p>
+    </div>
 </div>
 <%= form_with(model: @user, url: admin_user_path(@user), local: true, class: "space-y-6 hr-form", method: :patch) do |f| %>
-  <%= render "form", f: f %>
+<%= render "form", f: f %>
 <% end %>

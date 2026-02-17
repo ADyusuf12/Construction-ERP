@@ -1,14 +1,14 @@
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-  <% [
+    <% [
     { label: "Total Directives", count: tasks.count, color: "copper" },
     { label: "Pending", count: tasks.status_pending.count, color: "yellow-500" },
     { label: "In Progress", count: tasks.status_in_progress.count, color: "blue-500" },
     { label: "Finalized", count: tasks.status_done.count, color: "green-500" }
   ].each do |stat| %>
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/10 rounded-2xl p-5 backdrop-blur-md shadow-xl relative overflow-hidden group">
-      <div class="absolute top-0 left-0 w-1 h-full bg-hamzis-<%= stat[:color] %>"></div>
-      <p class="text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-1"><%= stat[:label] %></p>
-      <p class="text-3xl font-black text-hamzis-brown dark:text-white transition-all"><%= stat[:count] %></p>
+    <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/10 rounded-2xl p-5 backdrop-blur-md shadow-xl relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-1 h-full bg-hamzis-<%= stat[:color] %>"></div>
+        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-brand-secondary/50 dark:text-brand-primary/50 mb-1"><%= stat[:label] %></p>
+        <p class="text-3xl font-black text-brand-secondary dark:text-white transition-all"><%= stat[:count] %></p>
     </div>
-  <% end %>
+    <% end %>
 </div>

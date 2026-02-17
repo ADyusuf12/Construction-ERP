@@ -1,20 +1,26 @@
 <% content_for :title, "Log Attendance | Hamzis Systems" %>
 <div class="mb-8">
-  <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-2">
-    <%= link_to "Operations", dashboard_home_path, class: "hover:text-hamzis-copper transition-colors" %>
-    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
-    <%= link_to "Attendance", hr_attendance_records_path, class: "hover:text-hamzis-copper transition-colors" %>
-    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
-    <span class="text-hamzis-copper text-xs">New Log</span>
-  </nav>
-  <div class="flex items-center gap-3">
-    <div class="p-3 rounded-2xl bg-hamzis-copper text-white shadow-lg shadow-hamzis-copper/20">
-      <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+    <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50 mb-2">
+        <%= link_to "Operations", dashboard_home_path, class: "hover:text-brand-primary transition-colors" %>
+        <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+        </svg>
+        <%= link_to "Attendance", hr_attendance_records_path, class: "hover:text-brand-primary transition-colors" %>
+        <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-brand-primary text-xs">New Log</span>
+    </nav>
+    <div class="flex items-center gap-3">
+        <div class="p-3 rounded-2xl bg-brand-primary text-white shadow-lg shadow-brand-primary/20">
+            <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+        </div>
+        <div>
+            <h1 class="text-3xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary">Attendance Entry</h1>
+            <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic">Registering resource presence for operational cycles.</p>
+        </div>
     </div>
-    <div>
-      <h1 class="text-3xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper">Attendance Entry</h1>
-      <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Registering resource presence for operational cycles.</p>
-    </div>
-  </div>
 </div>
 <%= render "form", attendance_record: @attendance_record %>

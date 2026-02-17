@@ -1,29 +1,29 @@
 <thead>
-  <%# Tier 1: Primary Mapping %>
-  <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10 text-hamzis-copper uppercase text-[10px] font-black tracking-[0.2em]">
-    <% if local_assigns[:show_employee] %>
-      <th class="px-6 py-4 border-b border-hamzis-copper/20 rounded-tl-xl">Personnel</th>
-    <% end %>
-    <th class="px-6 py-4 border-b border-hamzis-copper/20">Site Assignment</th>
-    <th class="px-6 py-4 border-b border-hamzis-copper/20">Date Cycle</th>
-    <th class="px-6 py-4 border-b border-hamzis-copper/20">Registry Status</th>
-    <th colspan="2" class="px-6 py-4 border-b border-hamzis-copper/20 text-center bg-black/5">Time Tracking (24H)</th>
-    <% if local_assigns[:show_actions] %>
-      <th class="px-6 py-4 border-b border-hamzis-copper/20 text-right rounded-tr-xl">Actions</th>
-    <% end %>
-  </tr>
-  <%# Tier 2: Sub-Calibration %>
-  <tr class="bg-hamzis-brown/5 dark:bg-hamzis-copper/5 border-b border-hamzis-brown/10">
-    <% if local_assigns[:show_employee] %>
-      <th></th>
-    <% end %>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th class="px-6 py-2 text-[8px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40 text-center border-r border-hamzis-brown/5">In</th>
-    <th class="px-6 py-2 text-[8px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40 text-center">Out</th>
-    <% if local_assigns[:show_actions] %>
-      <th></th>
-    <% end %>
-  </tr>
+    <%# Tier 1: Primary Mapping %>
+    <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10 text-brand-primary uppercase text-[10px] font-black tracking-[0.2em]">
+        <% if local_assigns[:show_employee] %>
+        <th class="px-6 py-4 border-b border-brand-primary/20 rounded-tl-xl">Personnel</th>
+        <% end %>
+        <th class="px-6 py-4 border-b border-brand-primary/20">Site Assignment</th>
+        <th class="px-6 py-4 border-b border-brand-primary/20">Date Cycle</th>
+        <th class="px-6 py-4 border-b border-brand-primary/20">Registry Status</th>
+        <th colspan="2" class="px-6 py-4 border-b border-brand-primary/20 text-center bg-black/5">Time Tracking (24H)</th>
+        <% if local_assigns[:show_actions] %>
+        <th class="px-6 py-4 border-b border-brand-primary/20 text-right rounded-tr-xl">Actions</th>
+        <% end %>
+    </tr>
+    <%# Tier 2: Sub-Calibration %>
+    <tr class="bg-brand-secondary/5 dark:bg-brand-primary/5 border-b border-brand-secondary/10">
+        <% if local_assigns[:show_employee] %>
+        <th></th>
+        <% end %>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th class="px-6 py-2 text-[8px] font-black uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40 text-center border-r border-brand-secondary/5">In</th>
+        <th class="px-6 py-2 text-[8px] font-black uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40 text-center">Out</th>
+        <% if local_assigns[:show_actions] %>
+        <th></th>
+        <% end %>
+    </tr>
 </thead>

@@ -1,21 +1,21 @@
-<div class="overflow-hidden bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-2xl p-6">
-  <% if clients.any? %>
+<div class="overflow-hidden bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl p-6">
+    <% if clients.any? %>
     <div class="overflow-x-auto">
-      <table class="min-w-full text-left border-separate border-spacing-0">
-        <%= render "business/clients/clients_table_header" %>
-        <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
-          <% clients.each_with_index do |client, index| %>
-            <%= render "business/clients/client_row",
+        <table class="min-w-full text-left border-separate border-spacing-0">
+            <%= render "business/clients/clients_table_header" %>
+            <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
+                <% clients.each_with_index do |client, index| %>
+                <%= render "business/clients/client_row",
                        client: client,
-                       row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
-          <% end %>
-        </tbody>
-      </table>
+                       row_class: index.even? ? "bg-brand-secondary/5 dark:bg-brand-primary/5" : "" %>
+                <% end %>
+            </tbody>
+        </table>
     </div>
-  <% else %>
+    <% else %>
     <div class="text-center py-20">
-      <h3 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tighter italic opacity-50">Zero Client Associations</h3>
-      <p class="text-[10px] text-white/30 mt-2 uppercase tracking-widest italic">System awaiting business partner onboarding.</p>
+        <h3 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tighter italic opacity-50">Zero Client Associations</h3>
+        <p class="text-[10px] text-white/30 mt-2 uppercase tracking-widest italic">System awaiting business partner onboarding.</p>
     </div>
-  <% end %>
+    <% end %>
 </div>

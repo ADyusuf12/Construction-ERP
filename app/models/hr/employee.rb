@@ -1,79 +1,71 @@
 module Hr
   class Employee < ApplicationRecord
     belongs_to :user, optional: true
-
     belongs_to :manager, class_name: "Hr::Employee", optional: true
+
     has_many :subordinates, class_name: "Hr::Employee", foreign_key: "manager_id", dependent: :nullify
-    has_many :leaves, class_name: "Hr::Leave", foreign_key: "employee_id", dependent: :destroy
+    has_many :leaves, class_name: "Hr::Leave", foreign_key: "staff_id", dependent: :destroy
     has_many :assignments, dependent: :destroy
     has_many :tasks, through: :assignments
-    has_many :reports, class_name: "Report", foreign_key: "employee_id", dependent: :nullify
+    has_many :reports, class_name: "Report", foreign_key: "staff_id", dependent: :nullify
     has_one :personal_detail, class_name: "Hr::PersonalDetail", dependent: :destroy, inverse_of: :employee
-    has_many :salaries, class_name: "Accounting::Salary", foreign_key: "employee_id", dependent: :destroy
-    has_many :attendance_records, class_name: "Hr::AttendanceRecord", foreign_key: "employee_id", dependent: :destroy
-    has_many :next_of_kins, class_name: "Hr::NextOfKin", foreign_key: "employee_id", dependent: :destroy
-
-    delegate :email, to: :user, prefix: true, allow_nil: true
+    has_many :salaries, class_name: "Accounting::Salary", foreign_key: "staff_id", dependent: :destroy
+    has_many :attendance_records, class_name: "Hr::AttendanceRecord", foreign_key: "staff_id", dependent: :destroy
+    has_many :next_of_kins, class_name: "Hr::NextOfKin", foreign_key: "staff_id", dependent: :destroy
 
     accepts_nested_attributes_for :personal_detail, update_only: true, allow_destroy: true
     accepts_nested_attributes_for :next_of_kins, allow_destroy: true, reject_if: :all_blank
 
     enum :status, { active: 0, on_leave: 1, terminated: 2 }, prefix: true
 
-    validates :hamzis_id, presence: true, uniqueness: true
+    validates :staff_id, presence: true, uniqueness: true
     validates :department, presence: true
     validates :position_title, presence: true
-    validates :leave_balance, numericality: { greater_than_or_equal_to: 0 }
 
     validate :user_role_and_email_valid, if: -> { user.present? }
 
-    before_validation :generate_hamzis_id, on: :create
-    before_validation :set_default_leave_balance, on: :create
+    before_validation :generate_staff_id, on: :create
 
     def full_name
       if personal_detail.present?
         "#{personal_detail.first_name} #{personal_detail.last_name}"
       else
-        "Employee ##{id}"
+        "Employee ##{staff_id}"
       end
     end
 
     private
 
-    def set_default_leave_balance
-      self.leave_balance ||= 20
-    end
+    def generate_staff_id
+      return if staff_id.present?
+      return if hire_date.blank?
 
-    def generate_hamzis_id
-      return if hamzis_id.present?
-      return if hire_date.blank? # safety guard
+      year_suffix = hire_date.year.to_s[-2..]
 
-      year = hire_date.year
-      year_suffix = year.to_s[-2..] # e.g. "20" for 2020
+      # Finding the highest code for the current year
+      last_record = Hr::Employee.where("staff_id LIKE ?", "%#{year_suffix}").order(:staff_id).last
 
-      # Find the highest hamzis_id for this hire year
-      last_id = Hr::Employee.where(
-        hire_date: Date.new(year, 1, 1)..Date.new(year, 12, 31)
-      ).maximum(:hamzis_id)
-
-      if last_id.present? && last_id.end_with?(year_suffix)
-        last_sequence = last_id[0..2].to_i
+      if last_record.present?
+        last_sequence = last_record.staff_id[0..2].to_i
         sequence = (last_sequence + 1).to_s.rjust(3, "0")
       else
         sequence = "001"
       end
 
-      self.hamzis_id = "#{sequence}#{year_suffix}" # e.g. "00120", "00221", "00322"
+      self.staff_id = "#{sequence}#{year_suffix}"
     end
 
     def user_role_and_email_valid
-      staff_roles = %w[ceo cto qs site_manager engineer storekeeper hr accountant]
+      # Added 'admin' to staff_roles so your admin user can have an employee profile
+      staff_roles = %w[ceo cto qs site_manager engineer storekeeper hr accountant admin]
       unless user.role.in?(staff_roles)
         errors.add(:user, "must have a staff role")
       end
 
-      unless user.email.ends_with?("@hamzis.com")
-        errors.add(:user, "must have a Hamzis company email")
+      # Dynamic domain check: falls back to example.com if ENV is not set
+      allowed_domain = ENV.fetch("ALLOWED_DOMAIN", "example.com")
+      unless user.email.ends_with?("@#{allowed_domain}")
+        errors.add(:user, "must have a company email (@#{allowed_domain})")
       end
     end
   end

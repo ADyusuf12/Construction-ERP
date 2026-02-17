@@ -5,17 +5,17 @@ default: &default
 
 development:
   <<: *default
-  database: hamzis_systems_development
+  # Change the database name to be generic
+  database: construction_erp_development
   username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
   password: <%= ENV.fetch("POSTGRES_PASSWORD", "") %>
   host: <%= ENV.fetch("PGHOST", "localhost") %>
 
 test:
-  adapter: postgresql
-  encoding: unicode
-  database: hamzis_systems_test
-  username: postgres
-  password: 1234
+  <<: *default # Use the default anchor to keep it clean
+  database: construction_erp_test
+  username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "1234") %>
   host: localhost
   port: 5432
 
@@ -23,28 +23,27 @@ staging:
   primary: &primary_staging
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
-
   cable:
     <<: *primary_staging
-    database: hamzis_systems_staging_db
+    database: erp_staging_cable
     migrations_paths: db/cable_migrate
-
 
 production:
   primary: &primary_production
     <<: *default
-    database: hamzis_systems_production
-    username: hamzis_systems
-    password: <%= ENV["HAMZIS_SYSTEMS_DATABASE_PASSWORD"] %>
+    # Use an ENV variable for the DB name so you don't have to edit code for new clients
+    database: <%= ENV.fetch("PRODUCTION_DB_NAME", "erp_production") %>
+    username: <%= ENV.fetch("PRODUCTION_DB_USER", "erp_admin") %>
+    password: <%= ENV["ERP_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
-    database: hamzis_systems_production_cache
+    database: erp_production_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: hamzis_systems_production_queue
+    database: erp_production_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: hamzis_systems_production_cable
+    database: erp_production_cable
     migrations_paths: db/cable_migrate

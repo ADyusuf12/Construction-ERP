@@ -1,119 +1,110 @@
 <% if user_signed_in? && policy(Hr::Employee).index? %>
-  <div class="space-y-4 py-2">
+<div class="space-y-4 py-2">
     <!-- Section Header -->
     <div class="px-3">
-      <span class="block text-[10px] font-black uppercase tracking-[0.3em] text-hamzis-brown/70 dark:text-white border-b border-hamzis-brown/10 dark:border-hamzis-copper/10 pb-1 mb-2">
-        HR
-      </span>
+        <span class="block text-[10px] font-black uppercase tracking-[0.3em] text-brand-secondary/70 dark:text-white border-b border-brand-secondary/10 dark:border-brand-primary/10 pb-1 mb-2">
+            HR
+        </span>
     </div>
     <div class="px-2 space-y-1">
-      <%# 1. Employees Dropdown %>
-      <div class="group">
-        <button type="button"
-                id="employees-button"
-                class="flex justify-between items-center w-full px-3 py-2.5 rounded-xl border border-transparent hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/5 transition-all duration-300"
-                onclick="document.getElementById('employees-dropdown').classList.toggle('hidden'); document.getElementById('employees-chevron').classList.toggle('rotate-180')">
-          <span class="flex items-center">
-            <svg class="w-4 h-4 mr-3 text-hamzis-brown/70 dark:text-hamzis-copper/70 group-hover:text-hamzis-copper transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m10-4a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-            <span class="text-[11px] font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Employees</span>
-          </span>
-          <svg class="w-3 h-3 text-hamzis-brown/30 dark:text-hamzis-copper/30 group-hover:text-hamzis-copper transition-transform" id="employees-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-            <path d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        <div id="employees-dropdown" class="ml-9 mt-1 space-y-1 border-l-2 border-hamzis-brown/10 dark:border-hamzis-copper/10 hidden">
-          <%= link_to hr_employees_path,
+        <%# 1. Employees Dropdown %>
+        <div class="group">
+            <button type="button" id="employees-button" class="flex justify-between items-center w-full px-3 py-2.5 rounded-xl border border-transparent hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/5 transition-all duration-300" onclick="document.getElementById('employees-dropdown').classList.toggle('hidden'); document.getElementById('employees-chevron').classList.toggle('rotate-180')">
+                <span class="flex items-center">
+                    <svg class="w-4 h-4 mr-3 text-brand-secondary/70 dark:text-brand-primary/70 group-hover:text-brand-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m10-4a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <span class="text-[11px] font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary">Employees</span>
+                </span>
+                <svg class="w-3 h-3 text-brand-secondary/30 dark:text-brand-primary/30 group-hover:text-brand-primary transition-transform" id="employees-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                    <path d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div id="employees-dropdown" class="ml-9 mt-1 space-y-1 border-l-2 border-brand-secondary/10 dark:border-brand-primary/10 hidden">
+                <%= link_to hr_employees_path,
               class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
-              #{current_page?(hr_employees_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
-            All Employees
-          <% end %>
-          <% if policy(Hr::Employee).create? %>
-            <%= link_to new_hr_employee_path,
+              #{current_page?(hr_employees_path) ? 'text-brand-primary border-l-2 border-brand-primary -ml-[2px] bg-brand-primary/5' : 'text-brand-secondary/50 dark:text-brand-primary/40 hover:text-brand-secondary dark:hover:text-white hover:bg-brand-secondary/5'}" do %>
+                All Employees
+                <% end %>
+                <% if policy(Hr::Employee).create? %>
+                <%= link_to new_hr_employee_path,
                 class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
-                #{current_page?(new_hr_employee_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
-              New Employee
-            <% end %>
-          <% end %>
+                #{current_page?(new_hr_employee_path) ? 'text-brand-primary border-l-2 border-brand-primary -ml-[2px] bg-brand-primary/5' : 'text-brand-secondary/50 dark:text-brand-primary/40 hover:text-brand-secondary dark:hover:text-white hover:bg-brand-secondary/5'}" do %>
+                New Employee
+                <% end %>
+                <% end %>
+            </div>
         </div>
-      </div>
-      <%# 2. Leaves Dropdown %>
-      <div class="group">
-        <button type="button"
-                id="leaves-button"
-                class="flex justify-between items-center w-full px-3 py-2.5 rounded-xl border border-transparent hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/5 transition-all duration-300"
-                onclick="document.getElementById('leaves-dropdown').classList.toggle('hidden'); document.getElementById('leaves-chevron').classList.toggle('rotate-180')">
-          <span class="flex items-center">
-            <svg class="w-4 h-4 mr-3 text-hamzis-brown/70 dark:text-hamzis-copper/70 group-hover:text-hamzis-copper transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z" />
-            </svg>
-            <span class="text-[11px] font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Leaves</span>
-          </span>
-          <svg class="w-3 h-3 text-hamzis-brown/30 dark:text-hamzis-copper/30 group-hover:text-hamzis-copper transition-transform" id="leaves-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-            <path d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        <div id="leaves-dropdown" class="ml-9 mt-1 space-y-1 border-l-2 border-hamzis-brown/10 dark:border-hamzis-copper/10 hidden">
-          <% if policy(Hr::Leave).index? %>
-            <%= link_to hr_leaves_path,
+        <%# 2. Leaves Dropdown %>
+        <div class="group">
+            <button type="button" id="leaves-button" class="flex justify-between items-center w-full px-3 py-2.5 rounded-xl border border-transparent hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/5 transition-all duration-300" onclick="document.getElementById('leaves-dropdown').classList.toggle('hidden'); document.getElementById('leaves-chevron').classList.toggle('rotate-180')">
+                <span class="flex items-center">
+                    <svg class="w-4 h-4 mr-3 text-brand-secondary/70 dark:text-brand-primary/70 group-hover:text-brand-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z" />
+                    </svg>
+                    <span class="text-[11px] font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary">Leaves</span>
+                </span>
+                <svg class="w-3 h-3 text-brand-secondary/30 dark:text-brand-primary/30 group-hover:text-brand-primary transition-transform" id="leaves-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                    <path d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div id="leaves-dropdown" class="ml-9 mt-1 space-y-1 border-l-2 border-brand-secondary/10 dark:border-brand-primary/10 hidden">
+                <% if policy(Hr::Leave).index? %>
+                <%= link_to hr_leaves_path,
                 class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
-                #{current_page?(hr_leaves_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
-              All Leaves
-            <% end %>
-          <% end %>
-          <%= link_to my_leaves_hr_leaves_path,
+                #{current_page?(hr_leaves_path) ? 'text-brand-primary border-l-2 border-brand-primary -ml-[2px] bg-brand-primary/5' : 'text-brand-secondary/50 dark:text-brand-primary/40 hover:text-brand-secondary dark:hover:text-white hover:bg-brand-secondary/5'}" do %>
+                All Leaves
+                <% end %>
+                <% end %>
+                <%= link_to my_leaves_hr_leaves_path,
               class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
-              #{current_page?(my_leaves_hr_leaves_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
-            My Leaves
-          <% end %>
-          <% if policy(Hr::Leave.new).create? %>
-            <%= link_to new_hr_leave_path,
+              #{current_page?(my_leaves_hr_leaves_path) ? 'text-brand-primary border-l-2 border-brand-primary -ml-[2px] bg-brand-primary/5' : 'text-brand-secondary/50 dark:text-brand-primary/40 hover:text-brand-secondary dark:hover:text-white hover:bg-brand-secondary/5'}" do %>
+                My Leaves
+                <% end %>
+                <% if policy(Hr::Leave.new).create? %>
+                <%= link_to new_hr_leave_path,
                 class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
-                #{current_page?(new_hr_leave_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
-              New Leave
-            <% end %>
-          <% end %>
+                #{current_page?(new_hr_leave_path) ? 'text-brand-primary border-l-2 border-brand-primary -ml-[2px] bg-brand-primary/5' : 'text-brand-secondary/50 dark:text-brand-primary/40 hover:text-brand-secondary dark:hover:text-white hover:bg-brand-secondary/5'}" do %>
+                New Leave
+                <% end %>
+                <% end %>
+            </div>
         </div>
-      </div>
-      <%# 3. Attendance Dropdown %>
-      <div class="group">
-        <button type="button"
-                id="attendance-button"
-                class="flex justify-between items-center w-full px-3 py-2.5 rounded-xl border border-transparent hover:bg-hamzis-brown/5 dark:hover:bg-hamzis-copper/5 transition-all duration-300"
-                onclick="document.getElementById('attendance-dropdown').classList.toggle('hidden'); document.getElementById('attendance-chevron').classList.toggle('rotate-180')">
-          <span class="flex items-center">
-            <svg class="w-4 h-4 mr-3 text-hamzis-brown/70 dark:text-hamzis-copper/70 group-hover:text-hamzis-copper transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span class="text-[11px] font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Attendance</span>
-          </span>
-          <svg class="w-3 h-3 text-hamzis-brown/30 dark:text-hamzis-copper/30 group-hover:text-hamzis-copper transition-transform" id="attendance-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-            <path d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        <div id="attendance-dropdown" class="ml-9 mt-1 space-y-1 border-l-2 border-hamzis-brown/10 dark:border-hamzis-copper/10 hidden">
-          <% if policy(Hr::AttendanceRecord).index? %>
-            <%= link_to hr_attendance_records_path,
+        <%# 3. Attendance Dropdown %>
+        <div class="group">
+            <button type="button" id="attendance-button" class="flex justify-between items-center w-full px-3 py-2.5 rounded-xl border border-transparent hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/5 transition-all duration-300" onclick="document.getElementById('attendance-dropdown').classList.toggle('hidden'); document.getElementById('attendance-chevron').classList.toggle('rotate-180')">
+                <span class="flex items-center">
+                    <svg class="w-4 h-4 mr-3 text-brand-secondary/70 dark:text-brand-primary/70 group-hover:text-brand-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="text-[11px] font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary">Attendance</span>
+                </span>
+                <svg class="w-3 h-3 text-brand-secondary/30 dark:text-brand-primary/30 group-hover:text-brand-primary transition-transform" id="attendance-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                    <path d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div id="attendance-dropdown" class="ml-9 mt-1 space-y-1 border-l-2 border-brand-secondary/10 dark:border-brand-primary/10 hidden">
+                <% if policy(Hr::AttendanceRecord).index? %>
+                <%= link_to hr_attendance_records_path,
                 class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
-                #{current_page?(hr_attendance_records_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
-              All Attendance
-            <% end %>
-          <% end %>
-          <%= link_to my_attendance_hr_attendance_records_path,
+                #{current_page?(hr_attendance_records_path) ? 'text-brand-primary border-l-2 border-brand-primary -ml-[2px] bg-brand-primary/5' : 'text-brand-secondary/50 dark:text-brand-primary/40 hover:text-brand-secondary dark:hover:text-white hover:bg-brand-secondary/5'}" do %>
+                All Attendance
+                <% end %>
+                <% end %>
+                <%= link_to my_attendance_hr_attendance_records_path,
               class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
-              #{current_page?(my_attendance_hr_attendance_records_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
-            My Attendance
-          <% end %>
-          <% if policy(Hr::AttendanceRecord.new).create? %>
-            <%= link_to new_hr_attendance_record_path,
+              #{current_page?(my_attendance_hr_attendance_records_path) ? 'text-brand-primary border-l-2 border-brand-primary -ml-[2px] bg-brand-primary/5' : 'text-brand-secondary/50 dark:text-brand-primary/40 hover:text-brand-secondary dark:hover:text-white hover:bg-brand-secondary/5'}" do %>
+                My Attendance
+                <% end %>
+                <% if policy(Hr::AttendanceRecord.new).create? %>
+                <%= link_to new_hr_attendance_record_path,
                 class: "flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all
-                #{current_page?(new_hr_attendance_record_path) ? 'text-hamzis-copper border-l-2 border-hamzis-copper -ml-[2px] bg-hamzis-copper/5' : 'text-hamzis-brown/50 dark:text-hamzis-copper/40 hover:text-hamzis-brown dark:hover:text-white hover:bg-hamzis-brown/5'}" do %>
-              New Attendance
-            <% end %>
-          <% end %>
+                #{current_page?(new_hr_attendance_record_path) ? 'text-brand-primary border-l-2 border-brand-primary -ml-[2px] bg-brand-primary/5' : 'text-brand-secondary/50 dark:text-brand-primary/40 hover:text-brand-secondary dark:hover:text-white hover:bg-brand-secondary/5'}" do %>
+                New Attendance
+                <% end %>
+                <% end %>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 <% end %>

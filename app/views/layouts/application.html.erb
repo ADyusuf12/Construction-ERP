@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="h-full">
-
-<head>
-    <title>Hamzis Systems</title>
+  <head>
+    <title>Earmark Systems</title>
     <link rel="icon" type="image/svg+xml" href="<%= asset_path('hamzis-logo.svg') %>">
     <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
     <%= csrf_meta_tags %>
@@ -11,82 +10,74 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <style>
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-        }
+      .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+      }
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
+      .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+      }
 
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(184, 115, 51, 0.2);
-            border-radius: 10px;
-        }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(184, 115, 51, 0.2);
+          border-radius: 10px;
+      }
 
-        .custom-scrollbar:hover::-webkit-scrollbar-thumb {
-            background: rgba(184, 115, 51, 0.5);
-        }
+      .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+          background: rgba(184, 115, 51, 0.5);
+      }
     </style>
-</head>
-
-<body class="bg-hamzis-white text-hamzis-black dark:bg-hamzis-black dark:text-hamzis-white flex h-screen overflow-hidden" data-controller="confirm-delete">
-
+  </head>
+  <body class="bg-brand-white text-brand-black dark:bg-brand-black dark:text-brand-white flex h-screen overflow-hidden" data-controller="confirm-delete">
     <% if user_signed_in? %>
-    <%= render 'shared/sidebar' %>
-
-    <button onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')" class="md:hidden fixed bottom-6 right-6 z-[60] p-4 rounded-full bg-hamzis-copper text-white shadow-2xl active:scale-95 transition-transform">
+      <%= render 'shared/sidebar' %>
+      <button onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')" class="md:hidden fixed bottom-6 right-6 z-[60] p-4 rounded-full bg-brand-primary text-white shadow-2xl active:scale-95 transition-transform">
         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-    </button>
+      </button>
     <% end %>
-
     <div class="flex-1 flex flex-col min-w-0 h-full relative z-0">
-        <main class="flex-1 overflow-y-auto overflow-x-hidden">
-            <%= render "shared/flash" %>
-
-            <div class="min-h-full flex flex-col <%= user_signed_in? ? 'p-6 md:p-10' : 'p-0' %>">
-                <%= yield %>
-            </div>
-        </main>
-
-        <footer class="bg-hamzis-white/10 backdrop-blur-md dark:bg-hamzis-black/20
-                     border-t border-hamzis-brown/20 px-6 py-3 shrink-0 z-10">
-            <div class="flex items-center justify-between">
-                <p class="text-[10px] sm:text-xs opacity-60 font-bold uppercase tracking-widest italic">
-                    © <%= Time.current.year %> Hamzis Systems — Construction ERP
-                </p>
-                <button id="theme-toggle" class="px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition-colors">
-                    <span id="theme-icon" class="text-xs">🌙</span>
-                </button>
-            </div>
-        </footer>
+      <main class="flex-1 overflow-y-auto overflow-x-hidden">
+        <%= render "shared/flash" %>
+        <div class="min-h-full flex flex-col <%= user_signed_in? ? 'p-6 md:p-10' : 'p-0' %>">
+          <%= yield %>
+        </div>
+      </main>
+      <footer class="bg-brand-white/10 backdrop-blur-md dark:bg-brand-black/20
+                     border-t border-brand-secondary/20 px-6 py-3 shrink-0 z-10">
+        <div class="flex items-center justify-between">
+          <p class="text-[10px] sm:text-xs opacity-60 font-bold uppercase tracking-widest italic">
+            © <%= Time.current.year %> Hamzis Systems — Infrastructure ERP
+          </p>
+          <button id="theme-toggle" class="px-3 py-1 rounded bg-brand-primary text-brand-white hover:bg-brand-black transition-colors">
+            <span id="theme-icon" class="text-xs">🌙</span>
+          </button>
+        </div>
+      </footer>
     </div>
-
     <script nonce="<%= content_security_policy_nonce %>">
-        (() => {
-            const root = document.documentElement;
-            const storageKey = "hamzis-theme";
-            const icon = document.getElementById("theme-icon");
+      (() => {
+          const root = document.documentElement;
+          const storageKey = "hamzis-theme";
+          const icon = document.getElementById("theme-icon");
 
-            function applyTheme(dark) {
-                root.classList.toggle("dark", dark);
-                localStorage.setItem(storageKey, dark ? "dark" : "light");
-                if (icon) icon.textContent = dark ? "🌞" : "🌙";
-            }
+          function applyTheme(dark) {
+              root.classList.toggle("dark", dark);
+              localStorage.setItem(storageKey, dark ? "dark" : "light");
+              if (icon) icon.textContent = dark ? "🌞" : "🌙";
+          }
 
-            function initTheme() {
-                const saved = localStorage.getItem(storageKey);
-                const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-                applyTheme(saved === "dark" || (!saved && prefersDark));
-            }
-            initTheme();
-            document.getElementById("theme-toggle").onclick = () => applyTheme(!root.classList.contains("dark"));
-            document.addEventListener("turbo:load", initTheme);
-        })();
+          function initTheme() {
+              const saved = localStorage.getItem(storageKey);
+              const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+              applyTheme(saved === "dark" || (!saved && prefersDark));
+          }
+          initTheme();
+          document.getElementById("theme-toggle").onclick = () => applyTheme(!root.classList.contains("dark"));
+          document.addEventListener("turbo:load", initTheme);
+      })();
     </script>
     <%= render 'shared/confirm_delete_modal', title: "Confirm Deletion", message: "Are you sure?", confirm_path: "#" %>
-</body>
-
+  </body>
 </html>
