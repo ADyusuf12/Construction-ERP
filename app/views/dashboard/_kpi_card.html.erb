@@ -1,45 +1,46 @@
-<div class="group relative bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl p-6 transition-all duration-500 hover:shadow-[0_0_20px_rgba(217,119,6,0.15)] hover:-translate-y-1">
-  <!-- Subtle background icon accent -->
-  <div class="absolute top-2 right-2 opacity-5 group-hover:opacity-10 transition-opacity">
-    <svg class="w-12 h-12 text-hamzis-copper" fill="currentColor" viewBox="0 0 24 24">
-      <% case icon
-          when "folder" %><path d="M3 7h4l2-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><%# Add others... %>
-      <% end %>
-    </svg>
-  </div>
-  <div class="flex flex-col items-start">
-    <div class="p-2.5 rounded-xl bg-hamzis-copper/10 text-hamzis-copper mb-4 group-hover:bg-hamzis-copper group-hover:text-white transition-all duration-300">
-      <% case icon
+<div class="group relative bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl p-6 transition-all duration-500 hover:shadow-[0_0_20px_rgba(217,119,6,0.15)] hover:-translate-y-1">
+    <!-- Subtle background icon accent -->
+    <div class="absolute top-2 right-2 opacity-5 group-hover:opacity-10 transition-opacity">
+        <svg class="w-12 h-12 text-brand-primary" fill="currentColor" viewBox="0 0 24 24">
+            <% case icon
+          when "folder" %>
+            <path d="M3 7h4l2-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /><%# Add others... %>
+            <% end %>
+        </svg>
+    </div>
+    <div class="flex flex-col items-start">
+        <div class="p-2.5 rounded-xl bg-brand-primary/10 text-brand-primary mb-4 group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">
+            <% case icon
          when "folder" %>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h4l2-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-        </svg>
-      <% when "checklist" %>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-        </svg>
-      <% when "document" %>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-      <% when "currency-dollar" %>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2h0c1.657 0 3 .895 3 2s-1.343 2-3 2m0-8V4m0 16v-4" />
-        </svg>
-      <% when "credit-card" %>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-        </svg>
-      <% end %>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h4l2-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+            </svg>
+            <% when "checklist" %>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            </svg>
+            <% when "document" %>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <% when "currency-dollar" %>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2h0c1.657 0 3 .895 3 2s-1.343 2-3 2m0-8V4m0 16v-4" />
+            </svg>
+            <% when "credit-card" %>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+            </svg>
+            <% end %>
+        </div>
+        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-brand-secondary/50 dark:text-brand-primary/50 mb-1">
+            <%= title %>
+        </p>
+        <div class="flex items-baseline gap-1">
+            <h3 class="text-3xl font-black text-brand-secondary dark:text-white tabular-nums tracking-tighter">
+                <%= count %>
+            </h3>
+            <span class="text-[10px] font-bold text-brand-primary opacity-0 group-hover:opacity-100 transition-opacity">Units</span>
+        </div>
     </div>
-    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-1">
-      <%= title %>
-    </p>
-    <div class="flex items-baseline gap-1">
-      <h3 class="text-3xl font-black text-hamzis-brown dark:text-white tabular-nums tracking-tighter">
-        <%= count %>
-      </h3>
-      <span class="text-[10px] font-bold text-hamzis-copper opacity-0 group-hover:opacity-100 transition-opacity">Units</span>
-    </div>
-  </div>
 </div>

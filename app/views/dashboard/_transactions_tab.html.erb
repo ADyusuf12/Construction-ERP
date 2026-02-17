@@ -1,64 +1,64 @@
 <% if policy_scope(Accounting::Transaction).any? %>
-  <div id="transactions-tab" class="tab-content hidden animate-fade-in">
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-xl p-6">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tight">Recent Ledger</h2>
-        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-hamzis-brown/40 dark:text-hamzis-copper/40">
-          Financial Audit
-        </span>
-      </div>
-      <% if @transactions.any? %>
+<div id="transactions-tab" class="tab-content hidden animate-fade-in">
+    <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-xl p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tight">Recent Ledger</h2>
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary/40 dark:text-brand-primary/40">
+                Financial Audit
+            </span>
+        </div>
+        <% if @transactions.any? %>
         <div class="overflow-x-auto custom-scrollbar">
-          <table class="min-w-full border-separate border-spacing-0 text-left">
-            <thead>
-              <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10">
-                <% ["Description", "Amount", "Entry", "Status", "Timestamp"].each do |head| %>
-                  <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-copper border-b border-hamzis-copper/10 text-left">
-                    <%= head %>
-                  </th>
-                <% end %>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
-              <% @transactions.each do |transaction| %>
-                <tr id="dash_<%= dom_id(transaction) %>" class="group hover:bg-white/40 dark:hover:bg-hamzis-copper/5 transition-all duration-300">
-                  <td class="px-4 py-4">
-                    <div class="text-xs font-black text-hamzis-brown dark:text-hamzis-textDark uppercase tracking-tight truncate max-w-[200px]">
-                      <%= transaction.description %>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="text-xs font-black text-hamzis-brown dark:text-white font-mono">
-                      <%= number_to_currency(transaction.amount, unit: "₦", precision: 0) %>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <%# Subtle color coding for transaction types %>
-                    <% is_outflow = transaction.transaction_type.to_s.downcase.include?('out') || transaction.transaction_type.to_s.downcase.include?('debit') %>
-                    <span class="text-[9px] font-bold uppercase tracking-widest <%= is_outflow ? 'text-red-500/80' : 'text-green-500/80' %>">
-                      <%= transaction.transaction_type.humanize %>
-                    </span>
-                  </td>
-                  <td class="px-4 py-4">
-                    <span class="inline-flex px-2 py-0.5 rounded border border-hamzis-brown/10 bg-hamzis-brown/5 dark:border-hamzis-copper/20 dark:bg-hamzis-copper/5 text-[9px] font-black uppercase tracking-widest text-hamzis-brown/70 dark:text-hamzis-copper">
-                      <%= transaction.status.humanize %>
-                    </span>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="text-[10px] font-mono text-hamzis-brown/80 dark:text-hamzis-copper/80">
-                      <%= transaction.date.strftime("%d.%m.%y") %>
-                    </div>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+            <table class="min-w-full border-separate border-spacing-0 text-left">
+                <thead>
+                    <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
+                        <% ["Description", "Amount", "Entry", "Status", "Timestamp"].each do |head| %>
+                        <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/10 text-left">
+                            <%= head %>
+                        </th>
+                        <% end %>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
+                    <% @transactions.each do |transaction| %>
+                    <tr id="dash_<%= dom_id(transaction) %>" class="group hover:bg-white/40 dark:hover:bg-brand-primary/5 transition-all duration-300">
+                        <td class="px-4 py-4">
+                            <div class="text-xs font-black text-brand-secondary dark:text-hamzis-textDark uppercase tracking-tight truncate max-w-[200px]">
+                                <%= transaction.description %>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4">
+                            <div class="text-xs font-black text-brand-secondary dark:text-white font-mono">
+                                <%= number_to_currency(transaction.amount, unit: "₦", precision: 0) %>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4">
+                            <%# Subtle color coding for transaction types %>
+                            <% is_outflow = transaction.transaction_type.to_s.downcase.include?('out') || transaction.transaction_type.to_s.downcase.include?('debit') %>
+                            <span class="text-[9px] font-bold uppercase tracking-widest <%= is_outflow ? 'text-red-500/80' : 'text-green-500/80' %>">
+                                <%= transaction.transaction_type.humanize %>
+                            </span>
+                        </td>
+                        <td class="px-4 py-4">
+                            <span class="inline-flex px-2 py-0.5 rounded border border-brand-secondary/10 bg-brand-secondary/5 dark:border-brand-primary/20 dark:bg-brand-primary/5 text-[9px] font-black uppercase tracking-widest text-brand-secondary/70 dark:text-brand-primary">
+                                <%= transaction.status.humanize %>
+                            </span>
+                        </td>
+                        <td class="px-4 py-4">
+                            <div class="text-[10px] font-mono text-brand-secondary/80 dark:text-brand-primary/80">
+                                <%= transaction.date.strftime("%d.%m.%y") %>
+                            </div>
+                        </td>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
         </div>
-      <% else %>
-        <div class="py-12 text-center border-2 border-dashed border-hamzis-brown/10 rounded-xl">
-          <p class="text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">No recent financial movement</p>
+        <% else %>
+        <div class="py-12 text-center border-2 border-dashed border-brand-secondary/10 rounded-xl">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">No recent financial movement</p>
         </div>
-      <% end %>
+        <% end %>
     </div>
-  </div>
+</div>
 <% end %>

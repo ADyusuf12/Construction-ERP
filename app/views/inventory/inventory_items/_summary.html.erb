@@ -1,21 +1,21 @@
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-  <%
+    <%
     low_stock_count = inventory_items.select { |i|
       threshold = i.reorder_threshold
       total = @inventory_totals[i.id] || i.total_quantity
       threshold.present? && total <= threshold
     }.count
   %>
-  <% [
+    <% [
     { label: "Total Assets", count: inventory_items.count, color: "copper" },
     { label: "Critical Stock", count: low_stock_count, color: "red-500", alert: (low_stock_count > 0) },
     { label: "Project Allocation", count: inventory_items.joins(:project_inventories).distinct.count, color: "blue-500" },
-    { label: "Active Warehouses", count: Warehouse.count, color: "hamzis-brown" }
+    { label: "Active Warehouses", count: Warehouse.count, color: "brand-secondary" }
   ].each do |stat| %>
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/10 rounded-2xl p-5 backdrop-blur-md shadow-xl relative overflow-hidden group">
-      <div class="absolute top-0 left-0 w-1 h-full bg-<%= stat[:color] %> <%= 'animate-pulse' if stat[:alert] %>"></div>
-      <p class="text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-1"><%= stat[:label] %></p>
-      <p class="text-3xl font-black <%= stat[:alert] ? 'text-red-500' : 'text-hamzis-brown dark:text-white' %> transition-all duration-500"><%= stat[:count] %></p>
+    <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/10 rounded-2xl p-5 backdrop-blur-md shadow-xl relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-1 h-full bg-<%= stat[:color] %> <%= 'animate-pulse' if stat[:alert] %>"></div>
+        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-brand-secondary/50 dark:text-brand-primary/50 mb-1"><%= stat[:label] %></p>
+        <p class="text-3xl font-black <%= stat[:alert] ? 'text-red-500' : 'text-brand-secondary dark:text-white' %> transition-all duration-500"><%= stat[:count] %></p>
     </div>
-  <% end %>
+    <% end %>
 </div>

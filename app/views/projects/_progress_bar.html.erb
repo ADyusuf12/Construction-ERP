@@ -1,12 +1,11 @@
 <div id="<%= dom_id(project, :progress) %>" class="group">
-  <div class="relative w-full h-3 bg-hamzis-brown/10 dark:bg-white/5 rounded-full overflow-hidden border border-hamzis-brown/5">
-    <%# The Active Progress Bar %>
-    <div class="h-full bg-hamzis-copper rounded-full transition-all duration-1000 ease-out relative shadow-[0_0_15px_rgba(217,119,6,0.3)]"
-         style="width: <%= project.progress %>%">
-      <%# Subtle Diagonal Stripe Overlay (Moving effect) %>
-      <% if project.progress > 0 && project.progress < 100 %>
-        <div class="absolute inset-0 opacity-20 bg-[linear-gradient(45deg,rgba(255,255,255,.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,.15)_50%,rgba(255,255,255,.15)_75%,transparent_75%,transparent)] bg-[length:1rem_1rem] animate-[progress-stripe_2s_linear_infinite]"></div>
-      <% end %>
+    <div class="relative w-full h-3 bg-brand-secondary/10 dark:bg-white/5 rounded-full overflow-hidden border border-brand-secondary/5">
+        <%# The Active Progress Bar %>
+        <div class="h-full bg-brand-primary rounded-full transition-all duration-1000 ease-out relative shadow-[0_0_15px_rgba(217,119,6,0.3)]" style="width: <%= project.progress %>%">
+            <%# Subtle Diagonal Stripe Overlay (Moving effect) %>
+            <% if project.progress > 0 && project.progress < 100 %>
+            <div class="absolute inset-0 opacity-20 bg-[linear-gradient(45deg,rgba(255,255,255,.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,.15)_50%,rgba(255,255,255,.15)_75%,transparent_75%,transparent)] bg-[length:1rem_1rem] animate-[progress-stripe_2s_linear_infinite]"></div>
+            <% end %>
+        </div>
     </div>
-  </div>
 </div>

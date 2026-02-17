@@ -1,24 +1,24 @@
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10" id="project_expenses_summary">
-  <%
+    <%
     total_count = project ? project.project_expenses.count : expenses.count
     total_amount = project ? project.total_expenses : expenses.sum(:amount)
     latest = (project ? project.project_expenses : expenses).order(date: :desc).first
   %>
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/10 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden group">
-    <div class="absolute top-0 left-0 w-1 h-full bg-hamzis-copper"></div>
-    <p class="text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-1">Total Voucher Count</p>
-    <p class="text-3xl font-black text-hamzis-brown dark:text-white"><%= total_count %></p>
-  </div>
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/10 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden group">
-    <div class="absolute top-0 left-0 w-1 h-full bg-green-500"></div>
-    <p class="text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-1">Cumulative Outflow</p>
-    <p class="text-3xl font-black text-hamzis-brown dark:text-white">
-      <span class="text-sm opacity-40">₦</span><%= number_with_delimiter(number_with_precision(total_amount, precision: 2)) %>
-    </p>
-  </div>
-  <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/10 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden group">
-    <div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
-    <p class="text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-1">Last Entry Date</p>
-    <p class="text-3xl font-black text-hamzis-brown dark:text-white uppercase"><%= latest&.date&.strftime("%b %d") || "—" %></p>
-  </div>
+    <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/10 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-1 h-full bg-brand-primary"></div>
+        <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-secondary/50 dark:text-brand-primary/50 mb-1">Total Voucher Count</p>
+        <p class="text-3xl font-black text-brand-secondary dark:text-white"><%= total_count %></p>
+    </div>
+    <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/10 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-1 h-full bg-green-500"></div>
+        <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-secondary/50 dark:text-brand-primary/50 mb-1">Cumulative Outflow</p>
+        <p class="text-3xl font-black text-brand-secondary dark:text-white">
+            <span class="text-sm opacity-40">₦</span><%= number_with_delimiter(number_with_precision(total_amount, precision: 2)) %>
+        </p>
+    </div>
+    <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/10 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+        <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-secondary/50 dark:text-brand-primary/50 mb-1">Last Entry Date</p>
+        <p class="text-3xl font-black text-brand-secondary dark:text-white uppercase"><%= latest&.date&.strftime("%b %d") || "—" %></p>
+    </div>
 </div>

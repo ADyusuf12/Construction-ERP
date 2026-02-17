@@ -1,45 +1,45 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-  <div class="lg:col-span-2 bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl p-8">
-    <h3 class="text-[10px] font-black text-hamzis-copper uppercase tracking-[0.3em] mb-8 border-b border-hamzis-copper/20 pb-2">Business Profile</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-12">
-      <div>
-        <p class="text-[9px] font-black uppercase text-hamzis-brown/40 dark:text-white/40 mb-1">Primary Representative</p>
-        <p class="text-sm font-bold text-hamzis-brown dark:text-white uppercase"><%= client.name %></p>
-      </div>
-      <div>
-        <p class="text-[9px] font-black uppercase text-hamzis-brown/40 dark:text-white/40 mb-1">Company / Entity</p>
-        <p class="text-sm font-bold text-hamzis-brown dark:text-white uppercase"><%= client.company %></p>
-      </div>
-      <div>
-        <p class="text-[9px] font-black uppercase text-hamzis-brown/40 dark:text-white/40 mb-1">Contact Email</p>
-        <p class="text-sm font-bold text-hamzis-brown dark:text-white font-mono"><%= client.email %></p>
-      </div>
-      <div>
-        <p class="text-[9px] font-black uppercase text-hamzis-brown/40 dark:text-white/40 mb-1">Phone Line</p>
-        <p class="text-sm font-bold text-hamzis-brown dark:text-white font-mono"><%= client.phone %></p>
-      </div>
-      <% unless current_user.role_client? %>
-        <div class="sm:col-span-2">
-          <p class="text-[9px] font-black uppercase text-hamzis-brown/40 dark:text-white/40 mb-1">Registered Address</p>
-          <p class="text-sm font-bold text-hamzis-brown dark:text-white uppercase italic"><%= client.address %></p>
+    <div class="lg:col-span-2 bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl p-8">
+        <h3 class="text-[10px] font-black text-brand-primary uppercase tracking-[0.3em] mb-8 border-b border-brand-primary/20 pb-2">Business Profile</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-12">
+            <div>
+                <p class="text-[9px] font-black uppercase text-brand-secondary/40 dark:text-white/40 mb-1">Primary Representative</p>
+                <p class="text-sm font-bold text-brand-secondary dark:text-white uppercase"><%= client.name %></p>
+            </div>
+            <div>
+                <p class="text-[9px] font-black uppercase text-brand-secondary/40 dark:text-white/40 mb-1">Company / Entity</p>
+                <p class="text-sm font-bold text-brand-secondary dark:text-white uppercase"><%= client.company %></p>
+            </div>
+            <div>
+                <p class="text-[9px] font-black uppercase text-brand-secondary/40 dark:text-white/40 mb-1">Contact Email</p>
+                <p class="text-sm font-bold text-brand-secondary dark:text-white font-mono"><%= client.email %></p>
+            </div>
+            <div>
+                <p class="text-[9px] font-black uppercase text-brand-secondary/40 dark:text-white/40 mb-1">Phone Line</p>
+                <p class="text-sm font-bold text-brand-secondary dark:text-white font-mono"><%= client.phone %></p>
+            </div>
+            <% unless current_user.role_client? %>
+            <div class="sm:col-span-2">
+                <p class="text-[9px] font-black uppercase text-brand-secondary/40 dark:text-white/40 mb-1">Registered Address</p>
+                <p class="text-sm font-bold text-brand-secondary dark:text-white uppercase italic"><%= client.address %></p>
+            </div>
+            <% end %>
         </div>
-      <% end %>
     </div>
-  </div>
-  <% unless current_user.role_client? %>
+    <% unless current_user.role_client? %>
     <div class="space-y-6">
-      <div class="bg-hamzis-copper/5 border border-hamzis-copper/20 rounded-2xl p-6">
-        <h4 class="text-[9px] font-black text-hamzis-copper uppercase tracking-widest mb-4">Internal Notes</h4>
-        <p class="text-xs text-hamzis-brown/70 dark:text-white/70 italic leading-relaxed">
-          <%= client.notes.presence || "No internal administrative notes recorded." %>
-        </p>
-      </div>
-      <div class="p-6 rounded-2xl border border-hamzis-brown/10">
-        <p class="text-[9px] font-black text-hamzis-brown/40 dark:text-white/40 uppercase mb-2">System Authentication</p>
-        <p class="text-[10px] font-bold text-hamzis-brown dark:text-white italic">
-          Linked: <%= client.user&.email || "No Digital Account" %>
-        </p>
-      </div>
+        <div class="bg-brand-primary/5 border border-brand-primary/20 rounded-2xl p-6">
+            <h4 class="text-[9px] font-black text-brand-primary uppercase tracking-widest mb-4">Internal Notes</h4>
+            <p class="text-xs text-brand-secondary/70 dark:text-white/70 italic leading-relaxed">
+                <%= client.notes.presence || "No internal administrative notes recorded." %>
+            </p>
+        </div>
+        <div class="p-6 rounded-2xl border border-brand-secondary/10">
+            <p class="text-[9px] font-black text-brand-secondary/40 dark:text-white/40 uppercase mb-2">System Authentication</p>
+            <p class="text-[10px] font-bold text-brand-secondary dark:text-white italic">
+                Linked: <%= client.user&.email || "No Digital Account" %>
+            </p>
+        </div>
     </div>
-  <% end %>
+    <% end %>
 </div>

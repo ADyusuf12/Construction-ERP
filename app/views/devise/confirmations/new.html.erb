@@ -1,26 +1,26 @@
-<div class="flex items-center justify-center min-h-screen bg-hamzis-white dark:bg-hamzis-black">
-  <div class="w-full max-w-md bg-hamzis-white/30 dark:bg-hamzis-black/30
+<div class="flex items-center justify-center min-h-screen bg-brand-white dark:bg-brand-black">
+    <div class="w-full max-w-md bg-brand-white/30 dark:bg-brand-black/30
               backdrop-blur-md rounded-xl shadow-md p-8">
-    <h2 class="text-2xl font-bold text-center mb-6">Resend Confirmation Instructions</h2>
-    <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-      <div class="mb-4">
-        <%= f.label :email, class: "block text-sm font-medium mb-1" %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email",
+        <h2 class="text-2xl font-bold text-center mb-6">Resend Confirmation Instructions</h2>
+        <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+        <div class="mb-4">
+            <%= f.label :email, class: "block text-sm font-medium mb-1" %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email",
               value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email),
-              class: "w-full px-3 py-2 rounded border border-hamzis-brown/30
-                      bg-hamzis-white dark:bg-hamzis-black
-                      focus:ring-2 focus:ring-hamzis-copper" %>
-      </div>
-      <div class="mb-6">
-        <%= f.submit "Resend confirmation instructions",
-              class: "w-full px-4 py-2 rounded bg-hamzis-copper text-hamzis-white
-                      hover:bg-hamzis-black hover:text-hamzis-white
-                      dark:bg-hamzis-brown transition-colors font-semibold" %>
-      </div>
-    <% end %>
-    <div class="text-center text-sm">
-      <%= render "devise/shared/links" %>
+              class: "w-full px-3 py-2 rounded border border-brand-secondary/30
+                      bg-brand-white dark:bg-brand-black
+                      focus:ring-2 focus:ring-brand-primary" %>
+        </div>
+        <div class="mb-6">
+            <%= f.submit "Resend confirmation instructions",
+              class: "w-full px-4 py-2 rounded bg-brand-primary text-brand-white
+                      hover:bg-brand-black hover:text-brand-white
+                      dark:bg-brand-secondary transition-colors font-semibold" %>
+        </div>
+        <% end %>
+        <div class="text-center text-sm">
+            <%= render "devise/shared/links" %>
+        </div>
     </div>
-  </div>
 </div>

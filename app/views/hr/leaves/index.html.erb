@@ -1,37 +1,39 @@
 <% content_for :title, "Leave Protocols | Hamzis Systems" %>
 <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-  <div>
-    <h1 class="text-4xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper uppercase">Leave Registry</h1>
-    <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Personnel absence management and authorization console.</p>
-  </div>
-  <% if policy(Hr::Leave.new).create? %>
-    <%= link_to new_hr_leave_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-hamzis-brown transition-all duration-500 active:scale-95" do %>
-      <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M12 4v16m8-8H4" /></svg>
-      Initiate Request
+    <div>
+        <h1 class="text-4xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary uppercase">Leave Registry</h1>
+        <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic">Personnel absence management and authorization console.</p>
+    </div>
+    <% if policy(Hr::Leave.new).create? %>
+    <%= link_to new_hr_leave_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-brand-secondary transition-all duration-500 active:scale-95" do %>
+    <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+        <path d="M12 4v16m8-8H4" />
+    </svg>
+    Initiate Request
     <% end %>
-  <% end %>
+    <% end %>
 </div>
 <%= render "hr/leaves/leave_summary", leaves: @leaves %>
 <%# Filter Console %>
-<div class="mb-6 bg-hamzis-brown/5 dark:bg-hamzis-copper/5 p-4 rounded-2xl border border-hamzis-brown/10">
-  <%= form_with url: hr_leaves_path, method: :get, local: true, class: "flex flex-col md:flex-row items-center gap-4" do |f| %>
+<div class="mb-6 bg-brand-secondary/5 dark:bg-brand-primary/5 p-4 rounded-2xl border border-brand-secondary/10">
+    <%= form_with url: hr_leaves_path, method: :get, local: true, class: "flex flex-col md:flex-row items-center gap-4" do |f| %>
     <div class="flex-1 w-full">
-      <%= f.select :status, Hr::Leave.statuses.keys.map { |s| [s.titleize, s] }, {prompt: "Filter By Authorization"},
-            class: "w-full px-4 py-2 bg-white/50 dark:bg-black/20 border border-hamzis-brown/20 rounded-xl text-xs uppercase font-bold tracking-widest dark:text-hamzis-copper focus:ring-1 focus:ring-hamzis-copper outline-none transition" %>
+        <%= f.select :status, Hr::Leave.statuses.keys.map { |s| [s.titleize, s] }, {prompt: "Filter By Authorization"},
+            class: "w-full px-4 py-2 bg-white/50 dark:bg-black/20 border border-brand-secondary/20 rounded-xl text-xs uppercase font-bold tracking-widest dark:text-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition" %>
     </div>
     <div class="flex gap-2 w-full md:w-auto">
-      <%= f.submit "Query Protocol", class: "flex-1 px-6 py-2 rounded-xl bg-hamzis-brown text-white font-bold uppercase tracking-widest text-[10px] hover:bg-hamzis-copper transition cursor-pointer" %>
-      <%= link_to "Reset", hr_leaves_path, class: "px-6 py-2 rounded-xl bg-hamzis-white/50 dark:bg-white/10 text-hamzis-brown dark:text-white/40 font-bold uppercase tracking-widest text-[10px] hover:text-red-500 transition" %>
+        <%= f.submit "Query Protocol", class: "flex-1 px-6 py-2 rounded-xl bg-brand-secondary text-white font-bold uppercase tracking-widest text-[10px] hover:bg-brand-primary transition cursor-pointer" %>
+        <%= link_to "Reset", hr_leaves_path, class: "px-6 py-2 rounded-xl bg-brand-white/50 dark:bg-white/10 text-brand-secondary dark:text-white/40 font-bold uppercase tracking-widest text-[10px] hover:text-red-500 transition" %>
     </div>
-  <% end %>
+    <% end %>
 </div>
 <%= render "hr/leaves/leave_table", leaves: @leaves, show_employee: true %>
-<div class="mt-10 py-6 border-t border-hamzis-brown/5 dark:border-hamzis-copper/10 flex flex-col items-center gap-3">
-  <%# Registry Metadata %>
-  <p class="text-[9px] font-black uppercase tracking-[0.3em] text-hamzis-brown/30 dark:text-hamzis-copper/30 italic mb-2">
-  </p>
-  <%# The Paginator %>
-  <div class="flex justify-center">
-    <%= paginate @leaves, params: request.query_parameters if defined?(paginate) %>
-  </div>
+<div class="mt-10 py-6 border-t border-brand-secondary/5 dark:border-brand-primary/10 flex flex-col items-center gap-3">
+    <%# Registry Metadata %>
+    <p class="text-[9px] font-black uppercase tracking-[0.3em] text-brand-secondary/30 dark:text-brand-primary/30 italic mb-2">
+    </p>
+    <%# The Paginator %>
+    <div class="flex justify-center">
+        <%= paginate @leaves, params: request.query_parameters if defined?(paginate) %>
+    </div>
 </div>

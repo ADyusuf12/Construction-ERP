@@ -1,26 +1,32 @@
 <% content_for :title, "Deploy New Task | Hamzis Systems" %>
 <div class="mb-8">
-  <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-2">
-    <% if @project %>
-      <%= link_to "Projects", projects_path, class: "hover:text-hamzis-copper transition-colors" %>
-      <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
-      <%= link_to @project.name, project_path(@project), class: "hover:text-hamzis-copper transition-colors" %>
-    <% else %>
-      <%= link_to "Task Manager", tasks_path, class: "hover:text-hamzis-copper transition-colors" %>
-    <% end %>
-    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
-    <span class="text-hamzis-copper">New Assignment</span>
-  </nav>
-  <div class="flex items-center gap-3">
-    <div class="p-3 rounded-2xl bg-hamzis-copper text-white shadow-lg shadow-hamzis-copper/20">
-      <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0h-3m-9-4.512a9.193 9.193 0 0118 0M4.512 8.512a9.193 9.193 0 000 10.976M19.488 8.512a9.193 9.193 0 010 10.976M4.512 19.488a9.193 9.193 0 0114.976 0" /></svg>
+    <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50 mb-2">
+        <% if @project %>
+        <%= link_to "Projects", projects_path, class: "hover:text-brand-primary transition-colors" %>
+        <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+        </svg>
+        <%= link_to @project.name, project_path(@project), class: "hover:text-brand-primary transition-colors" %>
+        <% else %>
+        <%= link_to "Task Manager", tasks_path, class: "hover:text-brand-primary transition-colors" %>
+        <% end %>
+        <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-brand-primary">New Assignment</span>
+    </nav>
+    <div class="flex items-center gap-3">
+        <div class="p-3 rounded-2xl bg-brand-primary text-white shadow-lg shadow-brand-primary/20">
+            <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0h-3m-9-4.512a9.193 9.193 0 0118 0M4.512 8.512a9.193 9.193 0 000 10.976M19.488 8.512a9.193 9.193 0 010 10.976M4.512 19.488a9.193 9.193 0 0114.976 0" />
+            </svg>
+        </div>
+        <div>
+            <h1 class="text-3xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary">Deploy Task</h1>
+            <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60">
+                <%= @project ? "Allocating workflow for site: #{@project.name}" : "Global workflow allocation across Hamzis sites." %>
+            </p>
+        </div>
     </div>
-    <div>
-      <h1 class="text-3xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper">Deploy Task</h1>
-      <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60">
-        <%= @project ? "Allocating workflow for site: #{@project.name}" : "Global workflow allocation across Hamzis sites." %>
-      </p>
-    </div>
-  </div>
 </div>
 <%= render "form", project: @project, task: @task %>

@@ -1,62 +1,62 @@
 <% if policy_scope(Report).any? %>
-  <div id="reports-tab" class="tab-content hidden animate-fade-in">
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-xl p-6">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tight">Recent Reports</h2>
-        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-hamzis-brown/40 dark:text-hamzis-copper/40">
-          Site Documentation
-        </span>
-      </div>
-      <% if @reports.any? %>
+<div id="reports-tab" class="tab-content hidden animate-fade-in">
+    <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-xl p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tight">Recent Reports</h2>
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary/40 dark:text-brand-primary/40">
+                Site Documentation
+            </span>
+        </div>
+        <% if @reports.any? %>
         <div class="overflow-x-auto custom-scrollbar">
-          <table class="min-w-full border-separate border-spacing-0 text-left">
-            <thead>
-              <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10">
-                <% ["Type", "Status", "Filing Date", "Site Context"].each do |head| %>
-                  <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-copper border-b border-hamzis-copper/10 text-left">
-                    <%= head %>
-                  </th>
-                <% end %>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
-              <% @reports.each do |report| %>
-                <tr id="dash_<%= dom_id(report) %>" class="group hover:bg-white/40 dark:hover:bg-hamzis-copper/5 transition-all duration-300">
-                  <td class="px-4 py-4">
-                    <div class="flex items-center gap-3">
-                      <svg xmlns="http://www.w3.org" class="h-4 w-4 text-hamzis-copper/60 group-hover:text-hamzis-copper transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      <div class="text-xs font-black text-hamzis-brown dark:text-hamzis-textDark uppercase tracking-tight">
-                        <%= report.report_type.humanize %>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <span class="inline-flex px-2 py-0.5 rounded border border-hamzis-brown/10 bg-hamzis-brown/5 dark:border-hamzis-copper/20 dark:bg-hamzis-copper/5 text-[9px] font-black uppercase tracking-widest text-hamzis-brown/70 dark:text-hamzis-copper">
-                      <%= report.status.humanize %>
-                    </span>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="text-[10px] font-mono text-hamzis-brown/80 dark:text-hamzis-copper/80">
-                      <%= report.report_date.strftime("%d.%m.%y") %>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="text-[10px] font-bold text-hamzis-brown/60 dark:text-hamzis-textDark/60 uppercase truncate max-w-[160px]">
-                      <%= report.project.name %>
-                    </div>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+            <table class="min-w-full border-separate border-spacing-0 text-left">
+                <thead>
+                    <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
+                        <% ["Type", "Status", "Filing Date", "Site Context"].each do |head| %>
+                        <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/10 text-left">
+                            <%= head %>
+                        </th>
+                        <% end %>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
+                    <% @reports.each do |report| %>
+                    <tr id="dash_<%= dom_id(report) %>" class="group hover:bg-white/40 dark:hover:bg-brand-primary/5 transition-all duration-300">
+                        <td class="px-4 py-4">
+                            <div class="flex items-center gap-3">
+                                <svg xmlns="http://www.w3.org" class="h-4 w-4 text-brand-primary/60 group-hover:text-brand-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <div class="text-xs font-black text-brand-secondary dark:text-hamzis-textDark uppercase tracking-tight">
+                                    <%= report.report_type.humanize %>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4">
+                            <span class="inline-flex px-2 py-0.5 rounded border border-brand-secondary/10 bg-brand-secondary/5 dark:border-brand-primary/20 dark:bg-brand-primary/5 text-[9px] font-black uppercase tracking-widest text-brand-secondary/70 dark:text-brand-primary">
+                                <%= report.status.humanize %>
+                            </span>
+                        </td>
+                        <td class="px-4 py-4">
+                            <div class="text-[10px] font-mono text-brand-secondary/80 dark:text-brand-primary/80">
+                                <%= report.report_date.strftime("%d.%m.%y") %>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4">
+                            <div class="text-[10px] font-bold text-brand-secondary/60 dark:text-hamzis-textDark/60 uppercase truncate max-w-[160px]">
+                                <%= report.project.name %>
+                            </div>
+                        </td>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
         </div>
-      <% else %>
-        <div class="py-12 text-center border-2 border-dashed border-hamzis-brown/10 rounded-xl">
-          <p class="text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">No reports on file</p>
+        <% else %>
+        <div class="py-12 text-center border-2 border-dashed border-brand-secondary/10 rounded-xl">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">No reports on file</p>
         </div>
-      <% end %>
+        <% end %>
     </div>
-  </div>
+</div>
 <% end %>

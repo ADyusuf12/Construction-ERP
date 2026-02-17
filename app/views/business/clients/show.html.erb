@@ -1,42 +1,40 @@
 <% content_for :title, "Client: #{@client.name} | Stakeholder Portal" %>
 <%= render "business/clients/info_card", client: @client %>
-<div class="flex gap-8 mb-8 border-b border-hamzis-brown/10 dark:border-white/10 overflow-x-auto custom-scrollbar">
-  <button data-tab="projects"
-          class="tab-link pb-4 text-[10px] font-black uppercase tracking-[0.2em] transition-all border-b-2 border-hamzis-copper text-hamzis-copper">
-    Project Portfolio
-  </button>
-  <button data-tab="details"
-          class="tab-link pb-4 text-[10px] font-black uppercase tracking-[0.2em] transition-all border-b-2 border-transparent text-hamzis-brown/50 dark:text-white/40 hover:text-hamzis-copper">
-    Entity Details
-  </button>
+<div class="flex gap-8 mb-8 border-b border-brand-secondary/10 dark:border-white/10 overflow-x-auto custom-scrollbar">
+    <button data-tab="projects" class="tab-link pb-4 text-[10px] font-black uppercase tracking-[0.2em] transition-all border-b-2 border-brand-primary text-brand-primary">
+        Project Portfolio
+    </button>
+    <button data-tab="details" class="tab-link pb-4 text-[10px] font-black uppercase tracking-[0.2em] transition-all border-b-2 border-transparent text-brand-secondary/50 dark:text-white/40 hover:text-brand-primary">
+        Entity Details
+    </button>
 </div>
 <div id="projects-tab" class="tab-content animate-fade-in">
-  <%= render "business/clients/tabs/projects", client: @client %>
+    <%= render "business/clients/tabs/projects", client: @client %>
 </div>
 <div id="details-tab" class="tab-content hidden animate-fade-in">
-  <%= render "business/clients/tabs/details", client: @client %>
+    <%= render "business/clients/tabs/details", client: @client %>
 </div>
 <script nonce="<%= content_security_policy_nonce %>">
-  (() => {
-    const links = document.querySelectorAll(".tab-link");
-    const contents = document.querySelectorAll(".tab-content");
+    (() => {
+        const links = document.querySelectorAll(".tab-link");
+        const contents = document.querySelectorAll(".tab-content");
 
-    links.forEach(link => {
-      link.addEventListener("click", () => {
-        // Reset classes
-        links.forEach(l => {
-          l.classList.remove("border-hamzis-copper", "text-hamzis-copper");
-          l.classList.add("border-transparent", "text-hamzis-brown/50", "dark:text-white/40");
+        links.forEach(link => {
+            link.addEventListener("click", () => {
+                // Reset classes
+                links.forEach(l => {
+                    l.classList.remove("border-brand-primary", "text-brand-primary");
+                    l.classList.add("border-transparent", "text-brand-secondary/50", "dark:text-white/40");
+                });
+                contents.forEach(c => c.classList.add("hidden"));
+
+                // Activate clicked
+                link.classList.add("border-brand-primary", "text-brand-primary");
+                link.classList.remove("border-transparent", "text-brand-secondary/50", "dark:text-white/40");
+
+                const tabId = link.getAttribute("data-tab") + "-tab";
+                document.getElementById(tabId).classList.remove("hidden");
+            });
         });
-        contents.forEach(c => c.classList.add("hidden"));
-
-        // Activate clicked
-        link.classList.add("border-hamzis-copper", "text-hamzis-copper");
-        link.classList.remove("border-transparent", "text-hamzis-brown/50", "dark:text-white/40");
-
-        const tabId = link.getAttribute("data-tab") + "-tab";
-        document.getElementById(tabId).classList.remove("hidden");
-      });
-    });
-  })();
+    })();
 </script>

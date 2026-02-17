@@ -1,14 +1,13 @@
-<div id="confirm-delete-modal" class="hidden fixed inset-0 z-[100]" aria-labelledby="modal-title" role="dialog" aria-modal="true" data-confirm-delete-target="modal">
-
-    <div class="absolute inset-0 bg-hamzis-black/60 backdrop-blur-xl transition-opacity duration-500" data-action="click->confirm-delete#close"></div>
-
+<div id="confirm-delete-modal" class="hidden fixed inset-0 z-[100]" <%# ONLY visibility and Z-index here %> aria-labelledby="modal-title" role="dialog" aria-modal="true" data-confirm-delete-target="modal">
+    <!-- Overlay: Absolute inside the fixed parent -->
+    <div class="absolute inset-0 bg-brand-black/60 backdrop-blur-xl transition-opacity duration-500" data-action="click->confirm-delete#close"></div>
+    <!-- Centering Wrapper: Handles the 'flex' without clashing with the 'hidden' parent -->
     <div class="fixed inset-0 flex items-center justify-center p-4 pointer-events-none">
-        <div class="relative bg-hamzis-white/40 dark:bg-hamzis-black/80
-                border border-hamzis-brown/20 rounded-2xl shadow-2xl p-0
+        <!-- Modal Card: The actual UI element -->
+        <div class="relative bg-brand-white/40 dark:bg-brand-black/80
+                border border-brand-secondary/20 rounded-2xl shadow-2xl p-0
                 overflow-hidden max-w-sm w-full pointer-events-auto transform transition-all">
-
             <div class="bg-red-600 h-1.5 w-full"></div>
-
             <div class="p-8">
                 <div class="flex flex-col items-center text-center">
                     <div class="w-12 h-12 rounded-full bg-red-600/10 flex items-center justify-center mb-4 border border-red-600/20">
@@ -16,33 +15,25 @@
                             <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                         </svg>
                     </div>
-
-                    <h2 class="text-xl font-black uppercase tracking-tighter text-hamzis-brown dark:text-white mb-2" id="modal-title">
+                    <h2 class="text-xl font-black uppercase tracking-tighter text-brand-secondary dark:text-white mb-2" id="modal-title">
                         Confirming...
                     </h2>
-
-                    <p class="text-[11px] font-bold uppercase tracking-widest text-hamzis-brown/60 dark:text-hamzis-copper/60 leading-relaxed italic">
-                        Awaiting system parameters.
+                    <p class="text-[11px] font-bold uppercase tracking-widest text-brand-secondary/60 dark:text-brand-primary/60 leading-relaxed italic">
+                        Awaiting termination parameters.
                     </p>
                 </div>
-
                 <div class="mt-8 flex flex-col gap-2">
-                    <%# The Submit Button inside the Form %>
-                    <%= button_to "Execute", "#", method: :delete,
+                    <%= button_to "Confirm Termination", "#", method: :delete,
               class: "w-full py-3 rounded-xl bg-red-600 text-white font-black uppercase tracking-[0.2em] text-[10px]
-                      shadow-lg shadow-red-600/20 hover:bg-white hover:text-red-600 transition-all duration-500 active:scale-95" %>
-
-                    <button type="button" data-action="click->confirm-delete#close" class="w-full py-3 rounded-xl bg-hamzis-brown/10 dark:bg-white/5 text-hamzis-brown dark:text-hamzis-copper/60
-                  font-black uppercase tracking-[0.2em] text-[10px] hover:bg-hamzis-brown hover:text-white transition-all duration-300">
+                     shadow-lg shadow-red-600/20 hover:bg-white hover:text-red-600 transition-all duration-500 active:scale-95" %>
+                    <button type="button" data-action="click->confirm-delete#close" class="w-full py-3 rounded-xl bg-brand-secondary/10 dark:bg-white/5 text-brand-secondary dark:text-brand-primary/60
+            font-black uppercase tracking-[0.2em] text-[10px] hover:bg-brand-secondary hover:text-white transition-all duration-300">
                         Abort Request
                     </button>
                 </div>
             </div>
-
-            <div class="bg-hamzis-brown/5 dark:bg-white/5 py-2 px-4 border-t border-hamzis-brown/10 flex justify-center">
-                <span class="text-[7px] font-black uppercase tracking-[0.4em] opacity-30 text-current italic">
-                    Secure Authorization Protocol
-                </span>
+            <div class="bg-brand-secondary/5 dark:bg-white/5 py-2 px-4 border-t border-brand-secondary/10 flex justify-center">
+                <span class="text-[8px] font-black uppercase tracking-[0.3em] opacity-30 text-current italic"></span>
             </div>
         </div>
     </div>

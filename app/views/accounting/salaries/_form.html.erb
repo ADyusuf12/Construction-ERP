@@ -1,79 +1,79 @@
 <%= form_with(model: @salary, local: true, class: "space-y-6 hr-form") do |f| %>
-  <%# Enhanced Red Error Block %>
-  <% if @salary.errors.any? %>
-    <div class="p-4 mb-6 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 backdrop-blur-md">
-      <div class="flex items-center gap-2 mb-2">
+<%# Enhanced Red Error Block %>
+<% if @salary.errors.any? %>
+<div class="p-4 mb-6 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 backdrop-blur-md">
+    <div class="flex items-center gap-2 mb-2">
         <svg xmlns="http://www.w3.org" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
         </svg>
         <h3 class="font-bold uppercase tracking-widest text-xs">Configuration Error</h3>
-      </div>
-      <ul class="list-disc ml-6 text-xs space-y-1 opacity-90">
-        <% @salary.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
     </div>
-  <% end %>
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <ul class="list-disc ml-6 text-xs space-y-1 opacity-90">
+        <% @salary.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+        <% end %>
+    </ul>
+</div>
+<% end %>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- LEFT: Resource & Allocation -->
     <div class="lg:col-span-2 space-y-6">
-      <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-        <div class="flex items-center gap-2 mb-6">
-          <div class="p-2 rounded-lg bg-hamzis-copper/10 text-hamzis-copper">
-            <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
-          </div>
-          <h4 class="text-sm font-black uppercase tracking-widest text-hamzis-brown dark:text-hamzis-copper">Payroll Allocation</h4>
-        </div>
-        <div class="space-y-6">
-          <div>
-            <%= f.label :employee_id, "Target Resource", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-            <%= f.collection_select :employee_id, Hr::Employee.all, :id, :full_name, { prompt: "Select Employee for Salary Mapping..." },
-                  { class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" } %>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
-              <%= f.label :base_pay, "Contracted Base Pay", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-              <div class="relative">
-                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-hamzis-brown/40 dark:text-white font-bold text-xs">₦</span>
-                <%= f.number_field :base_pay, step: 0.01, class: "w-full pl-8 pr-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-white focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
-              </div>
+        <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+            <div class="flex items-center gap-2 mb-6">
+                <div class="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
+                    <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                </div>
+                <h4 class="text-sm font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary">Payroll Allocation</h4>
             </div>
-            <div>
-              <%= f.label :allowances, "Standard Allowances", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-              <div class="relative">
-                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-hamzis-brown/40 dark:text-white font-bold text-xs">₦</span>
-                <%= f.number_field :allowances, step: 0.01, class: "w-full pl-8 pr-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-white focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
-              </div>
+            <div class="space-y-6">
+                <div>
+                    <%= f.label :employee_id, "Target Resource", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+                    <%= f.collection_select :employee_id, Hr::Employee.all, :id, :full_name, { prompt: "Select Employee for Salary Mapping..." },
+                  { class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition" } %>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <%= f.label :base_pay, "Contracted Base Pay", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-brand-secondary/40 dark:text-white font-bold text-xs">₦</span>
+                            <%= f.number_field :base_pay, step: 0.01, class: "w-full pl-8 pr-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-white focus:ring-2 focus:ring-brand-primary outline-none transition" %>
+                        </div>
+                    </div>
+                    <div>
+                        <%= f.label :allowances, "Standard Allowances", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-brand-secondary/40 dark:text-white font-bold text-xs">₦</span>
+                            <%= f.number_field :allowances, step: 0.01, class: "w-full pl-8 pr-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-white focus:ring-2 focus:ring-brand-primary outline-none transition" %>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
     <!-- RIGHT: Status & Activation -->
     <div class="lg:col-span-1 space-y-6">
-      <div class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10 border border-hamzis-copper/30 rounded-2xl p-6 shadow-2xl sticky top-6">
-        <h4 class="text-xs font-black uppercase tracking-[0.2em] text-hamzis-copper mb-6 border-b border-hamzis-copper/20 pb-4 text-center">System Status</h4>
-        <div class="space-y-6">
-          <div>
-            <%= f.label :status, "Salary Lifecycle", class: "block text-[9px] font-bold uppercase tracking-[0.2em] text-hamzis-copper/70 mb-1" %>
-            <%= f.select :status, Accounting::Salary.statuses.keys.map { |s| [s.humanize, s] }, {},
-                  { class: "w-full px-4 py-2.5 border border-hamzis-brown/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-hamzis-copper focus:ring-2 focus:ring-hamzis-copper outline-none transition" } %>
-          </div>
-          <div class="p-4 rounded-xl bg-black/20 border border-white/5">
-            <p class="text-[8px] font-bold uppercase tracking-widest text-hamzis-copper/60 mb-2">Audit Information</p>
-            <p class="text-[10px] text-white/50 italic leading-relaxed">Defining this salary record will establish the recurring base for all future payroll cycles for this resource.</p>
-          </div>
-          <div class="pt-4">
-            <%= f.submit (@salary.persisted? ? "Commit Changes" : "Activate Salary"),
-                  class: "w-full py-4 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-hamzis-brown transition-all duration-500 active:scale-95 cursor-pointer" %>
-            <%= link_to "Abort Mapping", accounting_salaries_path,
+        <div class="bg-brand-secondary/90 dark:bg-brand-primary/10 border border-brand-primary/30 rounded-2xl p-6 shadow-2xl sticky top-6">
+            <h4 class="text-xs font-black uppercase tracking-[0.2em] text-brand-primary mb-6 border-b border-brand-primary/20 pb-4 text-center">System Status</h4>
+            <div class="space-y-6">
+                <div>
+                    <%= f.label :status, "Salary Lifecycle", class: "block text-[9px] font-bold uppercase tracking-[0.2em] text-brand-primary/70 mb-1" %>
+                    <%= f.select :status, Accounting::Salary.statuses.keys.map { |s| [s.humanize, s] }, {},
+                  { class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary outline-none transition" } %>
+                </div>
+                <div class="p-4 rounded-xl bg-black/20 border border-white/5">
+                    <p class="text-[8px] font-bold uppercase tracking-widest text-brand-primary/60 mb-2">Audit Information</p>
+                    <p class="text-[10px] text-white/50 italic leading-relaxed">Defining this salary record will establish the recurring base for all future payroll cycles for this resource.</p>
+                </div>
+                <div class="pt-4">
+                    <%= f.submit (@salary.persisted? ? "Commit Changes" : "Activate Salary"),
+                  class: "w-full py-4 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-brand-secondary transition-all duration-500 active:scale-95 cursor-pointer" %>
+                    <%= link_to "Abort Mapping", accounting_salaries_path,
                   class: "block w-full mt-4 text-center text-[10px] font-bold uppercase tracking-widest text-white/40 hover:text-red-400 transition" %>
-          </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 <% end %>

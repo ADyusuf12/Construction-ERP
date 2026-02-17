@@ -1,20 +1,26 @@
 <% content_for :title, "Modify Catalog | Hamzis Systems" %>
 <div class="mb-8">
-  <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-2">
-    <%= link_to "Inventory Catalog", inventory_inventory_items_path, class: "hover:text-hamzis-copper transition-colors" %>
-    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
-    <%= link_to @inventory_item.name, inventory_inventory_item_path(@inventory_item), class: "hover:text-hamzis-copper transition-colors" %>
-    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
-    <span class="text-hamzis-copper">Item Modification</span>
-  </nav>
-  <div class="flex items-center gap-3">
-    <div class="p-3 rounded-2xl bg-hamzis-brown text-white shadow-lg dark:bg-hamzis-copper/20 dark:text-hamzis-copper">
-      <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+    <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50 mb-2">
+        <%= link_to "Inventory Catalog", inventory_inventory_items_path, class: "hover:text-brand-primary transition-colors" %>
+        <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+        </svg>
+        <%= link_to @inventory_item.name, inventory_inventory_item_path(@inventory_item), class: "hover:text-brand-primary transition-colors" %>
+        <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-brand-primary">Item Modification</span>
+    </nav>
+    <div class="flex items-center gap-3">
+        <div class="p-3 rounded-2xl bg-brand-secondary text-white shadow-lg dark:bg-brand-primary/20 dark:text-brand-primary">
+            <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+        </div>
+        <div>
+            <h1 class="text-3xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary truncate max-w-md">Update Item</h1>
+            <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic">Modifying catalog specs for <%= @inventory_item.name %>.</p>
+        </div>
     </div>
-    <div>
-      <h1 class="text-3xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper truncate max-w-md">Update Item</h1>
-      <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Modifying catalog specs for <%= @inventory_item.name %>.</p>
-    </div>
-  </div>
 </div>
 <%= render "form", inventory_item: @inventory_item %>

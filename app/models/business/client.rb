@@ -11,12 +11,8 @@ module Business
     private
 
     def user_role_and_email_valid
-      unless user.role == "client"
+      unless user.role_client?
         errors.add(:user, "must have client role")
-      end
-
-      unless user.email.ends_with?("@hamzis.com")
-        errors.add(:user, "must have a Hamzis company email")
       end
     end
   end
