@@ -1,6 +1,6 @@
 # API Endpoints and Routes
 
-This document outlines the main routes and API endpoints for the Hamzis Systems application. The application follows RESTful conventions.
+This document outlines the main routes and API endpoints for the Earmark Systems application. The application follows RESTful conventions.
 
 **Note:** This is not a JSON API. The application is server-side rendered with Hotwire, so these routes handle web requests and typically respond with HTML.
 

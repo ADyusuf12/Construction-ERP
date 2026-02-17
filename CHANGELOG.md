@@ -8,21 +8,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Your new feature here.
 
 ### Changed
+
 - Updates to existing functionality.
 
 ### Deprecated
+
 - Soon-to-be removed features.
 
 ### Removed
+
 - Removed features.
 
 ### Fixed
+
 - Any bug fixes.
 
 ### Security
+
 - In case of vulnerabilities.
 
 ---
@@ -30,7 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - YYYY-MM-DD
 
 ### Added
-- **Initial Release:** First version of the Hamzis Systems application.
+
+- **Initial Release:** First version of the Earmark Systems application.
 - **Core Features:**
   - User authentication (Devise) and authorization (Pundit).
   - Project and task management modules.

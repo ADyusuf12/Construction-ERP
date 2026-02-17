@@ -1,86 +1,96 @@
-<div class="bg-gradient-to-br from-brand-white/40 via-brand-primary/10 to-brand-secondary/10
-            dark:from-brand-black/40 dark:via-brand-secondary/20 dark:to-brand-primary/20
-            border border-brand-secondary/30 rounded-2xl shadow-xl p-8 space-y-8">
-    <!-- Header -->
-    <div class="flex items-center justify-between">
-        <div>
-            <h2 class="text-2xl font-bold text-brand-secondary dark:text-brand-primary">
-                <%= @user.email %>
-            </h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                User ID: <%= @user.id %>
-            </p>
-        </div>
-        <div class="flex gap-3">
-            <%= link_to "Edit", edit_admin_user_path(@user),
-      class: "px-3 py-1 rounded bg-brand-primary text-brand-white hover:bg-brand-black transition" %>
-            <%= button_to "Delete", "#",
-        class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition",
-        form: {
-          "data-action" => "click->confirm-delete#open",
-          "data-confirm-delete-title-param" => "Delete User?",
-          "data-confirm-delete-message-param" => "Are you sure you want to delete this user? This action cannot be undone.",
-          "data-confirm-delete-confirm-path-param" => admin_user_path(@user)
-        } %>
-        </div>
-    </div>
-    <!-- Role Badge -->
-    <div>
-        <span class="inline-block px-4 py-2 rounded-full text-sm font-semibold
-      <%= case @user.role
-          when "admin" then "bg-indigo-100 text-indigo-700"
-          when "ceo", "cto" then "bg-amber-100 text-amber-700"
-          when "client" then "bg-green-100 text-green-700"
-          else "bg-gray-200 text-gray-700"
-          end %>">
-            <%= @user.role.humanize.upcase %>
+<% content_for :title, "System Profile | #{@user.email}" %>
+<div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl p-8 mb-10 relative overflow-hidden animate-fade-in">
+  <div class="absolute top-0 left-0 w-full h-1 bg-brand-primary opacity-40"></div>
+  <div class="flex flex-col lg:flex-row justify-between items-start gap-6">
+    <div class="flex-1">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="px-2 py-0.5 rounded bg-brand-primary/10 border border-brand-primary/20 text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary">
+          SYSTEM ID #<%= @user.id %>
         </span>
+        <%# Role Badge Logic %>
+        <% role_style = case @user.role
+                    when "admin" then "bg-indigo-500"
+                    when "ceo", "cto" then "bg-amber-500"
+                    when "client" then "bg-green-500"
+                    else "bg-brand-primary"
+                    end %>
+        <span class="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50">
+          <span class="h-1.5 w-1.5 rounded-full <%= role_style %>"></span>
+          <%= @user.role.humanize %>
+        </span>
+      </div>
+      <h2 class="text-3xl font-black text-brand-secondary dark:text-white uppercase tracking-tighter italic mb-4">
+        User Credentials
+      </h2>
+      <p class="text-lg font-mono text-brand-secondary/70 dark:text-brand-primary/70 tracking-tight">
+        <%= @user.email %>
+      </p>
     </div>
-    <!-- Linked Records -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Employee card -->
-        <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/20 rounded-xl p-6">
-            <h3 class="text-sm font-semibold text-brand-secondary dark:text-brand-primary mb-3">Employee Record</h3>
-            <% if @user.employee.present? %>
-            <p class="text-gray-700 dark:text-gray-300">
-                Linked Employee: <span class="font-semibold"><%= @user.employee.full_name %></span>
-            </p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Department: <%= @user.employee.department %> — Position: <%= @user.employee.position_title %>
-            </p>
-            <%= link_to "View Employee", hr_employee_path(@user.employee),
-            class: "mt-3 inline-block px-3 py-1 rounded bg-brand-primary text-brand-white hover:bg-brand-black transition text-xs" %>
-            <% else %>
-            <p class="text-gray-500 dark:text-gray-400 italic">No employee record linked.</p>
-            <% end %>
-        </div>
-        <!-- Client card -->
-        <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/20 rounded-xl p-6">
-            <h3 class="text-sm font-semibold text-brand-secondary dark:text-brand-primary mb-3">Client Record</h3>
-            <% if @user.client.present? %>
-            <p class="text-gray-700 dark:text-gray-300">
-                Linked Client: <span class="font-semibold"><%= @user.client.name %></span>
-            </p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Company: <%= @user.client.company %>
-            </p>
-            <%= link_to "View Client", business_client_path(@user.client),
-            class: "mt-3 inline-block px-3 py-1 rounded bg-brand-primary text-brand-white hover:bg-brand-black transition text-xs" %>
-            <% else %>
-            <p class="text-gray-500 dark:text-gray-400 italic">No client record linked.</p>
-            <% end %>
-        </div>
+    <div class="flex flex-wrap gap-2">
+      <%= link_to edit_admin_user_path(@user), class: "p-2.5 rounded-xl bg-brand-primary text-white hover:bg-brand-secondary transition-all shadow-md" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+          <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+      <% end %>
+      <%= button_to "#", class: "p-2.5 rounded-xl bg-red-500/10 text-red-600 border border-red-500/20 hover:bg-red-600 hover:text-white transition-all cursor-pointer",
+                form: {
+                  "data-action" => "click->confirm-delete#open",
+                  "data-confirm-delete-title-param" => "Delete Account?",
+                  "data-confirm-delete-message-param" => "Permanent removal of user access for #{@user.email}.",
+                  "data-confirm-delete-confirm-path-param" => admin_user_path(@user)
+                } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+      <% end %>
     </div>
-    <!-- System Summary -->
-    <div class="bg-gradient-to-r from-brand-primary/20 via-brand-secondary/20 to-brand-black/20
-              dark:from-brand-secondary/30 dark:via-brand-primary/30 dark:to-brand-black/40
-              rounded-xl p-6 text-sm text-gray-800 dark:text-gray-200">
-        <h3 class="text-sm font-semibold text-brand-secondary dark:text-brand-primary mb-3">System Summary</h3>
-        <ul class="space-y-2">
-            <li>Projects owned: <span class="font-semibold"><%= @user.projects.count %></span></li>
-            <li>Tasks assigned: <span class="font-semibold"><%= @user.employee&.tasks&.count.to_i %></span></li>
-            <li>Reports submitted: <span class="font-semibold"><%= @user.employee&.reports&.count.to_i %></span></li>
-            <li>Leaves taken: <span class="font-semibold"><%= @user.employee&.leaves&.count.to_i %></span></li>
-        </ul>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+    <%# Employee Record Section %>
+    <div class="p-6 bg-white/40 dark:bg-black/20 border border-brand-secondary/10 rounded-2xl group hover:border-brand-primary/30 transition-colors">
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-4">HR Association</p>
+      <% if @user.employee.present? %>
+        <h4 class="text-sm font-black text-brand-secondary dark:text-white uppercase tracking-tight mb-1">
+          <%= @user.employee.full_name %>
+        </h4>
+        <p class="text-[10px] text-brand-secondary/60 dark:text-gray-400 font-bold uppercase mb-4">
+          <%= @user.employee.department %> // <%= @user.employee.position_title %>
+        </p>
+        <%= link_to "Access Profile", hr_employee_path(@user.employee), class: "text-[10px] font-black text-brand-primary uppercase tracking-widest hover:text-brand-secondary transition-colors" %>
+      <% else %>
+        <p class="text-xs italic text-gray-500">Unlinked from HR payroll/staff system.</p>
+      <% end %>
     </div>
+    <%# Client Record Section %>
+    <div class="p-6 bg-white/40 dark:bg-black/20 border border-brand-secondary/10 rounded-2xl group hover:border-brand-primary/30 transition-colors">
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-green-600 mb-4">Business Association</p>
+      <% if @user.client.present? %>
+        <h4 class="text-sm font-black text-brand-secondary dark:text-white uppercase tracking-tight mb-1">
+          <%= @user.client.name %>
+        </h4>
+        <p class="text-[10px] text-brand-secondary/60 dark:text-gray-400 font-bold uppercase mb-4">External Entity</p>
+        <%= link_to "Access Client Data", business_client_path(@user.client), class: "text-[10px] font-black text-green-600 uppercase tracking-widest hover:text-brand-secondary transition-colors" %>
+      <% else %>
+        <p class="text-xs italic text-gray-500">No external client profile associated.</p>
+      <% end %>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-10 pt-8 border-t border-brand-secondary/10">
+    <div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Projects Owned</p>
+      <p class="text-xl font-black text-brand-secondary dark:text-white font-mono tracking-tighter"><%= @user.projects.count %></p>
+    </div>
+    <div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Tasks Assigned</p>
+      <p class="text-xl font-black text-brand-secondary dark:text-white font-mono tracking-tighter"><%= @user.employee&.tasks&.count.to_i %></p>
+    </div>
+    <div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Reports Filed</p>
+      <p class="text-xl font-black text-brand-secondary dark:text-white font-mono tracking-tighter"><%= @user.employee&.reports&.count.to_i %></p>
+    </div>
+    <div>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Leaves Auth</p>
+      <p class="text-xl font-black text-brand-secondary dark:text-white font-mono tracking-tighter"><%= @user.employee&.leaves&.count.to_i %></p>
+    </div>
+  </div>
 </div>

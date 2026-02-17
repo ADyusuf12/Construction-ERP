@@ -1,6 +1,6 @@
 # Architecture Overview
 
-This document provides a high-level overview of the Hamzis Systems application architecture. The application follows a standard Ruby on Rails Model-View-Controller (MVC) pattern.
+This document provides a high-level overview of the Earmark Systems application architecture. The application follows a standard Ruby on Rails Model-View-Controller (MVC) pattern.
 
 ## Core Concepts
 

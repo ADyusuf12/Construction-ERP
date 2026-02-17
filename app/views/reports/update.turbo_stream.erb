@@ -6,13 +6,13 @@
   <%= render "reports/report_row",
              report: @report,
              show_project: @project.blank?,
-             row_class: (index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "") %>
+             row_class: (index.even? ? "bg-brand-secondary/5 dark:bg-brand-primary/5" : "") %>
 <% end %>
 <%# 2. Update the Status Badge on the Show Page (if user is looking at it) %>
 <%= turbo_stream.replace "report_status" do %>
   <% status_style = case
        when @report.status_draft? then 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20'
-       when @report.status_submitted? then 'text-hamzis-copper bg-hamzis-copper/10 border-hamzis-copper/20'
+       when @report.status_submitted? then 'text-brand-primary bg-brand-primary/10 border-brand-primary/20'
        else 'text-green-500 bg-green-500/10 border-green-500/20'
        end
   %>

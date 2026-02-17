@@ -1,103 +1,60 @@
-<<<<<<< Updated upstream
-<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-xl p-8 animate-fade-in space-y-10">
-    <!-- Section: Attendance & Leave Log -->
-    <div>
-        <div class="flex items-center justify-between mb-8 pb-4 border-b border-hamzis-brown/10">
-            <div class="flex items-center gap-3">
-                <div class="p-2.5 rounded-xl bg-hamzis-copper/10 text-hamzis-copper">
-=======
 <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-xl p-8 animate-fade-in space-y-10">
-    <!-- Section: Attendance & Leave Log -->
-    <div>
-        <div class="flex items-center justify-between mb-8 pb-4 border-b border-brand-secondary/10">
-            <div class="flex items-center gap-3">
-                <div class="p-2.5 rounded-xl bg-brand-primary/10 text-brand-primary">
->>>>>>> Stashed changes
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-<<<<<<< Updated upstream
-                <h4 class="text-[11px] font-black uppercase tracking-[0.2em] text-hamzis-brown dark:text-hamzis-copper">Deployment History (Leaves)</h4>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">Balance:</span>
-                <span class="text-sm font-black text-hamzis-brown dark:text-white tabular-nums"><%= employee.leave_balance %> <span class="text-[9px] opacity-50">Days</span></span>
-=======
-                <h4 class="text-[11px] font-black uppercase tracking-[0.2em] text-brand-secondary dark:text-brand-primary">Deployment History (Leaves)</h4>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">Balance:</span>
-                <span class="text-sm font-black text-brand-secondary dark:text-white tabular-nums"><%= employee.leave_balance %> <span class="text-[9px] opacity-50">Days</span></span>
->>>>>>> Stashed changes
-            </div>
+  <!-- Section: Attendance & Leave Log -->
+  <div>
+    <div class="flex items-center justify-between mb-8 pb-4 border-b border-brand-secondary/10">
+      <div class="flex items-center gap-3">
+        <div class="p-2.5 rounded-xl bg-brand-primary/10 text-brand-primary">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
         </div>
-        <% if employee.leaves.any? %>
-        <div class="overflow-x-auto custom-scrollbar">
-            <table class="min-w-full border-separate border-spacing-0 text-left">
-                <thead>
-<<<<<<< Updated upstream
-                    <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10">
-                        <% ["Timeline Period", "Duration", "Reason", "Authorization"].each do |head| %>
-                        <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-hamzis-copper border-b border-hamzis-copper/10 text-left">
-=======
-                    <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
-                        <% ["Timeline Period", "Duration", "Classification", "Authorization"].each do |head| %>
-                        <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/10 text-left">
->>>>>>> Stashed changes
-                            <%= head %>
-                        </th>
-                        <% end %>
-                    </tr>
-                </thead>
-<<<<<<< Updated upstream
-                <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
-                    <% employee.leaves.each do |leave| %>
-                    <tr class="group hover:bg-white/40 dark:hover:bg-hamzis-copper/5 transition-all">
-                        <%# Timeline Period %>
-                        <td class="px-4 py-4 text-left">
-                            <div class="flex items-center gap-2 text-[10px] font-mono font-bold text-hamzis-brown dark:text-white">
-                                <span><%= leave.start_date.strftime("%d.%m.%y") %></span>
-                                <svg xmlns="http://www.w3.org" class="h-3 w-3 text-hamzis-copper/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-=======
-                <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
-                    <% employee.leaves.each do |leave| %>
-                    <tr class="group hover:bg-white/40 dark:hover:bg-brand-primary/5 transition-all">
-                        <%# Timeline Period %>
-                        <td class="px-4 py-4 text-left">
-                            <div class="flex items-center gap-2 text-[10px] font-mono font-bold text-brand-secondary dark:text-white">
-                                <span><%= leave.start_date.strftime("%d.%m.%y") %></span>
-                                <svg xmlns="http://www.w3.org" class="h-3 w-3 text-brand-primary/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
->>>>>>> Stashed changes
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                                <span><%= leave.end_date.strftime("%d.%m.%y") %></span>
-                            </div>
-                        </td>
-                        <%# Duration %>
-                        <td class="px-4 py-4 text-left">
-<<<<<<< Updated upstream
-                            <p class="text-xs font-black text-hamzis-brown dark:text-white">
-=======
-                            <p class="text-xs font-black text-brand-secondary dark:text-white">
->>>>>>> Stashed changes
-                                <%= (leave.end_date - leave.start_date).to_i %> <span class="text-[9px] opacity-40 uppercase">Days</span>
-                            </p>
-                        </td>
-                        <%# Classification %>
-                        <td class="px-4 py-4 text-left">
-<<<<<<< Updated upstream
-                            <p class="text-[10px] font-bold text-hamzis-brown/60 dark:text-hamzis-textDark/60 uppercase tracking-tight italic">
-                                <%= leave.reason if leave.respond_to?(:reason) %>
-=======
-                            <p class="text-[10px] font-bold text-brand-secondary/60 dark:text-hamzis-textDark/60 uppercase tracking-tight italic">
-                                <%= leave.leave_type if leave.respond_to?(:leave_type) %> Leave
->>>>>>> Stashed changes
-                            </p>
-                        </td>
-                        <%# Authorization Status %>
-                        <td class="px-4 py-4 text-left">
-                            <%
+        <h4 class="text-[11px] font-black uppercase tracking-[0.2em] text-brand-secondary dark:text-brand-primary">Deployment History (Leaves)</h4>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">Balance:</span>
+        <span class="text-sm font-black text-brand-secondary dark:text-white tabular-nums"><%= employee.leave_balance %> <span class="text-[9px] opacity-50">Days</span></span>
+      </div>
+    </div>
+    <% if employee.leaves.any? %>
+      <div class="overflow-x-auto custom-scrollbar">
+        <table class="min-w-full border-separate border-spacing-0 text-left">
+          <thead>
+            <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
+              <% ["Timeline Period", "Duration", "Classification", "Authorization"].each do |head| %>
+                <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/10 text-left">
+                  <%= head %>
+                </th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
+            <% employee.leaves.each do |leave| %>
+              <tr class="group hover:bg-white/40 dark:hover:bg-brand-primary/5 transition-all">
+                <%# Timeline Period %>
+                <td class="px-4 py-4 text-left">
+                  <div class="flex items-center gap-2 text-[10px] font-mono font-bold text-brand-secondary dark:text-white">
+                    <span><%= leave.start_date.strftime("%d.%m.%y") %></span>
+                    <svg xmlns="http://www.w3.org" class="h-3 w-3 text-brand-primary/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                    <span><%= leave.end_date.strftime("%d.%m.%y") %></span>
+                  </div>
+                </td>
+                <%# Duration %>
+                <td class="px-4 py-4 text-left">
+                  <p class="text-xs font-black text-brand-secondary dark:text-white">
+                    <%= (leave.end_date - leave.start_date).to_i %> <span class="text-[9px] opacity-40 uppercase">Days</span>
+                  </p>
+                </td>
+                <%# Classification %>
+                <td class="px-4 py-4 text-left">
+                  <p class="text-[10px] font-bold text-brand-secondary/60 dark:text-dark/60 uppercase tracking-tight italic">
+                    <%= leave.leave_type if leave.respond_to?(:leave_type) %> Leave
+                  </p>
+                </td>
+                <%# Authorization Status %>
+                <td class="px-4 py-4 text-left">
+                  <%
                     status_classes = case leave.status
                       when "approved" then "border-green-500/20 bg-green-500/5 text-green-600"
                       when "rejected" then "border-red-500/20 bg-red-500/5 text-red-600"
@@ -109,25 +66,20 @@
                       else "bg-brand-primary animate-pulse"
                     end
                   %>
-                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border <%= status_classes %> text-[9px] font-black uppercase tracking-widest">
-                                <span class="h-1 w-1 rounded-full <%= dot_color %>"></span>
-                                <%= leave.status.humanize %>
-                            </span>
-                        </td>
-                    </tr>
-                    <% end %>
-                </tbody>
-            </table>
-        </div>
-        <% else %>
-<<<<<<< Updated upstream
-        <div class="py-12 text-center border-2 border-dashed border-hamzis-brown/10 rounded-xl">
-            <p class="text-[10px] font-black uppercase tracking-widest text-hamzis-brown/40 dark:text-hamzis-copper/40">No historical leave logs found</p>
-=======
-        <div class="py-12 text-center border-2 border-dashed border-brand-secondary/10 rounded-xl">
-            <p class="text-[10px] font-black uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">No historical leave logs found</p>
->>>>>>> Stashed changes
-        </div>
-        <% end %>
-    </div>
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border <%= status_classes %> text-[9px] font-black uppercase tracking-widest">
+                    <span class="h-1 w-1 rounded-full <%= dot_color %>"></span>
+                    <%= leave.status.humanize %>
+                  </span>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="py-12 text-center border-2 border-dashed border-brand-secondary/10 rounded-xl">
+        <p class="text-[10px] font-black uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">No historical leave logs found</p>
+      </div>
+    <% end %>
+  </div>
 </div>

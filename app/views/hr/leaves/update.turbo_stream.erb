@@ -5,7 +5,7 @@
     is_my_leaves = request.referrer&.include?("my_leaves")
 
     # Simple logic for row zebra-striping or styling if needed
-    row_class = @leave.id.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : ""
+    row_class = @leave.id.even? ? "bg-brand-secondary/5 dark:bg-brand-primary/5" : ""
   %>
   <%= render "hr/leaves/leave_row",
              leave: @leave,

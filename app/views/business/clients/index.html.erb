@@ -1,15 +1,15 @@
-<% content_for :title, "Client Registry | Hamzis Systems" %>
+<% content_for :title, "Client Registry | Earmark Systems" %>
 <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-    <div>
-        <h1 class="text-4xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary uppercase">Partner Registry</h1>
-        <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic">Strategic client management and corporate relation protocols.</p>
-    </div>
-    <%= link_to new_business_client_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-brand-secondary transition-all duration-500 active:scale-95 shadow-brand-primary/20" do %>
+  <div>
+    <h1 class="text-4xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary uppercase">Partner Registry</h1>
+    <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic">Strategic client management and corporate relation protocols.</p>
+  </div>
+  <%= link_to new_business_client_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-brand-secondary transition-all duration-500 active:scale-95 shadow-brand-primary/20" do %>
     <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-        <path d="M12 4v16m8-8H4" />
+      <path d="M12 4v16m8-8H4" />
     </svg>
     Onboard Partner
-    <% end %>
+  <% end %>
 </div>
 <%= render "business/clients/clients_summary", clients: @clients %>
 <%= render "business/clients/clients_table", clients: @clients %>
