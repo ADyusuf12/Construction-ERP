@@ -2,7 +2,7 @@
 
 **Earmark Systems** is a comprehensive project management and business administration application designed to streamline workflows, manage projects, track tasks, and handle internal resources like human resources and financial transactions.
 
-![Earmark Systems dashboard](docs/images/hamzis-dashboard.png)
+![Earmark Systems dashboard](docs/images/project-dashboard.png)
 
 _A screenshot of the main application dashboard._
 
