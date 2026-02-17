@@ -1,40 +1,39 @@
-<div class="nested-fields space-y-3 border border-hamzis-brown/20 dark:border-hamzis-copper/20 rounded-lg p-4 mb-4 bg-white/20 dark:bg-black/10"
-     data-persisted="<%= f.object.persisted? %>">
-  <div class="flex justify-between items-start gap-2">
-    <div class="flex-1 space-y-3">
-      <% if f.object.persisted? %>
-        <div class="flex flex-col gap-1 mb-2">
-          <span class="w-fit px-2 py-0.5 text-[9px] font-black uppercase tracking-tighter bg-hamzis-copper text-white rounded">Stored Record</span>
-          <p class="text-[10px] text-hamzis-brown/50 dark:text-hamzis-copper/50 italic">Editing this block updates the existing data.</p>
+<div class="nested-fields space-y-3 border border-brand-secondary/20 dark:border-brand-primary/20 rounded-lg p-4 mb-4 bg-white/20 dark:bg-black/10" data-persisted="<%= f.object.persisted? %>">
+    <div class="flex justify-between items-start gap-2">
+        <div class="flex-1 space-y-3">
+            <% if f.object.persisted? %>
+            <div class="flex flex-col gap-1 mb-2">
+                <span class="w-fit px-2 py-0.5 text-[9px] font-black uppercase tracking-tighter bg-brand-primary text-white rounded">Stored Record</span>
+                <p class="text-[10px] text-brand-secondary/50 dark:text-brand-primary/50 italic">Editing this block updates the existing data.</p>
+            </div>
+            <% end %>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <%= f.label :name, class: "block text-[10px] font-bold uppercase tracking-wider text-brand-secondary/70 dark:text-brand-primary/70" %>
+                    <%= f.text_field :name, class: "w-full px-3 py-2 border border-brand-secondary/20 rounded-lg bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-1 focus:ring-brand-primary transition" %>
+                </div>
+                <div>
+                    <%= f.label :relationship, class: "block text-[10px] font-bold uppercase tracking-wider text-brand-secondary/70 dark:text-brand-primary/70" %>
+                    <%= f.text_field :relationship, class: "w-full px-3 py-2 border border-brand-secondary/20 rounded-lg bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-1 focus:ring-brand-primary transition" %>
+                </div>
+            </div>
+            <div>
+                <%= f.label :phone_number, class: "block text-[10px] font-bold uppercase tracking-wider text-brand-secondary/70 dark:text-brand-primary/70" %>
+                <%= f.telephone_field :phone_number, class: "w-full px-3 py-2 border border-brand-secondary/20 rounded-lg bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-1 focus:ring-brand-primary transition" %>
+            </div>
+            <div>
+                <%= f.label :address, class: "block text-[10px] font-bold uppercase tracking-wider text-brand-secondary/70 dark:text-brand-primary/70" %>
+                <%= f.text_area :address, rows: 2, class: "w-full px-3 py-2 border border-brand-secondary/20 rounded-lg bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-1 focus:ring-brand-primary transition" %>
+            </div>
         </div>
-      <% end %>
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <%= f.label :name, class: "block text-[10px] font-bold uppercase tracking-wider text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-          <%= f.text_field :name, class: "w-full px-3 py-2 border border-hamzis-brown/20 rounded-lg bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-1 focus:ring-hamzis-copper transition" %>
+        <%# Remove / Destroy Button %>
+        <div class="shrink-0">
+            <%= f.hidden_field :_destroy %>
+            <button type="button" data-action="nested-form#remove" class="p-1.5 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors" title="Remove Block">
+                <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M10 3h4a1 1 0 011 1v1H9V4a1 1 0 011-1z" />
+                </svg>
+            </button>
         </div>
-        <div>
-          <%= f.label :relationship, class: "block text-[10px] font-bold uppercase tracking-wider text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-          <%= f.text_field :relationship, class: "w-full px-3 py-2 border border-hamzis-brown/20 rounded-lg bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-1 focus:ring-hamzis-copper transition" %>
-        </div>
-      </div>
-      <div>
-        <%= f.label :phone_number, class: "block text-[10px] font-bold uppercase tracking-wider text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-        <%= f.telephone_field :phone_number, class: "w-full px-3 py-2 border border-hamzis-brown/20 rounded-lg bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-1 focus:ring-hamzis-copper transition" %>
-      </div>
-      <div>
-        <%= f.label :address, class: "block text-[10px] font-bold uppercase tracking-wider text-hamzis-brown/70 dark:text-hamzis-copper/70" %>
-        <%= f.text_area :address, rows: 2, class: "w-full px-3 py-2 border border-hamzis-brown/20 rounded-lg bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-hamzis-copper focus:ring-1 focus:ring-hamzis-copper transition" %>
-      </div>
     </div>
-    <%# Remove / Destroy Button %>
-    <div class="shrink-0">
-      <%= f.hidden_field :_destroy %>
-      <button type="button" data-action="nested-form#remove" class="p-1.5 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors" title="Remove Block">
-        <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M10 3h4a1 1 0 011 1v1H9V4a1 1 0 011-1z" />
-        </svg>
-      </button>
-    </div>
-  </div>
 </div>

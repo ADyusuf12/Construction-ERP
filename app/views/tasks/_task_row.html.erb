@@ -1,70 +1,78 @@
-<tr id="<%= dom_id(task) %>" class="<%= row_class %> group hover:bg-white/40 dark:hover:bg-hamzis-black/40 transition-all duration-300">
-  <!-- Title -->
-  <td class="px-6 py-4 font-black text-hamzis-brown dark:text-white uppercase tracking-tight text-sm">
-    <%= task.title %>
-  </td>
-  <% if local_assigns[:show_project] %>
+<tr id="<%= dom_id(task) %>" class="<%= row_class %> group hover:bg-white/40 dark:hover:bg-brand-black/40 transition-all duration-300">
+    <!-- Title -->
+    <td class="px-6 py-4 font-black text-brand-secondary dark:text-white uppercase tracking-tight text-sm">
+        <%= task.title %>
+    </td>
+    <% if local_assigns[:show_project] %>
     <!-- Project Link -->
     <td class="px-6 py-4 text-center">
-      <%= link_to task.project.name, project_path(task.project), class: "text-[10px] font-bold uppercase tracking-widest text-hamzis-copper hover:text-hamzis-brown transition" %>
+        <%= link_to task.project.name, project_path(task.project), class: "text-[10px] font-bold uppercase tracking-widest text-brand-primary hover:text-brand-secondary transition" %>
     </td>
-  <% elsif local_assigns[:show_details] %>
+    <% elsif local_assigns[:show_details] %>
     <!-- Scope Details -->
-    <td class="px-6 py-4 text-xs text-hamzis-brown/90 dark:text-hamzis-copper/90 italic">
-      <%= truncate(task.details, length: 50) if task.details.present? %>
+    <td class="px-6 py-4 text-xs text-brand-secondary/90 dark:text-brand-primary/90 italic">
+        <%= truncate(task.details, length: 50) if task.details.present? %>
     </td>
-  <% end %>
-  <!-- Status LED -->
-  <td class="px-6 py-4">
-    <% status_style = case
+    <% end %>
+    <!-- Status LED -->
+    <td class="px-6 py-4">
+        <% status_style = case
        when task.status_pending? then 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20'
        when task.status_in_progress? then 'text-blue-500 bg-blue-500/10 border-blue-500/20'
        when task.status_done? then 'text-green-500 bg-green-500/10 border-green-500/20'
        else 'text-gray-500 bg-gray-500/10 border-gray-500/20'
        end
     %>
-    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border text-[9px] font-black uppercase tracking-[0.15em] <%= status_style %>">
-      <div class="w-1 h-1 rounded-full bg-current <%= 'animate-pulse' if task.status_in_progress? %>"></div>
-      <%= task.status.humanize %>
-    </span>
-  </td>
-  <!-- Deadline -->
-  <td class="px-6 py-4 font-mono text-[10px] text-hamzis-brown/90 dark:text-hamzis-copper/90">
-    <%= task.due_date&.strftime("%d.%m.%Y") || "N/A" %>
-  </td>
-  <!-- Weight -->
-  <td class="px-6 py-4 text-center font-black text-xs text-hamzis-brown dark:text-hamzis-copper">
-    <%= task.weight %>
-  </td>
-  <!-- Assigned Personnel -->
-  <td class="px-6 py-4">
-    <div class="flex flex-wrap gap-1.5">
-      <% if task.employees.any? %>
-        <% task.employees.each do |employee| %>
-          <span class="inline-flex items-center px-2 py-0.5 rounded bg-hamzis-brown/5 dark:bg-hamzis-copper/10 text-[9px] font-black uppercase tracking-tight text-hamzis-brown dark:text-hamzis-copper border border-hamzis-brown/10">
-            <%= employee.personal_detail&.first_name&.first %> <%= employee.personal_detail&.last_name %>
-          </span>
-        <% end %>
-      <% else %>
-        <span class="text-[9px] font-bold uppercase tracking-widest text-red-500/40 italic">Unassigned</span>
-      <% end %>
-    </div>
-  </td>
-  <!-- Directive Actions -->
-  <td class="px-6 py-4">
-    <div class="flex items-center justify-end gap-2 opacity-20 group-hover:opacity-100 transition-opacity">
-      <% if task.status_pending? %>
-        <%= button_to in_progress_project_task_path(task.project, task), method: :patch, class: "p-2 rounded-lg bg-yellow-600/10 text-yellow-600 border border-yellow-600/20 hover:bg-yellow-600 hover:text-white transition-all shadow-sm", title: "Commence Site Work" do %>
-          <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        <% end %>
-      <% elsif task.status_in_progress? %>
-        <%= button_to complete_project_task_path(task.project, task), method: :patch, class: "p-2 rounded-lg bg-green-600/10 text-green-600 border border-green-600/20 hover:bg-green-600 hover:text-white transition-all shadow-sm", title: "Finalize Component" do %>
-          <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" /></svg>
-        <% end %>
-      <% end %>
-      <%= link_to project_task_path(task.project, task), class: "p-2 rounded-lg bg-hamzis-copper/90 text-hamzis-copper border border-hamzis-copper/90 hover:bg-hamzis-copper hover:text-white transition-all shadow-sm" do %>
-        <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-      <% end %>
-    </div>
-  </td>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border text-[9px] font-black uppercase tracking-[0.15em] <%= status_style %>">
+            <div class="w-1 h-1 rounded-full bg-current <%= 'animate-pulse' if task.status_in_progress? %>"></div>
+            <%= task.status.humanize %>
+        </span>
+    </td>
+    <!-- Deadline -->
+    <td class="px-6 py-4 font-mono text-[10px] text-brand-secondary/90 dark:text-brand-primary/90">
+        <%= task.due_date&.strftime("%d.%m.%Y") || "N/A" %>
+    </td>
+    <!-- Weight -->
+    <td class="px-6 py-4 text-center font-black text-xs text-brand-secondary dark:text-brand-primary">
+        <%= task.weight %>
+    </td>
+    <!-- Assigned Personnel -->
+    <td class="px-6 py-4">
+        <div class="flex flex-wrap gap-1.5">
+            <% if task.employees.any? %>
+            <% task.employees.each do |employee| %>
+            <span class="inline-flex items-center px-2 py-0.5 rounded bg-brand-secondary/5 dark:bg-brand-primary/10 text-[9px] font-black uppercase tracking-tight text-brand-secondary dark:text-brand-primary border border-brand-secondary/10">
+                <%= employee.personal_detail&.first_name&.first %> <%= employee.personal_detail&.last_name %>
+            </span>
+            <% end %>
+            <% else %>
+            <span class="text-[9px] font-bold uppercase tracking-widest text-red-500/40 italic">Unassigned</span>
+            <% end %>
+        </div>
+    </td>
+    <!-- Directive Actions -->
+    <td class="px-6 py-4">
+        <div class="flex items-center justify-end gap-2 opacity-20 group-hover:opacity-100 transition-opacity">
+            <% if task.status_pending? %>
+            <%= button_to in_progress_project_task_path(task.project, task), method: :patch, class: "p-2 rounded-lg bg-yellow-600/10 text-yellow-600 border border-yellow-600/20 hover:bg-yellow-600 hover:text-white transition-all shadow-sm", title: "Commence Site Work" do %>
+            <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <% end %>
+            <% elsif task.status_in_progress? %>
+            <%= button_to complete_project_task_path(task.project, task), method: :patch, class: "p-2 rounded-lg bg-green-600/10 text-green-600 border border-green-600/20 hover:bg-green-600 hover:text-white transition-all shadow-sm", title: "Finalize Component" do %>
+            <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path d="M5 13l4 4L19 7" />
+            </svg>
+            <% end %>
+            <% end %>
+            <%= link_to project_task_path(task.project, task), class: "p-2 rounded-lg bg-brand-primary/90 text-brand-primary border border-brand-primary/90 hover:bg-brand-primary hover:text-white transition-all shadow-sm" do %>
+            <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            <% end %>
+        </div>
+    </td>
 </tr>

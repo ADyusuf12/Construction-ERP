@@ -1,19 +1,19 @@
 <div class="overflow-x-auto">
-  <% if stock_movements.any? %>
+    <% if stock_movements.any? %>
     <table class="min-w-full text-left border-separate border-spacing-0">
-      <%= render "inventory/stock_movements/table_header" %>
-      <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
-        <% stock_movements.each_with_index do |m, index| %>
-          <%= render "inventory/stock_movements/row",
+        <%= render "inventory/stock_movements/table_header" %>
+        <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
+            <% stock_movements.each_with_index do |m, index| %>
+            <%= render "inventory/stock_movements/row",
                      movement: m,
-                     row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
-        <% end %>
-      </tbody>
+                     row_class: index.even? ? "bg-brand-secondary/5 dark:bg-brand-primary/5" : "" %>
+            <% end %>
+        </tbody>
     </table>
-  <% else %>
+    <% else %>
     <div class="text-center py-20">
-      <p class="text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-brown/40">Manifest Empty</p>
-      <p class="text-xs text-hamzis-brown/30 italic mt-1">No logistical movements recorded in this cycle.</p>
+        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-brand-secondary/40">Manifest Empty</p>
+        <p class="text-xs text-brand-secondary/30 italic mt-1">No logistical movements recorded in this cycle.</p>
     </div>
-  <% end %>
+    <% end %>
 </div>

@@ -1,27 +1,27 @@
 <% content_for :title, "Expense Details" %>
-<h1 class="text-2xl font-bold text-hamzis-brown dark:text-hamzis-copper mb-6">
-  Expense: <%= @expense.description %>
+<h1 class="text-2xl font-bold text-brand-secondary dark:text-brand-primary mb-6">
+    Expense: <%= @expense.description %>
 </h1>
-<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md
-            border border-hamzis-brown/20 rounded-xl shadow-lg p-6 space-y-4">
-  <p><span class="font-semibold">Project:</span> <%= @expense.project.name %></p>
-  <p><span class="font-semibold">Date:</span> <%= @expense.date.strftime("%B %d, %Y") %></p>
-  <p><span class="font-semibold">Amount:</span> <%= number_to_currency(@expense.amount, unit: "₦") %></p>
-  <% if @expense.reference.present? %>
+<div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md
+            border border-brand-secondary/20 rounded-xl shadow-lg p-6 space-y-4">
+    <p><span class="font-semibold">Project:</span> <%= @expense.project.name %></p>
+    <p><span class="font-semibold">Date:</span> <%= @expense.date.strftime("%B %d, %Y") %></p>
+    <p><span class="font-semibold">Amount:</span> <%= number_to_currency(@expense.amount, unit: "₦") %></p>
+    <% if @expense.reference.present? %>
     <p><span class="font-semibold">Reference:</span> <%= @expense.reference %></p>
-  <% end %>
-  <% if @expense.notes.present? %>
+    <% end %>
+    <% if @expense.notes.present? %>
     <p><span class="font-semibold">Notes:</span> <%= @expense.notes %></p>
-  <% end %>
+    <% end %>
 </div>
 <div class="mt-6 flex gap-2">
-  <%= link_to "Edit",
+    <%= link_to "Edit",
       edit_project_project_expense_path(@expense.project, @expense),
-      class: "px-3 py-1 rounded bg-hamzis-brown text-hamzis-white hover:bg-hamzis-copper transition" %>
-  <%= link_to "← Back to Project",
+      class: "px-3 py-1 rounded bg-brand-secondary text-brand-white hover:bg-brand-primary transition" %>
+    <%= link_to "← Back to Project",
       project_path(@expense.project),
-      class: "px-3 py-1 rounded bg-hamzis-copper text-hamzis-white hover:bg-hamzis-black transition" %>
-  <%= button_to "Delete",
+      class: "px-3 py-1 rounded bg-brand-primary text-brand-white hover:bg-brand-black transition" %>
+    <%= button_to "Delete",
       "#",
       class: "px-3 py-1 rounded bg-red-600 text-white hover:bg-red-800 transition",
       form: {

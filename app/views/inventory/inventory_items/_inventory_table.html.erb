@@ -1,27 +1,27 @@
-<div class="overflow-hidden bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-2xl">
-  <% if inventory_items.any? %>
+<div class="overflow-hidden bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl">
+    <% if inventory_items.any? %>
     <div class="overflow-x-auto">
-      <table class="min-w-full text-left border-separate border-spacing-0">
-        <thead>
-          <tr class="bg-hamzis-brown/90 dark:bg-hamzis-copper/10">
-            <% ["SKU / Designation", "Stock Level", "Valuation (Unit)", "Actions"].each do |head| %>
-              <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-copper border-b border-hamzis-copper/20">
-                <%= head %>
-              </th>
-            <% end %>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
-          <% inventory_items.each_with_index do |item, index| %>
-            <%= render "inventory/inventory_items/inventory_row", item: item %>
-          <% end %>
-        </tbody>
-      </table>
+        <table class="min-w-full text-left border-separate border-spacing-0">
+            <thead>
+                <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
+                    <% ["SKU / Designation", "Stock Level", "Valuation (Unit)", "Actions"].each do |head| %>
+                    <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20">
+                        <%= head %>
+                    </th>
+                    <% end %>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
+                <% inventory_items.each_with_index do |item, index| %>
+                <%= render "inventory/inventory_items/inventory_row", item: item %>
+                <% end %>
+            </tbody>
+        </table>
     </div>
-  <% else %>
+    <% else %>
     <div class="text-center py-20 bg-black/5">
-      <h3 class="text-xl font-black text-hamzis-brown dark:text-hamzis-copper uppercase tracking-tighter italic">Logistics Ledger Empty</h3>
-      <p class="text-sm text-hamzis-brown/50 dark:text-hamzis-copper/50 italic mt-1">No items currently registered in the inventory network.</p>
+        <h3 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tighter italic">Logistics Ledger Empty</h3>
+        <p class="text-sm text-brand-secondary/50 dark:text-brand-primary/50 italic mt-1">No items currently registered in the inventory network.</p>
     </div>
-  <% end %>
+    <% end %>
 </div>

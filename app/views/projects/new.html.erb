@@ -1,22 +1,22 @@
 <% content_for :title, "Initialize Project | Hamzis Systems" %>
 <div class="mb-8">
-  <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-2">
-    <%= link_to "Projects", projects_path, class: "hover:text-hamzis-copper transition-colors" %>
-    <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
-    </svg>
-    <span class="text-hamzis-copper">New Record</span>
-  </nav>
-  <div class="flex items-center gap-3">
-    <div class="p-3 rounded-2xl bg-hamzis-copper text-white shadow-lg shadow-hamzis-copper/20">
-      <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-      </svg>
+    <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50 mb-2">
+        <%= link_to "Projects", projects_path, class: "hover:text-brand-primary transition-colors" %>
+        <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-brand-primary">New Record</span>
+    </nav>
+    <div class="flex items-center gap-3">
+        <div class="p-3 rounded-2xl bg-brand-primary text-white shadow-lg shadow-brand-primary/20">
+            <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+        </div>
+        <div>
+            <h1 class="text-3xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary">Initialize Project</h1>
+            <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60">Set up a new construction or management venture.</p>
+        </div>
     </div>
-    <div>
-      <h1 class="text-3xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper">Initialize Project</h1>
-      <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60">Set up a new construction or management venture.</p>
-    </div>
-  </div>
 </div>
 <%= render "form", project: @project %>

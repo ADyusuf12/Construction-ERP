@@ -1,22 +1,24 @@
-<div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/20 rounded-xl p-5 shadow-sm">
-  <div class="flex items-center justify-between mb-4">
-    <h4 class="text-sm font-semibold text-hamzis-brown dark:text-hamzis-copper">Next of Kin Details</h4>
-    <button type="button" data-action="nested-form#add" class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest bg-hamzis-copper text-white px-2 py-1 rounded hover:bg-hamzis-black transition-all">
-      <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-      Add Another
-    </button>
-  </div>
-  <%# Container where the fields will be appended %>
-  <div data-nested-form-target="container">
-    <% @employee.next_of_kins.build if @employee.next_of_kins.empty? %>
-    <%= f.fields_for :next_of_kins do |nok_f| %>
-      <%= render "next_of_kin_fields", f: nok_f %>
-    <% end %>
-  </div>
-  <%# Hidden template for new records %>
-  <template data-nested-form-target="template">
-    <%= f.fields_for :next_of_kins, Hr::NextOfKin.new, child_index: "NEW_RECORD" do |nok_f| %>
-      <%= render "next_of_kin_fields", f: nok_f %>
-    <% end %>
-  </template>
+<div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/20 rounded-xl p-5 shadow-sm">
+    <div class="flex items-center justify-between mb-4">
+        <h4 class="text-sm font-semibold text-brand-secondary dark:text-brand-primary">Next of Kin Details</h4>
+        <button type="button" data-action="nested-form#add" class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest bg-brand-primary text-white px-2 py-1 rounded hover:bg-brand-black transition-all">
+            <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Add Another
+        </button>
+    </div>
+    <%# Container where the fields will be appended %>
+    <div data-nested-form-target="container">
+        <% @employee.next_of_kins.build if @employee.next_of_kins.empty? %>
+        <%= f.fields_for :next_of_kins do |nok_f| %>
+        <%= render "next_of_kin_fields", f: nok_f %>
+        <% end %>
+    </div>
+    <%# Hidden template for new records %>
+    <template data-nested-form-target="template">
+        <%= f.fields_for :next_of_kins, Hr::NextOfKin.new, child_index: "NEW_RECORD" do |nok_f| %>
+        <%= render "next_of_kin_fields", f: nok_f %>
+        <% end %>
+    </template>
 </div>

@@ -1,41 +1,45 @@
 <% content_for :title, "Employee Registry | Hamzis Systems" %>
 <div class="mb-8">
-  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-    <div>
-      <h1 class="text-4xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper uppercase">Resource Ledger</h1>
-      <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Centralized database of active and historic human capital.</p>
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+            <h1 class="text-4xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary uppercase">Resource Ledger</h1>
+            <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic">Centralized database of active and historic human capital.</p>
+        </div>
+        <%= link_to new_hr_employee_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-brand-secondary transition-all duration-500 active:scale-95" do %>
+        <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
+        </svg>
+        Add Resource
+        <% end %>
     </div>
-    <%= link_to new_hr_employee_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-hamzis-brown transition-all duration-500 active:scale-95" do %>
-      <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" /></svg>
-      Add Resource
-    <% end %>
-  </div>
 </div>
 <!-- Deployment Metrics -->
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-  <% [
+    <% [
     { label: "Total Strength", count: @employees.count, color: "copper" },
     { label: "Active Duty", count: @employees.status_active.count, color: "green-500" },
     { label: "Off-Cycle", count: @employees.status_on_leave.count, color: "yellow-500" },
     { label: "Decommissioned", count: @employees.status_terminated.count, color: "red-500" }
   ].each do |stat| %>
-    <div class="bg-hamzis-white/30 dark:bg-hamzis-black/30 border border-hamzis-brown/10 dark:border-hamzis-copper/10 rounded-2xl p-5 backdrop-blur-md shadow-xl relative overflow-hidden group">
-      <div class="absolute top-0 left-0 w-1 h-full bg-hamzis-<%= stat[:color] %>"></div>
-      <p class="text-[10px] font-black uppercase tracking-[0.2em] text-hamzis-brown/50 dark:text-hamzis-copper/50 mb-1"><%= stat[:label] %></p>
-      <p class="text-3xl font-black text-hamzis-brown dark:text-white group-hover:scale-110 transition-transform duration-500 origin-left"><%= stat[:count] %></p>
+    <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/10 dark:border-brand-primary/10 rounded-2xl p-5 backdrop-blur-md shadow-xl relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-1 h-full bg-hamzis-<%= stat[:color] %>"></div>
+        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-brand-secondary/50 dark:text-brand-primary/50 mb-1"><%= stat[:label] %></p>
+        <p class="text-3xl font-black text-brand-secondary dark:text-white group-hover:scale-110 transition-transform duration-500 origin-left"><%= stat[:count] %></p>
     </div>
-  <% end %>
+    <% end %>
 </div>
 <!-- Search & Control Rail -->
-<div class="mb-6 flex flex-col md:flex-row items-center gap-4 bg-hamzis-brown/5 dark:bg-hamzis-copper/5 p-4 rounded-2xl border border-hamzis-brown/10">
-  <%= form_with url: hr_employees_path, method: :get, local: true, class: "flex-1 flex gap-2 w-full" do |f| %>
+<div class="mb-6 flex flex-col md:flex-row items-center gap-4 bg-brand-secondary/5 dark:bg-brand-primary/5 p-4 rounded-2xl border border-brand-secondary/10">
+    <%= form_with url: hr_employees_path, method: :get, local: true, class: "flex-1 flex gap-2 w-full" do |f| %>
     <div class="relative flex-1">
-      <svg xmlns="http://www.w3.org" class="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-hamzis-brown/40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-      <%= f.text_field :q, value: params[:q], placeholder: "Search by Hamzis ID or Designation...",
-            class: "w-full pl-11 pr-4 py-2.5 rounded-xl border border-hamzis-brown/20 bg-white/50 dark:bg-black/20 text-sm focus:ring-2 focus:ring-hamzis-copper outline-none transition" %>
+        <svg xmlns="http://www.w3.org" class="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-secondary/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <%= f.text_field :q, value: params[:q], placeholder: "Search by Hamzis ID or Designation...",
+            class: "w-full pl-11 pr-4 py-2.5 rounded-xl border border-brand-secondary/20 bg-white/50 dark:bg-black/20 text-sm focus:ring-2 focus:ring-brand-primary outline-none transition" %>
     </div>
-    <%= f.submit "Query", class: "px-6 py-2.5 rounded-xl bg-hamzis-brown text-white font-bold uppercase tracking-widest text-[10px] hover:bg-hamzis-copper transition cursor-pointer" %>
-  <% end %>
-  <%= link_to "Reset System", hr_employees_path, class: "text-[10px] font-bold uppercase tracking-widest text-hamzis-brown/40 hover:text-hamzis-copper transition" %>
+    <%= f.submit "Query", class: "px-6 py-2.5 rounded-xl bg-brand-secondary text-white font-bold uppercase tracking-widest text-[10px] hover:bg-brand-primary transition cursor-pointer" %>
+    <% end %>
+    <%= link_to "Reset System", hr_employees_path, class: "text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40 hover:text-brand-primary transition" %>
 </div>
 <%= render "hr/employees/employee_table", employees: @employees %>

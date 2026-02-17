@@ -50,21 +50,21 @@ Stores user account information, including credentials and roles.
 
 Stores information about projects.
 
-| Column        | Type            | Null | Default | Indexes                     |
-| ------------- | --------------- | ---- | ------- | --------------------------- |
-| `id`          | `bigint`        | no   |         | Primary Key                 |
-| `name`        | `string`        | yes  |         |                             |
-| `description` | `text`          | yes  |         |                             |
-| `status`      | `integer`       | no   | `0`     |                             |
-| `deadline`    | `datetime`      | yes  |         |                             |
-| `budget`      | `decimal(12,2)` | yes  |         |                             |
-| `progress`    | `integer`       | no   | `0`     |                             |
-| `user_id`     | `bigint`        | no   |         | `index_projects_on_user_id` |
+| Column        | Type            | Null | Default | Indexes                       |
+| ------------- | --------------- | ---- | ------- | ----------------------------- |
+| `id`          | `bigint`        | no   |         | Primary Key                   |
+| `name`        | `string`        | yes  |         |                               |
+| `description` | `text`          | yes  |         |                               |
+| `status`      | `integer`       | no   | `0`     |                               |
+| `deadline`    | `datetime`      | yes  |         |                               |
+| `budget`      | `decimal(12,2)` | yes  |         |                               |
+| `progress`    | `integer`       | no   | `0`     |                               |
+| `user_id`     | `bigint`        | no   |         | `index_projects_on_user_id`   |
 | `client_id`   | `bigint`        | yes  |         | `index_projects_on_client_id` |
-| `location`    | `string`        | yes  |         |                             |
-| `address`     | `string`        | yes  |         |                             |
-| `created_at`  | `datetime`      | no   |         |                             |
-| `updated_at`  | `datetime`      | no   |         |                             |
+| `location`    | `string`        | yes  |         |                               |
+| `address`     | `string`        | yes  |         |                               |
+| `created_at`  | `datetime`      | no   |         |                               |
+| `updated_at`  | `datetime`      | no   |         |                               |
 
 **Status Enum Values:** `ongoing: 0`, `completed: 1`
 
@@ -131,18 +131,18 @@ A join table that assigns users to tasks.
 
 Stores financial transactions (global, not project-specific in the current schema).
 
-| Column             | Type            | Null | Default | Indexes                                     |
-| ------------------ | --------------- | ---- | ------- | ------------------------------------------- |
-| `id`               | `bigint`        | no   |         | Primary Key                                 |
-| `date`             | `date`          | no   |         |                                             |
-| `description`      | `string`        | no   |         |                                             |
-| `amount`           | `decimal(12,2)` | no   |         |                                             |
-| `transaction_type` | `integer`       | no   | `0`     | `index_transactions_on_transaction_type`    |
-| `status`           | `integer`       | no   | `0`     | `index_transactions_on_status`              |
-| `reference`       | `string`        | yes  |         |                                             |
-| `notes`            | `text`          | yes  |         |                                             |
-| `created_at`       | `datetime`      | no   |         |                                             |
-| `updated_at`       | `datetime`      | no   |         |                                             |
+| Column             | Type            | Null | Default | Indexes                                  |
+| ------------------ | --------------- | ---- | ------- | ---------------------------------------- |
+| `id`               | `bigint`        | no   |         | Primary Key                              |
+| `date`             | `date`          | no   |         |                                          |
+| `description`      | `string`        | no   |         |                                          |
+| `amount`           | `decimal(12,2)` | no   |         |                                          |
+| `transaction_type` | `integer`       | no   | `0`     | `index_transactions_on_transaction_type` |
+| `status`           | `integer`       | no   | `0`     | `index_transactions_on_status`           |
+| `reference`        | `string`        | yes  |         |                                          |
+| `notes`            | `text`          | yes  |         |                                          |
+| `created_at`       | `datetime`      | no   |         |                                          |
+| `updated_at`       | `datetime`      | no   |         |                                          |
 
 **Transaction Type Enum Values:** `invoice: 0`, `receipt: 1`
 **Status Enum Values:** `unpaid: 0`, `paid: 1`
@@ -159,20 +159,20 @@ Stores financial transactions (global, not project-specific in the current schem
 
 Stores information about employees for the HR module.
 
-| Column              | Type           | Null | Default | Indexes                                    |
-| ------------------- | -------------- | ---- | ------- | ------------------------------------------ |
-| `id`                | `bigint`       | no   |         | Primary Key                                |
-| `hamzis_id`         | `string`       | no   |         | `index_hr_employees_on_hamzis_id` (unique) |
-| `department`        | `string`       | no   |         |                                            |
-| `position_title`    | `string`       | no   |         |                                            |
-| `hire_date`         | `date`         | yes  |         |                                            |
-| `status`            | `integer`      | yes  | `0`     |                                            |
-| `leave_balance`     | `integer`      | yes  | `0`     |                                            |
-| `performance_score`  | `decimal(5,2)` | yes  |         |                                            |
+| Column              | Type           | Null | Default | Indexes                                   |
+| ------------------- | -------------- | ---- | ------- | ----------------------------------------- |
+| `id`                | `bigint`       | no   |         | Primary Key                               |
+| `staff_id`          | `string`       | no   |         | `index_hr_employees_on_staff_id` (unique) |
+| `department`        | `string`       | no   |         |                                           |
+| `position_title`    | `string`       | no   |         |                                           |
+| `hire_date`         | `date`         | yes  |         |                                           |
+| `status`            | `integer`      | yes  | `0`     |                                           |
+| `leave_balance`     | `integer`      | yes  | `0`     |                                           |
+| `performance_score` | `decimal(5,2)` | yes  |         |                                           |
 | `user_id`           | `bigint`       | yes  |         | `index_hr_employees_on_user_id`           |
 | `manager_id`        | `bigint`       | yes  |         | `index_hr_employees_on_manager_id`        |
-| `created_at`        | `datetime`     | no   |         |                                            |
-| `updated_at`        | `datetime`     | no   |         |                                            |
+| `created_at`        | `datetime`     | no   |         |                                           |
+| `updated_at`        | `datetime`     | no   |         |                                           |
 
 **Status Enum Values:** `active: 0`, `on_leave: 1`, `terminated: 2`
 
@@ -252,17 +252,17 @@ Stores personal details for employees.
 
 Tracks employee attendance on projects.
 
-| Column              | Type       | Null | Default | Indexes                                              |
-| ------------------- | ---------- | ---- | ------- | ---------------------------------------------------- |
-| `id`                | `bigint`   | no   |         | Primary Key                                          |
-| `employee_id`       | `bigint`   | no   |         | `index_hr_attendance_records_on_employee_id`          |
-| `project_id`        | `bigint`   | no   |         | `index_hr_attendance_records_on_project_id`          |
-| `date`              | `date`     | no   |         |                                                      |
-| `status`            | `integer`  | no   |         |                                                      |
-| `check_in_time`     | `datetime` | yes  |         |                                                      |
-| `check_out_time`    | `datetime` | yes  |         |                                                      |
-| `created_at`        | `datetime` | no   |         |                                                      |
-| `updated_at`        | `datetime` | no   |         |                                                      |
+| Column           | Type       | Null | Default | Indexes                                      |
+| ---------------- | ---------- | ---- | ------- | -------------------------------------------- |
+| `id`             | `bigint`   | no   |         | Primary Key                                  |
+| `employee_id`    | `bigint`   | no   |         | `index_hr_attendance_records_on_employee_id` |
+| `project_id`     | `bigint`   | no   |         | `index_hr_attendance_records_on_project_id`  |
+| `date`           | `date`     | no   |         |                                              |
+| `status`         | `integer`  | no   |         |                                              |
+| `check_in_time`  | `datetime` | yes  |         |                                              |
+| `check_out_time` | `datetime` | yes  |         |                                              |
+| `created_at`     | `datetime` | no   |         |                                              |
+| `updated_at`     | `datetime` | no   |         |                                              |
 
 **Status Enum Values:** `present: 0`, `absent: 1`, `late: 2`, `on_leave: 3`
 
@@ -279,16 +279,16 @@ Tracks employee attendance on projects.
 
 Stores emergency contact information for employees.
 
-| Column           | Type       | Null | Default | Indexes                              |
-| ---------------- | ---------- | ---- | ------- | ------------------------------------ |
-| `id`             | `bigint`   | no   |         | Primary Key                          |
-| `employee_id`    | `bigint`   | no   |         | `index_hr_next_of_kins_on_employee_id` |
-| `name`           | `string`   | no   |         |                                      |
-| `relationship`   | `string`   | no   |         |                                      |
-| `phone_number`   | `string`   | no   |         |                                      |
-| `address`        | `string`   | yes  |         |                                      |
-| `created_at`     | `datetime` | no   |         |                                      |
-| `updated_at`     | `datetime` | no   |         |                                      |
+| Column         | Type       | Null | Default | Indexes                                |
+| -------------- | ---------- | ---- | ------- | -------------------------------------- |
+| `id`           | `bigint`   | no   |         | Primary Key                            |
+| `employee_id`  | `bigint`   | no   |         | `index_hr_next_of_kins_on_employee_id` |
+| `name`         | `string`   | no   |         |                                        |
+| `relationship` | `string`   | no   |         |                                        |
+| `phone_number` | `string`   | no   |         |                                        |
+| `address`      | `string`   | yes  |         |                                        |
+| `created_at`   | `datetime` | no   |         |                                        |
+| `updated_at`   | `datetime` | no   |         |                                        |
 
 **Associations:**
 
@@ -418,13 +418,13 @@ Stores master data for all inventory items managed by the system.
 | `id`                | `bigint`        | no   |         | Primary Key                             |
 | `sku`               | `string`        | no   |         | `index_inventory_items_on_sku` (unique) |
 | `name`              | `string`        | no   |         |                                         |
-| `description`      | `text`          | yes  |         |                                         |
+| `description`       | `text`          | yes  |         |                                         |
 | `unit_cost`         | `decimal(12,2)` | no   | `0.0`   |                                         |
-| `status`            | `integer`       | no   | `0`     | `index_inventory_items_on_status`        |
+| `status`            | `integer`       | no   | `0`     | `index_inventory_items_on_status`       |
 | `reorder_threshold` | `integer`       | no   | `5`     |                                         |
 | `default_location`  | `string`        | yes  |         |                                         |
 | `unit`              | `string`        | no   | `pcs`   | `index_inventory_items_on_unit`         |
-| `created_at`        | `datetime`      | no   |         | `index_inventory_items_on_created_at`    |
+| `created_at`        | `datetime`      | no   |         | `index_inventory_items_on_created_at`   |
 | `updated_at`        | `datetime`      | no   |         |                                         |
 
 **Status Enum Values:** `in_stock: 0`, `low_stock: 1`, `out_of_stock: 2`
@@ -468,26 +468,26 @@ Tracks the quantity of each inventory item in each warehouse (inventory snapshot
 
 Tracks all movements (in/out) of inventory items, providing a complete audit trail.
 
-| Column              | Type            | Null | Default | Indexes                                      |
-| ------------------- | --------------- | ---- | ------- | -------------------------------------------- |
-| `id`                | `bigint`        | no   |         | Primary Key                                  |
-| `inventory_item_id` | `bigint`        | no   |         | `index_stock_movements_on_inventory_item_id` |
-| `movement_type`     | `integer`       | no   | `0`     | `index_stock_movements_on_movement_type`    |
-| `quantity`          | `integer`       | no   |         |                                              |
-| `unit_cost`         | `decimal(12,2)` | yes  |         |                                              |
-| `reference`         | `string`        | yes  |         |                                              |
-| `notes`             | `text`          | yes  |         |                                              |
-| `created_at`        | `datetime`      | no   |         | `index_stock_movements_on_created_at`        |
-| `updated_at`        | `datetime`      | no   |         |                                              |
-| `employee_id`       | `bigint`        | yes  |         | `index_stock_movements_on_employee_id`       |
-| `applied_at`        | `datetime`      | yes  |         | `index_stock_movements_on_applied_at`        |
-| `project_id`        | `bigint`        | yes  |         | `index_stock_movements_on_project_id`        |
-| `task_id`           | `bigint`        | yes  |         | `index_stock_movements_on_task_id`          |
-| `source_warehouse_id` | `bigint`      | yes  |         | `index_stock_movements_on_source_warehouse_id` |
-| `destination_warehouse_id` | `bigint` | yes  |         | `index_stock_movements_on_destination_warehouse_id` |
-| `cancelled_at`      | `datetime`      | yes  |         |                                              |
-| `cancellation_reason` | `string`       | yes  |         |                                              |
-| `reversal_of_id`    | `integer`      | yes  |         |                                              |
+| Column                     | Type            | Null | Default | Indexes                                             |
+| -------------------------- | --------------- | ---- | ------- | --------------------------------------------------- |
+| `id`                       | `bigint`        | no   |         | Primary Key                                         |
+| `inventory_item_id`        | `bigint`        | no   |         | `index_stock_movements_on_inventory_item_id`        |
+| `movement_type`            | `integer`       | no   | `0`     | `index_stock_movements_on_movement_type`            |
+| `quantity`                 | `integer`       | no   |         |                                                     |
+| `unit_cost`                | `decimal(12,2)` | yes  |         |                                                     |
+| `reference`                | `string`        | yes  |         |                                                     |
+| `notes`                    | `text`          | yes  |         |                                                     |
+| `created_at`               | `datetime`      | no   |         | `index_stock_movements_on_created_at`               |
+| `updated_at`               | `datetime`      | no   |         |                                                     |
+| `employee_id`              | `bigint`        | yes  |         | `index_stock_movements_on_employee_id`              |
+| `applied_at`               | `datetime`      | yes  |         | `index_stock_movements_on_applied_at`               |
+| `project_id`               | `bigint`        | yes  |         | `index_stock_movements_on_project_id`               |
+| `task_id`                  | `bigint`        | yes  |         | `index_stock_movements_on_task_id`                  |
+| `source_warehouse_id`      | `bigint`        | yes  |         | `index_stock_movements_on_source_warehouse_id`      |
+| `destination_warehouse_id` | `bigint`        | yes  |         | `index_stock_movements_on_destination_warehouse_id` |
+| `cancelled_at`             | `datetime`      | yes  |         |                                                     |
+| `cancellation_reason`      | `string`        | yes  |         |                                                     |
+| `reversal_of_id`           | `integer`       | yes  |         |                                                     |
 
 **Movement Type Enum Values:** `inbound: 0`, `outbound: 1`, `adjustment: 2`, `site_delivery: 3`
 
@@ -511,19 +511,19 @@ Tracks all movements (in/out) of inventory items, providing a complete audit tra
 
 Links inventory items to projects/tasks, tracking reserved quantities.
 
-| Column              | Type       | Null | Default | Indexes                                          |
-| ------------------- | ---------- | ---- | ------- | ------------------------------------------------ |
-| `id`                | `bigint`   | no   |         | Primary Key                                      |
-| `project_id`        | `bigint`   | no   |         | `index_project_inventories_on_project_id`        |
-| `inventory_item_id` | `bigint`   | no   |         | `index_project_inventories_on_inventory_item_id` |
-| `quantity_reserved` | `integer`  | no   | `0`     |                                                  |
-| `purpose`           | `string`   | yes  |         |                                                  |
-| `task_id`           | `bigint`   | yes  |         | `index_project_inventories_on_task_id`           |
-| `created_at`        | `datetime` | no   |         |                                                  |
-| `updated_at`        | `datetime` | no   |         |                                                  |
-| `cancelled_at`      | `datetime` | yes  |         |                                                  |
-| `cancellation_reason` | `string`  | yes  |         |                                                  |
-| `warehouse_id`      | `bigint`   | yes  |         | `index_project_inventories_on_warehouse_id`      |
+| Column                | Type       | Null | Default | Indexes                                          |
+| --------------------- | ---------- | ---- | ------- | ------------------------------------------------ |
+| `id`                  | `bigint`   | no   |         | Primary Key                                      |
+| `project_id`          | `bigint`   | no   |         | `index_project_inventories_on_project_id`        |
+| `inventory_item_id`   | `bigint`   | no   |         | `index_project_inventories_on_inventory_item_id` |
+| `quantity_reserved`   | `integer`  | no   | `0`     |                                                  |
+| `purpose`             | `string`   | yes  |         |                                                  |
+| `task_id`             | `bigint`   | yes  |         | `index_project_inventories_on_task_id`           |
+| `created_at`          | `datetime` | no   |         |                                                  |
+| `updated_at`          | `datetime` | no   |         |                                                  |
+| `cancelled_at`        | `datetime` | yes  |         |                                                  |
+| `cancellation_reason` | `string`   | yes  |         |                                                  |
+| `warehouse_id`        | `bigint`   | yes  |         | `index_project_inventories_on_warehouse_id`      |
 
 **Composite Indexes:**
 
@@ -538,25 +538,24 @@ Links inventory items to projects/tasks, tracking reserved quantities.
 
 ---
 
-
 ## Project Management Tables
 
 ### `business_clients`
 
 Stores information about external clients/companies.
 
-| Column              | Type       | Null | Default | Indexes                              |
-| ------------------- | ---------- | ---- | ------- | ------------------------------------ |
-| `id`                | `bigint`   | no   |         | Primary Key                          |
-| `name`              | `string`   | no   |         | `index_business_clients_on_name`     |
-| `company`           | `string`   | yes  |         |                                      |
-| `email`             | `string`   | yes  |         | `index_business_clients_on_email` (unique) |
-| `phone`             | `string`   | yes  |         |                                      |
-| `address`           | `text`     | yes  |         |                                      |
-| `notes`             | `text`     | yes  |         |                                      |
-| `created_at`        | `datetime` | no   |         |                                      |
-| `updated_at`        | `datetime` | no   |         |                                      |
-| `user_id`           | `bigint`   | yes  |         | `index_business_clients_on_user_id`   |
+| Column       | Type       | Null | Default | Indexes                                    |
+| ------------ | ---------- | ---- | ------- | ------------------------------------------ |
+| `id`         | `bigint`   | no   |         | Primary Key                                |
+| `name`       | `string`   | no   |         | `index_business_clients_on_name`           |
+| `company`    | `string`   | yes  |         |                                            |
+| `email`      | `string`   | yes  |         | `index_business_clients_on_email` (unique) |
+| `phone`      | `string`   | yes  |         |                                            |
+| `address`    | `text`     | yes  |         |                                            |
+| `notes`      | `text`     | yes  |         |                                            |
+| `created_at` | `datetime` | no   |         |                                            |
+| `updated_at` | `datetime` | no   |         |                                            |
+| `user_id`    | `bigint`   | yes  |         | `index_business_clients_on_user_id`        |
 
 **Associations:**
 
@@ -569,19 +568,19 @@ Stores information about external clients/companies.
 
 Tracks expenses related to specific projects.
 
-| Column              | Type            | Null | Default | Indexes                                     |
-| ------------------- | --------------- | ---- | ------- | ------------------------------------------- |
-| `id`                | `bigint`        | no   |         | Primary Key                                 |
-| `project_id`        | `bigint`        | no   |         | `index_project_expenses_on_project_id`      |
-| `date`              | `date`          | no   |         |                                             |
-| `description`       | `string`        | no   |         |                                             |
-| `amount`            | `decimal(12,2)` | no   |         |                                             |
-| `reference`         | `string`        | yes  |         |                                             |
-| `notes`             | `text`          | yes  |         |                                             |
-| `created_at`        | `datetime`      | no   |         |                                             |
-| `updated_at`        | `datetime`      | no   |         |                                             |
+| Column              | Type            | Null | Default | Indexes                                       |
+| ------------------- | --------------- | ---- | ------- | --------------------------------------------- |
+| `id`                | `bigint`        | no   |         | Primary Key                                   |
+| `project_id`        | `bigint`        | no   |         | `index_project_expenses_on_project_id`        |
+| `date`              | `date`          | no   |         |                                               |
+| `description`       | `string`        | no   |         |                                               |
+| `amount`            | `decimal(12,2)` | no   |         |                                               |
+| `reference`         | `string`        | yes  |         |                                               |
+| `notes`             | `text`          | yes  |         |                                               |
+| `created_at`        | `datetime`      | no   |         |                                               |
+| `updated_at`        | `datetime`      | no   |         |                                               |
 | `stock_movement_id` | `bigint`        | yes  |         | `index_project_expenses_on_stock_movement_id` |
-| `reversal_of_id`    | `integer`       | yes  |         |                                             |
+| `reversal_of_id`    | `integer`       | yes  |         |                                               |
 
 **Associations:**
 
@@ -594,14 +593,14 @@ Tracks expenses related to specific projects.
 
 Manages file attachments associated with projects via Active Storage.
 
-| Column              | Type       | Null | Default | Indexes                      |
-| ------------------- | ---------- | ---- | ------- | ---------------------------- |
-| `id`                | `bigint`   | no   |         | Primary Key                  |
-| `project_id`        | `bigint`   | no   |         | `index_project_files_on_project_id` |
-| `description`       | `string`   | yes  |         |                              |
-| `created_at`        | `datetime` | no   |         |                              |
-| `updated_at`        | `datetime` | no   |         |                              |
-| `title`             | `string`   | yes  |         |                              |
+| Column        | Type       | Null | Default | Indexes                             |
+| ------------- | ---------- | ---- | ------- | ----------------------------------- |
+| `id`          | `bigint`   | no   |         | Primary Key                         |
+| `project_id`  | `bigint`   | no   |         | `index_project_files_on_project_id` |
+| `description` | `string`   | yes  |         |                                     |
+| `created_at`  | `datetime` | no   |         |                                     |
+| `updated_at`  | `datetime` | no   |         |                                     |
+| `title`       | `string`   | yes  |         |                                     |
 
 **Associations:**
 

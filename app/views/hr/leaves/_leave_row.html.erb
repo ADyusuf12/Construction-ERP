@@ -1,11 +1,19 @@
+<<<<<<< Updated upstream
 <tr id="<%= dom_id(leave) %>" class="<%= local_assigns[:row_class] %> group hover:bg-white/40 dark:hover:bg-hamzis-black/40 transition-all duration-300">
     <% if local_assigns[:show_employee] %>
     <td class="px-6 py-4">
         <span class="text-sm font-black text-hamzis-brown dark:text-white uppercase tracking-tight">
+=======
+<tr id="<%= dom_id(leave) %>" class="<%= row_class %> group hover:bg-white/40 dark:hover:bg-brand-black/40 transition-all duration-300">
+    <% if local_assigns[:show_employee] %>
+    <td class="px-6 py-4">
+        <span class="text-sm font-black text-brand-secondary dark:text-white uppercase tracking-tight">
+>>>>>>> Stashed changes
             <%= leave.employee.full_name %>
         </span>
     </td>
     <% end %>
+<<<<<<< Updated upstream
 
     <td class="px-6 py-4">
         <div class="flex flex-col">
@@ -13,10 +21,19 @@
                 <%= leave.start_date.strftime("%d.%m.%Y") %> — <%= leave.end_date.strftime("%d.%m.%Y") %>
             </span>
             <span class="text-[9px] uppercase font-black text-hamzis-brown/40 dark:text-hamzis-copper/40 tracking-widest">
+=======
+    <td class="px-6 py-4">
+        <div class="flex flex-col">
+            <span class="text-[11px] font-mono font-bold text-brand-secondary dark:text-brand-primary">
+                <%= leave.start_date.strftime("%d.%m.%Y") %> — <%= leave.end_date.strftime("%d.%m.%Y") %>
+            </span>
+            <span class="text-[9px] uppercase font-black text-brand-secondary/40 dark:text-brand-primary/40 tracking-widest">
+>>>>>>> Stashed changes
                 <%= (leave.end_date - leave.start_date).to_i + 1 %> Operational Days
             </span>
         </div>
     </td>
+<<<<<<< Updated upstream
 
     <td class="px-6 py-4">
         <p class="text-[10px] font-bold uppercase tracking-wide text-hamzis-brown/70 dark:text-hamzis-copper/70 leading-relaxed italic">
@@ -31,30 +48,58 @@
         when leave.status_pending? then 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20'
         else 'text-gray-500 bg-gray-500/10 border-gray-500/20'
         end
+=======
+    <td class="px-6 py-4">
+        <p class="text-[10px] font-bold uppercase tracking-wide text-brand-secondary/70 dark:text-brand-primary/70 leading-relaxed italic">
+            "<%= truncate(leave.reason, length: 50) %>"
+        </p>
+    </td>
+    <td class="px-6 py-4">
+        <% status_style = case
+       when leave.status_approved? then 'text-green-500 bg-green-500/10 border-green-500/20'
+       when leave.status_rejected? then 'text-red-500 bg-red-500/10 border-red-500/20'
+       when leave.status_pending? then 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20'
+       else 'text-gray-500 bg-gray-500/10 border-gray-500/20'
+       end
+>>>>>>> Stashed changes
     %>
         <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border text-[9px] font-black uppercase tracking-[0.15em] <%= status_style %>">
             <div class="w-1 h-1 rounded-full bg-current <%= 'animate-pulse' if leave.status_pending? %>"></div>
             <%= leave.status.humanize %>
         </span>
     </td>
+<<<<<<< Updated upstream
 
     <td class="px-6 py-4 text-right">
         <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
             <%= link_to hr_leave_path(leave), class: "p-2 rounded-lg bg-hamzis-copper text-white hover:scale-110 transition shadow-lg", title: "Review Dossier" do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+=======
+    <td class="px-6 py-4">
+        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <%= link_to hr_leave_path(leave), class: "p-2 rounded-lg bg-brand-primary text-white hover:scale-110 transition shadow-lg", title: "Review Dossier" do %>
+            <svg xmlns="http://www.w3.org" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+>>>>>>> Stashed changes
                 <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
             <% end %>
+<<<<<<< Updated upstream
 
             <% if leave.status_pending? %>
             <% if policy(leave).approve? %>
             <%= button_to approve_hr_leave_path(leave), method: :patch, class: "p-2 rounded-lg bg-green-600 text-white hover:scale-110 transition shadow-lg", title: "Authorize" do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+=======
+            <% if policy(leave).approve? %>
+            <%= button_to approve_hr_leave_path(leave), method: :patch, class: "p-2 rounded-lg bg-green-600 text-white hover:scale-110 transition shadow-lg", title: "Authorize" do %>
+            <svg xmlns="http://www.w3.org" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+>>>>>>> Stashed changes
                 <path d="M5 13l4 4L19 7" />
             </svg>
             <% end %>
             <% end %>
+<<<<<<< Updated upstream
 
             <% if policy(leave).destroy? %>
             <%= button_to "#",
@@ -72,6 +117,15 @@
             <% end %>
             <% end %>
             <% end %>
+=======
+            <% if policy(leave).cancel? %>
+            <%= button_to cancel_hr_leave_path(leave), method: :patch, class: "p-2 rounded-lg bg-red-600 text-white hover:scale-110 transition shadow-lg", title: "Void Request" do %>
+            <svg xmlns="http://www.w3.org" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <% end %>
+            <% end %>
+>>>>>>> Stashed changes
         </div>
     </td>
 </tr>

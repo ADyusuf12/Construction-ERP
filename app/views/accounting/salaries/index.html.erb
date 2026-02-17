@@ -1,17 +1,19 @@
 <% content_for :title, "Payroll Management | Hamzis Systems" %>
 <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-  <div>
-    <h1 class="text-4xl font-black tracking-tighter text-hamzis-brown dark:text-hamzis-copper uppercase">Salary Registry</h1>
-    <p class="text-sm text-hamzis-brown/60 dark:text-hamzis-copper/60 italic">Personnel compensation management and disbursement tracking.</p>
-  </div>
-  <%= link_to new_accounting_salary_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-hamzis-copper text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-hamzis-brown transition-all duration-500 active:scale-95 shadow-hamzis-copper/20" do %>
-    <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M12 4v16m8-8H4" /></svg>
+    <div>
+        <h1 class="text-4xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary uppercase">Salary Registry</h1>
+        <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic">Personnel compensation management and disbursement tracking.</p>
+    </div>
+    <%= link_to new_accounting_salary_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-brand-secondary transition-all duration-500 active:scale-95 shadow-brand-primary/20" do %>
+    <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+        <path d="M12 4v16m8-8H4" />
+    </svg>
     Issue New Salary
-  <% end %>
+    <% end %>
 </div>
 <%= render "accounting/salaries/salary_summary", salaries: @salaries %>
 <%= render "accounting/salaries/salaries_table", salaries: @salaries %>
-<div class="mt-10 py-6 border-t border-hamzis-brown/5 dark:border-hamzis-copper/10 flex flex-col items-center gap-3">
-  <p class="text-[9px] font-black uppercase tracking-[0.3em] text-hamzis-brown/30 dark:text-hamzis-copper/30 italic mb-2"></p>
-  <%= paginate @salaries if defined?(paginate) %>
+<div class="mt-10 py-6 border-t border-brand-secondary/5 dark:border-brand-primary/10 flex flex-col items-center gap-3">
+    <p class="text-[9px] font-black uppercase tracking-[0.3em] text-brand-secondary/30 dark:text-brand-primary/30 italic mb-2"></p>
+    <%= paginate @salaries if defined?(paginate) %>
 </div>

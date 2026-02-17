@@ -8,7 +8,7 @@ module Hr
       authorize Hr::Employee
       @employees = policy_scope(Hr::Employee)
       if params[:q].present?
-        @employees = @employees.where("hamzis_id ILIKE ?", "%#{params[:q]}")
+        @employees = @employees.where("staff_id ILIKE ?", "%#{params[:q]}")
       end
     end
 
@@ -62,7 +62,7 @@ module Hr
       end
 
       def load_form_collections
-        @managers = policy_scope(Hr::Employee).order(:hamzis_id)
+        @managers = policy_scope(Hr::Employee).order(:staff_id)
         @departments = Hr::Employee.distinct.pluck(:department).compact.sort
         @status_options = Hr::Employee.statuses.keys.map { |s| [ s.humanize, s ] }
         @gender_options = Hr::PersonalDetail.genders.keys.map { |g| [ g.humanize, g ] }

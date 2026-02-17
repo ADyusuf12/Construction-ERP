@@ -1,7 +1,7 @@
 class CreateHrEmployees < ActiveRecord::Migration[8.0]
   def change
     create_table :hr_employees do |t|
-      t.string :hamzis_id, null: false
+      t.string :staff_id, null: false
       t.string :department
       t.string :position_title
       t.date :hire_date
@@ -13,6 +13,6 @@ class CreateHrEmployees < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :hr_employees, :hamzis_id, unique: true
+    add_index :hr_employees, :staff_id, unique: true
   end
 end

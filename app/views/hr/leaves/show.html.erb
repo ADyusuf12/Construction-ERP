@@ -1,8 +1,12 @@
 <% content_for :title, "Leave: #{@leave.employee.full_name} | Hamzis HR" %>
+<<<<<<< Updated upstream
 
 <div class="bg-gradient-to-br from-hamzis-white/40 via-hamzis-copper/5 to-hamzis-brown/5 dark:from-hamzis-black/40 dark:via-hamzis-brown/10 dark:to-hamzis-copper/10 border border-hamzis-brown/30 rounded-2xl shadow-2xl p-8 relative overflow-hidden animate-fade-in">
 
     <%# Status Badge %>
+=======
+<div class="bg-gradient-to-br from-brand-white/40 via-brand-primary/5 to-brand-secondary/5 dark:from-brand-black/40 dark:via-brand-secondary/10 dark:to-brand-primary/10 border border-brand-secondary/30 rounded-2xl shadow-2xl p-8 relative overflow-hidden animate-fade-in">
+>>>>>>> Stashed changes
     <div class="absolute top-6 right-8">
         <div id="<%= dom_id(@leave, :status) %>">
             <%
@@ -12,11 +16,16 @@
           else "bg-amber-500/10 text-amber-600 border-amber-500/20"
         end
       %>
+<<<<<<< Updated upstream
             <span class="px-4 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-[0.2em] <%= status_classes %> shadow-sm transition-all duration-500">
+=======
+            <span class="px-4 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-[0.2em] <%= status_classes %> shadow-sm">
+>>>>>>> Stashed changes
                 <%= @leave.status.humanize %>
             </span>
         </div>
     </div>
+<<<<<<< Updated upstream
 
     <%# Header %>
     <div class="mb-10">
@@ -47,18 +56,52 @@
                 <div class="absolute inset-0 flex items-center justify-center">
                     <span class="bg-hamzis-brown text-white dark:bg-hamzis-copper text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-tighter italic shadow-lg">
                         <%= @leave.duration %> Operational Days
+=======
+    <div class="mb-10">
+        <div class="flex items-center gap-3 mb-3">
+            <span class="px-2 py-0.5 rounded bg-brand-secondary/10 border border-brand-secondary/20 text-[9px] font-black uppercase tracking-[0.2em] text-brand-secondary dark:text-brand-primary">
+                Absence Authorization
+            </span>
+        </div>
+        <h2 class="text-3xl font-black text-brand-secondary dark:text-white uppercase tracking-tighter italic">
+            <%= @leave.employee.full_name %>
+        </h2>
+        <p class="text-[10px] font-bold text-brand-secondary/40 dark:text-white/40 uppercase tracking-widest mt-1">
+            ID: #<%= @leave.employee.id %> | <%= @leave.employee.user.email %>
+        </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="bg-brand-white/40 dark:bg-brand-black/40 border border-brand-secondary/10 rounded-2xl p-6 text-center">
+            <p class="text-[9px] font-black text-brand-primary uppercase tracking-widest mb-2">Departure</p>
+            <p class="text-xl font-black text-brand-secondary dark:text-white font-mono uppercase tracking-tighter">
+                <%= @leave.start_date.strftime("%d %b %Y") %>
+            </p>
+        </div>
+        <div class="flex flex-col items-center justify-center">
+            <div class="h-[1px] w-full bg-brand-secondary/20 dark:bg-white/20 relative">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="bg-brand-secondary text-white dark:bg-brand-primary text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-tighter italic shadow-lg">
+                        <%= @leave.duration %> Days Total
+>>>>>>> Stashed changes
                     </span>
                 </div>
             </div>
         </div>
+<<<<<<< Updated upstream
 
         <div class="bg-hamzis-white/40 dark:bg-hamzis-black/40 border border-hamzis-brown/10 rounded-2xl p-6 text-center">
             <p class="text-[9px] font-black text-hamzis-copper uppercase tracking-widest mb-2">Expected Return</p>
             <p class="text-xl font-black text-hamzis-brown dark:text-white font-mono uppercase tracking-tighter">
+=======
+        <div class="bg-brand-white/40 dark:bg-brand-black/40 border border-brand-secondary/10 rounded-2xl p-6 text-center">
+            <p class="text-[9px] font-black text-brand-primary uppercase tracking-widest mb-2">Expected Return</p>
+            <p class="text-xl font-black text-brand-secondary dark:text-white font-mono uppercase tracking-tighter">
+>>>>>>> Stashed changes
                 <%= @leave.end_date.strftime("%d %b %Y") %>
             </p>
         </div>
     </div>
+<<<<<<< Updated upstream
 
     <%# Reason & Authority %>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-hamzis-brown/10">
@@ -77,10 +120,28 @@
                 <p class="text-[10px] text-hamzis-brown/40 dark:text-white/40 uppercase tracking-widest"><%= @leave.manager.user_email %></p>
                 <% else %>
                 <p class="text-xs font-bold text-hamzis-brown/40 dark:text-white/40 italic uppercase">Pending Command Assignment</p>
+=======
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-brand-secondary/10">
+        <div class="space-y-4">
+            <h4 class="text-[10px] font-black text-brand-primary uppercase tracking-widest italic">Reason for Absence</h4>
+            <p class="text-sm text-brand-secondary/70 dark:text-white/70 leading-relaxed italic border-l-2 border-brand-primary/20 pl-4">
+                <%= @leave.reason.presence || "No specific reason provided for this request." %>
+            </p>
+        </div>
+        <div class="space-y-4">
+            <h4 class="text-[10px] font-black text-brand-primary uppercase tracking-widest italic">Authorized By</h4>
+            <div class="bg-brand-secondary/5 dark:bg-white/5 rounded-xl p-4 border border-brand-secondary/10">
+                <% if @leave.manager.present? %>
+                <p class="text-sm font-bold text-brand-secondary dark:text-white uppercase"><%= @leave.manager.full_name %></p>
+                <p class="text-[10px] text-brand-secondary/40 dark:text-white/40 uppercase tracking-widest"><%= @leave.manager.user.email %></p>
+                <% else %>
+                <p class="text-xs font-bold text-brand-secondary/40 dark:text-white/40 italic uppercase">Awaiting Manager Assignment</p>
+>>>>>>> Stashed changes
                 <% end %>
             </div>
         </div>
     </div>
+<<<<<<< Updated upstream
 
     <%# Footer Actions %>
     <div class="mt-10 pt-6 border-t border-hamzis-brown/10 flex justify-between items-center">
@@ -107,5 +168,18 @@
             class: "px-5 py-2.5 rounded-xl bg-hamzis-copper text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-hamzis-black transition-all" %>
             <% end %>
         </div>
+=======
+    <div class="mt-10 pt-6 border-t border-brand-secondary/10 flex justify-between items-center">
+        <%= link_to hr_leaves_path,
+        class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-secondary/10 text-brand-secondary dark:text-white border border-brand-secondary/20 text-[10px] font-black uppercase tracking-widest hover:bg-brand-secondary hover:text-white transition-all shadow-sm" do %>
+        ← Return to Logs
+        <% end %>
+        <% if policy(@leave).edit? %>
+        <div class="flex gap-3">
+            <%= link_to "Review Request", edit_hr_leave_path(@leave),
+             class: "px-5 py-2.5 rounded-xl bg-brand-primary text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-brand-black transition-all" %>
+        </div>
+        <% end %>
+>>>>>>> Stashed changes
     </div>
 </div>

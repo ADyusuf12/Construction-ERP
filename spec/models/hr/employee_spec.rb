@@ -25,18 +25,18 @@ RSpec.describe Hr::Employee, type: :model do
       expect(employee.errors[:position_title]).to include("can't be blank")
     end
 
-    it "requires hamzis_id if hire_date is blank" do
-      employee = build(:hr_employee, hire_date: nil, hamzis_id: nil)
+    it "requires staff_id if hire_date is blank" do
+      employee = build(:hr_employee, hire_date: nil, staff_id: nil)
       expect(employee.valid?).to be false
-      expect(employee.errors[:hamzis_id]).to include("can't be blank")
+      expect(employee.errors[:staff_id]).to include("can't be blank")
     end
 
-    it "enforces uniqueness of hamzis_id" do
-      first = create(:hr_employee, hamzis_id: "CUSTOM01", hire_date: Date.today)
-      duplicate = build(:hr_employee, hamzis_id: "CUSTOM01", hire_date: Date.today)
+    it "enforces uniqueness of staff_id" do
+      first = create(:hr_employee, staff_id: "CUSTOM01", hire_date: Date.today)
+      duplicate = build(:hr_employee, staff_id: "CUSTOM01", hire_date: Date.today)
       expect(duplicate.valid?).to be false
-      expect(duplicate.errors[:hamzis_id]).to include("has already been taken")
-      expect(first.hamzis_id).to eq("CUSTOM01")
+      expect(duplicate.errors[:staff_id]).to include("has already been taken")
+      expect(first.staff_id).to eq("CUSTOM01")
     end
   end
 
@@ -60,30 +60,30 @@ RSpec.describe Hr::Employee, type: :model do
     end
   end
 
-  describe "hamzis_id generation" do
-    it "generates hamzis_id based on hire_date year if missing" do
-      employee = build(:hr_employee, hamzis_id: nil, hire_date: Date.new(2025, 12, 20))
-      expect(employee.hamzis_id).to be_nil
+  describe "staff_id generation" do
+    it "generates staff_id based on hire_date year if missing" do
+      employee = build(:hr_employee, staff_id: nil, hire_date: Date.new(2025, 12, 20))
+      expect(employee.staff_id).to be_nil
 
       employee.valid? # triggers before_validation
-      expect(employee.hamzis_id).to match(/\A\d{3}25\z/) # e.g. "00125"
+      expect(employee.staff_id).to match(/\A\d{3}25\z/) # e.g. "00125"
     end
 
     it "increments sequence for multiple hires in the same year" do
-      first = create(:hr_employee, hire_date: Date.new(2025, 12, 20), hamzis_id: nil)
-      second = create(:hr_employee, hire_date: Date.new(2025, 12, 21), hamzis_id: nil)
-      expect(second.hamzis_id[0..2].to_i).to eq(first.hamzis_id[0..2].to_i + 1)
+      first = create(:hr_employee, hire_date: Date.new(2025, 12, 20), staff_id: nil)
+      second = create(:hr_employee, hire_date: Date.new(2025, 12, 21), staff_id: nil)
+      expect(second.staff_id[0..2].to_i).to eq(first.staff_id[0..2].to_i + 1)
     end
 
-    it "does not overwrite hamzis_id if already provided" do
-      employee = create(:hr_employee, hamzis_id: "CUSTOM01", hire_date: Date.new(2025, 12, 20))
-      expect(employee.hamzis_id).to eq("CUSTOM01")
+    it "does not overwrite staff_id if already provided" do
+      employee = create(:hr_employee, staff_id: "CUSTOM01", hire_date: Date.new(2025, 12, 20))
+      expect(employee.staff_id).to eq("CUSTOM01")
     end
 
-    it "does not generate hamzis_id if hire_date is blank" do
-      employee = build(:hr_employee, hire_date: nil, hamzis_id: nil)
+    it "does not generate staff_id if hire_date is blank" do
+      employee = build(:hr_employee, hire_date: nil, staff_id: nil)
       employee.valid?
-      expect(employee.hamzis_id).to be_nil
+      expect(employee.staff_id).to be_nil
     end
   end
 end

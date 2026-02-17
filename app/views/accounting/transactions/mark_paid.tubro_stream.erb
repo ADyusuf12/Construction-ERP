@@ -4,7 +4,7 @@
   <%= render "accounting/transactions/transaction_row",
              t: @transaction,
              show_project: params[:project_id].blank?,   # global index shows Project column
-             row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
+             row_class: index.even? ? "bg-brand-secondary/5 dark:bg-brand-primary/5" : "" %>
 <% end %>
 <%= turbo_stream.replace "project_transactions_summary" do %>
   <%= render "accounting/transactions/transactions_summary", project: @transaction.project %>

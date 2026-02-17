@@ -1,21 +1,21 @@
-<div class="overflow-x-auto bg-hamzis-white/30 dark:bg-hamzis-black/30 backdrop-blur-md border border-hamzis-brown/20 rounded-2xl shadow-xl p-6">
-  <% if project.tasks.any? %>
+<div class="overflow-x-auto bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-xl p-6">
+    <% if project.tasks.any? %>
     <table class="min-w-full text-sm text-left border-separate border-spacing-0">
-      <%= render "tasks/task_table_header", show_details: true %>
-      <tbody class="divide-y divide-hamzis-brown/10 dark:divide-hamzis-copper/10">
-        <% project.tasks.each_with_index do |task, index| %>
-          <%= render "tasks/task_row",
+        <%= render "tasks/task_table_header", show_details: true %>
+        <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
+            <% project.tasks.each_with_index do |task, index| %>
+            <%= render "tasks/task_row",
                      task: task,
                      show_details: true,
-                     row_class: index.even? ? "bg-hamzis-brown/5 dark:bg-hamzis-copper/5" : "" %>
-        <% end %>
-      </tbody>
+                     row_class: index.even? ? "bg-brand-secondary/5 dark:bg-brand-primary/5" : "" %>
+            <% end %>
+        </tbody>
     </table>
-  <% else %>
+    <% else %>
     <div class="text-center py-12">
-      <p class="text-lg font-black uppercase tracking-tighter text-hamzis-brown dark:text-hamzis-copper">No Site Directives</p>
-      <p class="text-xs text-hamzis-brown/50 dark:text-hamzis-copper/50 italic mt-1 mb-6">This site currently has no logged tasks.</p>
-      <%= link_to "➕ Add Task to Site", new_project_task_path(project), class: "px-6 py-2 rounded-xl bg-hamzis-copper text-white font-bold uppercase tracking-widest text-[10px] hover:bg-hamzis-black transition" %>
+        <p class="text-lg font-black uppercase tracking-tighter text-brand-secondary dark:text-brand-primary">No Site Directives</p>
+        <p class="text-xs text-brand-secondary/50 dark:text-brand-primary/50 italic mt-1 mb-6">This site currently has no logged tasks.</p>
+        <%= link_to "➕ Add Task to Site", new_project_task_path(project), class: "px-6 py-2 rounded-xl bg-brand-primary text-white font-bold uppercase tracking-widest text-[10px] hover:bg-brand-black transition" %>
     </div>
-  <% end %>
+    <% end %>
 </div>

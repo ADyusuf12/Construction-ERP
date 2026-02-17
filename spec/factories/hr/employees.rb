@@ -7,7 +7,7 @@ FactoryBot.define do
     leave_balance     { 10 }
     performance_score { 4.5 }
 
-    # Ensure hamzis_id is generated
+    # Ensure staff_id is generated
     before(:create) do |employee|
       employee.hire_date ||= Date.today
     end

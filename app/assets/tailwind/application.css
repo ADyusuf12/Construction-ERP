@@ -1,53 +1,34 @@
 /* app/assets/tailwind/application.css */
 @import "tailwindcss";
 
-/* Enable class-based dark mode */
 @custom-variant dark (&:where(.dark *));
 
 @theme {
-  /* --- Hamzis Brand Colors --- */
-  --color-hamzis-brown: #2D1B17;
-  --color-hamzis-black: #111111;
-  --color-hamzis-white: #FAFAFA;
-  --color-hamzis-copper: #D97706;
-  --color-hamzis-textLight: #1A1A1A;
-  --color-hamzis-textDark: #F3F4F6;
+  /* --- Earmark Systems (Core Template) --- */
+  --color-brand-primary: #3498db;        /* Professional Blue */
+  --color-brand-secondary: #2c3e50;      /* Dark Slate */
+  --color-brand-accent: #2980b9;         /* Lighter Blue */
+  --color-brand-surface: rgba(52, 152, 219, 0.08); /* Blue Glassmorphism */
 
-  --color-hamzis-brown-muted: #3D2B26;
-  --color-hamzis-copper-muted: #B45309;
-  --color-hamzis-black-soft: #1A1A1A;
-
-  /* Surface for Glassmorphism (using the new Copper HEX) */
-  --color-hamzis-surface: rgba(217, 119, 6, 0.08);
+  --color-brand-black: #111111;
+  --color-brand-white: #FAFAFA;
+  --color-brand-text-light: #1A1A1A;
+  --color-brand-text-dark: #F3F4F6;
 
   /* --- Custom Animations --- */
   --animate-fade-in: fadeIn 0.3s ease-out forwards;
 
-  /* --- Keyframes --- */
   @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
   }
 
   @keyframes progress-stripe {
-    from {
-      background-position: 1rem 0;
-    }
-
-    to {
-      background-position: 0 0;
-    }
+    from { background-position: 1rem 0; }
+    to { background-position: 0 0; }
   }
 }
 
-/* You can also add your custom scrollbar here instead of in the <head> */
 @layer base {
   .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
@@ -58,11 +39,12 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(217, 119, 6, 0.2);
+    /* Using the new brand-primary variable */
+    background: rgba(52, 152, 219, 0.2);
     border-radius: 10px;
   }
 
   .custom-scrollbar:hover::-webkit-scrollbar-thumb {
-    background: rgba(217, 119, 6, 0.5);
+    background: rgba(52, 152, 219, 0.5);
   }
 }
