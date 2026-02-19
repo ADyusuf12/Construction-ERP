@@ -1,73 +1,94 @@
 # --- Salary Batches ---
-batch_jan = Accounting::SalaryBatch.create!(
-  name: "January Payroll",
+# 1. Historical Paid Batch (Last Month)
+Accounting::SalaryBatch.create!(
+  name: "January 2026 Payroll",
   period_start: Date.new(2026, 1, 1),
   period_end: Date.new(2026, 1, 31),
-  status: :pending
+  status: :paid
 )
 
-Accounting::SalaryBatch.create!(
-  name: "February Payroll",
+# 2. Current Pending Batch (The one you'll "Process" in the video)
+batch_feb = Accounting::SalaryBatch.create!(
+  name: "February 2026 Payroll",
   period_start: Date.new(2026, 2, 1),
   period_end: Date.new(2026, 2, 28),
   status: :pending
 )
 
-# --- Salaries for multiple employees ---
-[ "engineer@example.com", "qs@example.com", "site_manager@example.com", "hr@example.com", "accountant@example.com" ].each do |email|
-  employee = Hr::Employee.joins(:user).find_by(users: { email: email })
-
+# --- Salaries (Core Staff + Junior Staff) ---
+Hr::Employee.all.each do |employee|
+  # Determine base pay based on role/title
+  base =
+    case employee.position_title
+    when "Chief Executive Officer" then 1_200_000
+    when "Civil Engineer", "Quantity Surveyor" then 450_000
+    when "Site Manager" then 400_000
+    when "General Laborer", "Site Cleaner" then 85_000
+    else 150_000
+    end
   salary = Accounting::Salary.create!(
-    batch: batch_jan,
+    batch: batch_feb,
     employee: employee,
-    base_pay: rand(200000..700000),
-    allowances: rand(20000..100000),
-    deductions_total: 0,
+    base_pay: base,
+    allowances: (base * 0.12).to_i, # 12% allowances
     status: :pending
   )
 
-  # Add deductions
-  Accounting::Deduction.create!(salary: salary, deduction_type: :tax, amount: rand(1000..3000), notes: "Tax deduction")
-  Accounting::Deduction.create!(salary: salary, deduction_type: :pension, amount: rand(500..1500), notes: "Pension contribution")
+  # Deductions
+  Accounting::Deduction.create!(salary: salary, deduction_type: :tax, amount: (base * 0.05).to_i, notes: "PAYE")
+  Accounting::Deduction.create!(salary: salary, deduction_type: :pension, amount: (base * 0.03).to_i, notes: "Pension")
 end
 
-puts "Seeded January & February payroll batches with multiple employees and deductions."
+# --- Transactions (Dashboard KPI Drivers) ---
 
-# --- Transactions ---
+# 1. Revenue: Already Received (Shows up in Cash Flow)
 Accounting::Transaction.create!(
-  date: Date.new(2026, 1, 10),
-  description: "Client payment for HQ project milestone",
-  amount: 200_000,
+  date: 2.weeks.ago,
+  description: "Initial Mobilization - Abuja HQ Tower",
+  amount: 5_000_000,
   transaction_type: :receipt,
   status: :paid,
-  reference: "INV-001"
+  reference: "REC-2026-001"
 )
 
+# 2. Revenue: Unpaid Invoice (This drives the "Pending Revenue" KPI on Dashboard)
 Accounting::Transaction.create!(
-  date: Date.new(2026, 1, 15),
-  description: "Invoice for warehouse expansion materials",
+  date: 5.days.ago,
+  description: "Milestone 1 Completion - Lagos Warehouse",
+  amount: 2_750_000,
+  transaction_type: :invoice,
+  status: :unpaid,
+  reference: "INV-2026-042"
+)
+
+# 3. Expense: Overdue Utility/Vendor
+Accounting::Transaction.create!(
+  date: 1.week.ago,
+  description: "Monthly Site Power - Abuja Depot (AEDC)",
   amount: 150_000,
   transaction_type: :invoice,
   status: :unpaid,
-  reference: "INV-002"
+  reference: "UTIL-ABJ-992"
 )
 
-# --- Project Expenses ---
-ProjectExpense.create!(
-  project: Project.find_by(name: "Headquarters Construction"),
-  date: Date.new(2026, 1, 12),
-  description: "Payment to subcontractor for excavation",
-  amount: 50_000,
-  notes: "Excavation completed on schedule"
-)
+# --- Project Specific Expenses ---
+hq_project = Project.find_by!(name: "Abuja HQ Tower Construction")
+lagos_project = Project.find_by!(name: "Lagos Warehouse Expansion")
 
 ProjectExpense.create!(
-  project: Project.find_by(name: "Warehouse Expansion"),
-  date: Date.new(2026, 1, 18),
-  description: "Purchase of roofing sheets",
-  amount: 160_000,
-  notes: "Materials delivered to site"
+  project: hq_project,
+  date: Date.today,
+  description: "Soil Testing & Environmental Impact Fee",
+  amount: 320_000,
+  notes: "Required for Phase 2 approval"
 )
-# --- Project Files ---
 
-puts "Seeded transactions, project expenses, and project files."
+ProjectExpense.create!(
+  project: lagos_project,
+  date: 2.days.ago,
+  description: "Diesel for On-site Generator (500L)",
+  amount: 600_000,
+  notes: "Lagos site operational costs"
+)
+
+puts "Seeded Finance: Jan (Paid) & Feb (Pending) Payroll, ₦2.75M Pending Revenue, and Site Expenses."
