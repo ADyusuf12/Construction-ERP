@@ -1,88 +1,97 @@
 <%= form_with(model: @employee, local: true, class: "space-y-6 hr-form") do |f| %>
-<% if @employee.errors.any? || (@employee.personal_detail && @employee.personal_detail.errors.any?) %>
-<div class="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 backdrop-blur-md">
-    <div class="flex items-center gap-2 mb-2">
+  <% if @employee.errors.any? || (@employee.personal_detail && @employee.personal_detail.errors.any?) %>
+    <div class="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 backdrop-blur-md">
+      <div class="flex items-center gap-2 mb-2">
         <svg xmlns="http://www.w3.org" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
         </svg>
         <h3 class="font-bold uppercase tracking-widest text-xs">
-            <%= pluralize(@employee.errors.count + (@employee.personal_detail&.errors&.count || 0), "error") %> identified
+          <%= pluralize(@employee.errors.count + (@employee.personal_detail&.errors&.count || 0), "error") %> identified
         </h3>
-    </div>
-    <ul class="list-disc ml-6 text-xs space-y-1 opacity-90">
+      </div>
+      <ul class="list-disc ml-6 text-xs space-y-1 opacity-90">
         <% (@employee.errors.full_messages + (@employee.personal_detail&.errors&.full_messages || [])).each do |msg| %>
-        <li><%= msg %></li>
+          <li><%= msg %></li>
         <% end %>
-    </ul>
-</div>
-<% end %>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      </ul>
+    </div>
+  <% end %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Employment Details Card -->
     <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/20 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-        <div class="flex items-center gap-2 mb-6">
-            <div class="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
-                <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-            </div>
-            <h4 class="text-sm font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary">Employment</h4>
+      <div class="flex items-center gap-2 mb-6">
+        <div class="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
+          <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
         </div>
-        <div class="space-y-5">
-            <div>
-                <%= f.label :user_id, "Link to System User", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
-                <%= f.collection_select :user_id,
-                User.where(role: [:ceo, :cto, :qs, :site_manager, :engineer, :storekeeper, :hr, :accountant]).where.missing(:employee),
+        <h4 class="text-sm font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary">Employment</h4>
+      </div>
+      <div class="space-y-5">
+        <div>
+          <%= f.label :user_id, "Link to System User", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+          <%= f.collection_select :user_id,
+                User.where(role: [:ceo, :cto, :qs, :site_manager, :engineer, :storekeeper, :hr, :accountant, :admin]).where.not(id: Hr::Employee.where.not(id: @employee.id).pluck(:user_id)),
                 :id, :email,
                 { include_blank: "Select a user to link" },
                 class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <%= f.label :department, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
-                    <%= f.text_field :department, list: "departments", class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
-                    <datalist id="departments">
-                        <% @departments.each do |d| %><option value="<%= d %>"></option><% end %>
-                    </datalist>
-                </div>
-                <div>
-                    <%= f.label :position_title, "Position", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
-                    <%= f.text_field :position_title, class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
-                </div>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <%= f.label :hire_date, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
-                    <%= f.date_field :hire_date, class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
-                </div>
-                <div>
-                    <%= f.label :manager_id, "Reporting To", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
-                    <%= f.select :manager_id, options_for_select([["— No manager —", nil]] + @managers.map { |m| [m.full_name, m.id] }, @employee.manager_id), {}, class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
-                </div>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <%= f.label :status, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
-                    <%= f.select :status, options_for_select(@status_options, @employee.status), {}, class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
-                </div>
-                <div>
-                    <%= f.label :leave_balance, "Leave Days", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
-                    <%= f.number_field :leave_balance, value: @employee.leave_balance || 0, class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
-                </div>
-            </div>
         </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <%= f.label :department, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+            <%= f.text_field :department, list: "departments", class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
+            <datalist id="departments">
+              <% @departments.each do |d| %><option value="<%= d %>"></option><% end %>
+            </datalist>
+          </div>
+          <div>
+            <%= f.label :position_title, "Position", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+            <%= f.text_field :position_title, class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm text-gray-900 dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
+          </div>
+        </div>
+        <div class="p-4 rounded-xl bg-brand-primary/5 border border-brand-primary/10">
+          <%= f.label :base_salary, "Standard Monthly Base Salary", class: "block text-[10px] font-black uppercase tracking-[0.1em] mb-2 text-brand-primary" %>
+          <div class="relative">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-brand-primary/60 font-bold text-sm">₦</span>
+            <%= f.number_field :base_salary, step: 0.01, placeholder: "0.00",
+                    class: "w-full pl-10 pr-4 py-3 border border-brand-primary/20 rounded-xl bg-white/80 dark:bg-black/40 text-sm font-mono dark:text-white focus:ring-2 focus:ring-brand-primary transition outline-none shadow-inner" %>
+          </div>
+          <p class="mt-2 text-[9px] text-brand-secondary/50 dark:text-brand-primary/50 italic italic">This value serves as the baseline for automated payroll generation.</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <%= f.label :hire_date, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+            <%= f.date_field :hire_date, class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
+          </div>
+          <div>
+            <%= f.label :manager_id, "Reporting To", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+            <%= f.select :manager_id, options_for_select([["— No manager —", nil]] + @managers.map { |m| [m.full_name, m.id] }, @employee.manager_id), {}, class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <%= f.label :status, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+            <%= f.select :status, options_for_select(@status_options, @employee.status), {}, class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
+          </div>
+          <div>
+            <%= f.label :leave_balance, "Leave Days", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
+            <%= f.number_field :leave_balance, value: @employee.leave_balance || 0, class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- Personal Details Section -->
     <%= render "personal_details_fields", f: f %>
     <!-- Next of Kin Section -->
     <div class="md:col-span-2" data-controller="nested-form">
-        <%= render "next_of_kin_section", f: f %>
+      <%= render "next_of_kin_section", f: f %>
     </div>
-</div>
-<!-- Actions -->
-<div class="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-brand-secondary/10">
+  </div>
+  <!-- Actions -->
+  <div class="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-brand-secondary/10">
     <%= f.submit (@employee.persisted? ? "Update Employee" : "Create Employee Record"),
           class: "w-full sm:w-auto px-8 py-3 rounded-xl bg-brand-primary text-white hover:bg-brand-black transform transition-all duration-200 active:scale-95 font-bold uppercase tracking-widest text-[10px] shadow-lg cursor-pointer" %>
     <%= link_to "Discard Changes", hr_employees_path,
           class: "w-full sm:w-auto px-8 py-3 rounded-xl bg-brand-secondary/10 text-brand-secondary dark:text-brand-primary border border-brand-secondary/20 hover:bg-red-500/10 hover:text-red-600 hover:border-red-500/50 transition-all text-center text-[10px] font-bold uppercase tracking-widest" %>
-</div>
+  </div>
 <% end %>
