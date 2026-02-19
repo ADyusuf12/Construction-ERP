@@ -8,25 +8,27 @@ module Hr
       authorize Hr::Employee
       @employees = policy_scope(Hr::Employee)
       if params[:q].present?
-        @employees = @employees.where("staff_id ILIKE ?", "%#{params[:q]}")
+        @employees = @employees.where("staff_id ILIKE ?", "%#{params[:q]}%")
       end
     end
 
     def show
       authorize @employee
+      # Preload adjustments for the show page
+      @recurring_adjustments = @employee.recurring_adjustments.order(adjustment_type: :asc)
     end
 
     def new
       @employee = Hr::Employee.new
       @employee.build_personal_detail
       @employee.next_of_kins.build
+      @employee.recurring_adjustments.build
       authorize @employee
     end
 
     def edit
       authorize @employee
       @employee.build_personal_detail if @employee.personal_detail.nil?
-      @employee.next_of_kins.build if @employee.next_of_kins.empty?
     end
 
     def create
@@ -34,8 +36,9 @@ module Hr
       authorize @employee
 
       if @employee.save
-        redirect_to hr_employees_path, notice: "Employee was successfully created."
+        redirect_to hr_employee_path(@employee), notice: "Employee was successfully created."
       else
+        load_form_collections
         render :new, status: :unprocessable_content
       end
     end
@@ -43,8 +46,9 @@ module Hr
     def update
       authorize @employee
       if @employee.update(employee_params)
-        redirect_to hr_employees_path, notice: "Employee was successfully updated."
+        redirect_to hr_employee_path(@employee), notice: "Employee updated."
       else
+        load_form_collections
         render :edit, status: :unprocessable_content
       end
     end
@@ -52,41 +56,32 @@ module Hr
     def destroy
       authorize @employee
       @employee.destroy
-      redirect_to hr_employees_path, notice: "Employee was successfully deleted."
+      redirect_to hr_employees_path, notice: "Employee record archived."
     end
 
     private
 
-      def set_employee
-        @employee = Hr::Employee.find(params[:id])
-      end
+    def set_employee
+      @employee = Hr::Employee.find(params[:id])
+    end
 
-      def load_form_collections
-        @managers = policy_scope(Hr::Employee).order(:staff_id)
-        @departments = Hr::Employee.distinct.pluck(:department).compact.sort
-        @status_options = Hr::Employee.statuses.keys.map { |s| [ s.humanize, s ] }
-        @gender_options = Hr::PersonalDetail.genders.keys.map { |g| [ g.humanize, g ] }
-        @id_options = Hr::PersonalDetail.means_of_identifications.keys.map { |m| [ m.humanize, m ] }
-        @marital_options = Hr::PersonalDetail.marital_statuses.keys.map { |m| [ m.humanize, m ] }
-      end
+    def load_form_collections
+      @managers = policy_scope(Hr::Employee).where.not(id: @employee&.id).order(:staff_id)
+      @departments = Hr::Employee.distinct.pluck(:department).compact.sort
+    end
 
-      def employee_params
-        params.require(:hr_employee).permit(
-          :department, :position_title, :hire_date,
-          :status, :leave_balance, :performance_score,
-          :manager_id, :user_id,
-
-          personal_detail_attributes: [
-            :id, :first_name, :last_name, :dob, :gender,
-            :bank_name, :account_number, :account_name,
-            :means_of_identification, :id_number, :marital_status,
-            :address, :phone_number
-          ],
-
-          next_of_kins_attributes: [
-            :id, :name, :relationship, :phone_number, :address, :_destroy
-          ]
-        )
-      end
+    def employee_params
+      params.require(:hr_employee).permit(
+        :department, :position_title, :hire_date, :status, :base_salary, :manager_id, :user_id,
+        personal_detail_attributes: [
+          :id, :first_name, :last_name, :dob, :gender, :bank_name,
+          :account_number, :account_name, :means_of_identification,
+          :id_number, :marital_status, :address, :phone_number
+        ],
+        next_of_kins_attributes: [:id, :name, :relationship, :phone_number, :address, :_destroy],
+        # ADDED THIS FOR PRODUCTION
+        recurring_adjustments_attributes: [:id, :label, :amount, :adjustment_type, :active, :_destroy]
+      )
+    end
   end
 end

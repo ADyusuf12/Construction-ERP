@@ -3,10 +3,11 @@ FactoryBot.define do
     association :employee, factory: :hr_employee
     association :batch,    factory: :accounting_salary_batch
 
-    base_pay    { 10000.0 }
-    allowances  { 2000.0 }
-    status      { :pending }
-    net_pay     { base_pay + allowances } # model recalculates anyway
+    base_pay   { 100000.0 }
+    allowances { 10000.0 }
+    status     { :pending }
+
+    # net_pay is calculated by before_validation in the model
 
     trait :paid do
       status { :paid }
@@ -14,6 +15,13 @@ FactoryBot.define do
 
     trait :failed do
       status { :failed }
+    end
+
+    trait :with_deductions do
+      after(:create) do |salary|
+        create(:accounting_deduction, salary: salary, amount: 5000)
+        salary.save! # Triggers re-calculation of net_pay
+      end
     end
   end
 end

@@ -1,14 +1,54 @@
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+  <%
+    # Query database for sums across the entire authorized scope
+    total_disbursed = salaries.where(status: 'paid').sum(:net_pay)
+
+    # Active Liability (Pending or Processed batches)
+    active_scope = salaries.joins(:batch).where(accounting_salary_batches: { status: [:pending, :processed] })
+    current_liability = active_scope.sum(:net_pay)
+    staff_count = active_scope.count
+  %>
   <% [
-    { label: "Payroll Strength", count: salaries.count, color: "copper" },
-    { label: "Disbursed", count: salaries.status_paid.count, color: "green-500" },
-    { label: "Pending Auth", count: salaries.status_pending.count, color: "yellow-500" },
-    { label: "Total Net Liability", count: number_to_currency(salaries.sum(:net_pay), unit: "₦"), color: "brand-secondary" }
+    {
+      label: "Active Cycle Staff",
+      value: staff_count,
+      color: "brand-primary",
+      sub: "Current Batch"
+    },
+    {
+      label: "Current Liability",
+      value: number_to_currency(current_liability, unit: "₦"),
+      color: "yellow-500",
+      sub: "Pending Disbursement"
+    },
+    {
+      label: "Total Disbursed",
+      value: number_to_currency(total_disbursed, unit: "₦"),
+      color: "green-500",
+      sub: "Historical All-Time"
+    },
+    {
+      label: "Avg. Net Pay",
+      value: number_to_currency(staff_count > 0 ? (current_liability / staff_count) : 0, unit: "₦"),
+      color: "brand-secondary",
+      sub: "Per Employee (Active)"
+    }
   ].each do |stat| %>
     <div class="bg-brand-white/30 dark:bg-brand-black/30 border border-brand-secondary/10 rounded-2xl p-5 backdrop-blur-md shadow-xl relative overflow-hidden group">
-      <div class="absolute top-0 left-0 w-1 h-full bg-brand-<%= stat[:color] %>"></div>
-      <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-secondary/50 dark:text-brand-primary/50 mb-1"><%= stat[:label] %></p>
-      <p class="text-2xl font-black text-brand-secondary dark:text-white truncate"><%= stat[:count] %></p>
+      <div class="absolute top-0 left-0 w-1 h-full bg-<%= stat[:color] %>"></div>
+      <div class="flex flex-col h-full justify-between">
+        <div>
+          <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-secondary/50 dark:text-brand-primary/50 mb-1">
+            <%= stat[:label] %>
+          </p>
+          <p class="text-xl lg:text-2xl font-black text-brand-secondary dark:text-white truncate">
+            <%= stat[:value] %>
+          </p>
+        </div>
+        <p class="text-[8px] font-bold uppercase tracking-widest text-brand-secondary/30 dark:text-brand-primary/30 mt-2 italic leading-none">
+          <%= stat[:sub] %>
+        </p>
+      </div>
     </div>
   <% end %>
 </div>

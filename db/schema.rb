@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_17_131535) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_19_185059) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -43,7 +43,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_17_131535) do
     t.string "name"
     t.date "period_start"
     t.date "period_end"
-    t.integer "status"
+    t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -126,6 +126,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_17_131535) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "manager_id"
+    t.decimal "base_salary", precision: 12, scale: 2, default: "0.0", null: false
     t.index ["manager_id"], name: "index_hr_employees_on_manager_id"
     t.index ["staff_id"], name: "index_hr_employees_on_staff_id", unique: true
     t.index ["user_id"], name: "index_hr_employees_on_user_id"
@@ -172,6 +173,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_17_131535) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["employee_id"], name: "index_hr_personal_details_on_employee_id"
+  end
+
+  create_table "hr_recurring_adjustments", force: :cascade do |t|
+    t.bigint "employee_id", null: false
+    t.string "label", null: false
+    t.decimal "amount", precision: 12, scale: 2, null: false
+    t.integer "adjustment_type", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_hr_recurring_adjustments_on_employee_id"
   end
 
   create_table "inventory_items", force: :cascade do |t|
@@ -494,6 +506,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_17_131535) do
   add_foreign_key "hr_leaves", "hr_employees", column: "manager_id"
   add_foreign_key "hr_next_of_kins", "hr_employees", column: "employee_id"
   add_foreign_key "hr_personal_details", "hr_employees", column: "employee_id"
+  add_foreign_key "hr_recurring_adjustments", "hr_employees", column: "employee_id"
   add_foreign_key "project_expenses", "projects"
   add_foreign_key "project_expenses", "stock_movements"
   add_foreign_key "project_files", "projects"

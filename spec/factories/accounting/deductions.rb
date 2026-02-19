@@ -3,31 +3,21 @@ FactoryBot.define do
     association :salary, factory: :accounting_salary
 
     deduction_type { :tax }
-    amount         { 100.0 }
+    amount         { 1000.0 }
     notes          { "Standard tax deduction" }
 
     trait :pension do
       deduction_type { :pension }
-      amount         { 200.0 }
-      notes          { "Pension contribution" }
+      amount         { 2000.0 }
     end
 
     trait :loan do
       deduction_type { :loan }
-      amount         { 300.0 }
-      notes          { "Loan repayment" }
+      amount         { 5000.0 }
     end
 
-    trait :health_insurance do
-      deduction_type { :health_insurance }
-      amount         { 150.0 }
-      notes          { "Health insurance premium" }
-    end
-
-    trait :other do
-      deduction_type { :other }
-      amount         { 50.0 }
-      notes          { "Miscellaneous deduction" }
+    trait :recurring do
+      deduction_type { :recurring }
     end
   end
 end

@@ -1,19 +1,30 @@
 <% content_for :title, "Payroll Management | Earmark Systems" %>
 <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
   <div>
-    <h1 class="text-4xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary uppercase">Salary Registry</h1>
-    <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic">Personnel compensation management and disbursement tracking.</p>
+    <h1 class="text-4xl font-black tracking-tighter text-brand-secondary dark:text-brand-primary uppercase leading-none">Salary Registry</h1>
+    <div class="flex items-center gap-4 mt-2">
+      <p class="text-sm text-brand-secondary/60 dark:text-brand-primary/60 italic leading-none">Personnel compensation management.</p>
+      <%# Rows Per Page Selector %>
+      <%= form_tag accounting_salaries_path, method: :get, class: "flex items-center gap-2 border-l border-brand-secondary/20 pl-4" do %>
+        <label class="text-[8px] font-black uppercase text-brand-secondary/40 tracking-widest">Rows:</label>
+        <%= select_tag :per_page,
+            options_for_select([15, 30, 50, 100], params[:per_page] || 15),
+            onchange: "this.form.submit()",
+            class: "bg-transparent text-[10px] font-black text-brand-primary border-none focus:ring-0 p-0 cursor-pointer uppercase" %>
+      <% end %>
+    </div>
   </div>
-  <%= link_to new_accounting_salary_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-white hover:text-brand-secondary transition-all duration-500 active:scale-95 shadow-brand-primary/20" do %>
+  <%= link_to new_accounting_salary_batch_path, class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-primary text-white font-black uppercase tracking-widest text-[11px] shadow-lg hover:bg-brand-black transition-all duration-500 active:scale-95 shadow-brand-primary/20" do %>
     <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
       <path d="M12 4v16m8-8H4" />
     </svg>
-    Issue New Salary
+    New Salary Batch
   <% end %>
 </div>
-<%= render "accounting/salaries/salary_summary", salaries: @salaries %>
+<%# Use @salary_stats for the totals %>
+<%= render "accounting/salaries/salary_summary", salaries: @salary_stats %>
+<%# Use @salaries for the actual paginated table %>
 <%= render "accounting/salaries/salaries_table", salaries: @salaries %>
 <div class="mt-10 py-6 border-t border-brand-secondary/5 dark:border-brand-primary/10 flex flex-col items-center gap-3">
-  <p class="text-[9px] font-black uppercase tracking-[0.3em] text-brand-secondary/30 dark:text-brand-primary/30 italic mb-2"></p>
   <%= paginate @salaries if defined?(paginate) %>
 </div>

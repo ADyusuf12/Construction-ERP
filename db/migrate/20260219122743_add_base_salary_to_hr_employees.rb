@@ -1,0 +1,5 @@
+class AddBaseSalaryToHrEmployees < ActiveRecord::Migration[8.0]
+  def change
+    add_column :hr_employees, :base_salary, :decimal, precision: 12, scale: 2, default: 0.0, null: false
+  end
+end
