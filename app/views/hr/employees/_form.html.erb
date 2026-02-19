@@ -71,7 +71,11 @@
         <div class="grid grid-cols-2 gap-4">
           <div>
             <%= f.label :status, class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
-            <%= f.select :status, options_for_select(@status_options, @employee.status), {}, class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none" %>
+            <%= f.select :status,
+      options_for_select(Hr::Employee.statuses.keys.map { |s| [s.humanize, s] }, f.object.status),
+      {},
+      class: "w-full px-4 py-2.5 border border-brand-secondary/20 rounded-xl bg-white/50 dark:bg-black/20 text-sm dark:text-brand-primary focus:ring-2 focus:ring-brand-primary transition outline-none"
+  %>
           </div>
           <div>
             <%= f.label :leave_balance, "Leave Days", class: "block text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-secondary/70 dark:text-brand-primary/70" %>
