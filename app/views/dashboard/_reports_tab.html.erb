@@ -1,60 +1,42 @@
+<%# app/views/dashboard/_reports_tab.html.erb %>
 <% if policy_scope(Report).any? %>
-  <div id="reports-tab" class="tab-content hidden animate-fade-in">
-    <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-xl p-6">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tight">Recent Reports</h2>
+  <div class="space-y-6">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h2 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tight">Intelligence Logs</h2>
+        <p class="text-[9px] font-bold uppercase tracking-widest text-brand-secondary/40">Consolidated Field Reports & Site Documentation</p>
+      </div>
+      <div class="flex items-center gap-2">
         <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary/40 dark:text-brand-primary/40">
-          Site Documentation
+          Sync Status:
+        </span>
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-500/10 text-green-500 text-[9px] font-black uppercase tracking-widest border border-green-500/20">
+          <div class="w-1 h-1 rounded-full bg-current animate-pulse"></div>
+          Live
         </span>
       </div>
-      <% if @reports.any? %>
+    </div>
+    <div class="overflow-hidden bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl">
+      <% if reports.any? %>
         <div class="overflow-x-auto custom-scrollbar">
-          <table class="min-w-full border-separate border-spacing-0 text-left">
-            <thead>
-              <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
-                <% ["Type", "Status", "Filing Date", "Site Context"].each do |head| %>
-                  <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/10 text-left">
-                    <%= head %>
-                  </th>
-                <% end %>
-              </tr>
-            </thead>
+          <table class="min-w-full text-left border-separate border-spacing-0">
+            <%# Reusing your Modular Header %>
+            <%= render "reports/report_table_header", show_project: true %>
             <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
-              <% @reports.each do |report| %>
-                <tr id="dash_<%= dom_id(report) %>" class="group hover:bg-white/40 dark:hover:bg-brand-primary/5 transition-all duration-300">
-                  <td class="px-4 py-4">
-                    <div class="flex items-center gap-3">
-                      <svg xmlns="http://www.w3.org" class="h-4 w-4 text-brand-primary/60 group-hover:text-brand-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      <div class="text-xs font-black text-brand-secondary dark:text-brand-text-dark uppercase tracking-tight">
-                        <%= report.report_type.humanize %>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <span class="inline-flex px-2 py-0.5 rounded border border-brand-secondary/10 bg-brand-secondary/5 dark:border-brand-primary/20 dark:bg-brand-primary/5 text-[9px] font-black uppercase tracking-widest text-brand-secondary/70 dark:text-brand-primary">
-                      <%= report.status.humanize %>
-                    </span>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="text-[10px] font-mono text-brand-secondary/80 dark:text-brand-primary/80">
-                      <%= report.report_date.strftime("%d.%m.%y") %>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="text-[10px] font-bold text-brand-secondary/60 dark:text-brand-text-dark/60 uppercase truncate max-w-[160px]">
-                      <%= report.project.name %>
-                    </div>
-                  </td>
-                </tr>
+              <% reports.each_with_index do |report, index| %>
+                <%# Reusing your detailed Row Partial with Action Buttons %>
+                <%= render "reports/report_row",
+                           report: report,
+                           show_project: true,
+                           row_class: index.even? ? "bg-brand-secondary/5 dark:bg-brand-primary/5" : "" %>
               <% end %>
             </tbody>
           </table>
         </div>
       <% else %>
-        <div class="py-12 text-center border-2 border-dashed border-brand-secondary/10 rounded-xl">
-          <p class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">No reports on file</p>
+        <div class="text-center py-20 border border-dashed border-brand-secondary/20 rounded-xl bg-black/5">
+          <h3 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tighter italic opacity-50">Zero Intelligence Logs</h3>
+          <p class="text-[10px] text-brand-secondary/40 dark:text-white/20 mt-2 uppercase tracking-widest italic">Awaiting site field data synchronization.</p>
         </div>
       <% end %>
     </div>

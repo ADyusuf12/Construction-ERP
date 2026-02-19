@@ -1,38 +1,49 @@
 <div class="border-b border-brand-secondary/10 dark:border-brand-primary/10 mb-8 overflow-x-auto custom-scrollbar">
-    <nav class="flex flex-nowrap md:flex-wrap gap-2 pb-px min-w-max">
-        <!-- Profile Tab (Always Visible) -->
-        <button data-tab="profile" class="tab-link px-6 py-3 rounded-t-xl bg-brand-primary text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-lg transition-all duration-300 cursor-pointer active:scale-95">
-            Profile
-        </button>
-        <% if policy_scope(Project).any? %>
-        <button data-tab="projects" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/10 hover:text-brand-secondary dark:hover:text-brand-primary transition-all duration-300 cursor-pointer">
-            Projects
-        </button>
+  <nav class="flex flex-nowrap md:flex-wrap gap-2 pb-px min-w-max">
+    <button data-tab="profile" class="tab-link px-6 py-3 rounded-t-xl bg-brand-primary text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-lg transition-all duration-300 cursor-pointer active:scale-95">
+      Profile
+    </button>
+    <% if policy_scope(Project).any? %>
+      <button data-tab="projects" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/10 hover:text-brand-secondary dark:hover:text-brand-primary transition-all duration-300 cursor-pointer">
+        Projects
+      </button>
+    <% end %>
+    <% if policy_scope(Task).any? %>
+      <button data-tab="tasks" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/10 hover:text-brand-secondary dark:hover:text-brand-primary transition-all duration-300 cursor-pointer">
+        Tasks
+      </button>
+    <% end %>
+    <%# --- INVENTORY TAB (Correct Namespacing) --- %>
+    <% if policy_scope([:inventory, InventoryItem]).any? %>
+      <button data-tab="inventory" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/10 hover:text-brand-secondary dark:hover:text-brand-primary transition-all duration-300 cursor-pointer flex items-center gap-2">
+        Inventory
+        <% if @low_stock_items.any? %>
+          <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
         <% end %>
-        <% if policy_scope(Task).any? %>
-        <button data-tab="tasks" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/10 hover:text-brand-secondary dark:hover:text-brand-primary transition-all duration-300 cursor-pointer">
-            Tasks
-        </button>
+      </button>
+    <% end %>
+    <% if policy_scope(Report).any? %>
+      <button data-tab="reports" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/10 hover:text-brand-secondary dark:hover:text-brand-primary transition-all duration-300 cursor-pointer">
+        Reports
+      </button>
+    <% end %>
+    <% if policy_scope(Accounting::Transaction).any? %>
+      <button data-tab="transactions" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/10 hover:text-brand-secondary dark:hover:text-brand-primary transition-all duration-300 cursor-pointer">
+        Ledger
+      </button>
+    <% end %>
+    <% if policy_scope(ProjectExpense).any? %>
+      <button data-tab="expenses" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/10 hover:text-brand-secondary dark:hover:text-brand-primary transition-all duration-300 cursor-pointer">
+        Expenses
+      </button>
+    <% end %>
+    <% if policy_scope(Hr::Employee).any? %>
+      <button data-tab="hr" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/10 hover:text-brand-secondary dark:hover:text-brand-primary transition-all duration-300 cursor-pointer flex items-center gap-2">
+        HR Records
+        <% if @pending_leaves_count > 0 %>
+          <span class="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse"></span>
         <% end %>
-        <% if policy_scope(Report).any? %>
-        <button data-tab="reports" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/10 hover:text-brand-secondary dark:hover:text-brand-primary transition-all duration-300 cursor-pointer">
-            Reports
-        </button>
-        <% end %>
-        <% if policy_scope(Accounting::Transaction).any? %>
-        <button data-tab="transactions" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/10 hover:text-brand-secondary dark:hover:text-brand-primary transition-all duration-300 cursor-pointer">
-            Ledger
-        </button>
-        <% end %>
-        <% if policy_scope(ProjectExpense).any? %>
-        <button data-tab="expenses" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/10 hover:text-brand-secondary dark:hover:text-brand-primary transition-all duration-300 cursor-pointer">
-            Expenses
-        </button>
-        <% end %>
-        <% if policy_scope(Hr::Employee).any? %>
-        <button data-tab="hr" class="tab-link px-6 py-3 rounded-t-xl text-brand-secondary/60 dark:text-brand-primary/60 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-secondary/5 dark:hover:bg-brand-primary/10 hover:text-brand-secondary dark:hover:text-brand-primary transition-all duration-300 cursor-pointer">
-            HR Records
-        </button>
-        <% end %>
-    </nav>
+      </button>
+    <% end %>
+  </nav>
 </div>

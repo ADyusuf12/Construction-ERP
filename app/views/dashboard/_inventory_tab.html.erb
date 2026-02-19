@@ -1,0 +1,23 @@
+<%# app/views/dashboard/_inventory_tab.html.erb %>
+<div class="space-y-6">
+  <div class="flex items-center justify-between mb-4">
+    <div>
+      <h2 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tight">Logistics Oversight</h2>
+      <p class="text-[9px] font-bold uppercase tracking-widest text-brand-secondary/40">Critical Stock Levels & Asset Registry</p>
+    </div>
+    <% if @low_stock_items.any? %>
+      <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20">
+        <span class="flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-red-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+        </span>
+        <span class="text-[10px] font-black text-red-500 uppercase tracking-tighter">
+          <%= @low_stock_items.count %> Items below threshold
+        </span>
+      </div>
+    <% end %>
+  </div>
+  <%# Reusing your Inventory Table Partial %>
+  <%= render "inventory/inventory_items/inventory_table",
+             inventory_items: @inventory_items %>
+</div>

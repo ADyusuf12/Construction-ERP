@@ -1,6 +1,6 @@
 class ReportsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, except: [ :index, :new, :create ]
+  before_action :set_project, except: [ :index, :new, :create, :my_reports ]
   before_action :set_report, only: %i[ show edit update destroy submit review ]
   include Pundit::Authorization
 
@@ -62,6 +62,16 @@ class ReportsController < ApplicationController
     authorize @report
     @report.destroy
     redirect_to project_reports_path(@project), notice: "Report deleted.", status: :see_other
+  end
+
+  def my_reports
+    @reports_by_status = ReportPolicy::Scope.new(current_user, Report)
+                          .authored_only
+                          .includes(:project)
+                          .order(report_date: :desc)
+                          .group_by(&:status)
+
+    render :my_reports
   end
 
   def submit

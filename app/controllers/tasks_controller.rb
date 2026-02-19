@@ -1,10 +1,23 @@
+# app/controllers/tasks_controller.rb
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, except: [ :index, :new, :create ]
+  before_action :set_project, except: [ :index, :new, :create, :my_tasks ]
   before_action :set_task, only: %i[ show edit update destroy in_progress complete ]
 
   def index
     @tasks = policy_scope(Task.includes(:project, employees: :personal_detail))
+  end
+
+  # NEW: Focused view for the logged-in employee
+  def my_tasks
+    # Grouping by project makes it much easier for field staff to navigate
+    @tasks_by_project = TaskPolicy::Scope.new(current_user, Task)
+                        .assigned_only
+                        .includes(:project)
+                        .where.not(status: :done)
+                        .group_by(&:project)
+
+    render :my_tasks
   end
 
   def show

@@ -1,62 +1,39 @@
-<% if policy_scope(Task).any? %>
-  <div id="tasks-tab" class="tab-content hidden animate-fade-in">
-    <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-xl p-6">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tight">Recent Tasks</h2>
-        <span class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">
-          Operational Queue
-        </span>
+<%# app/views/dashboard/_tasks_tab.html.erb %>
+<div class="space-y-6">
+  <div class="flex items-center justify-between mb-4">
+    <div>
+      <h2 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tight">Operational Directives</h2>
+      <p class="text-[9px] font-bold uppercase tracking-widest text-brand-secondary/40">Real-time Task Progress Across Sites</p>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-1.5">
+        <span class="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40">Active Phase</span>
       </div>
-      <% if @tasks.any? %>
-        <div class="overflow-x-auto custom-scrollbar">
-          <table class="min-w-full border-separate border-spacing-0 text-left">
-            <thead>
-              <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
-                <% ["Title", "Status", "Due Date", "Project Context"].each do |head| %>
-                  <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/10 text-left">
-                    <%= head %>
-                  </th>
-                <% end %>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
-              <% @tasks.each do |task| %>
-                <tr id="dash_<%= dom_id(task) %>" class="group hover:bg-white/40 dark:hover:bg-brand-primary/5 transition-all duration-300">
-                  <td class="px-4 py-4">
-                    <div class="text-xs font-black text-brand-secondary dark:text-brand-text-dark uppercase tracking-tight"><%= task.title %></div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="flex items-center gap-2">
-                      <%# Status Dot for quick visual scanning %>
-                      <span class="h-1.5 w-1.5 rounded-full <%= task.status_done? ? 'bg-green-500' : 'bg-brand-primary' %>"></span>
-                      <span class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/70 dark:text-brand-primary">
-                        <%= task.status.humanize %>
-                      </span>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="text-[10px] font-mono text-brand-secondary dark:text-brand-primary/80">
-                      <%= task.due_date&.strftime("%d.%m.%y") || "--.--.--" %>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="flex items-center gap-2">
-                      <div class="w-1 h-3 bg-brand-primary/30 rounded-full"></div>
-                      <div class="text-[10px] font-bold text-brand-secondary/60 dark:text-brand-text-dark/60 uppercase truncate max-w-[150px]">
-                        <%= task.project.name %>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      <% else %>
-        <div class="py-12 text-center border-2 border-dashed border-brand-secondary/10 rounded-xl">
-          <p class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">No pending tasks in your queue</p>
-        </div>
-      <% end %>
     </div>
   </div>
-<% end %>
+  <div class="overflow-hidden bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl">
+    <% if tasks.any? %>
+      <div class="overflow-x-auto custom-scrollbar">
+        <table class="min-w-full text-left border-separate border-spacing-0">
+          <%# Reusing your existing Header Partial %>
+          <%= render "tasks/task_table_header", show_project: true %>
+          <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
+            <% tasks.each_with_index do |task, index| %>
+              <%# Reusing your existing Row Partial %>
+              <%= render "tasks/task_row",
+                         task: task,
+                         show_project: true,
+                         row_class: index.even? ? "bg-brand-secondary/5 dark:bg-brand-primary/5" : "" %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="text-center py-20 bg-black/5">
+        <h3 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tighter italic opacity-50">Operational Queue Empty</h3>
+        <p class="text-[10px] text-white/30 mt-2 uppercase tracking-widest italic">No active directives found in the system registry.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

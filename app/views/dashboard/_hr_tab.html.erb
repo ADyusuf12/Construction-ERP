@@ -1,67 +1,17 @@
-<% if policy_scope(Hr::Employee).any? %>
-  <div id="hr-tab" class="tab-content hidden animate-fade-in">
-    <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-xl p-6">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tight">Leave History</h2>
-        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary/40 dark:text-brand-primary/40">
-          Personnel Attendance
-        </span>
-      </div>
-      <% if @leaves.any? %>
-        <div class="overflow-x-auto custom-scrollbar">
-          <table class="min-w-full border-separate border-spacing-0 text-left">
-            <thead>
-              <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
-                <% ["Reason", "Timeline", "End Date", "Duration", "Status"].each do |head| %>
-                  <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/10 text-left">
-                    <%= head %>
-                  </th>
-                <% end %>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
-              <% @leaves.each do |leave| %>
-                <tr id="dash_<%= dom_id(leave) %>" class="group hover:bg-white/40 dark:hover:bg-brand-primary/5 transition-all duration-300">
-                  <td class="px-4 py-4">
-                    <div class="flex items-center gap-3">
-                      <svg xmlns="http://www.w3.org" class="h-4 w-4 text-brand-primary/60 group-hover:text-brand-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <div class="text-xs font-black text-brand-secondary dark:text-brand-text-dark uppercase tracking-tight truncate max-w-[180px]">
-                        <%= leave.reason %>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="text-[10px] font-mono text-brand-secondary/80 dark:text-brand-primary/80">
-                      <%= leave.start_date.strftime("%d.%m.%y") %>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="text-[10px] font-mono text-brand-secondary/80 dark:text-brand-primary/80">
-                      <%= leave.end_date.strftime("%d.%m.%y") %>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="text-xs font-black text-brand-secondary dark:text-white uppercase">
-                      <%= leave.duration %> <span class="text-[9px] opacity-60">Days</span>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <span class="inline-flex px-2 py-0.5 rounded border border-brand-secondary/10 bg-brand-secondary/5 dark:border-brand-primary/20 dark:bg-brand-primary/5 text-[9px] font-black uppercase tracking-widest text-brand-secondary/70 dark:text-brand-primary">
-                      <%= leave.status.humanize %>
-                    </span>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      <% else %>
-        <div class="py-12 text-center border-2 border-dashed border-brand-secondary/10 rounded-xl">
-          <p class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">No leave records registered</p>
-        </div>
-      <% end %>
+<%# app/views/dashboard/_hr_tab.html.erb %>
+<div class="space-y-6">
+  <%# Optional Section Header to distinguish it as a Dashboard Preview %>
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tight">
+      <%= (current_user.role_ceo? || current_user.role_admin?) ? "Personnel Request Queue" : "My Leave Registry" %>
+    </h2>
+    <div class="flex items-center gap-2">
+      <span class="h-2 w-2 rounded-full bg-brand-primary animate-pulse"></span>
+      <span class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40">Live Sync Active</span>
     </div>
   </div>
-<% end %>
+  <%# REUSING YOUR CORE HR PARTIAL %>
+  <%= render "hr/leaves/leave_table",
+             leaves: @leaves,
+             show_employee: (current_user.role_ceo? || current_user.role_admin? || current_user.role_hr?) %>
+</div>

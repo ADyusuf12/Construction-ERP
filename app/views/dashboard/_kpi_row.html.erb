@@ -1,9 +1,20 @@
-<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-12">
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-5 mb-12">
   <% if policy_scope(Project).any? %>
     <%= render "dashboard/kpi_card", title: "Site Registry", count: @projects.count, icon: "folder" %>
   <% end %>
   <% if policy_scope(Task).any? %>
     <%= render "dashboard/kpi_card", title: "Task Queue", count: @tasks.count, icon: "checklist" %>
+  <% end %>
+  <%# Inventory - Using the [:inventory, model] namespace %>
+  <% if policy_scope([:inventory, InventoryItem]).any? %>
+    <%= render "dashboard/kpi_card",
+               title: "Logistics Risk",
+               count: @low_stock_items.count,
+               icon: "archive",
+               card_class: (@low_stock_items.any? ? "border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.1)]" : "") %>
+  <% end %>
+  <% if policy_scope(Hr::Employee).any? %>
+    <%= render "dashboard/kpi_card", title: "HR Actions", count: @pending_leaves_count, icon: "users" %>
   <% end %>
   <% if policy_scope(Report).any? %>
     <%= render "dashboard/kpi_card", title: "Daily Reports", count: @reports.count, icon: "document" %>
@@ -12,6 +23,6 @@
     <%= render "dashboard/kpi_card", title: "Site Ledger", count: @transactions.count, icon: "currency-dollar" %>
   <% end %>
   <% if policy_scope(ProjectExpense).any? %>
-    <%= render "dashboard/kpi_card", title: "Total Expenses", count: @expenses.count, icon: "credit-card" %>
+    <%= render "dashboard/kpi_card", title: "Expenses", count: @expenses.count, icon: "credit-card" %>
   <% end %>
 </section>

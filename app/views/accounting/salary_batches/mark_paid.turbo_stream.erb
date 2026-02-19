@@ -1,3 +1,13 @@
+<%# app/views/accounting/salary_batches/mark_paid.turbo_stream.erb %>
+<%# 1. Replace the specific row with the new status %>
 <%= turbo_stream.replace dom_id(@salary_batch) do %>
-  <%= render "accounting/salary_batches/batch_row", batch: @salary_batch %>
+  <%= render "accounting/salary_batches/batch_row",
+             batch: @salary_batch,
+             row_class: "" # Keep it clean so it looks uniform on update %>
+<% end %>
+<%# 2. Optional: Update a Global KPI if you have a "Total Paid" counter on the page %>
+<% if @total_paid_today %>
+  <%= turbo_stream.update "global-payroll-stats" do %>
+    <%= number_to_currency(@total_paid_today, unit: "₦") %>
+  <% end %>
 <% end %>
