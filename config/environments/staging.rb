@@ -31,7 +31,7 @@ Rails.application.configure do
 
   # Pulls the staging URL dynamically from Render Env
   config.action_mailer.default_url_options = {
-    host: ENV.fetch("STAGING_APP_HOST", "staging.earmark-erp.com"),
+    host: ENV.fetch("STAGING_APP_HOST", "https://earmark-systems-staging.onrender.com"),
     protocol: "https"
   }
 
