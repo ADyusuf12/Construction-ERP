@@ -363,6 +363,25 @@ Managers can:
 
 ---
 
+### Attendance Tracking
+
+The system provides functionality for tracking employee attendance.
+
+**Recording Attendance:**
+
+1. Navigate to `/hr/attendance_records/new`.
+2. Select the employee.
+3. Set the `check_in` and `check_out` times.
+4. Save the record.
+
+**Viewing Attendance:**
+
+- **All Records:** HR staff can view all attendance records at `/hr/attendance_records`.
+- **My Attendance:** Logged-in users can view their own attendance history at `/hr/attendance_records/my_attendance`.
+- **Employee Specific:** View attendance for a specific employee at `/hr/employees/:employee_id/attendance_records`.
+
+---
+
 ## User Roles & Permissions
 
 ### Role-Based Access Control
@@ -469,6 +488,43 @@ PUT /hr/employees/:employee_id/personal_detail
 
 ---
 
+### Attendance Records
+
+**List Attendance Records:**
+```
+GET /hr/attendance_records
+GET /hr/employees/:employee_id/attendance_records
+```
+
+**My Attendance:**
+```
+GET /hr/attendance_records/my_attendance
+```
+
+**Create Attendance Record:**
+```
+POST /hr/attendance_records
+Parameters: employee_id, check_in, check_out, status
+```
+
+**Show Attendance Record:**
+```
+GET /hr/attendance_records/:id
+```
+
+**Update Attendance Record:**
+```
+PATCH /hr/attendance_records/:id
+PUT /hr/attendance_records/:id
+```
+
+**Delete Attendance Record:**
+```
+DELETE /hr/attendance_records/:id
+```
+
+---
+
 ### Leaves
 
 **List Leaves:**
@@ -509,12 +565,6 @@ PATCH /hr/leaves/:id/approve
 
 ```
 PATCH /hr/leaves/:id/reject
-```
-
-**Cancel Leave:**
-
-```
-PATCH /hr/leaves/:id/cancel
 ```
 
 **Delete Leave:**

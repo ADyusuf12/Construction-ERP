@@ -1,3 +1,10 @@
 <%= turbo_stream.replace dom_id(@salary_batch) do %>
-  <%= render "accounting/salary_batches/batch_row", batch: @salary_batch %>
+  <%= render "accounting/salary_batches/batch_row",
+             batch: @salary_batch,
+             row_class: "" %>
+<% end %>
+<% if @total_paid_today %>
+  <%= turbo_stream.update "global-payroll-stats" do %>
+    <%= number_to_currency(@total_paid_today, unit: "₦") %>
+  <% end %>
 <% end %>

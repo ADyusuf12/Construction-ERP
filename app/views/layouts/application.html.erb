@@ -7,7 +7,6 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" unless Rails.env.test? %>
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <style>
       .custom-scrollbar::-webkit-scrollbar {
@@ -28,7 +27,7 @@
       }
     </style>
   </head>
-  <body class="bg-brand-white text-brand-black dark:bg-brand-black dark:text-brand-white flex h-screen overflow-hidden" data-controller="confirm-delete">
+  <body class="bg-brand-white text-brand-black dark:bg-brand-black dark:text-brand-white flex h-screen overflow-hidden" data-controller="confirm-modal">
     <% if user_signed_in? %>
       <%= render 'shared/sidebar' %>
       <button onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')" class="md:hidden fixed bottom-6 right-6 z-[60] p-4 rounded-full bg-brand-primary text-white shadow-2xl active:scale-95 transition-transform">
@@ -78,6 +77,8 @@
           document.addEventListener("turbo:load", initTheme);
       })();
     </script>
-    <%= render 'shared/confirm_delete_modal', title: "Confirm Deletion", message: "Are you sure?", confirm_path: "#" %>
+    <%# Unified Modal Registry - Direct render, no wrapper divs %>
+    <%= render 'shared/confirm_danger_modal' %>
+    <%= render 'shared/confirm_success_modal' %>
   </body>
 </html>

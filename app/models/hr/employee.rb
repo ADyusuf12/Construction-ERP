@@ -1,6 +1,7 @@
 module Hr
   class Employee < ApplicationRecord
     belongs_to :user, optional: true
+    delegate :email, to: :user, allow_nil: true
     belongs_to :manager, class_name: "Hr::Employee", optional: true
 
     has_many :subordinates, class_name: "Hr::Employee", foreign_key: "manager_id", dependent: :nullify
@@ -12,6 +13,8 @@ module Hr
     has_many :salaries, class_name: "Accounting::Salary", dependent: :destroy
     has_many :attendance_records, class_name: "Hr::AttendanceRecord",  dependent: :destroy
     has_many :next_of_kins, class_name: "Hr::NextOfKin", dependent: :destroy
+    has_many :recurring_adjustments, class_name: "Hr::RecurringAdjustment", dependent: :destroy
+    has_many :deductions, through: :salaries, class_name: "Accounting::Deduction"
 
     accepts_nested_attributes_for :personal_detail, update_only: true, allow_destroy: true
     accepts_nested_attributes_for :next_of_kins, allow_destroy: true, reject_if: :all_blank
@@ -32,6 +35,14 @@ module Hr
       else
         "Employee ##{staff_id}"
       end
+    end
+
+    def allowances_total
+      recurring_adjustments.allowance.active.sum(:amount)
+    end
+
+    def deductions_total
+      recurring_adjustments.deduction.active.sum(:amount)
     end
 
     private

@@ -1,0 +1,62 @@
+<div class="space-y-10">
+  <%# 1. Mission Briefing (The Summary Section) %>
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <%
+      all_my_tasks = @tasks_by_project.values.flatten
+      pending_count = all_my_tasks.count(&:status_pending?)
+      progress_count = all_my_tasks.count(&:status_in_progress?)
+      overdue_count = all_my_tasks.count { |t| t.due_date&.past? && !t.status_done? }
+    %>
+    <%# Total Active Assignments %>
+    <div class="p-6 bg-brand-secondary/5 dark:bg-brand-primary/5 border border-brand-secondary/10 rounded-2xl">
+      <p class="text-[10px] font-black uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50 mb-1">Total Active</p>
+      <p class="text-3xl font-black text-brand-secondary dark:text-white leading-none"><%= all_my_tasks.size %></p>
+    </div>
+    <%# In Progress Status %>
+    <div class="p-6 bg-blue-500/5 border border-blue-500/20 rounded-2xl">
+      <p class="text-[10px] font-black uppercase tracking-widest text-blue-500/70 mb-1">In Progress</p>
+      <div class="flex items-end justify-between">
+        <p class="text-3xl font-black text-blue-500 leading-none"><%= progress_count %></p>
+        <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse mb-1"></div>
+      </div>
+    </div>
+    <%# Pending Status %>
+    <div class="p-6 bg-yellow-500/5 border border-yellow-500/20 rounded-2xl">
+      <p class="text-[10px] font-black uppercase tracking-widest text-yellow-500/70 mb-1">Pending Start</p>
+      <p class="text-3xl font-black text-yellow-500 leading-none"><%= pending_count %></p>
+    </div>
+    <%# Overdue Alert %>
+    <div class="p-6 <%= overdue_count > 0 ? 'bg-red-500/10 border-red-500/30' : 'bg-brand-secondary/5 border-brand-secondary/10' %> rounded-2xl transition-colors">
+      <p class="text-[10px] font-black uppercase tracking-widest <%= overdue_count > 0 ? 'text-red-500' : 'text-brand-secondary/50' %> mb-1">Overdue</p>
+      <p class="text-3xl font-black <%= overdue_count > 0 ? 'text-red-500' : 'text-brand-secondary/30' %> leading-none"><%= overdue_count %></p>
+    </div>
+  </div>
+  <%# 2. Tasks Grouped by Project %>
+  <div class="space-y-12">
+    <% if @tasks_by_project.any? %>
+      <% @tasks_by_project.each do |project, tasks_array| %>
+        <div class="animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <%# Project Identity Strip %>
+          <div class="flex items-center justify-between mb-4 px-2">
+            <div class="flex items-center space-x-3">
+              <div class="py-1 px-3 bg-brand-secondary dark:bg-brand-primary text-white dark:text-brand-black text-[10px] font-black uppercase tracking-tighter rounded">
+                SITE: <%= project.id %>
+              </div>
+              <h2 class="text-sm font-black uppercase tracking-widest text-brand-secondary dark:text-white">
+                <%= project.name %>
+              </h2>
+            </div>
+            <%= link_to "View Site", project_path(project), class: "text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40 hover:text-brand-primary transition" %>
+          </div>
+          <%# The Table Partial %>
+          <%= render "tasks/tasks_table", project: project, tasks: tasks_array %>
+        </div>
+      <% end %>
+    <% else %>
+      <%# Empty State %>
+      <div class="py-24 text-center border-2 border-dashed border-brand-secondary/10 rounded-3xl">
+        <p class="text-xs font-black uppercase tracking-[0.2em] text-brand-secondary/20">Clear Workspace: No active assignments</p>
+      </div>
+    <% end %>
+  </div>
+</div>

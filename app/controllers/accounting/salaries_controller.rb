@@ -1,73 +1,50 @@
 module Accounting
   class SalariesController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_salary, only: %i[ show edit update destroy ]
+    before_action :set_salary, only: %i[show edit update]
 
-    # GET /accounting/salaries
     def index
       authorize Accounting::Salary
-      @salaries = policy_scope(Accounting::Salary)
 
-      per_page = params.fetch(:per_page, 10).to_i
-      @salaries = @salaries.page(params[:page]).per(per_page)
+      per_page = params.fetch(:per_page, 15).to_i
+
+      base_scope = policy_scope(Accounting::Salary).includes(:batch, :employee)
+
+      @salary_stats = base_scope
+
+      @salaries = policy_scope(Accounting::Salary)
+                  .includes(:employee, :batch)
+                  .joins(:batch)
+                  .order("accounting_salary_batches.period_start DESC")
+                  .page(params[:page])
+                  .per(per_page)
     end
 
-    # GET /accounting/salaries/:id
     def show
       authorize @salary
+      @deductions = @salary.deductions
     end
 
-    # GET /accounting/salaries/new
-    def new
-      @salary = Accounting::Salary.new
-      authorize @salary
-    end
-
-    # GET /accounting/salaries/:id/edit
-    def edit
-      authorize @salary
-    end
-
-    # POST /accounting/salaries
-    def create
-      @salary = Accounting::Salary.new(salary_params)
-      authorize @salary
-
-      if @salary.save
-        redirect_to accounting_salaries_path, notice: "Salary was successfully created."
-      else
-        render :new, status: :unprocessable_content
-      end
-    end
-
-    # PATCH/PUT /accounting/salaries/:id
     def update
       authorize @salary
       if @salary.update(salary_params)
-        redirect_to accounting_salaries_path, notice: "Salary was successfully updated."
+        # Standard ERP workflow: return to the batch context
+        redirect_to accounting_salary_batch_path(@salary.batch),
+                    notice: "Compensation record for #{@salary.employee.full_name} updated successfully."
       else
         render :edit, status: :unprocessable_content
       end
     end
 
-    # DELETE /accounting/salaries/:id
-    def destroy
-      authorize @salary
-      @salary.destroy
-      redirect_to accounting_salaries_path, notice: "Salary was successfully deleted."
-    end
-
     private
 
-      def set_salary
-        @salary = Accounting::Salary.find(params[:id])
-      end
+    def set_salary
+      @salary = Accounting::Salary.find(params[:id])
+    end
 
-      def salary_params
-        params.require(:accounting_salary).permit(
-          :employee_id, :batch_id, :base_pay, :allowances,
-          :deductions_total, :net_pay, :status
-        )
-      end
+    def salary_params
+      # Model logic (before_validation) calculates net_pay; UI only inputs variables.
+      params.require(:accounting_salary).permit(:base_pay, :allowances)
+    end
   end
 end

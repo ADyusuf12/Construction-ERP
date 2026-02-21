@@ -30,8 +30,10 @@ module Hr
     private
 
     def above_eighteen
-      if dob.present? && (Date.today.year - dob.year) < 18
-        errors.add(:dob, "must be at least 18 years old")
+      return if dob.blank?
+
+      if dob > 18.years.ago.to_date
+        errors.add(:dob, "Employee must be at least 18 years old.")
       end
     end
   end

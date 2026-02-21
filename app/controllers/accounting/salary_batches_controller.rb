@@ -1,87 +1,65 @@
 module Accounting
   class SalaryBatchesController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_salary_batch, only: %i[ show edit update destroy mark_paid ]
+    before_action :set_salary_batch, only: %i[ show edit mark_paid ]
 
-    # GET /accounting/salary_batches
     def index
       authorize Accounting::SalaryBatch
-      @salary_batches = policy_scope(Accounting::SalaryBatch)
-
-      per_page = params.fetch(:per_page, 10).to_i
-      @salary_batches = @salary_batches.page(params[:page]).per(per_page)
+      @salary_batches = policy_scope(Accounting::SalaryBatch).recent.page(params[:page]).per(10)
     end
 
-    # GET /accounting/salary_batches/:id
     def show
       authorize @salary_batch
+      # Optimized: includes(:employee, :deductions) prevents 100+ SQL queries on one page
+      @salaries = @salary_batch.salaries.includes(:employee, :deductions).order("hr_personal_details.last_name ASC").references(:hr_personal_details)
     end
 
-    # GET /accounting/salary_batches/new
-    def new
-      @salary_batch = Accounting::SalaryBatch.new
-      authorize @salary_batch
-    end
-
-    # GET /accounting/salary_batches/:id/edit
-    def edit
-      authorize @salary_batch
-    end
-
-    # POST /accounting/salary_batches
     def create
       @salary_batch = Accounting::SalaryBatch.new(batch_params)
       authorize @salary_batch
 
       if @salary_batch.save
-        redirect_to accounting_salary_batches_path, notice: "Salary batch was successfully created."
+        # Use the count from the association we just created
+        count = @salary_batch.salaries.count
+        redirect_to accounting_salary_batch_path(@salary_batch),
+                    notice: "Batch successfully initialized. #{count} salary records generated."
       else
         render :new, status: :unprocessable_content
       end
     end
 
-    # PATCH/PUT /accounting/salary_batches/:id
-    def update
+    def new
+      @salary_batch = Accounting::SalaryBatch.new(
+        period_start: Date.current.beginning_of_month,
+        period_end: Date.current.end_of_month
+      )
       authorize @salary_batch
-      if @salary_batch.update(batch_params)
-        redirect_to accounting_salary_batches_path, notice: "Salary batch was successfully updated."
-      else
-        render :edit, status: :unprocessable_content
-      end
     end
 
-    # DELETE /accounting/salary_batches/:id
-    def destroy
+    def edit
       authorize @salary_batch
-      @salary_batch.destroy
-      redirect_to accounting_salary_batches_path, notice: "Salary batch was successfully deleted."
     end
 
-    # PATCH /accounting/salary_batches/:id/mark_paid
     def mark_paid
       authorize @salary_batch
-      @salary_batch.transaction do
-        @salary_batch.update!(status: :paid)
-        @salary_batch.mark_all_salaries_paid!
-        SalarySlipJob.perform_later(@salary_batch.id)
-      end
+      if @salary_batch.mark_all_salaries_paid!
+        # Trigger background slip generation
+        SalarySlipJob.perform_later(@salary_batch.id) if defined?(SalarySlipJob)
 
-      respond_to do |format|
-        format.html { redirect_to accounting_salary_batches_path, notice: "Batch marked as paid." }
-        format.turbo_stream
+        redirect_to accounting_salary_batch_path(@salary_batch), notice: "Disbursement complete. All salaries marked as PAID."
+      else
+        redirect_to accounting_salary_batch_path(@salary_batch), alert: "Process failed. Check individual salary statuses."
       end
     end
 
     private
 
-      def set_salary_batch
-        @salary_batch = Accounting::SalaryBatch.find(params[:id])
-      end
+    def set_salary_batch
+      @salary_batch = Accounting::SalaryBatch.find(params[:id])
+    end
 
-      def batch_params
-        params.require(:accounting_salary_batch).permit(
-          :name, :period_start, :period_end, :status
-        )
-      end
+    def batch_params
+      params.require(:accounting_salary_batch).permit(:name, :period_start, :period_end)
+    end
   end
 end

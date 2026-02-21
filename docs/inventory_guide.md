@@ -1,431 +1,169 @@
-4. Save movement
-5. MovementApplier automatically:
-   - Decreases project inventory reservation
-   - Creates project expense record
-   - Updates item status
-6. Note: Site delivery does NOT reduce warehouse stock - it's a direct delivery
+# Inventory Module Guide
 
-**Audit Trail Features:**
+This guide provides comprehensive documentation for the Inventory module, which handles items, warehouses, stock levels, and movements for the Earmark Systems application.
 
-- Every movement is recorded with timestamp
-- Employee who performed movement is tracked
-- Related project/task is recorded
-- All historical data is preserved for auditing
-- Movement types clearly indicate transaction nature
+## Table of Contents
 
-**Reversing/Cancelling a Movement:**
-
-1. Go to the movement detail page
-2. Click "Reverse" or "Cancel"
-3. Enter reason for cancellation
-4. MovementCanceller automatically:
-   - Reverses the stock level changes
-   - Restores project inventory reservations
-   - Deletes linked project expense
-   - Sets cancelled_at and cancellation_reason
+- [Overview](#overview)
+- [Key Concepts](#key-concepts)
+- [Data Models](#data-models)
+- [Features & Workflows](#features--workflows)
+- [User Roles & Permissions](#user-roles--permissions)
+- [Routes](#routes)
+- [Best Practices](#best-practices)
 
 ---
+
+## Overview
+
+The Inventory module is responsible for managing all aspects of the organization's inventory, including:
+
+- **Inventory Items Master:** A master list of all products and materials.
+- **Warehouse Management:** Tracking inventory across multiple physical or virtual locations.
+- **Stock Level Tracking:** Real-time visibility into item quantities.
+- **Stock Movements:** A detailed audit trail of all inventory transactions.
+- **Project Inventory Allocation:** Reserving and assigning inventory to specific projects.
+
+### Core Responsibilities
+
+1.  **Item Master:** Maintain a central, authoritative source for all inventory items.
+2.  **Warehouse Logistics:** Manage storage locations and the quantities within them.
+3.  **Stock Auditing:** Provide a complete history of every stock movement for traceability.
+4.  **Project Costing:** Link inventory usage to projects to track material costs.
+
+---
+
+## Key Concepts
+
+### Inventory Item
+
+An **Inventory Item** is a unique product or material tracked by the system. Each item has:
+
+- **SKU (Stock Keeping Unit):** A unique identifier for the item.
+- **Name & Description:** Human-readable details about the item.
+- **Unit Cost:** The cost of a single unit of the item.
+- **Reorder Threshold:** The stock level at which a new order should be placed.
+- **Status:** Automatically calculated based on stock levels (`in_stock`, `low_stock`, `out_of_stock`).
+
+### Warehouse
+
+A **Warehouse** represents a physical or logical location where inventory is stored. It has a `name`, `code`, and `address`.
+
+### Stock Level
+
+A **Stock Level** represents the quantity of a specific `Inventory Item` at a specific `Warehouse`. It is the "quantity on hand" at that location.
+
+### Stock Movement
+
+A **Stock Movement** is a record of any change in inventory. This is the core of the audit trail. The main types are:
+
+- **Inbound:** Receiving new stock from a supplier (increases stock level).
+- **Outbound:** Issuing stock from a warehouse for a project (decreases stock level).
+- **Adjustment:** Correcting a discrepancy after a physical count (sets stock level).
+- **Site Delivery:** Delivering stock directly to a project site without it ever entering a warehouse.
+
+### Project Inventory
+
+A **Project Inventory** record represents an allocation or reservation of a specific quantity of an `Inventory Item` for a `Project`. This ensures materials are set aside and not used for other projects.
+
+---
+
+## Data Models
+
+*(This section would typically contain the Ruby model definitions for `InventoryItem`, `Warehouse`, `StockLevel`, `StockMovement`, and `ProjectInventory`. For brevity, they are omitted here but are present in the source code.)*
+
+---
+
+## Features & Workflows
+
+### Stock Movement Workflow
+
+**Recording a Movement (e.g., Inbound):**
+
+1.  Navigate to the `Inventory Item`'s detail page.
+2.  Click "New Movement".
+3.  Select the `movement_type` (e.g., "Inbound").
+4.  Enter the `quantity`, `unit_cost`, and `destination_warehouse`.
+5.  Save the movement. The `MovementApplier` service automatically updates the `StockLevel` for that item and warehouse.
+
+**Reversing a Movement:**
+
+1.  From a movement's detail page, click "Reverse".
+2.  Provide a reason for the reversal.
+3.  The `MovementCanceller` service automatically reverses the stock changes. For an "Outbound" movement, it would increase the stock level at the source warehouse and restore the project inventory reservation.
 
 ### Project Inventory Allocation
 
 **Allocating Inventory to a Project:**
 
-1. From project show page, go to "Inventory" section
-2. Click "Add Inventory"
-3. Enter:
-   - Inventory item (select from list)
-   - Quantity to allocate
-   - Warehouse (optional - for stock validation)
-   - Purpose (what it's for)
-   - Task (if for specific task)
-4. Save allocation
-5. Quantity is reserved and unavailable for other projects
-6. System validates warehouse has sufficient stock
-
-**Viewing Project Allocations:**
-
-1. Go to project show page
-2. See all allocated inventory items
-3. View total allocated quantity
-4. View issued quantity (already delivered)
-5. Outstanding reservation shows: reserved - issued
-
-**Modifying Allocations:**
-
-1. Click edit on allocation
-2. Adjust quantity
-3. System validates available quantity
-4. Save changes
-
-**Cancelling Allocations:**
-
-1. Click cancel on allocation
-2. Enter reason
-3. System sets cancelled_at and cancellation_reason
-4. quantity_reserved set to 0
-5. Quantity is released back to available inventory
-
----
-
-### Movement Cancellation Workflow
-
-**When to Cancel a Movement:**
-
-- Incorrect quantity was entered
-- Wrong item was selected
-- Movement was recorded in error
-- Supplier returned received goods
-
-**Cancellation Process:**
-
-1. Navigate to the movement detail
-2. Click "Cancel Movement"
-3. Provide cancellation reason
-4. Confirm cancellation
-
-**What Happens on Cancellation:**
-
-For **Inbound**:
-- Decreases stock level at destination warehouse
-- Item status is refreshed
-
-For **Outbound**:
-- Increases stock level at source warehouse
-- Restores project inventory reservation
-- Deletes linked project expense
-
-For **Site Delivery**:
-- Restores project inventory reservation
-- Deletes linked project expense
-
-For **Adjustment**:
-- Sets stock level quantity to 0
-- Note: Original stock level value is lost
+1.  From a project's detail page, navigate to the "Inventory" section.
+2.  Click "Add Inventory".
+3.  Select an `Inventory Item` and the `quantity_reserved`.
+4.  The system validates that sufficient stock is available.
+5.  The quantity is now reserved and cannot be allocated to other projects.
 
 ---
 
 ## User Roles & Permissions
 
-### Role-Based Access Control
-
 **Storekeeper Role:**
-
-- Full access to inventory operations
-- Create, read, update, delete inventory items
-- Create and manage warehouses
-- Record and view all stock movements
-- Manage project allocations
-- Cancel movements with reason
-- Generate inventory reports
+- Full access to all inventory operations.
+- Can create/manage items, warehouses, and movements.
 
 **Site Manager Role:**
-
-- View inventory information
-- Request/reserve inventory for projects
-- View allocation status
-- Cannot create or modify master data
-- Cannot cancel movements
+- Can view inventory information and request/reserve items for projects.
+- Cannot create master data or cancel movements.
 
 **Admin Role:**
-
-- Same access as Storekeeper
-- Can override or delete records if needed
-
-**Other Roles:**
-
-- View-only access to items relevant to their projects
-- Cannot perform inventory operations
+- Has the same permissions as a Storekeeper.
 
 ---
 
 ## Routes
 
-These are server-side rendered routes (not JSON API endpoints). They return HTML responses with Hotwire/Turbo for fast, interactive updates.
+These are server-side rendered routes that return HTML.
 
 ### Warehouses
 
-**List Warehouses:**
-
-```
-GET /inventory/warehouses
-```
-
-**Create Warehouse:**
-
-```
-POST /inventory/warehouses
-Parameters: name, address, code
-```
-
-**Show Warehouse:**
-
-```
-GET /inventory/warehouses/:id
-```
-
-**Update Warehouse:**
-
-```
-PATCH /inventory/warehouses/:id
-PUT /inventory/warehouses/:id
-```
-
-**Delete Warehouse:**
-
-```
-DELETE /inventory/warehouses/:id
-```
-
----
+-   `GET /inventory/warehouses` - List all warehouses.
+-   `POST /inventory/warehouses` - Create a new warehouse.
+-   `GET /inventory/warehouses/:id` - Show a specific warehouse.
+-   `PATCH/PUT /inventory/warehouses/:id` - Update a warehouse.
+-   `DELETE /inventory/warehouses/:id` - Delete a warehouse.
 
 ### Inventory Items
 
-**List Items:**
-
-```
-GET /inventory/inventory_items
-```
-
-**Create Item:**
-
-```
-POST /inventory/inventory_items
-Parameters: sku, name, description, unit_cost, unit, reorder_threshold, default_location, status
-```
-
-**Show Item:**
-
-```
-GET /inventory/inventory_items/:id
-```
-
-**Update Item:**
-
-```
-PATCH /inventory/inventory_items/:id
-PUT /inventory/inventory_items/:id
-```
-
-**Delete Item:**
-
-```
-DELETE /inventory/inventory_items/:id
-```
-
----
+-   `GET /inventory/inventory_items` - List all items.
+-   `POST /inventory/inventory_items` - Create a new item.
+-   `GET /inventory/inventory_items/:id` - Show a specific item.
+-   `PATCH/PUT /inventory/inventory_items/:id` - Update an item.
+-   `DELETE /inventory/inventory_items/:id` - Delete an item.
 
 ### Stock Movements
 
-**List Movements (for an item):**
+-   `GET /inventory/stock_movements` - List all movements across all items.
+-   `GET /inventory/inventory_items/:inventory_item_id/stock_movements` - List movements for a specific item.
+-   `POST /inventory/inventory_items/:inventory_item_id/stock_movements` - Create a new movement for an item.
+-   `GET /inventory/stock_movements/:id` - Show a specific movement.
+-   `POST /inventory/inventory_items/:inventory_item_id/stock_movements/:id/reverse` - Reverse a movement for a specific item.
+-   `POST /inventory/stock_movements/:id/reverse` - Reverse a specific movement.
 
-```
-GET /inventory/inventory_items/:inventory_item_id/stock_movements
-```
+### Project Inventories (Allocations)
 
-**List All Movements:**
-
-```
-GET /inventory/stock_movements
-```
-
-**Create Movement:**
-
-```
-POST /inventory/inventory_items/:inventory_item_id/stock_movements
-Parameters: movement_type, quantity, unit_cost, reference, notes, employee_id,
-           source_warehouse_id, destination_warehouse_id, project_id, task_id, applied_at
-```
-
-**Show Movement:**
-
-```
-GET /inventory/inventory_items/:inventory_item_id/stock_movements/:id
-```
-
-**Reverse/Cancel Movement:**
-
-```
-POST /inventory/inventory_items/:inventory_item_id/stock_movements/:id/reverse
-```
-
----
-
-### Project Inventories
-
-**Create Allocation:**
-
-```
-POST /inventory/project_inventories
-Parameters: project_id, inventory_item_id, quantity_reserved, purpose, task_id, warehouse_id
-```
-
-**Edit Allocation:**
-
-```
-GET /inventory/project_inventories/:id/edit
-```
-
-**Update Allocation:**
-
-```
-PATCH /inventory/project_inventories/:id
-PUT /inventory/project_inventories/:id
-```
-
-**Delete/Cancel Allocation:**
-
-```
-DELETE /inventory/project_inventories/:id
-```
+-   `GET /inventory/project_inventories/new` - Show form to create a new allocation.
+-   `POST /inventory/project_inventories` - Create a new allocation.
+-   `GET /inventory/project_inventories/:id` - Show a specific allocation.
+-   `GET /inventory/project_inventories/:id/edit` - Show form to edit an allocation.
+-   `PATCH/PUT /inventory/project_inventories/:id` - Update an allocation.
+-   `DELETE /inventory/project_inventories/:id` - Delete/cancel an allocation.
 
 ---
 
 ## Best Practices
 
-### Inventory Accuracy
-
-1. **Regular Counts:** Perform physical inventory counts periodically
-2. **Record Adjustments:** Use adjustment movements for discrepancies
-3. **Reference Numbers:** Always include reference numbers for traceability
-4. **Employee Tracking:** Record who performed each movement
-5. **Timestamps:** Always apply accurate timestamps to movements
-6. **Document Cancellations:** Always provide cancellation reasons
-
-### Stock Management
-
-1. **Monitor Reorder Levels:** Review low-stock alerts regularly
-2. **Set Appropriate Thresholds:** Ensure reorder_threshold reflects lead times
-3. **Prevent Overallocation:** Check available quantity before allocating
-4. **Track by Project:** Link movements to projects for cost tracking
-5. **Warehouse Balance:** Monitor quantities across warehouses for optimization
-6. **Site Delivery vs Outbound:** Use site_delivery for direct site deliveries, outbound for regular issues
-
-### Operational Efficiency
-
-1. **Batch Movements:** Group similar movements for efficiency
-2. **Warehouse Organization:** Use consistent naming and locations
-3. **SKU Consistency:** Use unique, meaningful SKUs
-4. **Cost Tracking:** Update unit costs regularly for accurate valuations
-5. **Audit Trail:** Leverage movement history for audits and reconciliation
-
-### Data Integrity
-
-1. **Prevent Manual Edits:** Avoid editing stock levels directly; use movements
-2. **Optimistic Locking:** System uses `lock_version` to prevent race conditions
-3. **Validation:** Validate quantities and references before saving
-4. **Historical Records:** Never delete movements; cancel and reverse instead
-5. **Reconciliation:** Periodically reconcile system quantities with physical counts
-
----
-
-## Common Tasks
-
-### Monthly Inventory Count
-
-1. Schedule physical inventory count
-2. Count all items in all warehouses
-3. For each discrepancy:
-   - Create adjustment movement
-   - Enter counted quantity
-   - Note reason for discrepancy
-4. Update all stock levels
-5. Generate reconciliation report
-
-### Creating a New Item
-
-1. Obtain item specifications (SKU, name, cost)
-2. Go to `/inventory/inventory_items/new`
-3. Fill in all required fields
-4. Set appropriate reorder threshold
-5. Create stock levels for initial quantities in warehouses
-6. Use inbound movement to record initial quantities
-
-### Allocating Inventory to Project
-
-1. Verify item is in stock and available quantity is sufficient
-2. Go to project show page
-3. Click "Add Inventory"
-4. Select item and desired quantity
-5. Specify warehouse (optional), purpose and task if applicable
-6. Record allocation
-7. Verify reserved quantity in item details
-
-### Generating Inventory Report
-
-1. Go to `/inventory/inventory_items`
-2. View list with statuses and quantities
-3. Filter by status (in_stock, low_stock, out_of_stock)
-4. Export or print for analysis
-5. Use for procurement planning
-
-### Warehouse Transfer
-
-1. Create outbound movement from source warehouse
-2. Create inbound movement to destination warehouse
-3. Use same reference number for traceability
-4. Link both movements as transfer pair in notes
-
-### Cancelling an Incorrect Movement
-
-1. Identify the incorrect movement
-2. Navigate to movement detail
-3. Click "Cancel" or "Reverse"
-4. Enter reason: "Incorrect quantity entered"
-5. Verify stock levels are restored
-6. Create new correct movement if needed
-
----
-
-## Troubleshooting
-
-### Stock Level Not Updating
-
-- Check that movement was saved successfully
-- Verify warehouse references are correct
-- Ensure quantity is positive for inbound, accounts for outbound
-- Check if movement was cancelled
-- Try refreshing the page
-- Verify MovementApplier ran without errors
-
-### Cannot Allocate Inventory to Project
-
-- Check available quantity is sufficient
-- Verify item status is not `out_of_stock`
-- If warehouse specified, ensure warehouse has item in stock
-- Ensure project allocation unique constraint isn't violated
-- Try deallocating previous allocation first
-
-### Discrepancy Between Physical and System Count
-
-- Create adjustment movement with difference
-- Document reason in movement notes
-- Review recent movements for possible errors
-- Check for cancelled movements that weren't reversed properly
-- Verify no concurrent updates caused race conditions
-
-### Low Stock Alert Not Appearing
-
-- Verify reorder_threshold is set appropriately
-- Check total_quantity calculation (sum across all warehouses)
-- Refresh item status with `refresh_status!` if needed
-- Review recent inbound movements that might have just arrived
-- Check if item has been manually marked with incorrect status
-
-### Movement Cancellation Failed
-
-- Check if movement is already cancelled
-- Verify MovementCanceller has proper permissions
-- Ensure no dependent records block cancellation
-- Check cancellation reason is provided
-- Verify warehouse still exists
-
-### Warehouse Deletion Blocked
-
-- Check dependent stock movements exist
-- Review stock levels at this warehouse
-- Check project inventories linked to warehouse
-- Move inventory or cancel movements first
-- Use force delete if appropriate
+-   **Use Movements for All Changes:** Never edit stock levels directly. Use `Inbound`, `Outbound`, or `Adjustment` movements to ensure a complete audit trail.
+-   **Regular Physical Counts:** Perform regular physical inventory counts and use `Adjustment` movements to reconcile any discrepancies.
+-   **Traceability:** Use reference numbers and link movements to employees and projects for full traceability.
 
 ---
 
@@ -433,74 +171,15 @@ DELETE /inventory/project_inventories/:id
 
 ### InventoryManager::MovementApplier
 
-Handles applying stock movements to update stock levels and create expenses.
-
-```ruby
-module InventoryManager
-  class MovementApplier
-    def initialize(stock_movement)
-      @movement = stock_movement
-    end
-
-    def call
-      # Runs in transaction
-      case @movement.movement_type
-      when "inbound"      then apply_inbound
-      when "outbound"     then apply_outbound
-      when "adjustment"   then apply_adjustment
-      when "site_delivery" then apply_site_delivery
-      end
-
-      @movement.inventory_item.refresh_status!
-      @movement.update!(applied_at: Time.current)
-    end
-  end
-end
-```
-
-**Behavior by Movement Type:**
-
-- **Inbound:** Creates/updates stock level, increments quantity
-- **Outbound:** Decreases stock level, updates project inventory, creates expense
-- **Adjustment:** Sets stock level to specified quantity
-- **Site Delivery:** Updates project inventory, creates expense (no stock change)
+This service is responsible for applying the effects of a stock movement, such as updating stock levels and creating project expenses.
 
 ### InventoryManager::MovementCanceller
 
-Handles reversing stock movements and restoring stock levels.
-
-```ruby
-module InventoryManager
-  class MovementCanceller
-    def initialize(stock_movement)
-      @movement = stock_movement
-    end
-
-    def call
-      case @movement.movement_type
-      when "inbound"        then cancel_inbound
-      when "outbound"       then cancel_outbound
-      when "site_delivery"  then cancel_site_delivery
-      when "adjustment"     then cancel_adjustment
-      end
-
-      @movement.project_expense&.destroy
-    end
-  end
-end
-```
-
-**Behavior by Movement Type:**
-
-- **Inbound:** Decreases stock level at destination warehouse
-- **Outbound:** Increases stock level, restores project reservation, deletes expense
-- **Site Delivery:** Restores project reservation, deletes expense
-- **Adjustment:** Sets stock level to 0
+This service is responsible for reversing the effects of a stock movement, restoring stock levels and project reservations.
 
 ---
 
 ## Related Documentation
 
 - [Database Schema - Inventory Module](database_schema.md#inventory-module)
-- [API Endpoints - Inventory](endpoints.md#inventory)
 - [Architecture - Inventory Module](architecture.md#inventory-module)

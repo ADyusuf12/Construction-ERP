@@ -9,7 +9,7 @@ This guide provides comprehensive documentation for the Accounting module, which
 - [Data Models](#data-models)
 - [Features & Workflows](#features--workflows)
 - [User Roles & Permissions](#user-roles--permissions)
-- [API Endpoints](#api-endpoints)
+- [Routes](#routes)
 - [Best Practices](#best-practices)
 
 ---
@@ -356,156 +356,6 @@ end
 
 ---
 
-## API Endpoints
-
-### Transactions
-
-**List Transactions:**
-
-```
-GET /accounting/transactions
-```
-
-**Create Transaction:**
-
-```
-POST /accounting/transactions
-Parameters: date, description, amount, transaction_type, reference, notes
-```
-
-**Show Transaction:**
-
-```
-GET /accounting/transactions/:id
-```
-
-**Update Transaction:**
-
-```
-PATCH /accounting/transactions/:id
-PUT /accounting/transactions/:id
-```
-
-**Delete Transaction:**
-
-```
-DELETE /accounting/transactions/:id
-```
-
-**Mark as Paid:**
-
-```
-PATCH /accounting/transactions/:id/mark_paid
-```
-
----
-
-### Salary Batches
-
-**List Batches:**
-
-```
-GET /accounting/salary_batches
-```
-
-**Create Batch:**
-
-```
-POST /accounting/salary_batches
-Parameters: name, period_start, period_end
-```
-
-**Show Batch:**
-
-```
-GET /accounting/salary_batches/:id
-```
-
-**Mark Batch as Paid:**
-
-```
-PATCH /accounting/salary_batches/:id/mark_paid
-```
-
----
-
-### Salaries
-
-**List Salaries:**
-
-```
-GET /accounting/salaries
-GET /accounting/salary_batches/:batch_id/salaries
-```
-
-**Create Salary:**
-
-```
-POST /accounting/salaries
-POST /accounting/salary_batches/:batch_id/salaries
-Parameters: employee_id, base_pay, allowances
-```
-
-**Show Salary:**
-
-```
-GET /accounting/salaries/:id
-```
-
-**Update Salary:**
-
-```
-PATCH /accounting/salaries/:id
-PUT /accounting/salaries/:id
-Parameters: base_pay, allowances
-```
-
-**Mark Salary as Paid:**
-
-```
-PATCH /accounting/salaries/:id/mark_paid
-```
-
----
-
-### Deductions
-
-**List Deductions:**
-
-```
-GET /accounting/deductions
-GET /accounting/salaries/:salary_id/deductions
-```
-
-**Create Deduction:**
-
-```
-POST /accounting/deductions
-POST /accounting/salaries/:salary_id/deductions
-Parameters: deduction_type, amount, notes
-```
-
-**Show Deduction:**
-
-```
-GET /accounting/deductions/:id
-```
-
-**Update Deduction:**
-
-```
-PATCH /accounting/deductions/:id
-PUT /accounting/deductions/:id
-```
-
-**Delete Deduction:**
-
-```
-DELETE /accounting/deductions/:id
-```
-
----
-
 ## Routes
 
 These are server-side rendered routes (not JSON API endpoints). They return HTML responses with Hotwire/Turbo for fast, interactive updates.
@@ -573,7 +423,7 @@ Parameters: name, period_start, period_end
 GET /accounting/salary_batches/:id
 ```
 
-**Mark Batch as Paid:**
+**Mark as Paid:**
 
 ```
 PATCH /accounting/salary_batches/:id/mark_paid
@@ -612,7 +462,7 @@ PUT /accounting/salaries/:id
 Parameters: base_pay, allowances
 ```
 
-**Mark Salary as Paid:**
+**Mark as Paid:**
 
 ```
 PATCH /accounting/salaries/:id/mark_paid

@@ -1,84 +1,88 @@
 <% content_for :title, "Batch: #{@salary_batch.name} | Payroll Control" %>
-<div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl p-8 mb-10 relative overflow-hidden animate-fade-in">
+<div id="<%= dom_id(@salary_batch) %>_header">
+  <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl p-8 mb-10 relative overflow-hidden animate-fade-in">
     <%
-    status_classes = case @salary_batch.status
-      when 'paid' then 'bg-green-500'
-      when 'processed' then 'bg-blue-500'
-      else 'bg-brand-primary'
-    end
-  %>
-    <div class="absolute top-0 left-0 w-full h-1 <%= status_classes %> opacity-40"></div>
+      status_classes = case @salary_batch.status
+        when 'paid' then 'bg-green-500'
+        when 'processed' then 'bg-blue-500'
+        else 'bg-brand-primary'
+      end
+    %>
+    <div class="absolute top-0 left-0 w-full h-1 <%= status_classes %> opacity-40 transition-all duration-700"></div>
     <div class="flex flex-col md:flex-row justify-between items-start gap-6">
-        <div class="flex-1">
-            <div class="flex items-center gap-3 mb-2">
-                <span class="px-2 py-0.5 rounded bg-brand-secondary/10 border border-brand-secondary/20 text-[9px] font-black uppercase tracking-[0.2em] text-brand-secondary dark:text-brand-primary">
-                    Payroll Batch #<%= @salary_batch.id %>
-                </span>
-                <span class="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50">
-                    <span class="h-1.5 w-1.5 rounded-full <%= status_classes %> <%= 'animate-pulse' unless @salary_batch.status_paid? %>"></span>
-                    Status: <%= @salary_batch.status.humanize %>
-                </span>
-            </div>
-            <h2 class="text-3xl font-black text-brand-secondary dark:text-white uppercase tracking-tighter italic mb-2">
-                <%= @salary_batch.name %>
-            </h2>
-            <p class="text-sm font-bold text-brand-primary uppercase tracking-[0.1em]">
-                Period: <%= @salary_batch.period_label %>
-            </p>
+      <div class="flex-1">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="px-2 py-0.5 rounded bg-brand-secondary/10 border border-brand-secondary/20 text-[9px] font-black uppercase tracking-[0.2em] text-brand-secondary dark:text-brand-primary">
+            Payroll Batch #<%= @salary_batch.id %>
+          </span>
+          <span class="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-brand-secondary/50 dark:text-brand-primary/50">
+            <span class="h-1.5 w-1.5 rounded-full <%= status_classes %> <%= 'animate-pulse' unless @salary_batch.status_paid? %>"></span>
+            Status: <%= @salary_batch.status.humanize %>
+          </span>
         </div>
-        <div class="flex flex-wrap md:flex-nowrap gap-3">
-            <%= link_to edit_accounting_salary_batch_path(@salary_batch),
-          class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-primary text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-brand-black transition-all active:scale-95" do %>
-            Modify Batch
-            <% end %>
-            <%= link_to accounting_salary_batches_path,
-          class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-secondary/10 text-brand-secondary dark:text-white border border-brand-secondary/20 text-[10px] font-black uppercase tracking-widest hover:bg-brand-secondary hover:text-white transition-all" do %>
-            All Batches
-            <% end %>
-            <% if policy(@salary_batch).destroy? %>
-            <%= button_to "#",
-            class: "p-2.5 rounded-xl bg-red-500/10 text-red-600 border border-red-500/20 hover:bg-red-600 hover:text-white transition-all cursor-pointer",
-            form: {
-              "data-action" => "click->confirm-delete#open",
-              "data-confirm-delete-title-param" => "Delete Salary Batch?",
-              "data-confirm-delete-message-param" => "This will purge all salary records within this batch. This action is irreversible.",
-              "data-confirm-delete-confirm-path-param" => accounting_salary_batch_path(@salary_batch)
-            } do %>
-            <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        <h2 class="text-3xl font-black text-brand-secondary dark:text-white uppercase tracking-tighter italic mb-2">
+          <%= @salary_batch.name %>
+        </h2>
+        <p class="text-sm font-bold text-brand-primary uppercase tracking-[0.1em]">
+          Period: <%= @salary_batch.period_label %>
+        </p>
+      </div>
+      <div class="flex flex-wrap md:flex-nowrap gap-3">
+        <%# --- THE MONEY SHOT: SETTLE BATCH BUTTON --- %>
+        <% if policy(@salary_batch).mark_paid? && !@salary_batch.status_paid? %>
+          <button type="button"
+          data-action="click->confirm-modal#open"
+            data-confirm-modal-variant-param="success"
+            data-confirm-modal-title-param="Authorize Payroll"
+            data-confirm-modal-message-param="Confirming total disbursement of <%= number_to_currency(@salary_batch.total_net_pay, unit: '₦') %> for this batch?"
+            data-confirm-modal-confirm-path-param="<%= mark_paid_accounting_salary_batch_path(@salary_batch) %>"
+            data-confirm-modal-confirm-method-param="patch"
+            class="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-green-600 text-white text-[10px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(22,163,74,0.4)] hover:bg-green-700 hover:scale-105 transition-all active:scale-95 group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <% end %>
-            <% end %>
-        </div>
+            <span>Mark Paid</span>
+          </button>
+        <% end %>
+        <%= link_to edit_accounting_salary_batch_path(@salary_batch),
+                class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-primary text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-brand-black transition-all active:scale-95" do %>
+          Modify Batch
+        <% end %>
+        <%= link_to accounting_salary_batches_path,
+                class: "flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-secondary/10 text-brand-secondary dark:text-white border border-brand-secondary/20 text-[10px] font-black uppercase tracking-widest hover:bg-brand-secondary hover:text-white transition-all" do %>
+          All Batches
+        <% end %>
+      </div>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-10 pt-8 border-t border-brand-secondary/10">
-        <div>
-            <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Workforce Count</p>
-            <p class="text-2xl font-black text-brand-secondary dark:text-white font-mono tracking-tighter">
-                <%= @salary_batch.salaries.count %> <span class="text-[10px] font-bold opacity-40 italic">Personnel</span>
-            </p>
-        </div>
-        <div>
-            <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Total Batch Outflow</p>
-            <p class="text-2xl font-black text-brand-secondary dark:text-white font-mono tracking-tighter">
-                <%= number_to_currency(@salary_batch.total_net_pay, unit: "₦") %>
-            </p>
-        </div>
-        <div>
-            <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Release Date</p>
-            <p class="text-sm font-black text-brand-secondary dark:text-white font-mono tracking-tighter">
-                <%= @salary_batch.created_at.strftime("%d.%m.%Y") %>
-            </p>
-        </div>
+      <div>
+        <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Workforce Count</p>
+        <p class="text-2xl font-black text-brand-secondary dark:text-white font-mono tracking-tighter">
+          <%= @salary_batch.salaries.count %> <span class="text-[10px] font-bold opacity-40 italic">Personnel</span>
+        </p>
+      </div>
+      <div>
+        <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Total Batch Outflow</p>
+        <p class="text-2xl font-black text-brand-secondary dark:text-white font-mono tracking-tighter">
+          <%= number_to_currency(@salary_batch.total_net_pay, unit: "₦") %>
+        </p>
+      </div>
+      <div>
+        <p class="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-2">Release Date</p>
+        <p class="text-sm font-black text-brand-secondary dark:text-white font-mono tracking-tighter">
+          <%= @salary_batch.created_at.strftime("%d.%m.%Y") %>
+        </p>
+      </div>
     </div>
+  </div>
 </div>
 <div class="space-y-6">
-    <div class="flex items-center justify-between px-2">
-        <h3 class="text-sm font-black text-brand-secondary dark:text-white uppercase tracking-widest">
-            Disbursement Breakdown
-        </h3>
-    </div>
-    <div class="overflow-hidden bg-brand-white/20 dark:bg-brand-black/20 backdrop-blur-sm border border-brand-secondary/10 rounded-2xl">
-        <%= render "accounting/salaries/salaries_table", salaries: @salary_batch.salaries %>
-    </div>
+  <div class="flex items-center justify-between px-2">
+    <h3 class="text-sm font-black text-brand-secondary dark:text-white uppercase tracking-widest">
+      Disbursement Breakdown
+    </h3>
+  </div>
+  <div class="overflow-hidden bg-brand-white/20 dark:bg-brand-black/20 backdrop-blur-sm border border-brand-secondary/10 rounded-2xl">
+    <%= render "accounting/salaries/salaries_table", salaries: @salary_batch.salaries %>
+  </div>
 </div>

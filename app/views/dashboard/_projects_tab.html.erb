@@ -1,66 +1,45 @@
+<%# app/views/dashboard/_projects_tab.html.erb %>
 <% if policy_scope(Project).any? %>
-<div id="projects-tab" class="tab-content hidden animate-fade-in">
-    <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-xl p-6">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tight">Active Sites</h2>
-            <%= link_to projects_path, class: "text-[10px] font-bold uppercase tracking-widest text-brand-primary hover:text-brand-secondary dark:hover:text-white transition-all flex items-center gap-2" do %>
-            View Registry
-            <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-            <% end %>
-        </div>
-        <% if @projects.any? %>
-        <div class="overflow-x-auto custom-scrollbar">
-            <table class="min-w-full border-separate border-spacing-0 text-left">
-                <thead>
-                    <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
-                        <% ["Project", "Phase", "Deadline", "Completion", "Budget"].each do |head| %>
-                        <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/10 text-left">
-                            <%= head %>
-                        </th>
-                        <% end %>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
-                    <% @projects.each do |project| %>
-                    <tr id="dash_<%= dom_id(project) %>" class="group hover:bg-white/40 dark:hover:bg-brand-primary/5 transition-all duration-300">
-                        <td class="px-4 py-4">
-                            <div class="text-xs font-black text-brand-secondary dark:text-white uppercase tracking-tight"><%= project.name %></div>
-                        </td>
-                        <td class="px-4 py-4">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded border border-brand-primary/20 bg-brand-primary/5 text-[9px] font-black uppercase tracking-widest text-brand-primary">
-                                <%= project.status.humanize %>
-                            </span>
-                        </td>
-                        <td class="px-4 py-4">
-                            <div class="text-[10px] font-mono text-brand-secondary dark:text-brand-primary opacity-80">
-                                <%= project.deadline&.strftime("%d.%m.%y") || "--.--.--" %>
-                            </div>
-                        </td>
-                        <td class="px-4 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="flex-1 h-1 bg-brand-secondary/10 dark:bg-white/5 rounded-full overflow-hidden min-w-[60px]">
-                                    <div class="h-full bg-brand-primary transition-all duration-1000 shadow-[0_0_8px_rgba(217,119,6,0.4)]" style="width: <%= project.progress %>%"></div>
-                                </div>
-                                <span class="text-[9px] font-black text-brand-secondary dark:text-brand-primary"><%= project.progress %>%</span>
-                            </div>
-                        </td>
-                        <td class="px-4 py-4">
-                            <div class="text-[10px] font-bold text-brand-secondary dark:text-white font-mono">
-                                <%= project.budget.present? ? number_to_currency(project.budget, unit: "₦", precision: 0) : "---" %>
-                            </div>
-                        </td>
-                    </tr>
-                    <% end %>
-                </tbody>
-            </table>
-        </div>
-        <% else %>
-        <div class="py-12 text-center border-2 border-dashed border-brand-secondary/10 rounded-xl">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">No projects currently tracked</p>
-        </div>
-        <% end %>
+  <div class="space-y-6">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h2 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tight">Active Sites</h2>
+        <p class="text-[9px] font-bold uppercase tracking-widest text-brand-secondary/40">Global Infrastructure & Deployment Registry</p>
+      </div>
+      <%= link_to projects_path, class: "text-[10px] font-bold uppercase tracking-widest text-brand-primary hover:text-brand-secondary dark:hover:text-white transition-all flex items-center gap-2 group" do %>
+        View Full Registry
+        <svg xmlns="http://www.w3.org" class="h-3 w-3 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+        </svg>
+      <% end %>
     </div>
-</div>
+    <div class="overflow-hidden bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl">
+      <% if projects.any? %>
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="min-w-full text-left border-separate border-spacing-0">
+            <thead>
+              <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
+                <% ["Site Designation", "Deployment Data", "Current Phase", "Progress Gauge", "Actions"].each do |head| %>
+                  <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20">
+                    <%= head %>
+                  </th>
+                <% end %>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
+              <% projects.each do |project| %>
+                <%= render "projects/project_row", project: project %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="text-center py-20 bg-black/5 rounded-xl border-2 border-dashed border-brand-secondary/10">
+          <h3 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tighter italic opacity-50">No Operational Sites</h3>
+          <p class="text-[10px] text-white/30 mt-2 uppercase tracking-widest italic mb-6">The project registry is currently empty.</p>
+          <%= link_to "Begin Project Initialization", new_project_path, class: "px-6 py-2 rounded-xl bg-brand-primary text-white font-bold uppercase tracking-widest text-[10px] hover:bg-brand-black transition shadow-lg" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 <% end %>

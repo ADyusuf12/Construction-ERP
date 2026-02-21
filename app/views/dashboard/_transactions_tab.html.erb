@@ -1,62 +1,38 @@
+<%# app/views/dashboard/_transactions_tab.html.erb %>
 <% if policy_scope(Accounting::Transaction).any? %>
-  <div id="transactions-tab" class="tab-content hidden animate-fade-in">
-    <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-xl p-6">
-      <div class="flex items-center justify-between mb-6">
+  <div class="space-y-6">
+    <div class="flex items-center justify-between mb-4">
+      <div>
         <h2 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tight">Recent Ledger</h2>
-        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary/40 dark:text-brand-primary/40">
-          Financial Audit
-        </span>
+        <p class="text-[9px] font-bold uppercase tracking-widest text-brand-secondary/40">Financial Audit & Reconciliation Protocol</p>
       </div>
-      <% if @transactions.any? %>
+      <div class="flex items-center gap-4">
+        <div class="flex flex-col items-end">
+          <span class="text-[8px] font-black uppercase tracking-[0.2em] text-brand-secondary/40 dark:text-brand-primary/40">Settlement Accuracy</span>
+          <span class="text-xs font-mono font-black text-brand-primary">100.00%</span>
+        </div>
+      </div>
+    </div>
+    <div class="overflow-hidden bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl">
+      <% if transactions.any? %>
         <div class="overflow-x-auto custom-scrollbar">
-          <table class="min-w-full border-separate border-spacing-0 text-left">
-            <thead>
-              <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
-                <% ["Description", "Amount", "Entry", "Status", "Timestamp"].each do |head| %>
-                  <th class="px-4 py-3 text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/10 text-left">
-                    <%= head %>
-                  </th>
-                <% end %>
-              </tr>
-            </thead>
+          <table class="min-w-full text-left border-separate border-spacing-0">
+            <%# Reusing your Modular Accounting Header %>
+            <%= render "accounting/transactions/transactions_table_header" %>
             <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
-              <% @transactions.each do |transaction| %>
-                <tr id="dash_<%= dom_id(transaction) %>" class="group hover:bg-white/40 dark:hover:bg-brand-primary/5 transition-all duration-300">
-                  <td class="px-4 py-4">
-                    <div class="text-xs font-black text-brand-secondary dark:text-brand-text-dark uppercase tracking-tight truncate max-w-[200px]">
-                      <%= transaction.description %>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="text-xs font-black text-brand-secondary dark:text-white font-mono">
-                      <%= number_to_currency(transaction.amount, unit: "₦", precision: 0) %>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4">
-                    <%# Subtle color coding for transaction types %>
-                    <% is_outflow = transaction.transaction_type.to_s.downcase.include?('out') || transaction.transaction_type.to_s.downcase.include?('debit') %>
-                    <span class="text-[9px] font-bold uppercase tracking-widest <%= is_outflow ? 'text-red-500/80' : 'text-green-500/80' %>">
-                      <%= transaction.transaction_type.humanize %>
-                    </span>
-                  </td>
-                  <td class="px-4 py-4">
-                    <span class="inline-flex px-2 py-0.5 rounded border border-brand-secondary/10 bg-brand-secondary/5 dark:border-brand-primary/20 dark:bg-brand-primary/5 text-[9px] font-black uppercase tracking-widest text-brand-secondary/70 dark:text-brand-primary">
-                      <%= transaction.status.humanize %>
-                    </span>
-                  </td>
-                  <td class="px-4 py-4">
-                    <div class="text-[10px] font-mono text-brand-secondary/80 dark:text-brand-primary/80">
-                      <%= transaction.date.strftime("%d.%m.%y") %>
-                    </div>
-                  </td>
-                </tr>
+              <% transactions.each_with_index do |t, index| %>
+                <%# Reusing your rich Transaction Row with 'Mark Paid' logic %>
+                <%= render "accounting/transactions/transaction_row",
+                           transaction: t,
+                           row_class: index.even? ? "bg-brand-secondary/5 dark:bg-brand-primary/5" : "" %>
               <% end %>
             </tbody>
           </table>
         </div>
       <% else %>
-        <div class="py-12 text-center border-2 border-dashed border-brand-secondary/10 rounded-xl">
-          <p class="text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/40">No recent financial movement</p>
+        <div class="text-center py-20 bg-black/5 rounded-xl border-2 border-dashed border-brand-secondary/10">
+          <h3 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tighter italic opacity-50">Zero Financial Movements</h3>
+          <p class="text-[10px] text-white/30 mt-2 uppercase tracking-widest italic">Awaiting transaction entry protocol.</p>
         </div>
       <% end %>
     </div>

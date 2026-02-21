@@ -140,7 +140,7 @@ RSpec.describe "Hr::Employees", type: :request do
           }
         }.to change(Hr::Employee, :count).by(1)
 
-        expect(response).to redirect_to(hr_employees_path)
+        expect(response).to redirect_to(hr_employee_path(Hr::Employee.last))
       end
     end
 
@@ -174,7 +174,7 @@ RSpec.describe "Hr::Employees", type: :request do
       it "updates the employee" do
         sign_in hr_user
         patch hr_employee_path(employee), params: { hr_employee: { department: "Updated Dept" } }
-        expect(response).to redirect_to(hr_employees_path)
+        expect(response).to redirect_to(hr_employee_path(employee))
         expect(employee.reload.department).to eq("Updated Dept")
       end
     end

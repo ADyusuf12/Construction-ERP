@@ -1,36 +1,71 @@
+<%# app/views/dashboard/home/index.html.erb %>
 <div class="relative min-h-screen space-y-8 overflow-hidden pb-12">
-  <!-- Brand Watermark Layer -->
+  <%# Background Decorative Logo %>
   <div class="absolute inset-0 z-0 pointer-events-none select-none flex items-center justify-center overflow-hidden">
     <img src="<%= asset_path('company-logo.svg') %>" alt="" class="w-3/4 h-3/4 object-contain opacity-[0.03] dark:opacity-[0.05]" />
   </div>
-  <!-- Main Content Layer -->
   <div class="relative z-10 container mx-auto px-4 sm:px-6">
-    <!-- Page Header (Operational Title & Date) -->
+    <%# 1. Header Section %>
     <%= render "dashboard/header" %>
-    <!-- KPI Summary Row (High-level data points) -->
+    <%# 2. KPI Section (Always visible, scoped by controller data) %>
     <div class="mb-10">
       <%= render "dashboard/kpi_row",
           projects: @projects,
           tasks: @tasks,
           reports: @reports,
           transactions: @transactions,
-          expenses: @expenses %>
+          expenses: @expenses,
+          low_stock_items: @low_stock_items,
+          pending_leaves_count: @pending_leaves_count %>
     </div>
-    <!-- Navigation Tabs -->
+    <%# 3. Tab Navigation %>
     <div class="mb-6">
       <%= render "dashboard/tabs" %>
     </div>
-    <!-- Dynamic Tab Content Sections -->
+    <%# 4. Main Content Area %>
     <div id="dashboard-content-container" class="transition-all duration-500">
-      <%= render "dashboard/profile_tab", employee: @employee %>
-      <%= render "dashboard/projects_tab", projects: @projects %>
-      <%= render "dashboard/tasks_tab", tasks: @tasks %>
-      <%= render "dashboard/reports_tab", reports: @reports %>
-      <%= render "dashboard/transactions_tab", transactions: @transactions %>
-      <%= render "dashboard/expenses_tab", expenses: @expenses %>
-      <%= render "dashboard/hr_tab", employee: @employee, leaves: @leaves %>
+      <%# --- PROFILE TAB --- %>
+      <div id="profile-tab" class="tab-content">
+        <% if @employee %>
+          <%= render "dashboard/profile_tab", employee: @employee %>
+        <% end %>
+      </div>
+      <%# --- OPERATIONS TABS --- %>
+      <div id="projects-tab" class="tab-content hidden">
+        <%= render "dashboard/projects_tab", projects: @projects %>
+      </div>
+      <div id="tasks-tab" class="tab-content hidden">
+        <%= render "dashboard/tasks_tab", tasks: @tasks %>
+      </div>
+      <div id="reports-tab" class="tab-content hidden">
+        <%= render "dashboard/reports_tab", reports: @reports %>
+      </div>
+      <%# --- LOGISTICS TAB --- %>
+      <div id="inventory-tab" class="tab-content hidden">
+        <%= render "dashboard/inventory_tab",
+                   inventory_items: @inventory_items,
+                   inventory_totals: @inventory_totals %>
+      </div>
+      <%# --- FINANCE TABS --- %>
+      <div id="transactions-tab" class="tab-content hidden">
+        <%= render "dashboard/transactions_tab", transactions: @transactions %>
+      </div>
+      <div id="expenses-tab" class="tab-content hidden">
+        <%= render "dashboard/expenses_tab", expenses: @expenses %>
+      </div>
+      <%# --- HR TAB --- %>
+      <div id="hr-tab" class="tab-content hidden">
+        <% if @employee || current_user.role_admin? || current_user.role_ceo? || current_user.role_hr? %>
+          <%= render "dashboard/hr_tab", employee: @employee, leaves: @leaves %>
+        <% else %>
+          <div class="py-20 text-center border border-dashed border-brand-secondary/20 rounded-2xl bg-brand-secondary/5">
+            <p class="text-[10px] font-black uppercase tracking-widest text-brand-secondary/40">Personnel Data Restricted</p>
+            <p class="text-[9px] text-brand-secondary/30 mt-1 uppercase italic">Insufficient clearance for HR intelligence access.</p>
+          </div>
+        <% end %>
+      </div>
     </div>
-    <%# Tab Logic - Improved for smooth transitions %>
+    <%# 5. Tab Interaction Logic %>
     <script nonce="<%= content_security_policy_nonce %>">
       (() => {
           const links = document.querySelectorAll(".tab-link");
@@ -59,7 +94,6 @@
                   const activeTab = document.getElementById(targetId);
                   if (activeTab) {
                       activeTab.classList.remove("hidden");
-                      // Adding a subtle entry animation
                       activeTab.classList.add("animate-in", "fade-in", "duration-500", "slide-in-from-bottom-2");
                   }
               });

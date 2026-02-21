@@ -52,8 +52,16 @@ Rails.application.routes.draw do
     resources :project_expenses
   end
 
-  resources :tasks
-  resources :reports
+  resources :tasks do
+    collection do
+      get :my_tasks
+    end
+  end
+  resources :reports do
+    collection do
+      get :my_reports
+    end
+  end
   resources :project_expenses
 
   namespace :inventory do

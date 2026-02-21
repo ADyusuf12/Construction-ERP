@@ -40,3 +40,5 @@ Thumbs.db
 .kamal/*.lock
 
 /demo
+
+extensions.txt

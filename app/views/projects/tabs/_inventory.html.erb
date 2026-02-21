@@ -1,106 +1,106 @@
 <%# Reservation Interface %>
 <% if policy([ :inventory, ProjectInventory.new(project: project) ]).create? %>
-<div class="mb-10">
+  <div class="mb-10">
     <div class="flex items-center gap-2 mb-6">
-        <div class="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
-            <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-            </svg>
-        </div>
-        <h3 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tighter">Inventory Logistics</h3>
+      <div class="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
+        <svg xmlns="http://www.w3.org" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+        </svg>
+      </div>
+      <h3 class="text-xl font-black text-brand-secondary dark:text-brand-primary uppercase tracking-tighter">Inventory Logistics</h3>
     </div>
     <%= render "inventory/project_inventories/form", project_inventory: ProjectInventory.new(project: project) %>
-</div>
+  </div>
 <% end %>
 <% if project.project_inventories.any? %>
-<div class="overflow-hidden bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl">
+  <div class="overflow-hidden bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-2xl">
     <div class="overflow-x-auto">
-        <table class="min-w-full text-left border-separate border-spacing-0">
-            <thead>
-                <%# Tier 1 Header: Categorization %>
-                <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
-                    <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20">Resource Item</th>
-                    <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20 text-center bg-black/5" colspan="3">Logistics Pipeline (Quantities)</th>
-                    <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20">Warehouse Source</th>
-                    <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20">Site Purpose</th>
-                    <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20 text-right">Actions</th>
-                </tr>
-                <%# Tier 2 Header: Statuses %>
-                <tr class="bg-brand-secondary/5 dark:bg-brand-primary/5 border-b border-brand-secondary/10">
-                    <th class="px-6 py-2"></th>
-                    <th class="px-4 py-2 text-[9px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/50 text-center border-r border-brand-secondary/5">Reserved</th>
-                    <th class="px-4 py-2 text-[9px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/50 text-center border-r border-brand-secondary/5">Issued</th>
-                    <th class="px-4 py-2 text-[9px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/50 text-center">At Site</th>
-                    <th colspan="3"></th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
-                <% project.project_inventories.each do |pi| %>
-                <tr class="group hover:bg-white/40 dark:hover:bg-brand-black/40 transition-all duration-300">
-                    <!-- Item -->
-                    <td class="px-6 py-4">
-                        <div class="text-sm font-black text-brand-secondary dark:text-white uppercase tracking-tight">
-                            <%= pi.inventory_item&.name || "—" %>
-                        </div>
-                    </td>
-                    <!-- Reserved -->
-                    <td class="px-4 py-4 text-center bg-yellow-500/5">
-                        <span class="text-sm font-bold text-brand-secondary dark:text-white"><%= pi.quantity_reserved %></span>
-                        <span class="text-[9px] font-black uppercase text-brand-secondary/40 dark:text-brand-primary/40 ml-0.5"><%= pi.inventory_item&.unit.presence || "PCS" %></span>
-                    </td>
-                    <!-- Issued -->
-                    <td class="px-4 py-4 text-center bg-blue-500/5">
-                        <span class="text-sm font-bold text-brand-secondary dark:text-white"><%= pi.issued_quantity %></span>
-                        <span class="text-[9px] font-black uppercase text-brand-secondary/40 dark:text-brand-primary/40 ml-0.5"><%= pi.inventory_item&.unit.presence || "PCS" %></span>
-                    </td>
-                    <!-- At Site -->
-                    <td class="px-4 py-4 text-center bg-green-500/5">
-                        <span class="text-sm font-black text-green-600 dark:text-green-500"><%= pi.site_quantity %></span>
-                        <span class="text-[9px] font-black uppercase text-green-600/50 dark:text-green-500/50 ml-0.5"><%= pi.inventory_item&.unit.presence || "PCS" %></span>
-                    </td>
-                    <!-- Warehouse -->
-                    <td class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-brand-secondary/70 dark:text-brand-primary/70">
-                        <%= pi.warehouse&.name || "—" %>
-                    </td>
-                    <!-- Purpose -->
-                    <td class="px-6 py-4">
-                        <p class="text-xs text-brand-secondary/60 dark:text-brand-primary/60 italic"><%= pi.purpose.presence || "—" %></p>
-                    </td>
-                    <!-- Actions -->
-                    <td class="px-6 py-4">
-                        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                            <% if policy([ :inventory, pi ]).update? %>
-                            <%= link_to edit_inventory_project_inventory_path(pi), class: "p-2 rounded-lg bg-brand-secondary text-white hover:bg-brand-primary transition shadow-md", title: "Adjust Quantities" do %>
-                            <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                                <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                            <% end %>
-                            <% end %>
-                            <% if policy([ :inventory, pi ]).destroy? %>
-                            <%= button_to "#",
-                        class: "p-2 rounded-lg bg-red-600/10 text-red-600 border border-red-600/20 hover:bg-red-600 hover:text-white transition shadow-sm",
-                        form: {
-                          "data-action" => "click->confirm-delete#open",
-                          "data-confirm-delete-title-param" => "Cancel Reservation?",
-                          "data-confirm-delete-message-param" => "Release #{pi.quantity_reserved} #{pi.inventory_item&.unit} back to Warehouse Stock?",
-                          "data-confirm-delete-confirm-path-param" => inventory_project_inventory_path(pi)
-                        } do %>
-                            <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                                <path d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                            <% end %>
-                            <% end %>
-                        </div>
-                    </td>
-                </tr>
-                <% end %>
-            </tbody>
-        </table>
+      <table class="min-w-full text-left border-separate border-spacing-0">
+        <thead>
+          <%# Tier 1 Header: Categorization %>
+          <tr class="bg-brand-secondary/90 dark:bg-brand-primary/10">
+            <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20">Resource Item</th>
+            <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20 text-center bg-black/5" colspan="3">Logistics Pipeline (Quantities)</th>
+            <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20">Warehouse Source</th>
+            <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20">Site Purpose</th>
+            <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary border-b border-brand-primary/20 text-right">Actions</th>
+          </tr>
+          <%# Tier 2 Header: Statuses %>
+          <tr class="bg-brand-secondary/5 dark:bg-brand-primary/5 border-b border-brand-secondary/10">
+            <th class="px-6 py-2"></th>
+            <th class="px-4 py-2 text-[9px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/50 text-center border-r border-brand-secondary/5">Reserved</th>
+            <th class="px-4 py-2 text-[9px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/50 text-center border-r border-brand-secondary/5">Issued</th>
+            <th class="px-4 py-2 text-[9px] font-bold uppercase tracking-widest text-brand-secondary/40 dark:text-brand-primary/50 text-center">At Site</th>
+            <th colspan="3"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-brand-secondary/10 dark:divide-brand-primary/10">
+          <% project.project_inventories.each do |pi| %>
+            <tr class="group hover:bg-white/40 dark:hover:bg-brand-black/40 transition-all duration-300">
+              <!-- Item -->
+              <td class="px-6 py-4">
+                <div class="text-sm font-black text-brand-secondary dark:text-white uppercase tracking-tight">
+                  <%= pi.inventory_item&.name || "—" %>
+                </div>
+              </td>
+              <!-- Reserved -->
+              <td class="px-4 py-4 text-center bg-yellow-500/5">
+                <span class="text-sm font-bold text-brand-secondary dark:text-white"><%= pi.quantity_reserved %></span>
+                <span class="text-[9px] font-black uppercase text-brand-secondary/40 dark:text-brand-primary/40 ml-0.5"><%= pi.inventory_item&.unit.presence || "PCS" %></span>
+              </td>
+              <!-- Issued -->
+              <td class="px-4 py-4 text-center bg-blue-500/5">
+                <span class="text-sm font-bold text-brand-secondary dark:text-white"><%= pi.issued_quantity %></span>
+                <span class="text-[9px] font-black uppercase text-brand-secondary/40 dark:text-brand-primary/40 ml-0.5"><%= pi.inventory_item&.unit.presence || "PCS" %></span>
+              </td>
+              <!-- At Site -->
+              <td class="px-4 py-4 text-center bg-green-500/5">
+                <span class="text-sm font-black text-green-600 dark:text-green-500"><%= pi.site_quantity %></span>
+                <span class="text-[9px] font-black uppercase text-green-600/50 dark:text-green-500/50 ml-0.5"><%= pi.inventory_item&.unit.presence || "PCS" %></span>
+              </td>
+              <!-- Warehouse -->
+              <td class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-brand-secondary/70 dark:text-brand-primary/70">
+                <%= pi.warehouse&.name || "—" %>
+              </td>
+              <!-- Purpose -->
+              <td class="px-6 py-4">
+                <p class="text-xs text-brand-secondary/60 dark:text-brand-primary/60 italic"><%= pi.purpose.presence || "—" %></p>
+              </td>
+              <!-- Actions -->
+              <td class="px-6 py-4">
+                <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                  <% if policy([ :inventory, pi ]).update? %>
+                    <%= link_to edit_inventory_project_inventory_path(pi), class: "p-2 rounded-lg bg-brand-secondary text-white hover:bg-brand-primary transition shadow-md", title: "Adjust Quantities" do %>
+                      <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    <% end %>
+                  <% end %>
+                  <% if policy([ :inventory, pi ]).destroy? %>
+                    <button type="button"
+                                    class="p-2 rounded-lg bg-red-500/10 text-red-600 border border-red-500/20 hover:bg-red-600 hover:text-white transition-all cursor-pointer"
+                                    data-action="click->confirm-modal#open"
+                      data-confirm-modal-variant-param="danger"
+                      data-confirm-modal-title-param="Delete Inventory Record?"
+                      data-confirm-modal-message-param="Permanent removal of inventory record for <%= pi.inventory_item&.name || "—" %>."
+                      data-confirm-modal-confirm-path-param="<%= inventory_project_inventory_path(pi) %>"
+                      data-confirm-modal-confirm-method-param="delete">
+                      <svg xmlns="http://www.w3.org" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
-</div>
+  </div>
 <% else %>
-<div class="text-center py-20 bg-brand-secondary/5 rounded-2xl border border-dashed border-brand-secondary/20">
+  <div class="text-center py-20 bg-brand-secondary/5 rounded-2xl border border-dashed border-brand-secondary/20">
     <p class="text-[10px] font-black uppercase tracking-[0.2em] text-brand-secondary/40 dark:text-brand-primary/40">Logistics Deployment Pending</p>
     <p class="text-xs text-brand-secondary/30 italic mt-1">No resources have been reserved or deployed to this site.</p>
-</div>
+  </div>
 <% end %>

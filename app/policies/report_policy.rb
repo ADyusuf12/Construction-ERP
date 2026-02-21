@@ -8,6 +8,10 @@ class ReportPolicy < ApplicationPolicy
     user.role_client?
   end
 
+  def view_global_index?
+    user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? || user.role_hr?
+  end
+
   def show?
     user.role_client? ? record.project&.client_id == user.client&.id : index?
   end
@@ -41,14 +45,17 @@ class ReportPolicy < ApplicationPolicy
       if user.role_client? && user.client.present?
         scope.joins(:project).where(projects: { client_id: user.client.id })
       elsif user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? ||
-            user.role_hr? || user.role_accountant?
+            user.role_hr?
         scope.all
       else
-        # REFACTORED: Link through tasks -> assignments -> employee
         scope.joins(project: { tasks: { assignments: :employee } })
              .where(assignments: { employee_id: user.employee&.id })
              .distinct
       end
+    end
+
+    def authored_only
+      scope.where(employee_id: user.employee&.id)
     end
   end
 
