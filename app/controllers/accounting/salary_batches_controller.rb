@@ -28,6 +28,18 @@ module Accounting
       end
     end
 
+    def new
+      @salary_batch = Accounting::SalaryBatch.new(
+        period_start: Date.current.beginning_of_month,
+        period_end: Date.current.end_of_month
+      )
+      authorize @salary_batch
+    end
+
+    def edit
+      authorize @salary_batch
+    end
+
     def mark_paid
       authorize @salary_batch
       if @salary_batch.mark_all_salaries_paid!

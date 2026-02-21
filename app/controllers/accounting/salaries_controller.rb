@@ -20,6 +20,11 @@ module Accounting
                   .per(per_page)
     end
 
+    def show
+      authorize @salary
+      @deductions = @salary.deductions
+    end
+
     def update
       authorize @salary
       if @salary.update(salary_params)

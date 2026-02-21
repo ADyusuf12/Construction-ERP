@@ -37,15 +37,19 @@
   <td class="px-6 py-4">
     <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
       <% if policy(batch).mark_paid? && (batch.status_pending? || batch.status_processed?) %>
-        <%= button_to mark_paid_accounting_salary_batch_path(batch),
-                    method: :patch,
-                    form: { data: { turbo_confirm: "Authorize Full Batch Settlement?" } },
-                    class: "p-2 rounded-lg bg-green-600 text-white hover:scale-110 active:scale-95 transition shadow-lg",
-                    title: "Mark Paid" do %>
+        <button type="button"
+          data-action="click->confirm-modal#open"
+          data-confirm-modal-variant-param="success"
+          data-confirm-modal-title-param="Authorize Payroll"
+          data-confirm-modal-message-param="Confirm total disbursement of <%= number_to_currency(batch.total_net_pay, unit: '₦') %>?"
+          data-confirm-modal-confirm-path-param="<%= mark_paid_accounting_salary_batch_path(batch) %>"
+          data-confirm-modal-confirm-method-param="patch"
+          class="p-2 rounded-lg bg-green-600 text-white hover:scale-110 active:scale-95 transition shadow-lg"
+          title="Mark Paid">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
           </svg>
-        <% end %>
+        </button>
       <% end %>
       <%= link_to accounting_salary_batch_path(batch),
                 class: "p-2 rounded-lg bg-brand-primary text-white hover:scale-110 transition shadow-lg",

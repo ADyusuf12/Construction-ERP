@@ -9,6 +9,7 @@ This document provides a comprehensive overview of the database schema for the E
 - [HR Module Tables](#hr-module-tables)
 - [Accounting Module Tables](#accounting-module-tables)
 - [Inventory Module Tables](#inventory-module-tables)
+- [Business Module Tables](#business-module-tables)
 - [Background Jobs Tables](#background-jobs-tables)
 - [Foreign Keys](#foreign-keys)
 
@@ -289,6 +290,29 @@ Stores emergency contact information for employees.
 | `address`      | `string`   | yes  |         |                                        |
 | `created_at`   | `datetime` | no   |         |                                        |
 | `updated_at`   | `datetime` | no   |         |                                        |
+
+**Associations:**
+
+- `belongs_to :employee, class_name: 'Hr::Employee'`
+
+---
+
+### `hr_recurring_adjustments`
+
+Stores recurring salary adjustments for employees.
+
+| Column            | Type            | Null | Default | Indexes                                         |
+| ----------------- | --------------- | ---- | ------- | ----------------------------------------------- |
+| `id`              | `bigint`        | no   |         | Primary Key                                     |
+| `employee_id`     | `bigint`        | no   |         | `index_hr_recurring_adjustments_on_employee_id` |
+| `label`           | `string`        | no   |         |                                                 |
+| `amount`          | `decimal(12,2)` | no   |         |                                                 |
+| `adjustment_type` | `integer`       | no   | `0`     |                                                 |
+| `active`          | `boolean`       | no   | `true`  |                                                 |
+| `created_at`      | `datetime`      | no   |         |                                                 |
+| `updated_at`      | `datetime`      | no   |         |                                                 |
+
+**Adjustment Type Enum Values:** `allowance: 0`, `deduction: 1`
 
 **Associations:**
 

@@ -274,7 +274,7 @@ Manages expense tracking for projects.
 - **Nested vs Global**:
   - `tasks` and `reports` are available both globally and nested under `projects`. Controllers handle both contexts (build under `@project` when `project_id` present).
 - **No JSON API**:
-  - The app is HTML/Turbo-first. Controllers may respond to `format.html` and `format.turbo_stream`; JSON responses are present only where controllers explicitly render JSON (e.g., `projects#create`/`update` include JSON branches).
+  - The app is HTML/Turbo-first. Controllers may respond to `format.html` and `format.turbo_stream`; JSON responses are present only where controllers explicitly render JSON (e.g., `projects/create`/`update` include JSON branches).
 - **Root path**:
   - Root is configured to Devise sign-in page; after sign-in users are redirected to the dashboard (`dashboard/home#index`).
 
