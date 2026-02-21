@@ -1,28 +1,37 @@
-<div class="group relative bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 <%= local_assigns[:card_class] %> rounded-2xl p-6 transition-all duration-500 hover:shadow-[0_0_20px_rgba(217,119,6,0.15)] hover:-translate-y-1">
+<div class="group relative bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl p-6 transition-all duration-500 hover:shadow-[0_0_20px_rgba(217,119,6,0.15)] hover:-translate-y-1">
+  <!-- Subtle background icon accent -->
   <div class="absolute top-2 right-2 opacity-5 group-hover:opacity-10 transition-opacity">
     <svg class="w-12 h-12 text-brand-primary" fill="currentColor" viewBox="0 0 24 24">
       <% case icon
-         when "folder" %><path d="M3 7h4l2-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-        when "checklist" %><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-        when "archive" %><path d="M4 8V6a2 2 0 012-2h12a2 2 0 012 2v2M4 8a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V10a2 2 0 00-2-2M4 8h16M9 12h6" />
-        when "users" %><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197" />
-        when "currency-dollar" %><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2h0c1.657 0 3 .895 3 2s-1.343 2-3 2m0-8V4m0 16v-4" />
+          when "folder" %>
+        <path d="M3 7h4l2-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /><%# Add others... %>
       <% end %>
     </svg>
   </div>
   <div class="flex flex-col items-start">
     <div class="p-2.5 rounded-xl bg-brand-primary/10 text-brand-primary mb-4 group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-        <% case icon
-           when "folder" %><path stroke-linecap="round" stroke-linejoin="round" d="M3 7h4l2-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-          when "checklist" %><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2" />
-          when "archive" %><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-          when "users" %><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197" />
-          when "document" %><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          when "currency-dollar" %><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2h0c1.657 0 3 .895 3 2s-1.343 2-3 2m0-8V4m0 16v-4" />
-          when "credit-card" %><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-        <% end %>
-      </svg>
+      <% case icon
+         when "folder" %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h4l2-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+        </svg>
+      <% when "checklist" %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+        </svg>
+      <% when "document" %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      <% when "currency-dollar" %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2h0c1.657 0 3 .895 3 2s-1.343 2-3 2m0-8V4m0 16v-4" />
+        </svg>
+      <% when "credit-card" %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+        </svg>
+      <% end %>
     </div>
     <p class="text-[10px] font-black uppercase tracking-[0.2em] text-brand-secondary/50 dark:text-brand-primary/50 mb-1">
       <%= title %>
@@ -31,9 +40,7 @@
       <h3 class="text-3xl font-black text-brand-secondary dark:text-white tabular-nums tracking-tighter">
         <%= count %>
       </h3>
-      <span class="text-[9px] font-bold text-brand-primary uppercase opacity-40 group-hover:opacity-100 transition-opacity">
-        <%= icon == "archive" ? "Alerts" : "Total" %>
-      </span>
+      <span class="text-[10px] font-bold text-brand-primary opacity-0 group-hover:opacity-100 transition-opacity">Units</span>
     </div>
   </div>
 </div>

@@ -1,83 +1,80 @@
 <div class="bg-brand-white/30 dark:bg-brand-black/30 backdrop-blur-md border border-brand-secondary/20 rounded-2xl shadow-xl p-8 animate-fade-in">
-    <div class="flex items-center gap-3 mb-8 pb-4 border-b border-brand-secondary/10">
-        <div class="p-2.5 rounded-xl bg-brand-primary/10 text-brand-primary">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-        </div>
-        <h4 class="text-[11px] font-black uppercase tracking-[0.2em] text-brand-secondary dark:text-brand-primary">
-            Deployment & Professional Status
-        </h4>
+  <div class="flex items-center gap-3 mb-8 pb-4 border-b border-brand-secondary/10">
+    <div class="p-2.5 rounded-xl bg-brand-primary/10 text-brand-primary">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-12">
-        <!-- Core Data -->
-        <div class="space-y-6">
-            <div>
-                <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Company Designation</p>
-                <p class="text-sm font-bold text-brand-secondary dark:text-white uppercase"><%= employee.position_title %></p>
-                <p class="text-[10px] text-brand-secondary/50 dark:text-brand-primary italic"><%= employee.department %></p>
+    <h4 class="text-[11px] font-black uppercase tracking-[0.2em] text-brand-secondary dark:text-brand-primary">
+      Deployment & Professional Status
+    </h4>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-12">
+    <!-- Core Data -->
+    <div class="space-y-6">
+      <div>
+        <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Company Designation</p>
+        <p class="text-sm font-bold text-brand-secondary dark:text-white uppercase"><%= employee.position_title %></p>
+        <p class="text-[10px] text-brand-secondary/50 dark:text-brand-primary italic"><%= employee.department %></p>
+      </div>
+      <div>
+        <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Reporting Officer</p>
+        <% if employee.manager.present? %>
+          <%= link_to hr_employee_path(employee.manager), class: "group flex items-center gap-2" do %>
+            <div class="h-6 w-6 rounded bg-brand-secondary/10 flex items-center justify-center text-[10px] font-black text-brand-secondary dark:text-brand-primary group-hover:bg-brand-primary group-hover:text-white transition-all">
+              <%= employee.manager.personal_detail&.first_name&.first %>
             </div>
-            <div>
-                <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Reporting Officer</p>
-                <% if employee.manager.present? %>
-                <%= link_to hr_employee_path(employee.manager), class: "group flex items-center gap-2" do %>
-                <div class="h-6 w-6 rounded bg-brand-secondary/10 flex items-center justify-center text-[10px] font-black text-brand-secondary dark:text-brand-primary group-hover:bg-brand-primary group-hover:text-white transition-all">
-                    <%= employee.manager.personal_detail&.first_name&.first %>
-                </div>
-                <span class="text-xs font-bold text-brand-secondary dark:text-white group-hover:text-brand-primary transition-colors"><%= employee.manager.full_name %></span>
-                <% end %>
-                <% else %>
-                <p class="text-xs font-bold text-brand-secondary/40 uppercase dark:text-white">Direct to Board</p>
-                <% end %>
-            </div>
-        </div>
-        <!-- Administrative Data -->
-        <div class="space-y-6">
-            <div>
-                <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Employment Date</p>
-                <p class="text-sm font-black text-brand-secondary dark:text-white font-mono tracking-tighter">
-                    <%= employee.hire_date&.strftime("%d.%m.%Y") || "--.--.--" %>
-                </p>
-            </div>
-            <div>
-                <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Operational Status</p>
-                <span class="inline-flex items-center px-2 py-0.5 rounded border border-brand-secondary/10 bg-brand-secondary/5 text-[9px] font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary">
-                    <%= employee.status.humanize %>
-                </span>
-            </div>
-        </div>
-        <!-- Personnel Network -->
-        <div class="space-y-6">
-            <div>
-                <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Subordinate Count</p>
-                <p class="text-sm font-black text-brand-secondary dark:text-white">
-                    <%= employee.subordinates.count %> <span class="text-[10px] font-bold opacity-40">Active Personnel</span>
-                </p>
-            </div>
-            <% if employee.user.present? %>
-            <div>
-                <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">System Email</p>
-                <p class="text-xs font-bold text-brand-secondary dark:text-white truncate"><%= employee.user.email %></p>
-            </div>
-            <% end %>
-        </div>
-    </div>
-    <!-- Critical Actions -->
-    <% if policy(employee).destroy? %>
-    <div class="mt-12 pt-8 border-t border-brand-secondary/10">
-        <%= button_to "#",
-          class: "flex items-center gap-2 px-6 py-3 rounded-xl bg-red-500/10 text-red-600 border border-red-500/20 hover:bg-red-600 hover:text-white transition-all text-[10px] font-black uppercase tracking-widest cursor-pointer",
-          form: {
-            "data-action" => "click->confirm-delete#open",
-            "data-confirm-delete-title-param" => "Terminate Personnel File?",
-            "data-confirm-delete-message-param" => "This action will permanently delete the profile for #{employee.full_name}.",
-            "data-confirm-delete-confirm-path-param" => hr_employee_path(employee)
-          } do %>
-        <svg xmlns="http://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-        </svg>
-        Terminate Personnel Record
+            <span class="text-xs font-bold text-brand-secondary dark:text-white group-hover:text-brand-primary transition-colors"><%= employee.manager.full_name %></span>
+          <% end %>
+        <% else %>
+          <p class="text-xs font-bold text-brand-secondary/40 uppercase dark:text-white">Direct to Board</p>
         <% end %>
+      </div>
     </div>
-    <% end %>
+    <!-- Administrative Data -->
+    <div class="space-y-6">
+      <div>
+        <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Employment Date</p>
+        <p class="text-sm font-black text-brand-secondary dark:text-white font-mono tracking-tighter">
+          <%= employee.hire_date&.strftime("%d.%m.%Y") || "--.--.--" %>
+        </p>
+      </div>
+      <div>
+        <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Operational Status</p>
+        <span class="inline-flex items-center px-2 py-0.5 rounded border border-brand-secondary/10 bg-brand-secondary/5 text-[9px] font-black uppercase tracking-widest text-brand-secondary dark:text-brand-primary">
+          <%= employee.status.humanize %>
+        </span>
+      </div>
+    </div>
+    <!-- Personnel Network -->
+    <div class="space-y-6">
+      <div>
+        <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">Subordinate Count</p>
+        <p class="text-sm font-black text-brand-secondary dark:text-white">
+          <%= employee.subordinates.count %> <span class="text-[10px] font-bold opacity-40">Active Personnel</span>
+        </p>
+      </div>
+      <% if employee.user.present? %>
+        <div>
+          <p class="text-[9px] font-black uppercase tracking-widest text-brand-primary mb-1">System Email</p>
+          <p class="text-xs font-bold text-brand-secondary dark:text-white truncate"><%= employee.user.email %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <!-- Critical Actions -->
+  <% if policy(employee).destroy? %>
+    <div class="mt-12 pt-8 border-t border-brand-secondary/10">
+      <button type="button"
+                class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-red-500/10 text-red-600 border border-red-500/20 hover:bg-red-600 hover:text-white transition-all cursor-pointer"
+                data-action="click->confirm-modal#open"
+        data-confirm-modal-variant-param="danger"
+        data-confirm-modal-title-param="Terminate Employment?"
+        data-confirm-modal-message-param="Permanent removal of employee record for <%= employee.full_name %>."
+        data-confirm-modal-confirm-path-param="<%= hr_employee_path(employee) %>"
+        data-confirm-modal-confirm-method-param="delete">
+        Terminate Employment
+      </button>
+    </div>
+  <% end %>
 </div>

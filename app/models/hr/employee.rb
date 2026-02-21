@@ -1,6 +1,7 @@
 module Hr
   class Employee < ApplicationRecord
     belongs_to :user, optional: true
+    delegate :email, to: :user, allow_nil: true
     belongs_to :manager, class_name: "Hr::Employee", optional: true
 
     has_many :subordinates, class_name: "Hr::Employee", foreign_key: "manager_id", dependent: :nullify
