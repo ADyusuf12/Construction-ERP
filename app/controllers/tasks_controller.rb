@@ -1,4 +1,3 @@
-# app/controllers/tasks_controller.rb
 class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_project, except: [ :index, :new, :create, :my_tasks ]
@@ -10,7 +9,6 @@ class TasksController < ApplicationController
 
   # NEW: Focused view for the logged-in employee
   def my_tasks
-    # Grouping by project makes it much easier for field staff to navigate
     @tasks_by_project = TaskPolicy::Scope.new(current_user, Task)
                         .assigned_only
                         .includes(:project)
@@ -44,6 +42,9 @@ class TasksController < ApplicationController
     authorize @task
 
     if @task.save
+      # Trigger notifications for the newly assigned employees
+      @task.notify_assigned_employees(current_user)
+
       redirect_to [ @task.project, @task ], notice: "Task was successfully deployed."
     else
       render :new, status: :unprocessable_content
@@ -53,6 +54,9 @@ class TasksController < ApplicationController
   def update
     authorize @task
     if @task.update(task_params)
+      # Trigger notifications in case the assignment list changed
+      @task.notify_assigned_employees(current_user)
+
       redirect_to [ @project, @task ], notice: "Task parameters updated."
     else
       render :edit, status: :unprocessable_content
@@ -76,6 +80,8 @@ class TasksController < ApplicationController
 
   def complete
     authorize @task, :mark_done?
+    # NOTE: The completion notification is handled by the Task model's
+    # after_update callback, so we don't need to call it manually here.
     if @task.update(status: :done)
       render_task_update("Task finalized and logged.")
     else

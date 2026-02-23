@@ -7,6 +7,7 @@ class User < ApplicationRecord
     storekeeper: 5, hr: 6, accountant: 7, admin: 8, client: 9
   }, prefix: true
 
+  has_many :notifications, as: :recipient, dependent: :destroy
   has_one :employee, class_name: "Hr::Employee", dependent: :destroy
   delegate :tasks, :reports, :leaves, to: :employee, allow_nil: true
   has_one :client, class_name: "Business::Client", dependent: :destroy
@@ -24,6 +25,15 @@ class User < ApplicationRecord
     else
       "User ##{id}"
     end
+  end
+
+  def notify(action:, notifiable:, params: {}, actor: nil, message: nil)
+    notifications.create!(
+      notifiable: notifiable,
+      action: action,
+      params: params.merge(message: message),
+      actor: actor || self
+    )
   end
 
   private

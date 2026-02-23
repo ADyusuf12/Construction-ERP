@@ -1,13 +1,15 @@
 <%= paginator.render do %>
-<nav class="flex items-center justify-center gap-1 bg-brand-secondary/5 dark:bg-brand-primary/5 p-2 rounded-xl border border-brand-secondary/10 backdrop-blur-sm" role="navigation" aria-label="pager">
+  <nav class="inline-flex items-center gap-1.5 p-1.5 bg-brand-secondary/5 dark:bg-white/5 rounded-2xl border border-brand-secondary/10" role="navigation" aria-label="pager">
     <%= prev_page_tag unless current_page.first? %>
-    <% each_page do |page| %>
-    <% if page.display_tag? %>
-    <%= page_tag page %>
-    <% elsif !page.was_truncated? %>
-    <%= gap_tag %>
-    <% end %>
-    <% end %>
+    <div class="flex items-center gap-1">
+      <% each_page do |page| %>
+        <% if page.display_tag? %>
+          <%= page_tag page %>
+        <% elsif !page.was_truncated? %>
+          <%= gap_tag %>
+        <% end %>
+      <% end %>
+    </div>
     <%= next_page_tag unless current_page.last? %>
-</nav>
+  </nav>
 <% end %>

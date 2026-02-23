@@ -41,15 +41,16 @@ module Hr
     end
 
     def create
-      @leave = Hr::Leave.new(leave_params)
-      @leave.employee = current_user.employee
-      @leave.manager  = current_user.employee.manager
-      authorize @leave
+      authorize Hr::Leave
 
-      if @leave.save
+      # Use the Requester service to handle creation and manager notification
+      result = Hr::LeaveManager::LeaveRequester.new(current_user.employee, leave_params).call
+      @leave = result.leave
+
+      if result.success?
         respond_to do |format|
-          format.html { redirect_to my_leaves_hr_leaves_path, notice: "Leave request logged." }
-          format.turbo_stream { redirect_to my_leaves_hr_leaves_path, notice: "Leave request logged." }
+          format.html { redirect_to my_leaves_hr_leaves_path, notice: result.message }
+          format.turbo_stream { redirect_to my_leaves_hr_leaves_path, notice: result.message }
         end
       else
         render :new, status: :unprocessable_content
@@ -58,15 +59,16 @@ module Hr
 
     def approve
       authorize @leave
-      result = Hr::LeaveManager::LeaveProcessor.new(@leave).approve!
+      # Use the Processor service with current_user as the 'actor'
+      result = Hr::LeaveManager::LeaveProcessor.new(@leave, actor: current_user).approve!
 
-      # Use the message returned from the Service Result
       render_status_update(result.message)
     end
 
     def reject
       authorize @leave
-      result = Hr::LeaveManager::LeaveProcessor.new(@leave).reject!
+      # Use the Processor service with current_user as the 'actor'
+      result = Hr::LeaveManager::LeaveProcessor.new(@leave, actor: current_user).reject!
 
       render_status_update(result.message)
     end
@@ -77,7 +79,7 @@ module Hr
 
       respond_to do |format|
         format.html { redirect_to hr_leaves_path, notice: "Leave request removed from registry." }
-        format.turbo_stream { flash.now[:notice] = "Leave request removed." } # Renders destroy.turbo_stream.erb
+        format.turbo_stream { flash.now[:notice] = "Leave request removed." }
       end
     end
 
@@ -96,6 +98,7 @@ module Hr
         format.html { redirect_back fallback_location: hr_leaves_path, notice: message }
         format.turbo_stream do
           flash.now[:notice] = message
+          # This renders update.turbo_stream.erb to refresh the row in the UI
           render "hr/leaves/update"
         end
       end

@@ -1,6 +1,8 @@
-<span class="page<%= ' current' if page.current? %>">
-    <%= link_to_unless page.current?, page, url, {remote: remote, rel: page.rel,
-      class: page.current? ?
-      "px-4 py-2 rounded-lg bg-brand-primary text-white font-black text-xs shadow-lg shadow-brand-primary/20 transition-all scale-110 z-10" :
-      "px-4 py-2 rounded-lg bg-white/5 dark:bg-black/20 text-brand-secondary/60 dark:text-brand-primary/60 font-bold text-xs hover:bg-brand-secondary hover:text-white transition-all"} %>
-</span>
+<% if page.current? %>
+  <span class="flex items-center justify-center min-w-[36px] h-9 rounded-xl bg-brand-primary text-white font-black text-[11px] shadow-lg shadow-brand-primary/30 ring-2 ring-brand-primary/20 transition-all">
+    <%= page %>
+  </span>
+<% else %>
+  <%= link_to page, url, remote: remote, rel: page.rel,
+      class: "flex items-center justify-center min-w-[36px] h-9 rounded-xl text-brand-secondary/40 dark:text-brand-primary/40 font-black text-[11px] hover:bg-brand-secondary hover:text-white dark:hover:bg-brand-primary dark:hover:text-white transition-all active:scale-90" %>
+<% end %>
