@@ -15,6 +15,10 @@ module Hr
       (end_date - start_date).to_i + 1
     end
 
+    def notification_path(notification)
+      Rails.application.routes.url_helpers.hr_leave_path(self)
+    end
+
     private
 
     def has_sufficient_balance

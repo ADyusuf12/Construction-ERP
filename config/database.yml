@@ -4,15 +4,23 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
-  <<: *default
-  # Change the database name to be generic
-  database: construction_erp_development
-  username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
-  password: <%= ENV.fetch("POSTGRES_PASSWORD", "") %>
-  host: <%= ENV.fetch("PGHOST", "localhost") %>
+  primary:
+    <<: *default
+    database: construction_erp_development
+    username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
+    password: <%= ENV.fetch("POSTGRES_PASSWORD", "") %>
+    host: <%= ENV.fetch("PGHOST", "localhost") %>
+
+  cable:
+    <<: *default
+    database: construction_erp_development_cable
+    username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
+    password: <%= ENV.fetch("POSTGRES_PASSWORD", "") %>
+    host: <%= ENV.fetch("PGHOST", "localhost") %>
+    migrations_paths: db/cable_migrate
 
 test:
-  <<: *default # Use the default anchor to keep it clean
+  <<: *default
   database: construction_erp_test
   username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
   password: <%= ENV.fetch("POSTGRES_PASSWORD", "1234") %>

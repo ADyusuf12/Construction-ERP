@@ -101,4 +101,18 @@
       })();
     </script>
   </div>
+  <%# Modal Shell - Waiting for Turbo to fill 'modal_content' %>
+  <div id="modal" class="relative z-[100] hidden" role="dialog" aria-modal="true">
+    <%# Backdrop - Clicking this also closes the modal %>
+    <div class="fixed inset-0 bg-brand-secondary/40 backdrop-blur-sm transition-opacity"
+       onclick="this.parentElement.classList.add('hidden')"></div>
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto pointer-events-none">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <%# Turbo Frame Container %>
+        <div class="pointer-events-auto w-full sm:max-w-2xl">
+          <%= turbo_frame_tag "modal_content", class: "relative block transform overflow-hidden rounded-3xl bg-white dark:bg-brand-black text-left shadow-2xl transition-all border border-brand-secondary/10" %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

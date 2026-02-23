@@ -2,7 +2,6 @@ class ReportPolicy < ApplicationPolicy
   include ClientScopedPolicy
 
   def index?
-    # Keeping your existing role-based access
     user.role_ceo? || user.role_admin? || user.role_cto? || user.role_site_manager? ||
     user.role_hr? || user.role_accountant? || project_member? ||
     user.role_client?
@@ -22,7 +21,6 @@ class ReportPolicy < ApplicationPolicy
   end
 
   def update?
-    # REFACTORED: Check if the user is the owner of the employee who filed the report
     record.employee_id == user.employee&.id && record.status_draft?
   end
 
@@ -62,8 +60,8 @@ class ReportPolicy < ApplicationPolicy
   private
 
   def project_member?
+    return false if record.is_a?(Class)
     return false unless record.project && user.employee
-    # REFACTORED: Check if the user's employee record is assigned to any task in the project
     record.project.tasks.joins(:assignments).exists?(assignments: { employee_id: user.employee.id })
   end
 end

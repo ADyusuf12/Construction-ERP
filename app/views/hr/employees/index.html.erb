@@ -43,3 +43,6 @@
   <%= link_to "Reset System", hr_employees_path, class: "text-[10px] font-bold uppercase tracking-widest text-brand-secondary/40 hover:text-brand-primary transition" %>
 </div>
 <%= render "hr/employees/employee_table", employees: @employees %>
+<div class="flex justify-center">
+  <%= paginate @employees, params: request.query_parameters if defined?(paginate) %>
+</div>

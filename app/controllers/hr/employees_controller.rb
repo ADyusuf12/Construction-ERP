@@ -10,11 +10,12 @@ module Hr
       if params[:q].present?
         @employees = @employees.where("staff_id ILIKE ?", "%#{params[:q]}%")
       end
+      per_page = params.fetch(:per_page, 20).to_i
+      @employees = @employees.page(params[:page]).per(per_page)
     end
 
     def show
       authorize @employee
-      # Preload adjustments for the show page
       @recurring_adjustments = @employee.recurring_adjustments.order(adjustment_type: :asc)
     end
 
