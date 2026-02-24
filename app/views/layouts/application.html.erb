@@ -8,24 +8,6 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" unless Rails.env.test? %>
     <%= javascript_importmap_tags %>
-    <style>
-      .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-      }
-
-      .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-      }
-
-      .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(184, 115, 51, 0.2);
-          border-radius: 10px;
-      }
-
-      .custom-scrollbar:hover::-webkit-scrollbar-thumb {
-          background: rgba(184, 115, 51, 0.5);
-      }
-    </style>
   </head>
   <body class="bg-brand-white text-brand-black dark:bg-brand-black dark:text-brand-white flex h-screen overflow-hidden" data-controller="confirm-modal">
     <% if user_signed_in? %>
