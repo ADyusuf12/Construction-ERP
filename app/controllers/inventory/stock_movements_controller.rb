@@ -7,12 +7,12 @@ class Inventory::StockMovementsController < ApplicationController
     if params[:inventory_item_id].present?
       @inventory_item = InventoryItem.find(params[:inventory_item_id])
       @stock_movements = policy_scope([ :inventory, @inventory_item.stock_movements ])
-                            .includes(:inventory_item, :project, :employee, :source_warehouse, :destination_warehouse)
+                            .includes(:inventory_item, :project, { employee: :personal_detail }, :source_warehouse, :destination_warehouse)
                             .order(created_at: :desc)
       authorize [ :inventory, @inventory_item ]
     else
       @stock_movements = policy_scope([ :inventory, StockMovement ])
-                            .includes(:inventory_item, :project, :employee, :source_warehouse, :destination_warehouse)
+                            .includes(:inventory_item, :project, { employee: :personal_detail }, :source_warehouse, :destination_warehouse)
                             .order(created_at: :desc)
       authorize [ :inventory, StockMovement ]
     end

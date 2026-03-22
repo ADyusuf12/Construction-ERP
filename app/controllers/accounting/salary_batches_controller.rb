@@ -10,8 +10,10 @@ module Accounting
 
     def show
       authorize @salary_batch
-      # Optimized: includes(:employee, :deductions) prevents 100+ SQL queries on one page
-      @salaries = @salary_batch.salaries.includes(:employee, :deductions).order("hr_personal_details.last_name ASC").references(:hr_personal_details)
+      @salaries = @salary_batch.salaries
+                               .includes({ employee: :personal_detail }, :deductions)
+                               .order("hr_personal_details.last_name ASC")
+                               .references(:hr_personal_details)
     end
 
     def create

@@ -17,6 +17,7 @@ module Hr
     def show
       authorize @employee
       @recurring_adjustments = @employee.recurring_adjustments.order(adjustment_type: :asc)
+      @salaries = @employee.salaries.includes(:batch).order(created_at: :desc)
     end
 
     def new

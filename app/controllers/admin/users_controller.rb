@@ -1,6 +1,6 @@
 class Admin::UsersController < Admin::BaseController
   def index
-    @users = User.all
+    @users = User.all.includes(:employee, :client)
 
     per_page = params.fetch(:per_page, 10).to_i
     @users = @users.page(params[:page]).per(per_page)
