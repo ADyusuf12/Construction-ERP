@@ -79,9 +79,9 @@ module Hr
           :account_number, :account_name, :means_of_identification,
           :id_number, :marital_status, :address, :phone_number
         ],
-        next_of_kins_attributes: [:id, :name, :relationship, :phone_number, :address, :_destroy],
+        next_of_kins_attributes: [ :id, :name, :relationship, :phone_number, :address, :_destroy ],
         # ADDED THIS FOR PRODUCTION
-        recurring_adjustments_attributes: [:id, :label, :amount, :adjustment_type, :active, :_destroy]
+        recurring_adjustments_attributes: [ :id, :label, :amount, :adjustment_type, :active, :_destroy ]
       )
     end
   end
