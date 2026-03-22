@@ -4,11 +4,13 @@ class ProjectsController < ApplicationController
   include Pundit::Authorization
 
   def index
-    @projects = policy_scope(Project)
+    @projects = policy_scope(Project).includes(:tasks)
   end
 
   def show
     authorize @project
+    @tasks = @project.tasks.includes(employees: :personal_detail)
+    @reports = @project.reports.includes(:employee)
   end
 
   def new

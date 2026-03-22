@@ -10,13 +10,13 @@ module Inventory
     def show
       authorize [ :inventory, @warehouse ]
 
-      @inventory_items = @warehouse.inventory_items.includes(:stock_levels)
+      @inventory_items = @warehouse.inventory_items
 
       @inventory_totals = @warehouse.stock_levels
                                     .group(:inventory_item_id)
                                     .sum(:quantity)
 
-      @recent_movements = @warehouse.recent_movements(10)
+       @recent_movements = @warehouse.recent_movements(5).includes(employee: :personal_detail)
     end
 
     def new

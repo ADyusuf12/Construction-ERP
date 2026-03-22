@@ -5,7 +5,7 @@ module Hr
 
     def index
       authorize Hr::Leave
-      @leaves = policy_scope(Hr::Leave).order(created_at: :desc)
+      @leaves = policy_scope(Hr::Leave).includes(employee: :personal_detail).order(created_at: :desc)
 
       if params[:status].present? && Hr::Leave.statuses.key?(params[:status])
         @leaves = @leaves.where(status: params[:status])

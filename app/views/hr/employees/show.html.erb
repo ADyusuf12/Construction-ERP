@@ -79,7 +79,7 @@
     <%# Pundit Protected Payroll Content %>
     <% if policy(Accounting::Salary).show? %>
       <div id="payroll-tab" class="tab-content hidden animate-fade-in">
-        <%= render "hr/employees/tabs/payroll", employee: @employee %>
+        <%= render "hr/employees/tabs/payroll", employee: @employee, salaries: @salaries %>
       </div>
     <% end %>
     <div id="history-tab" class="tab-content hidden animate-fade-in">

@@ -8,19 +8,26 @@ module Dashboard
         redirect_to admin_users_path and return
       end
       # --- 1. Operations (The "Standard" Feed) ---
-      @projects = policy_scope(Project).order(created_at: :desc).limit(3)
-      @tasks = policy_scope(Task).where.not(status: :done).order(due_date: :asc).limit(3)
-      @reports = policy_scope(Report).order(created_at: :desc).limit(3)
+      @projects = policy_scope(Project)
+                  .includes(:tasks)
+                  .order(created_at: :desc).limit(3)
+      @tasks = policy_scope(Task)
+               .includes(:employees)
+               .where.not(status: :done)
+               .order(due_date: :asc).limit(3)
+      @reports = policy_scope(Report)
+                .includes(:employee, :project)
+                .order(created_at: :desc).limit(3)
 
       # --- 2. Finance & Ledger Intelligence ---
       @transactions = policy_scope(Accounting::Transaction).order(date: :desc).limit(3)
-      @expenses = policy_scope(ProjectExpense).order(date: :desc).limit(3)
+      @expenses = policy_scope(ProjectExpense).includes(:project).order(date: :desc).limit(3)
 
       # CEO KPI: Cash flow visibility
       @pending_revenue = Accounting::Transaction.where(transaction_type: :invoice, status: :unpaid).sum(:amount)
 
       # --- 3. Logistics Intelligence (Inventory) ---
-      @inventory_items = InventoryItem.all.includes(:stock_levels)
+      @inventory_items = InventoryItem.all
       @inventory_items = @inventory_items.sort_by { |item| item.total_quantity }
 
       @inventory_totals = @inventory_items.each_with_object({}) do |item, hash|
@@ -38,7 +45,7 @@ module Dashboard
       # Logic Refinement: Handle External Admins (who have no @employee record)
       if current_user.role_ceo? || current_user.role_admin? || current_user.role_hr?
         # High-level overview for Management
-        @leaves = Hr::Leave.where(status: :pending).order(created_at: :desc).limit(5)
+        @leaves = Hr::Leave.includes(:employee).where(status: :pending).order(created_at: :desc).limit(5)
         @pending_leaves_count = Hr::Leave.where(status: :pending).count
       elsif @employee
         # Regular Staff: Show their personal records

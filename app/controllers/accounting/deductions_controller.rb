@@ -5,7 +5,7 @@ module Accounting
 
     def index
       authorize Accounting::Deduction
-      @deductions = policy_scope(Accounting::Deduction).includes(salary: [:employee, :batch])
+      @deductions = policy_scope(Accounting::Deduction).includes(salary: [ { employee: :personal_detail }, :batch ])
     end
 
     def show

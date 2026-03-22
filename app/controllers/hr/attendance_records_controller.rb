@@ -7,7 +7,7 @@ module Hr
 
     def index
       authorize Hr::AttendanceRecord
-      @attendance_records = policy_scope(Hr::AttendanceRecord).includes(:employee, :project)
+      @attendance_records = policy_scope(Hr::AttendanceRecord).includes(:project, employee: :personal_detail)
 
       if params[:employee_id].present?
         @employee = Hr::Employee.find(params[:employee_id])

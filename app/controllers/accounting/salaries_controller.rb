@@ -13,7 +13,7 @@ module Accounting
       @salary_stats = base_scope
 
       @salaries = policy_scope(Accounting::Salary)
-                  .includes(:employee, :batch)
+                  .includes({ employee: :personal_detail }, :batch)
                   .joins(:batch)
                   .order("accounting_salary_batches.period_start DESC")
                   .page(params[:page])
