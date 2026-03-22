@@ -113,18 +113,18 @@ Stores information about tasks, which belong to projects.
 
 A join table that assigns users to tasks.
 
-| Column       | Type       | Null | Default | Indexes                        |
-| ------------ | ---------- | ---- | ------- | ------------------------------ |
-| `id`         | `bigint`   | no   |         | Primary Key                    |
-| `task_id`    | `bigint`   | no   |         | `index_assignments_on_task_id` |
-| `user_id`    | `bigint`   | no   |         | `index_assignments_on_user_id` |
-| `created_at` | `datetime` | no   |         |                                |
-| `updated_at` | `datetime` | no   |         |                                |
+| Column        | Type       | Null | Default | Indexes                            |
+| ------------- | ---------- | ---- | ------- | ---------------------------------- |
+| `id`          | `bigint`   | no   |         | Primary Key                        |
+| `task_id`     | `bigint`   | no   |         | `index_assignments_on_task_id`     |
+| `employee_id` | `bigint`   | yes  |         | `index_assignments_on_employee_id` |
+| `created_at`  | `datetime` | no   |         |                                    |
+| `updated_at`  | `datetime` | no   |         |                                    |
 
 **Associations:**
 
 - `belongs_to :task`
-- `belongs_to :user`
+- `belongs_to :employee, class_name: 'Hr::Employee', optional: true`
 
 ---
 
@@ -154,26 +154,54 @@ Stores financial transactions (global, not project-specific in the current schem
 
 ---
 
+### `notifications`
+
+Stores notifications for users.
+
+| Column            | Type       | Null | Default | Indexes     |
+| ----------------- | ---------- | ---- | ------- | ----------- |
+| `id`              | `bigint`   | no   |         | Primary Key |
+| `recipient_type`  | `string`   | no   |         |             |
+| `recipient_id`    | `bigint`   | no   |         |             |
+| `actor_type`      | `string`   | no   |         |             |
+| `actor_id`        | `bigint`   | no   |         |             |
+| `notifiable_type` | `string`   | no   |         |             |
+| `notifiable_id`   | `bigint`   | no   |         |             |
+| `action`          | `string`   | yes  |         |             |
+| `params`          | `jsonb`    | yes  |         |             |
+| `read_at`         | `datetime` | yes  |         |             |
+| `created_at`      | `datetime` | no   |         |             |
+| `updated_at`      | `datetime` | no   |         |             |
+
+**Associations:**
+
+- `belongs_to :recipient, polymorphic: true`
+- `belongs_to :actor, polymorphic: true`
+- `belongs_to :notifiable, polymorphic: true`
+
+---
+
 ## HR Module Tables
 
 ### `hr_employees`
 
 Stores information about employees for the HR module.
 
-| Column              | Type           | Null | Default | Indexes                                   |
-| ------------------- | -------------- | ---- | ------- | ----------------------------------------- |
-| `id`                | `bigint`       | no   |         | Primary Key                               |
-| `staff_id`          | `string`       | no   |         | `index_hr_employees_on_staff_id` (unique) |
-| `department`        | `string`       | no   |         |                                           |
-| `position_title`    | `string`       | no   |         |                                           |
-| `hire_date`         | `date`         | yes  |         |                                           |
-| `status`            | `integer`      | yes  | `0`     |                                           |
-| `leave_balance`     | `integer`      | yes  | `0`     |                                           |
-| `performance_score` | `decimal(5,2)` | yes  |         |                                           |
-| `user_id`           | `bigint`       | yes  |         | `index_hr_employees_on_user_id`           |
-| `manager_id`        | `bigint`       | yes  |         | `index_hr_employees_on_manager_id`        |
-| `created_at`        | `datetime`     | no   |         |                                           |
-| `updated_at`        | `datetime`     | no   |         |                                           |
+| Column              | Type            | Null | Default | Indexes                                   |
+| ------------------- | --------------- | ---- | ------- | ----------------------------------------- |
+| `id`                | `bigint`        | no   |         | Primary Key                               |
+| `staff_id`          | `string`        | no   |         | `index_hr_employees_on_staff_id` (unique) |
+| `department`        | `string`        | no   |         |                                           |
+| `position_title`    | `string`        | no   |         |                                           |
+| `hire_date`         | `date`          | yes  |         |                                           |
+| `status`            | `integer`       | yes  | `0`     |                                           |
+| `leave_balance`     | `integer`       | yes  | `0`     |                                           |
+| `performance_score` | `decimal(5,2)`  | yes  |         |                                           |
+| `user_id`           | `bigint`        | yes  |         | `index_hr_employees_on_user_id`           |
+| `manager_id`        | `bigint`        | yes  |         | `index_hr_employees_on_manager_id`        |
+| `base_salary`       | `decimal(12,2)` | no   | `0.0`   |                                           |
+| `created_at`        | `datetime`      | no   |         |                                           |
+| `updated_at`        | `datetime`      | no   |         |                                           |
 
 **Status Enum Values:** `active: 0`, `on_leave: 1`, `terminated: 2`
 
@@ -223,7 +251,7 @@ Stores personal details for employees.
 | Column                    | Type       | Null | Default | Indexes                                    |
 | ------------------------- | ---------- | ---- | ------- | ------------------------------------------ |
 | `id`                      | `bigint`   | no   |         | Primary Key                                |
-| `employee_id`             | `bigint`   | no   |         | `index_hr_personal_details_on_employee_id` |
+| `employee_id`             | `bigint`   | yes  |         | `index_hr_personal_details_on_employee_id` |
 | `first_name`              | `string`   | yes  |         |                                            |
 | `last_name`               | `string`   | yes  |         |                                            |
 | `dob`                     | `date`     | yes  |         |                                            |
@@ -320,31 +348,6 @@ Stores recurring salary adjustments for employees.
 
 ---
 
-### `reports`
-
-Stores project reports.
-
-| Column             | Type       | Null | Default | Indexes                       |
-| ------------------ | ---------- | ---- | ------- | ----------------------------- |
-| `id`               | `bigint`   | no   |         | Primary Key                   |
-| `project_id`       | `bigint`   | no   |         | `index_reports_on_project_id` |
-| `user_id`          | `bigint`   | no   |         | `index_reports_on_user_id`    |
-| `report_date`      | `date`     | no   |         |                               |
-| `report_type`      | `integer`  | no   | `0`     |                               |
-| `status`           | `integer`  | no   | `0`     |                               |
-| `progress_summary` | `text`     | yes  |         |                               |
-| `issues`           | `text`     | yes  |         |                               |
-| `next_steps`       | `text`     | yes  |         |                               |
-| `created_at`       | `datetime` | no   |         |                               |
-| `updated_at`       | `datetime` | no   |         |                               |
-
-**Associations:**
-
-- `belongs_to :project`
-- `belongs_to :user`
-
----
-
 ## Accounting Module
 
 ### `accounting_salary_batches`
@@ -381,10 +384,11 @@ Represents an employee's salary for a specific batch.
 | `status`           | `integer`       | no   | `0`     |                                            |
 | `created_at`       | `datetime`      | no   |         |                                            |
 | `updated_at`       | `datetime`      | no   |         |                                            |
+| `slip_sent_at`     | `datetime`      | yes  |         |                                            |
 
 **Associations:**
 
-- `belongs_to :employee, class_name: 'HrEmployee'`
+- `belongs_to :employee, class_name: 'Hr::Employee'`
 - `belongs_to :batch, class_name: 'Accounting::SalaryBatch'`
 - `has_many :deductions, class_name: 'Accounting::Deduction'`
 
@@ -632,21 +636,207 @@ Manages file attachments associated with projects via Active Storage.
 
 ---
 
-## Background Jobs (Solid Queue)
+## Background Jobs Tables
 
 Tables used by the **Solid Queue** background processing framework for asynchronous job execution.
 
-- `solid_queue_jobs` - Stores job definitions
-- `solid_queue_ready_executions` - Ready-to-run job executions
-- `solid_queue_scheduled_executions` - Jobs scheduled for future execution
-- `solid_queue_claimed_executions` - Jobs claimed by workers
-- `solid_queue_blocked_executions` - Jobs waiting on dependencies
-- `solid_queue_failed_executions` - Failed job records
-- `solid_queue_pauses` - Job queue pause state
-- `solid_queue_processes` - Worker process tracking
-- `solid_queue_semaphores` - Concurrency control
-- `solid_queue_recurring_tasks` - Recurring job definitions
-- `solid_queue_recurring_executions` - Recurring job execution history
+### `solid_queue_jobs`
+
+Stores job definitions.
+
+| Column            | Type       | Null | Default | Indexes     |
+| ----------------- | ---------- | ---- | ------- | ----------- |
+| `id`              | `bigint`   | no   |         | Primary Key |
+| `queue_name`      | `string`   | no   |         |             |
+| `class_name`      | `string`   | no   |         |             |
+| `arguments`       | `text`     | yes  |         |             |
+| `priority`        | `integer`  | no   | `0`     |             |
+| `active_job_id`   | `string`   | yes  |         |             |
+| `scheduled_at`    | `datetime` | yes  |         |             |
+| `finished_at`     | `datetime` | yes  |         |             |
+| `concurrency_key` | `string`   | yes  |         |             |
+| `created_at`      | `datetime` | no   |         |             |
+| `updated_at`      | `datetime` | no   |         |             |
+
+**Associations:**
+
+- `has_many :ready_executions, class_name: 'SolidQueueReadyExecution'`
+- `has_many :scheduled_executions, class_name: 'SolidQueueScheduledExecution'`
+- `has_many :claimed_executions, class_name: 'SolidQueueClaimedExecution'`
+- `has_many :blocked_executions, class_name: 'SolidQueueBlockedExecution'`
+- `has_many :failed_executions, class_name: 'SolidQueueFailedExecution'`
+
+### `solid_queue_ready_executions`
+
+Ready-to-run job executions.
+
+| Column       | Type       | Null | Default | Indexes                                        |
+| ------------ | ---------- | ---- | ------- | ---------------------------------------------- |
+| `id`         | `bigint`   | no   |         | Primary Key                                    |
+| `job_id`     | `bigint`   | no   |         | `index_solid_queue_ready_executions_on_job_id` |
+| `queue_name` | `string`   | no   |         |                                                |
+| `priority`   | `integer`  | no   | `0`     |                                                |
+| `created_at` | `datetime` | no   |         |                                                |
+
+**Associations:**
+
+- `belongs_to :job, class_name: 'SolidQueueJob'`
+
+### `solid_queue_scheduled_executions`
+
+Jobs scheduled for future execution.
+
+| Column         | Type       | Null | Default | Indexes                                            |
+| -------------- | ---------- | ---- | ------- | -------------------------------------------------- |
+| `id`           | `bigint`   | no   |         | Primary Key                                        |
+| `job_id`       | `bigint`   | no   |         | `index_solid_queue_scheduled_executions_on_job_id` |
+| `queue_name`   | `string`   | no   |         |                                                    |
+| `priority`     | `integer`  | no   | `0`     |                                                    |
+| `scheduled_at` | `datetime` | no   |         |                                                    |
+| `created_at`   | `datetime` | no   |         |                                                    |
+
+**Associations:**
+
+- `belongs_to :job, class_name: 'SolidQueueJob'`
+
+### `solid_queue_claimed_executions`
+
+Jobs claimed by workers.
+
+| Column       | Type       | Null | Default | Indexes                                          |
+| ------------ | ---------- | ---- | ------- | ------------------------------------------------ |
+| `id`         | `bigint`   | no   |         | Primary Key                                      |
+| `job_id`     | `bigint`   | no   |         | `index_solid_queue_claimed_executions_on_job_id` |
+| `process_id` | `bigint`   | yes  |         |                                                  |
+| `created_at` | `datetime` | no   |         |                                                  |
+
+**Associations:**
+
+- `belongs_to :job, class_name: 'SolidQueueJob'`
+
+### `solid_queue_blocked_executions`
+
+Jobs waiting on dependencies.
+
+| Column            | Type       | Null | Default | Indexes                                          |
+| ----------------- | ---------- | ---- | ------- | ------------------------------------------------ |
+| `id`              | `bigint`   | no   |         | Primary Key                                      |
+| `job_id`          | `bigint`   | no   |         | `index_solid_queue_blocked_executions_on_job_id` |
+| `queue_name`      | `string`   | no   |         |                                                  |
+| `priority`        | `integer`  | no   | `0`     |                                                  |
+| `concurrency_key` | `string`   | yes  |         |                                                  |
+| `expires_at`      | `datetime` | no   |         |                                                  |
+| `created_at`      | `datetime` | no   |         |                                                  |
+
+**Associations:**
+
+- `belongs_to :job, class_name: 'SolidQueueJob'`
+
+### `solid_queue_failed_executions`
+
+Failed job records.
+
+| Column       | Type       | Null | Default | Indexes                                         |
+| ------------ | ---------- | ---- | ------- | ----------------------------------------------- |
+| `id`         | `bigint`   | no   |         | Primary Key                                     |
+| `job_id`     | `bigint`   | no   |         | `index_solid_queue_failed_executions_on_job_id` |
+| `error`      | `text`     | yes  |         |                                                 |
+| `created_at` | `datetime` | no   |         |                                                 |
+
+**Associations:**
+
+- `belongs_to :job, class_name: 'SolidQueueJob'`
+
+### `solid_queue_pauses`
+
+Job queue pause state.
+
+| Column       | Type       | Null | Default | Indexes                                  |
+| ------------ | ---------- | ---- | ------- | ---------------------------------------- |
+| `id`         | `bigint`   | no   |         | Primary Key                              |
+| `queue_name` | `string`   | no   |         | `index_solid_queue_pauses_on_queue_name` |
+| `created_at` | `datetime` | no   |         |                                          |
+
+**Associations:**
+
+- None
+
+### `solid_queue_processes`
+
+Worker process tracking.
+
+| Column              | Type       | Null | Default | Indexes                                                 |
+| ------------------- | ---------- | ---- | ------- | ------------------------------------------------------- |
+| `id`                | `bigint`   | no   |         | Primary Key                                             |
+| `kind`              | `string`   | no   |         |                                                         |
+| `last_heartbeat_at` | `datetime` | no   |         | `index_solid_queue_processes_on_last_heartbeat_at`      |
+| `supervisor_id`     | `bigint`   | yes  |         |                                                         |
+| `pid`               | `integer`  | no   |         |                                                         |
+| `hostname`          | `string`   | yes  |         |                                                         |
+| `metadata`          | `text`     | yes  |         |                                                         |
+| `created_at`        | `datetime` | no   |         |                                                         |
+| `name`              | `string`   | no   |         | `index_solid_queue_processes_on_name_and_supervisor_id` |
+| `updated_at`        | `datetime` | no   |         |                                                         |
+
+**Associations:**
+
+- None
+
+### `solid_queue_semaphores`
+
+Concurrency control.
+
+| Column       | Type       | Null | Default | Indexes                                      |
+| ------------ | ---------- | ---- | ------- | -------------------------------------------- |
+| `id`         | `bigint`   | no   |         | Primary Key                                  |
+| `key`        | `string`   | no   |         | `index_solid_queue_semaphores_on_key`        |
+| `value`      | `integer`  | no   | `1`     |                                              |
+| `expires_at` | `datetime` | no   |         | `index_solid_queue_semaphores_on_expires_at` |
+| `created_at` | `datetime` | no   |         |                                              |
+| `updated_at` | `datetime` | no   |         |                                              |
+
+**Associations:**
+
+- None
+
+### `solid_queue_recurring_tasks`
+
+Recurring job definitions.
+
+| Column        | Type       | Null | Default | Indexes                                    |
+| ------------- | ---------- | ---- | ------- | ------------------------------------------ |
+| `id`          | `bigint`   | no   |         | Primary Key                                |
+| `key`         | `string`   | no   |         | `index_solid_queue_recurring_tasks_on_key` |
+| `schedule`    | `string`   | no   |         |                                            |
+| `command`     | `string`   | yes  |         |                                            |
+| `class_name`  | `string`   | yes  |         |                                            |
+| `arguments`   | `text`     | yes  |         |                                            |
+| `queue_name`  | `string`   | yes  |         |                                            |
+| `priority`    | `integer`  | no   | `0`     |                                            |
+| `static`      | `boolean`  | no   | `true`  |                                            |
+| `description` | `text`     | yes  |         |                                            |
+| `created_at`  | `datetime` | no   |         |                                            |
+| `updated_at`  | `datetime` | no   |         |                                            |
+
+**Associations:**
+
+- `has_many :recurring_executions, class_name: 'SolidQueueRecurringExecution'`
+
+### `solid_queue_recurring_executions`
+
+Recurring job execution history.
+
+| Column       | Type       | Null | Default | Indexes                                                         |
+| ------------ | ---------- | ---- | ------- | --------------------------------------------------------------- |
+| `id`         | `bigint`   | no   |         | Primary Key                                                     |
+| `job_id`     | `bigint`   | no   |         | `index_solid_queue_recurring_executions_on_job_id`              |
+| `task_key`   | `string`   | no   |         | `index_solid_queue_recurring_executions_on_task_key_and_run_at` |
+| `run_at`     | `datetime` | no   |         |                                                                 |
+| `created_at` | `datetime` | no   |         |                                                                 |
+
+**Associations:**
+
+- `belongs_to :job, class_name: 'SolidQueueJob'`
 
 ---
 
@@ -701,3 +891,4 @@ Tables used by the **Solid Queue** background processing framework for asynchron
 - **Soft Deletes:** Currently not implemented; use dependent destroy/delete strategies instead
 - **Enums:** Rails enums are used for status fields; stored as integers in the database
 - **Active Storage:** `project_files` uses Rails Active Storage for file attachment handling via `active_storage_attachments` and `active_storage_blobs`
+- **Background Jobs:** Solid Queue is used for background job processing with multiple related tables
