@@ -24,7 +24,8 @@
       <%= report.employee&.full_name || report.employee&.email || "—" %>
     </div>
   </td>
-  <% if show_project %>
+  <%# REFIXED CONDITION MATCHING THE HEADER %>
+  <% if local_assigns[:show_project] == true %>
     <td class="px-6 py-4 align-middle">
       <%= link_to report.project.name, project_path(report.project),
             class: "text-[10px] font-black uppercase tracking-widest text-brand-primary hover:text-brand-secondary transition" %>

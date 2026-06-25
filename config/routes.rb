@@ -116,4 +116,10 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, skip: [ :registrations ]
+
+  if Rails.env.development? || Rails.env.test?
+    namespace :dev do
+      resources :user_switchers, only: [ :create ]
+    end
+  end
 end

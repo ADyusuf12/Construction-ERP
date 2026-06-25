@@ -62,5 +62,9 @@
     <%# Unified Modal Registry - Direct render, no wrapper divs %>
     <%= render 'shared/confirm_danger_modal' %>
     <%= render 'shared/confirm_success_modal' %>
+    <%# Dev Environment User Switcher Utility %>
+    <% if Rails.env.development? %>
+      <%= render "shared/user_switcher" %>
+    <% end %>
   </body>
 </html>

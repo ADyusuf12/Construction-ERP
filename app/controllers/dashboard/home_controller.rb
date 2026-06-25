@@ -16,8 +16,8 @@ module Dashboard
                .where.not(status: :done)
                .order(due_date: :asc).limit(3)
       @reports = policy_scope(Report)
-                .includes(:employee, :project)
-                .order(created_at: :desc).limit(3)
+            .includes(:project, employee: :personal_detail)
+            .order(created_at: :desc).limit(3)
 
       # --- 2. Finance & Ledger Intelligence ---
       @transactions = policy_scope(Accounting::Transaction).order(date: :desc).limit(3)
